@@ -2,7 +2,8 @@
 #include "manager.h"
 #include "renderer.h"
 
-
+// Ã“I•Ï”éŒ¾
+Manager* Manager::instance;
 
 void Manager::Init()
 {

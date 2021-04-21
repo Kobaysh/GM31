@@ -54,7 +54,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		hInstance,
 		NULL);
 
-
+	Manager::create();
 
 	Manager::Init();
 

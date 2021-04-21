@@ -24,6 +24,9 @@
     <ClInclude Include="main.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="renderer.cpp">
@@ -33,6 +36,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="manager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
