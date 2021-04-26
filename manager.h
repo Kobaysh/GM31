@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-class Manager
+class Manager : public Singleton
 {
 private:
 	Manager() = default;
