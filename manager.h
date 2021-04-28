@@ -38,17 +38,17 @@ public:
 
 };
 
-//
-//class ManagerT : public Singleton<ManagerT>
-//{
-//public:
-//	friend class Singleton<ManagerT>; // Singleton でのインスタンス作成は許可
-//public:
-//	static void Init();
-//	static void Uninit();
-//	static void Update();
-//	static void Draw();
-//protected:
-//	ManagerT();	// 外部でのインスタンス作成は禁止
-//	virtual ~ManagerT();
-//};
+class ManagerT : public SingletonT<ManagerT>
+{
+private:
+	friend class SingletonT<ManagerT>;
+
+public:
+
+
+	static void Init();
+	static void Uninit();
+	static void Update();
+	static void Draw();
+
+};

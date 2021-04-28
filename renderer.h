@@ -12,6 +12,13 @@ struct VERTEX_3D
     D3DXVECTOR2 TexCoord;
 };
 
+struct VERTEX_3DX
+{
+	XMFLOAT3	Position;
+	XMFLOAT3	Normal;
+	XMFLOAT4	Diffuse;
+	XMFLOAT2	TexCoord;
+};
 
 
 struct MATERIAL
@@ -86,3 +93,4 @@ public:
 
 
 };
+

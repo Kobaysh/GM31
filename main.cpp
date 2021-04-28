@@ -7,6 +7,9 @@
 const char* CLASS_NAME = "AppClass";
 const char* WINDOW_NAME = "DX11ゲーム";
 
+// ウィンドウスタイル(拡大縮小不可)
+#define GAME_WIN_STYLE (WS_OVERLAPPEDWINDOW ^ (WS_THICKFRAME | WS_MAXIMIZEBOX))
+
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -44,7 +47,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	g_Window = CreateWindowEx(0,
 		CLASS_NAME,
 		WINDOW_NAME,
-		WS_OVERLAPPEDWINDOW,
+		//WS_OVERLAPPEDWINDOW,
+		GAME_WIN_STYLE,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		(SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2),
@@ -54,9 +58,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		hInstance,
 		NULL);
 
-	Manager::create();
+	//Manager::create();
 
-	Manager::Init();
+	//Manager::Init();
+
+//	ManagerT::singleton();
+	ManagerT::Init();
 
 
 
@@ -97,8 +104,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			{
 				dwExecLastTime = dwCurrentTime;
 
-				Manager::Update();
-				Manager::Draw();
+			//	Manager::Update();
+			//	Manager::Draw();
+
+				ManagerT::Update();
+				ManagerT::Draw();
 			}
 		}
 	}
@@ -107,7 +117,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
-	Manager::Uninit();
+//	Manager::Uninit();
+	ManagerT::Uninit();
 
 	return (int)msg.wParam;
 }
