@@ -4,40 +4,40 @@
 #include "polygon2D.h"
 
 // Ã“I•Ï”éŒ¾
-Manager* Manager::instance;
-Polygon2D* g_polygon;
+//Manager* Manager::instance;
+Polygon2D* g_polygon = NULL;
 
-
-void Manager::Init()
-{
-	Renderer::Init();
-	g_polygon = new Polygon2D();
-	g_polygon->Init();
-}
-
-
-void Manager::Uninit()
-{
-
-	g_polygon->Uninit();
-	delete g_polygon;
-	Renderer::Uninit();
-}
-
-void Manager::Update()
-{
-	g_polygon->Update();
-}
-
-void Manager::Draw()
-{
-	Renderer::Begin();
-
-	g_polygon->Draw();
-
-
-	Renderer::End();
-}
+//
+//void Manager::Init()
+//{
+//	Renderer::Init();
+//	g_polygon = new Polygon2D();
+//	g_polygon->Init();
+//}
+//
+//
+//void Manager::Uninit()
+//{
+//
+//	g_polygon->Uninit();
+//	delete g_polygon;
+//	Renderer::Uninit();
+//}
+//
+//void Manager::Update()
+//{
+//	g_polygon->Update();
+//}
+//
+//void Manager::Draw()
+//{
+//	Renderer::Begin();
+//
+//	g_polygon->Draw();
+//
+//
+//	Renderer::End();
+//}
 
 void ManagerT::Init()
 {

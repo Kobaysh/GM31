@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "Singleton.h"
 
 
 
@@ -44,7 +44,7 @@ struct LIGHT
 
 
 
-class Renderer
+class Renderer : public SingletonT<Renderer>
 {
 private:
 
@@ -94,3 +94,52 @@ public:
 
 };
 
+//class RendererT : public SingletonT<RendererT>
+//{
+//private:
+//
+//	static D3D_FEATURE_LEVEL       m_FeatureLevel;
+//
+//	static ID3D11Device*           m_Device;
+//	static ID3D11DeviceContext*    m_DeviceContext;
+//	static IDXGISwapChain*         m_SwapChain;
+//	static ID3D11RenderTargetView* m_RenderTargetView;
+//	static ID3D11DepthStencilView* m_DepthStencilView;
+//
+//	static ID3D11Buffer*			m_WorldBuffer;
+//	static ID3D11Buffer*			m_ViewBuffer;
+//	static ID3D11Buffer*			m_ProjectionBuffer;
+//	static ID3D11Buffer*			m_MaterialBuffer;
+//	static ID3D11Buffer*			m_LightBuffer;
+//
+//
+//	static ID3D11DepthStencilState* m_DepthStateEnable;
+//	static ID3D11DepthStencilState* m_DepthStateDisable;
+//
+//
+//
+//
+//public:
+//	static void Init();
+//	static void Uninit();
+//	static void Begin();
+//	static void End();
+//
+//	static void SetDepthEnable(bool Enable);
+//	static void SetWorldViewProjection2D();
+//	static void SetWorldMatrix(D3DXMATRIX* WorldMatrix);
+//	static void SetViewMatrix(D3DXMATRIX* ViewMatrix);
+//	static void SetProjectionMatrix(D3DXMATRIX* ProjectionMatrix);
+//	static void SetMaterial(MATERIAL Material);
+//	static void SetLight(LIGHT Light);
+//
+//	static ID3D11Device* GetDevice(void) { return m_Device; }
+//	static ID3D11DeviceContext* GetDeviceContext(void) { return m_DeviceContext; }
+//
+//
+//
+//	static void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** VertexLayout, const char* FileName);
+//	static void CreatePixelShader(ID3D11PixelShader** PixelShader, const char* FileName);
+//
+//
+//};
