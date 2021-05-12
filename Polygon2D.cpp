@@ -1,6 +1,7 @@
 #include "main.h"
-#include "polygon2D.h"
-#include "renderer.h"
+#include "Renderer.h"
+#include "Polygon2D.h"
+
 
 void Polygon2D::Init()
 {
@@ -60,7 +61,7 @@ void Polygon2D::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_pVertexBuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -68,26 +69,26 @@ void Polygon2D::Init()
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
-		&m_Texture,
+		&m_pTexture,
 		NULL
 		);
-	assert(m_Texture);
+	assert(m_pTexture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_pVertexShader, &m_pVertexLayout, "unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pPixelShader, "unlitTexturePS.cso");
 
 
 }
 
 void Polygon2D::Uninit()
 {
-	m_Vertexbuffer->Release();
-	m_Texture->Release();
+	/*m_pVertexBuffer->Release();
+	m_pTexture->Release();*/
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_pVertexLayout->Release();
+	m_pVertexShader->Release();
+	m_pPixelShader->Release();
 }
 
 void Polygon2D::Update()
@@ -97,11 +98,11 @@ void Polygon2D::Update()
 void Polygon2D::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetDeviceContext()->IASetInputLayout(m_pVertexLayout);
 
 	// シェーダー設定
-	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetDeviceContext()->VSSetShader(m_pVertexShader, NULL, 0);
+	Renderer::GetDeviceContext()->PSSetShader(m_pPixelShader, NULL, 0);
 
 	// マトリクス設定
 	Renderer::SetWorldViewProjection2D();
@@ -109,10 +110,10 @@ void Polygon2D::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_pTexture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

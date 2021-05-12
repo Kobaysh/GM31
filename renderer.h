@@ -2,7 +2,7 @@
 
 #include "Singleton.h"
 
-
+using Microsoft::WRL::ComPtr;
 
 struct VERTEX_3D
 {
@@ -31,6 +31,15 @@ struct MATERIAL
 	float		Dummy[3];
 };
 
+struct MATERIALX
+{
+	XMFLOAT4	Ambient;
+	XMFLOAT4	Diffuse;
+	XMFLOAT4	Specular;
+	XMFLOAT4	Emission;
+	float		Shininess;
+	float		Dummy[3];
+};
 
 
 struct LIGHT
@@ -51,10 +60,15 @@ private:
 	static D3D_FEATURE_LEVEL       m_FeatureLevel;
 
 	static ID3D11Device*           m_Device;
+	static ComPtr<ID3D11Device>			m_pDevice;
 	static ID3D11DeviceContext*    m_DeviceContext;
+	static ComPtr<ID3D11DeviceContext>	m_pDeviceContext;
 	static IDXGISwapChain*         m_SwapChain;
+	static ComPtr<IDXGISwapChain>         m_pSwapChain;
 	static ID3D11RenderTargetView* m_RenderTargetView;
+	static ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
 	static ID3D11DepthStencilView* m_DepthStencilView;
+	static ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
 
 	static ID3D11Buffer*			m_WorldBuffer;
 	static ID3D11Buffer*			m_ViewBuffer;

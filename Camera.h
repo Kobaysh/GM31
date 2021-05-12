@@ -3,9 +3,9 @@ class Camera
 {
 
 private:
-	XMVECTOR m_vPosition;
-	XMVECTOR m_vTarget;
-	XMVECTOR m_vUp;
+	XMFLOAT3 m_vPosition;
+	XMFLOAT3 m_vTarget;
+	XMFLOAT3 m_vUp;
 	
 	D3DXVECTOR3 m_Position;
 	D3DXVECTOR3 m_Target;

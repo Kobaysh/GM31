@@ -59,7 +59,7 @@ void Renderer::Init()
 										&m_Device,
 										&m_FeatureLevel,
 										&m_DeviceContext );
-
+	
 
 
 
@@ -343,8 +343,7 @@ void Renderer::SetViewMatrixX(XMMATRIX * ViewMatrix)
 
 void Renderer::SetProjectionMatrixX(XMMATRIX * ProjectionMatrix)
 {
-	XMMATRIX projection;
-	XMMatrixTranspose(*ProjectionMatrix);
+	XMMATRIX projection = XMMatrixTranspose(*ProjectionMatrix);
 	m_DeviceContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &projection, 0, 0);
 }
 

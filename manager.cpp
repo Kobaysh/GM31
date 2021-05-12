@@ -1,6 +1,6 @@
 #include "main.h"
 #include "manager.h"
-#include "renderer.h"
+#include "Renderer.h"
 #include "polygon2D.h"
 #include "Camera.h"
 #include "Field.h"
@@ -53,7 +53,7 @@ void ManagerT::Init()
 	g_Field->Init();
 
 
-
+	
 }
 
 void ManagerT::Uninit()
@@ -70,17 +70,16 @@ void ManagerT::Uninit()
 
 void ManagerT::Update()
 {
-	g_polygon->Update();
 	g_Camera->Update();
 	g_Field->Update();
+	g_polygon->Update();
 }
 
 void ManagerT::Draw()
 {
 	Renderer::Begin();
+//	g_Camera->Draw();
+//	g_Field->Draw();
 	g_polygon->Draw();
-	g_Camera->Draw();
-	g_Field->Draw();
-
 	Renderer::End();
 }

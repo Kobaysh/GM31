@@ -1,8 +1,12 @@
 #pragma once
-#include "Singleton.h"
-class Title:SingletonT<Title>
+
+class Wall
 {
 private:
+	XMFLOAT3 m_Position;
+	XMFLOAT3 m_Rotation;
+	XMFLOAT3 m_Scale;
+
 	ID3D11Buffer*				m_Vertexbuffer = NULL;
 	ID3D11ShaderResourceView*	m_Texture = NULL;
 
@@ -15,5 +19,6 @@ public:
 	void Uninit();
 	void Update();
 	void Draw();
+
 };
 
