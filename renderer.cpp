@@ -329,6 +329,25 @@ void Renderer::SetProjectionMatrix( D3DXMATRIX* ProjectionMatrix )
 	m_DeviceContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &projection, 0, 0);
 }
 
+void Renderer::SetWorldMatrixX(XMMATRIX * WorldMatrix)
+{
+	XMMATRIX world = XMMatrixTranspose(*WorldMatrix);
+	m_DeviceContext->UpdateSubresource(m_WorldBuffer, 0, NULL, &world, 0, 0);
+}
+
+void Renderer::SetViewMatrixX(XMMATRIX * ViewMatrix)
+{
+	XMMATRIX view= XMMatrixTranspose(*ViewMatrix);
+	m_DeviceContext->UpdateSubresource(m_ViewBuffer, 0, NULL, &view, 0, 0);
+}
+
+void Renderer::SetProjectionMatrixX(XMMATRIX * ProjectionMatrix)
+{
+	XMMATRIX projection;
+	XMMatrixTranspose(*ProjectionMatrix);
+	m_DeviceContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &projection, 0, 0);
+}
+
 
 
 void Renderer::SetMaterial( MATERIAL Material )

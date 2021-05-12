@@ -107,7 +107,7 @@ void Polygon2D::Draw()
 	Renderer::SetWorldViewProjection2D();
 
 	// 頂点バッファ設定
-	UINT stride = sizeof(VERTEX_3D);
+	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
 

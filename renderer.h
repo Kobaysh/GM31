@@ -80,6 +80,9 @@ public:
 	static void SetWorldMatrix(D3DXMATRIX* WorldMatrix);
 	static void SetViewMatrix(D3DXMATRIX* ViewMatrix);
 	static void SetProjectionMatrix(D3DXMATRIX* ProjectionMatrix);
+	static void SetWorldMatrixX(XMMATRIX* WorldMatrix);
+	static void SetViewMatrixX(XMMATRIX* ViewMatrix);
+	static void SetProjectionMatrixX(XMMATRIX* ProjectionMatrix);
 	static void SetMaterial(MATERIAL Material);
 	static void SetLight(LIGHT Light);
 
