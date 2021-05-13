@@ -61,7 +61,7 @@ void Polygon2D::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_pVertexBuffer);
+	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -69,10 +69,10 @@ void Polygon2D::Init()
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
-		&m_pTexture,
+		&m_Texture,
 		NULL
 		);
-	assert(m_pTexture);
+	assert(m_Texture);
 
 	Renderer::CreateVertexShader(&m_pVertexShader, &m_pVertexLayout, "unlitTextureVS.cso");
 
@@ -110,10 +110,10 @@ void Polygon2D::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_pTexture);
+	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
