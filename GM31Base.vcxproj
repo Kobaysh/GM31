@@ -163,6 +163,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="Polygon2D.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Singleton.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="Polygon2D.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Singleton.cpp" />

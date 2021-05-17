@@ -83,8 +83,8 @@ void Polygon2D::Init()
 
 void Polygon2D::Uninit()
 {
-	/*m_pVertexBuffer->Release();
-	m_pTexture->Release();*/
+	m_VertexBuffer->Release();
+	m_Texture->Release();
 
 	m_pVertexLayout->Release();
 	m_pVertexShader->Release();
