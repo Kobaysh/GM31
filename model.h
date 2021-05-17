@@ -25,7 +25,7 @@ struct SUBSET
 // ƒ‚ƒfƒ‹\‘¢‘Ì
 struct MODEL
 {
-	VERTEX_3D		*VertexArray;
+	VERTEX_3DX		*VertexArray;
 	unsigned int	VertexNum;
 
 	unsigned int	*IndexArray;

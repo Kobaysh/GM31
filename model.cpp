@@ -14,7 +14,7 @@ void Model::Draw()
 {
 
 	// 頂点バッファ設定
-	UINT stride = sizeof(VERTEX_3D);
+	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
@@ -148,9 +148,9 @@ void Model::LoadObj( const char *FileName, MODEL *Model )
 
 
 
-	D3DXVECTOR3	*positionArray;
-	D3DXVECTOR3	*normalArray;
-	D3DXVECTOR2	*texcoordArray;
+	XMFLOAT3	*positionArray;
+	XMFLOAT3	*normalArray;
+	XMFLOAT2	*texcoordArray;
 
 	unsigned int	positionNum = 0;
 	unsigned int	normalNum = 0;
@@ -221,12 +221,12 @@ void Model::LoadObj( const char *FileName, MODEL *Model )
 
 
 	//メモリ確保
-	positionArray = new D3DXVECTOR3[ positionNum ];
-	normalArray = new D3DXVECTOR3[ normalNum ];
-	texcoordArray = new D3DXVECTOR2[ texcoordNum ];
+	positionArray = new XMFLOAT3[ positionNum ];
+	normalArray = new XMFLOAT3[ normalNum ];
+	texcoordArray = new XMFLOAT2[ texcoordNum ];
 
 
-	Model->VertexArray = new VERTEX_3D[ vertexNum ];
+	Model->VertexArray = new VERTEX_3DX[ vertexNum ];
 	Model->VertexNum = vertexNum;
 
 	Model->IndexArray = new unsigned int[ indexNum ];
@@ -239,9 +239,9 @@ void Model::LoadObj( const char *FileName, MODEL *Model )
 
 
 	//要素読込
-	D3DXVECTOR3 *position = positionArray;
-	D3DXVECTOR3 *normal = normalArray;
-	D3DXVECTOR2 *texcoord = texcoordArray;
+	XMFLOAT3 *position = positionArray;
+	XMFLOAT3 *normal = normalArray;
+	XMFLOAT2 *texcoord = texcoordArray;
 
 	unsigned int vc = 0;
 	unsigned int ic = 0;
@@ -344,7 +344,7 @@ void Model::LoadObj( const char *FileName, MODEL *Model )
 				s = strtok( NULL, "/" );	
 				Model->VertexArray[vc].Normal = normalArray[ atoi( s ) - 1 ];
 
-				Model->VertexArray[vc].Diffuse = D3DXVECTOR4( 1.0f, 1.0f, 1.0f, 1.0f );
+				Model->VertexArray[vc].Diffuse = XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f );
 
 				Model->IndexArray[ic] = vc;
 				ic++;
