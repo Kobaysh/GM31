@@ -4,12 +4,14 @@
 #include "polygon2D.h"
 #include "Camera.h"
 #include "Field.h"
+#include "Player.h"
 
 // Ã“I•Ï”éŒ¾
 //Manager* Manager::instance;
 Polygon2D* g_polygon = NULL;
 Camera* g_Camera = NULL;
 Field* g_Field = NULL;
+Player* g_Player = NULL;
 //
 //void Manager::Init()
 //{
@@ -51,7 +53,8 @@ void ManagerT::Init()
 	g_Camera->Init();
 	g_Field = new Field();
 	g_Field->Init();
-
+	g_Player = new Player();
+	g_Player->Init();
 
 	
 }
@@ -64,7 +67,8 @@ void ManagerT::Uninit()
 	delete g_Camera;
 	g_Field->Uninit();
 	delete g_Field;
-
+	g_Player->Uninit();
+	delete g_Player;
 	Renderer::Uninit();
 }
 
@@ -73,13 +77,15 @@ void ManagerT::Update()
 	g_Camera->Update();
 	g_Field->Update();
 	g_polygon->Update();
+	g_Player->Update();
 }
 
 void ManagerT::Draw()
 {
 	Renderer::Begin();
-//	g_Camera->Draw();
-//	g_Field->Draw();
+	g_Camera->Draw();
+	g_Field->Draw();
+	g_Player->Draw();
 	g_polygon->Draw();
 	Renderer::End();
 }
