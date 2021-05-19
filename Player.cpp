@@ -7,8 +7,8 @@
 void Player::Init()
 {
 	m_Model = new Model();
-	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
-//	m_Model->Load("asset\\model\\kuma\\kuma.obj"); // \\か//しか使えない
+//	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
+	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
 	
 
 	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
@@ -33,7 +33,8 @@ void Player::Uninit()
 
 void Player::Update()
 {
-
+	m_Rotation.y += 0.01f;
+	m_Rotation.x += 0.01f;
 }
 
 void Player::Draw()
