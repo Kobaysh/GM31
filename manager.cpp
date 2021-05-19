@@ -4,6 +4,7 @@
 #include "polygon2D.h"
 #include "Camera.h"
 #include "Field.h"
+#include "model.h"
 #include "Player.h"
 
 // Ã“I•Ï”éŒ¾
