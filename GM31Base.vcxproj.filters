@@ -62,6 +62,12 @@
     <ClInclude Include="gameObject.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -104,6 +110,12 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="gameObject.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
   </ItemGroup>
