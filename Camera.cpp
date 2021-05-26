@@ -4,7 +4,7 @@
 
 void Camera::Init()
 {
-	m_vPosition	 = XMFLOAT3(0.0f, 2.0f, -5.0f);
+	m_Position	 = XMFLOAT3(0.0f, 2.0f, -5.0f);
 	m_vTarget	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_vUp		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	//m_Position = D3DXVECTOR3(0.0f, 2.0f, -5.0f);
@@ -23,7 +23,7 @@ void Camera::Draw()
 {
 	// ビューマトリクス設定
 	XMMATRIX viewMatrixX;
-	viewMatrixX = XMMatrixLookAtLH(XMLoadFloat3(&m_vPosition), XMLoadFloat3(&m_vTarget), XMLoadFloat3(&m_vUp));
+	viewMatrixX = XMMatrixLookAtLH(XMLoadFloat3(&m_Position), XMLoadFloat3(&m_vTarget), XMLoadFloat3(&m_vUp));
 	Renderer::SetViewMatrixX(&viewMatrixX);
 	
 	//D3DXMATRIX viewMatrix;
