@@ -13,7 +13,7 @@ void Field::Init()
 	vertexx[1].Position = XMFLOAT3(10.0f, 0.0f, 10.0f);
 	vertexx[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertexx[1].TexCoord = XMFLOAT2(10.0f, 0.0f);
+	vertexx[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
 	vertexx[2].Position = XMFLOAT3(-10.0f,0.0f, -10.0f);
 	vertexx[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
