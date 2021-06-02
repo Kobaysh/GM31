@@ -13,25 +13,22 @@ class Scene
 public:
 	Scene(){}
 	virtual ~Scene(){}
+
+	template <typename TS>
+	TS* AppendGameObject() {
+		TS* gameObject = new TS();
+		gameObject->Init();
+		m_GameObject.push_back(gameObject);
+		return gameObject;
+	}
 protected:
 	std::list<GameObject*> m_GameObject;	// STL‚ÌƒŠƒXƒg\‘¢
 public:
 	virtual void Init() {
-		Camera* camera = new Camera();
-		camera->Init();
-		m_GameObject.push_back(camera);
-
-		Field* field = new Field();
-		field->Init();
-		m_GameObject.push_back(field);
-
-		Player* player = new Player();
-		player->Init();
-		m_GameObject.push_back(player);
-
-		Polygon2D* polygon2D = new Polygon2D();
-		polygon2D->Init();
-		m_GameObject.push_back(polygon2D);
+		AppendGameObject<Camera>();
+		AppendGameObject<Field>();
+		AppendGameObject<Player>();
+		AppendGameObject<Polygon2D>();
 	}
 	virtual void Uninit() {
 		for (GameObject* object : m_GameObject) {
