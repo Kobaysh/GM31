@@ -189,7 +189,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Polygon2D.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />

@@ -42,6 +42,7 @@ class ManagerT : public SingletonT<ManagerT>
 {
 private:
 	friend class SingletonT<ManagerT>;
+	static class Scene* m_Scene;
 
 public:
 

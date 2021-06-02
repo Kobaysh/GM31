@@ -18,6 +18,9 @@
     <Filter Include="ソース ファイル\system">
       <UniqueIdentifier>{e2ab4312-058b-4e8c-babc-535b4badd37d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{a3a81c20-edc8-4107-b786-64f048398cb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -68,7 +71,9 @@
     <ClInclude Include="Bullet.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Scene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -119,7 +124,6 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="common.hlsl">
