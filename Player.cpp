@@ -8,7 +8,7 @@ void Player::Init()
 {
 	m_Model = new Model();
 //	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\‚©//‚µ‚©Žg‚¦‚È‚¢
-	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\‚©//‚µ‚©Žg‚¦‚È‚¢
+	m_Model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\‚©//‚µ‚©Žg‚¦‚È‚¢
 	
 
 	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
