@@ -7,6 +7,7 @@
 #include "model.h"
 #include "player.h"
 #include "enemy.h"
+#include "bullet.h"
 
 
 class Scene
@@ -46,6 +47,8 @@ public:
 		AddGameObject(player);
 		Enemy* enemy = new Enemy();
 		AddGameObject(enemy);
+		Bullet* bullet = new Bullet();
+		AddGameObject(bullet);
 		Polygon2D* polygon2D = new Polygon2D();
 		AddGameObject(polygon2D);
 		

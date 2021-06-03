@@ -164,6 +164,8 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="gameObject.h" />
+    <ClInclude Include="keyboard.h" />
+    <ClInclude Include="keylogger.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="model.h" />
@@ -183,6 +185,8 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="gameObject.cpp" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="keylogger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="model.cpp" />

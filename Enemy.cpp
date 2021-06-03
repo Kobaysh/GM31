@@ -9,9 +9,9 @@ void Enemy::Init()
 {
 	m_model = new Model();
 	m_model->Load(FILENAME);
-	m_Position = XMFLOAT3(1.0f, 1.0f, -1.0f);
+	m_Position = XMFLOAT3(2.0f, 1.0f, 1.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_Scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 

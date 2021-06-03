@@ -2,7 +2,10 @@
 #include "manager.h"
 #include "renderer.h"
 #include "model.h"
+#include "keylogger.h"
+#include "bullet.h"
 #include "player.h"
+
 
 void Player::Init()
 {
@@ -14,6 +17,10 @@ void Player::Init()
 	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale		= XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+	m_speed = 0.1f;
+
+	m_bTrriger = false;
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
@@ -33,8 +40,8 @@ void Player::Uninit()
 
 void Player::Update()
 {
-	m_Rotation.y += 0.01f;
-	m_Rotation.x += 0.01f;
+	Move();
+	Shoot();
 }
 
 void Player::Draw()
@@ -55,4 +62,41 @@ void Player::Draw()
 
 
 	m_Model->Draw();
+}
+
+void Player::Move()
+{
+	XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR vPositon;
+	vPositon = XMLoadFloat3(&m_Position);
+	XMFLOAT3 input_direction = { 0.0f,0.0f,0.0f };
+	if (KeyLogger_Press(KL_UP)) {
+		input_direction.z += 1.0f;
+	}
+	if (KeyLogger_Press(KL_DOWN)) {
+		input_direction.z += -1.0f;
+	}
+	if (KeyLogger_Press(KL_RIGHT)) {
+		input_direction.x += 1.0f;
+	}
+	if (KeyLogger_Press(KL_LEFT)) {
+		input_direction.x += -1.0f;
+	}
+	direction = XMLoadFloat3(&input_direction);
+	XMVector3Normalize(direction);
+	vPositon += direction * m_speed;
+	XMStoreFloat3(&m_Position, vPositon);
+}
+
+void Player::Shoot()
+{
+	if (KeyLogger_Trigger(KL_FIRE)) {
+		if (!m_bTrriger) {
+			m_bTrriger = true;
+			if (!Bullet::Create(m_Position, XMFLOAT3(0.0f, 0.0f, 1.0f), 0.5f)) {
+				;
+			}
+		}
+	}
+	else m_bTrriger = false;
 }

@@ -2,6 +2,8 @@
 
 #include "main.h"
 #include "manager.h"
+#include "keyboard.h"
+#include "keylogger.h"
 
 
 const char* CLASS_NAME = "AppClass";
@@ -63,6 +65,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//Manager::Init();
 
 //	ManagerT::singleton();
+	Keyboard_Initialize();
+	KeyLogger_Init();
 	ManagerT::Init();
 
 
@@ -106,8 +110,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 			//	Manager::Update();
 			//	Manager::Draw();
-
+				KeyLogger_Update();
 				ManagerT::Update();
+				
 				ManagerT::Draw();
 			}
 		}
@@ -119,7 +124,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 //	Manager::Uninit();
 	ManagerT::Uninit();
-
+	KeyLogger_Fin();
 	return (int)msg.wParam;
 }
 
@@ -142,8 +147,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			DestroyWindow(hWnd);
 			break;
 		}
-		break;
+		//break;
+	case WM_ACTIVATEAPP:
+	case WM_SYSKEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		Keyboard_ProcessMessage(uMsg, wParam, lParam);
 
+		break;
 	default:
 		break;
 	}

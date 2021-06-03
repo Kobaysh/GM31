@@ -74,6 +74,12 @@
     <ClInclude Include="texture.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="keylogger.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject.cpp">
@@ -123,6 +129,12 @@
     </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="keylogger.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
+      <Filter>ソース ファイル\system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

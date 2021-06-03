@@ -1,8 +1,7 @@
 #include "main.h"
-#include "manager.h"
 #include "renderer.h"
 #include "scene.h"
-
+#include "manager.h"
 Scene* ManagerT::m_Scene;
 
 void ManagerT::Init()
@@ -32,3 +31,4 @@ void ManagerT::Draw()
 
 	Renderer::End();
 }
+
