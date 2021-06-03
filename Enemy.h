@@ -9,6 +9,6 @@ public:
 	void Draw();
 
 private:
-
+	Model* m_model;
 };
 

@@ -6,6 +6,7 @@
 #include "field.h"
 #include "model.h"
 #include "player.h"
+#include "enemy.h"
 
 
 class Scene
@@ -31,18 +32,23 @@ protected:
 	std::list<GameObject*> m_GameObject;	// STLÇÃÉäÉXÉgç\ë¢
 public:
 	virtual void Init() {
-		AppendGameObject<Camera>();
+		/*AppendGameObject<Camera>();
 		AppendGameObject<Field>();
 		AppendGameObject<Player>();
 		AppendGameObject<Polygon2D>();
-		/*Camera* camera = new Camera();
+		AppendGameObject<Enemy>();*/
+
+		Camera* camera = new Camera();
 		AddGameObject(camera);
 		Field* field = new Field();
 		AddGameObject(field);
 		Player* player = new Player();
 		AddGameObject(player);
+		Enemy* enemy = new Enemy();
+		AddGameObject(enemy);
 		Polygon2D* polygon2D = new Polygon2D();
-		AddGameObject(polygon2D);*/
+		AddGameObject(polygon2D);
+		
 	}
 	virtual void Uninit() {
 		for (GameObject* object : m_GameObject) {
