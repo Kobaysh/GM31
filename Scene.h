@@ -21,14 +21,29 @@ public:
 		m_GameObject.push_back(gameObject);
 		return gameObject;
 	}
+	GameObject* AddGameObject(GameObject* pObj) {
+		if (pObj != nullptr) {
+			pObj->Init();
+			m_GameObject.push_back(pObj);
+			return pObj;
+		}
+	}
 protected:
 	std::list<GameObject*> m_GameObject;	// STLÇÃÉäÉXÉgç\ë¢
 public:
 	virtual void Init() {
-		AppendGameObject<Camera>();
+		/*AppendGameObject<Camera>();
 		AppendGameObject<Field>();
 		AppendGameObject<Player>();
-		AppendGameObject<Polygon2D>();
+		AppendGameObject<Polygon2D>();*/
+		Camera* camera = new Camera();
+		AddGameObject(camera);
+		Field* field = new Field();
+		AddGameObject(field);
+		Player* player = new Player();
+		AddGameObject(player);
+		Polygon2D* polygon2D = new Polygon2D();
+		AddGameObject(polygon2D);
 	}
 	virtual void Uninit() {
 		for (GameObject* object : m_GameObject) {
