@@ -59,23 +59,22 @@ private:
 
 	static D3D_FEATURE_LEVEL       m_FeatureLevel;
 
-	static ID3D11Device*           m_Device;
-	static ComPtr<ID3D11Device>			m_pDevice;
+	/*static ID3D11Device*           m_Device;
 	static ID3D11DeviceContext*    m_DeviceContext;
-	static ComPtr<ID3D11DeviceContext>	m_pDeviceContext;
 	static IDXGISwapChain*         m_SwapChain;
-	static ComPtr<IDXGISwapChain>         m_pSwapChain;
 	static ID3D11RenderTargetView* m_RenderTargetView;
-	static ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
-	static ID3D11DepthStencilView* m_DepthStencilView;
-	static ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
-
-	static ID3D11Buffer*			m_WorldBuffer;
+	static ID3D11DepthStencilView* m_DepthStencilView;*/
+	/*static ID3D11Buffer*			m_WorldBuffer;
 	static ID3D11Buffer*			m_ViewBuffer;
 	static ID3D11Buffer*			m_ProjectionBuffer;
 	static ID3D11Buffer*			m_MaterialBuffer;
-	static ID3D11Buffer*			m_LightBuffer;
+	static ID3D11Buffer*			m_LightBuffer;*/
 
+	static ComPtr<ID3D11Device>			m_pDevice;
+	static ComPtr<ID3D11DeviceContext>	m_pDeviceContext;
+	static ComPtr<IDXGISwapChain>         m_pSwapChain;
+	static ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
+	static ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
 
 	static ComPtr<ID3D11Buffer>		m_pWorldBuffer;
 	static ComPtr<ID3D11Buffer>		m_pViewBuffer;
@@ -85,8 +84,6 @@ private:
 
 	static ID3D11DepthStencilState* m_DepthStateEnable;
 	static ID3D11DepthStencilState* m_DepthStateDisable;
-
-
 
 
 public:
