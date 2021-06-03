@@ -6,8 +6,8 @@
 
 D3D_FEATURE_LEVEL       Renderer::m_FeatureLevel = D3D_FEATURE_LEVEL_11_0;
 
-//ID3D11Device*           Renderer::m_Device = NULL;
-//ID3D11DeviceContext*    Renderer::m_DeviceContext = NULL;
+ID3D11Device*           Renderer::m_Device = NULL;
+ID3D11DeviceContext*    Renderer::m_DeviceContext = NULL;
 //IDXGISwapChain*         Renderer::m_SwapChain = NULL;
 //ID3D11RenderTargetView* Renderer::m_RenderTargetView = NULL;
 //ID3D11DepthStencilView* Renderer::m_DepthStencilView = NULL;

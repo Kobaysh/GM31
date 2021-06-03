@@ -2,10 +2,10 @@
 #include <list>
 #include "gameObject.h"
 #include "polygon2D.h"
-#include "Camera.h"
-#include "Field.h"
+#include "camera.h"
+#include "field.h"
 #include "model.h"
-#include "Player.h"
+#include "player.h"
 
 
 class Scene

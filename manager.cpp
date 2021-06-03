@@ -1,7 +1,7 @@
 #include "main.h"
 #include "manager.h"
-#include "Renderer.h"
-#include "Scene.h"
+#include "renderer.h"
+#include "scene.h"
 
 Scene* ManagerT::m_Scene;
 

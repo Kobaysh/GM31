@@ -1,5 +1,5 @@
 #include "main.h"
-#include "Renderer.h"
+#include "renderer.h"
 #include "Polygon2D.h"
 
 

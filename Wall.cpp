@@ -1,6 +1,6 @@
 #include "main.h"
-#include "Wall.h"
-#include "Renderer.h"
+#include "wall.h"
+#include "renderer.h"
 void Wall::Init()
 {
 	VERTEX_3DX vertexx[4];
@@ -38,11 +38,13 @@ void Wall::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
-		Renderer::GetDevice(),
+		//Renderer::GetDevice(),
+		Renderer::GetpDevice().Get(),
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
@@ -77,12 +79,11 @@ void Wall::Update()
 
 void Wall::Draw()
 {
-	// 入力レイアウト設定
-	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
@@ -94,11 +95,10 @@ void Wall::Draw()
 	Renderer::SetWorldMatrixX(&worldX);
 
 
-
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
 
 
 	// マテリアル設定
@@ -110,11 +110,11 @@ void Wall::Draw()
 
 
 	// テクスチャ設定
-	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
-	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	// ポリゴン描画
-	Renderer::GetDeviceContext()->Draw(4, 0);
+	Renderer::GetpDeviceContext()->Draw(4, 0);
 }

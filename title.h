@@ -1,5 +1,5 @@
 #pragma once
-#include "Singleton.h"
+#include "singleton.h"
 class Title:SingletonT<Title>
 {
 private:

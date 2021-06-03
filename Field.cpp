@@ -1,6 +1,6 @@
 #include "main.h"
-#include "Renderer.h"
-#include "Field.h"
+#include "renderer.h"
+#include "field.h"
 
 void Field::Init()
 {

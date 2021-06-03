@@ -23,106 +23,106 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="Field.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="manager.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="Polygon2D.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="gameObject.h">
       <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Title.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon2D.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="singleton.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="Field.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="Polygon2D.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="Manager.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="Singleton.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="gameObject.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="Title.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon2D.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="manager.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="singleton.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

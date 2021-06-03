@@ -1,8 +1,8 @@
 #include "main.h"
 #include "manager.h"
-#include "Renderer.h"
+#include "renderer.h"
 #include "model.h"
-#include "Player.h"
+#include "player.h"
 
 void Player::Init()
 {
@@ -40,12 +40,6 @@ void Player::Update()
 void Player::Draw()
 {
 	// 入力レイアウト設定
-	//Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
-
-	//// シェーダー設定
-	//Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	//Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
-
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定

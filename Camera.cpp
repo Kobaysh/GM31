@@ -1,6 +1,6 @@
 #include "main.h"
-#include "Camera.h"
-#include "Renderer.h"
+#include "camera.h"
+#include "renderer.h"
 
 void Camera::Init()
 {

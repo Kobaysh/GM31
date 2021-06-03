@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Singleton.h"
+#include "singleton.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -59,9 +59,9 @@ private:
 
 	static D3D_FEATURE_LEVEL       m_FeatureLevel;
 
-	/*static ID3D11Device*           m_Device;
+	static ID3D11Device*           m_Device;
 	static ID3D11DeviceContext*    m_DeviceContext;
-	static IDXGISwapChain*         m_SwapChain;
+	/*static IDXGISwapChain*         m_SwapChain;
 	static ID3D11RenderTargetView* m_RenderTargetView;
 	static ID3D11DepthStencilView* m_DepthStencilView;*/
 	/*static ID3D11Buffer*			m_WorldBuffer;
