@@ -76,7 +76,6 @@ private:
 	static ID3D11Buffer*			m_MaterialBuffer;
 	static ID3D11Buffer*			m_LightBuffer;
 
-
 	static ID3D11DepthStencilState* m_DepthStateEnable;
 	static ID3D11DepthStencilState* m_DepthStateDisable;
 
@@ -101,7 +100,9 @@ public:
 	static void SetLight(LIGHT Light);
 
 	static ID3D11Device* GetDevice( void ){ return m_Device; }
+	static ComPtr<ID3D11Device> GetpDevice( void ){ return m_pDevice; }
 	static ID3D11DeviceContext* GetDeviceContext( void ){ return m_DeviceContext; }
+	static ComPtr<ID3D11DeviceContext> GetpDeviceContext( void ){ return m_pDeviceContext; }
 
 
 

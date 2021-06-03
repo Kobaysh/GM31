@@ -39,11 +39,13 @@ void Field::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
-		Renderer::GetDevice(),
+		//Renderer::GetDevice(),
+		Renderer::GetpDevice().Get(),
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
@@ -79,11 +81,17 @@ void Field::Update()
 void Field::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
+	//Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
+
+	//// シェーダー設定
+	//Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	//Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 	/*D3DXMATRIX world, scale, rot, trans;
@@ -104,7 +112,8 @@ void Field::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	//Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
 
 	
 	// マテリアル設定
@@ -116,11 +125,14 @@ void Field::Draw()
 
 
 	// テクスチャ設定
-	Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	//Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
-	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	//Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	// ポリゴン描画
-	Renderer::GetDeviceContext()->Draw(4, 0);
+	//Renderer::GetDeviceContext()->Draw(4, 0);
+	Renderer::GetpDeviceContext()->Draw(4, 0);
 }

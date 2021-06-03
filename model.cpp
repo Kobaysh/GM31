@@ -16,25 +16,45 @@ void Model::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
+	//Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
+
+	//// インデックスバッファ設定
+	//Renderer::GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+	//// プリミティブトポロジ設定
+	//Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	//for( unsigned int i = 0; i < m_SubsetNum; i++ )
+	//{
+	//	// マテリアル設定
+	//	Renderer::SetMaterial( m_SubsetArray[i].Material.Material );
+
+	//	// テクスチャ設定
+	//	Renderer::GetDeviceContext()->PSSetShaderResources( 0, 1, &m_SubsetArray[i].Material.Texture );
+
+	//	// ポリゴン描画
+	//	Renderer::GetDeviceContext()->DrawIndexed( m_SubsetArray[i].IndexNum, m_SubsetArray[i].StartIndex, 0 );
+	//}
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// インデックスバッファ設定
-	Renderer::GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// プリミティブトポロジ設定
-	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 
-	for( unsigned int i = 0; i < m_SubsetNum; i++ )
+	for (unsigned int i = 0; i < m_SubsetNum; i++)
 	{
 		// マテリアル設定
-		Renderer::SetMaterial( m_SubsetArray[i].Material.Material );
+		Renderer::SetMaterial(m_SubsetArray[i].Material.Material);
 
 		// テクスチャ設定
-		Renderer::GetDeviceContext()->PSSetShaderResources( 0, 1, &m_SubsetArray[i].Material.Texture );
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_SubsetArray[i].Material.Texture);
 
 		// ポリゴン描画
-		Renderer::GetDeviceContext()->DrawIndexed( m_SubsetArray[i].IndexNum, m_SubsetArray[i].StartIndex, 0 );
+		Renderer::GetpDeviceContext()->DrawIndexed(m_SubsetArray[i].IndexNum, m_SubsetArray[i].StartIndex, 0);
 	}
 
 }
@@ -62,7 +82,8 @@ void Model::Load( const char *FileName )
 		ZeroMemory( &sd, sizeof(sd) );
 		sd.pSysMem = model.VertexArray;
 
-		Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_VertexBuffer );
+		//Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_VertexBuffer );
+		Renderer::GetpDevice()->CreateBuffer( &bd, &sd, &m_VertexBuffer );
 	}
 
 
@@ -79,7 +100,8 @@ void Model::Load( const char *FileName )
 		ZeroMemory( &sd, sizeof(sd) );
 		sd.pSysMem = model.IndexArray;
 
-		Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_IndexBuffer );
+		//Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_IndexBuffer );
+		Renderer::GetpDevice()->CreateBuffer( &bd, &sd, &m_IndexBuffer );
 	}
 
 	// サブセット設定
@@ -96,7 +118,9 @@ void Model::Load( const char *FileName )
 
 			m_SubsetArray[i].Material.Texture = NULL;
 
-			D3DX11CreateShaderResourceViewFromFile(Renderer::GetDevice(),
+			D3DX11CreateShaderResourceViewFromFile(
+				//Renderer::GetDevice(),
+				Renderer::GetpDevice().Get(),
 				model.SubsetArray[i].Material.TextureName,
 				NULL,
 				NULL,
