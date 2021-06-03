@@ -76,6 +76,13 @@ private:
 	static ID3D11Buffer*			m_MaterialBuffer;
 	static ID3D11Buffer*			m_LightBuffer;
 
+
+	static ComPtr<ID3D11Buffer>		m_pWorldBuffer;
+	static ComPtr<ID3D11Buffer>		m_pViewBuffer;
+	static ComPtr<ID3D11Buffer>		m_pProjectionBuffer;
+	static ComPtr<ID3D11Buffer>		m_pMaterialBuffer;
+	static ComPtr<ID3D11Buffer>		m_pLightBuffer;
+
 	static ID3D11DepthStencilState* m_DepthStateEnable;
 	static ID3D11DepthStencilState* m_DepthStateDisable;
 
