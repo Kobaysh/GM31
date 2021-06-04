@@ -38,19 +38,18 @@ public:
 		AppendGameObject<Player>();
 		AppendGameObject<Polygon2D>();
 		AppendGameObject<Enemy>();*/
-
+		Polygon2D* polygon2D = new Polygon2D();
+		AddGameObject(polygon2D);
 		Camera* camera = new Camera();
 		AddGameObject(camera);
+		
 		Field* field = new Field();
 		AddGameObject(field);
 		Player* player = new Player();
 		AddGameObject(player);
 		Enemy* enemy = new Enemy();
 		AddGameObject(enemy);
-		Bullet* bullet = new Bullet();
-		AddGameObject(bullet);
-		Polygon2D* polygon2D = new Polygon2D();
-		AddGameObject(polygon2D);
+		
 		
 	}
 	virtual void Uninit() {
