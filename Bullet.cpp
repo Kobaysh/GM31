@@ -1,24 +1,31 @@
 #include "main.h"
-#include "manager.h"
 #include "renderer.h"
 #include "scene.h"
+#include "manager.h"
 #include "model.h"
 #include "bullet.h"
 
 #define FILENAME ("asset\\model\\bullet\\kidantorus.obj")
 
+Bullet::Bullet()
+{
+	m_Position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
+}
+
 Bullet::Bullet(XMFLOAT3 f3Position)
 {
 	m_Position = f3Position;
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
 }
 
 void Bullet::Init()
 {
 	m_model = new Model();
 	m_model->Load(FILENAME);
-	m_Position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
+
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
@@ -62,10 +69,9 @@ void Bullet::Draw()
 
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)
 {
-	/*Bullet* pBullet = new Bullet(f3Position);
+	Bullet* pBullet = new Bullet(f3Position);
 	ManagerT::AddGameObjectFromManager(pBullet);
-	return pBullet;*/
-	return nullptr;
+	return pBullet;
 }
 
 void Bullet::Destroy(Bullet * pBullet)

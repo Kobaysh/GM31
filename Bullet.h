@@ -4,7 +4,7 @@
 class Bullet :public GameObject
 {
 public:
-	Bullet(){}
+	Bullet();
 	Bullet(XMFLOAT3 f3Position);
 	void Init();
 	void Uninit();

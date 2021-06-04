@@ -1,10 +1,10 @@
 
 
 #include "main.h"
-#include "manager.h"
+
 #include "keyboard.h"
 #include "keylogger.h"
-
+#include "manager.h"
 
 const char* CLASS_NAME = "AppClass";
 const char* WINDOW_NAME = "DX11ÉQÅ[ÉÄ";

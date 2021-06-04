@@ -1,7 +1,8 @@
 #include "main.h"
-#include "manager.h"
+
 #include "renderer.h"
 #include "model.h"
+#include "manager.h"
 #include "keylogger.h"
 #include "bullet.h"
 #include "player.h"
@@ -93,9 +94,11 @@ void Player::Shoot()
 	if (KeyLogger_Trigger(KL_FIRE)) {
 		if (!m_bTrriger) {
 			m_bTrriger = true;
-			if (!Bullet::Create(m_Position, XMFLOAT3(0.0f, 0.0f, 1.0f), 0.5f)) {
-				;
-			}
+//			ManagerT::AddGameObjectFromManager(
+			Bullet::Create(m_Position, XMFLOAT3(0.0f, 0.0f, 1.0f), 0.5f);
+//			);
+			
+			
 		}
 	}
 	else m_bTrriger = false;

@@ -1,5 +1,8 @@
 #pragma once
 #include "singleton.h"
+#include "scene.h"
+//class GameObject;
+
 
 //
 //class Manager : public Singleton
@@ -53,9 +56,9 @@ public:
 	static void Update();
 	static void Draw();
 
-	/*static GameObject* AddGameObjectFromManager(GameObject* pObj) {
-		m_Scene->AddGameObject(pObj);
-	}*/
+	static GameObject* AddGameObjectFromManager(GameObject* pObj) {
+		return m_Scene->AddGameObject(pObj);
+	}
 	/*static void AddGameObjectFromManager(GameObject* pObj) 
 	{
 		m_Scene->AddGameObject(pObj);
