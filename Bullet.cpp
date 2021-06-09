@@ -3,6 +3,7 @@
 #include "scene.h"
 #include "manager.h"
 #include "model.h"
+#include "enemy.h"
 #include "bullet.h"
 
 #define FILENAME ("asset\\model\\bullet\\kidantorus.obj")
@@ -59,7 +60,19 @@ void Bullet::Update()
 	}
 
 	Scene* scene = ManagerT::GetScene();
-//	Enemy* enemy = scene->GetGameObject<Enemy>();
+	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>();
+	for (Enemy* enemy : enemies) {
+		XMFLOAT3 enemyPosition = enemy->GetPosition();
+		XMVECTOR direction;
+		direction = XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemyPosition);
+		XMVECTOR length =  XMVector3Length(direction);
+		float distance = 0.0f;
+		XMStoreFloat(&distance, length);
+		if (distance < 2.0f) {
+			enemy->SetDead();
+			SetDead();
+		}
+	}
 }
 
 void Bullet::Draw()
