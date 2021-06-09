@@ -55,7 +55,11 @@ void Bullet::Update()
 
 	if (m_Position.z > 10.0f) {
 		SetDead();
+		return;
 	}
+
+	Scene* scene = ManagerT::GetScene();
+//	Enemy* enemy = scene->GetGameObject<Enemy>();
 }
 
 void Bullet::Draw()

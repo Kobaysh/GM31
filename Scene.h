@@ -1,5 +1,7 @@
 #pragma once
 #include <list>
+#include <vector>
+#include <typeinfo>
 #include "gameObject.h"
 #include "polygon2D.h"
 #include "camera.h"
@@ -29,6 +31,28 @@ public:
 		m_GameObject.push_back(pObj);
 		return pObj;
 	}
+
+	template<typename TS>
+	TS* GetGameObject() {
+		for (GameObject*object : m_GameObject) {
+			if (typeid(*object) == typeid(TS)) {	// 型を調べる(RTTI動的型情報)
+				return (TS*)object;
+			}
+		}
+		return nullptr;
+	}
+
+	template<typename TS>
+	std::vector<TS*> GetGameObjects() {
+		std::vector<TS*> objects;
+		for (GameObject* object : m_GameObject) {
+			if (typeid(*object) == typeid(TS)) {
+				objects.push_back((TS*)object);
+			}
+		}
+		return objects;
+	}
+
 protected:
 	std::list<GameObject*> m_GameObject;	// STLのリスト構造
 public:
@@ -50,9 +74,11 @@ public:
 		AddGameObject(player);
 		player->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
 		Enemy* enemy = new Enemy();
-		AddGameObject(enemy);
-		enemy->SetPosition(XMFLOAT3(2.0f, 1.0f, 1.0f));
-		
+		AddGameObject(enemy)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
+		Enemy* enemy02 = new Enemy();
+		AddGameObject(enemy02)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
+		Enemy* enemy03 = new Enemy();
+		AddGameObject(enemy03)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
 		
 	}
 	virtual void Uninit() {
@@ -66,6 +92,7 @@ public:
 		for (GameObject* object : m_GameObject) {
 			object->Update();
 		}
+		// forloopの外でないとダメ
 		m_GameObject.remove_if(
 			[](GameObject* object) {
 				return object->Destroy(); 
