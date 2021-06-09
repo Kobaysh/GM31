@@ -38,8 +38,9 @@ public:
 		AppendGameObject<Player>();
 		AppendGameObject<Polygon2D>();
 		AppendGameObject<Enemy>();*/
-		Polygon2D* polygon2D = new Polygon2D();
-		AddGameObject(polygon2D);
+
+		/*Polygon2D* polygon2D = new Polygon2D();
+		AddGameObject(polygon2D);*/
 		Camera* camera = new Camera();
 		AddGameObject(camera);
 		
@@ -47,8 +48,10 @@ public:
 		AddGameObject(field);
 		Player* player = new Player();
 		AddGameObject(player);
+		player->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
 		Enemy* enemy = new Enemy();
 		AddGameObject(enemy);
+		enemy->SetPosition(XMFLOAT3(2.0f, 1.0f, 1.0f));
 		
 		
 	}

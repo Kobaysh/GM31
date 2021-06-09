@@ -80,6 +80,9 @@
     <ClInclude Include="keylogger.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameObject.cpp">
@@ -134,6 +137,9 @@
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="keyboard.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
   </ItemGroup>

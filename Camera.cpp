@@ -4,7 +4,7 @@
 
 void Camera::Init()
 {
-	m_Position	 = XMFLOAT3(0.0f, 2.0f, -5.0f);
+	m_Position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
 	m_vTarget	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_vUp		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	//m_Position = D3DXVECTOR3(0.0f, 2.0f, -5.0f);

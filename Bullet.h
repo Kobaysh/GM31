@@ -15,4 +15,6 @@ public:
 	static void Destroy(Bullet* pBullet);
 private:
 	Model* m_model;
+	XMFLOAT3 m_direction;
+	float m_speed;
 };

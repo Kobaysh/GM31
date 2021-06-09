@@ -18,7 +18,7 @@ void Player::Init()
 	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale		= XMFLOAT3(1.0f, 1.0f, 1.0f);
-
+	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_speed = 0.1f;
 
 	m_bTrriger = false;
@@ -94,11 +94,7 @@ void Player::Shoot()
 	if (KeyLogger_Trigger(KL_FIRE)) {
 		if (!m_bTrriger) {
 			m_bTrriger = true;
-//			ManagerT::AddGameObjectFromManager(
-			Bullet::Create(m_Position, XMFLOAT3(0.0f, 0.0f, 1.0f), 0.5f);
-//			);
-			
-			
+			Bullet::Create(m_Position, m_front, 0.5f);
 		}
 	}
 	else m_bTrriger = false;

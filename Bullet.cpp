@@ -12,6 +12,8 @@ Bullet::Bullet()
 	m_Position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
+	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_speed = 0.0f;
 }
 
 Bullet::Bullet(XMFLOAT3 f3Position)
@@ -19,6 +21,8 @@ Bullet::Bullet(XMFLOAT3 f3Position)
 	m_Position = f3Position;
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
+	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_speed = 0.0f;
 }
 
 void Bullet::Init()
@@ -44,7 +48,10 @@ void Bullet::Uninit()
 
 void Bullet::Update()
 {
-	m_Position.z += 0.01f;
+	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vDirection = XMLoadFloat3(&m_direction);
+	vPosition += vDirection * m_speed;
+	XMStoreFloat3(&m_Position, vPosition);
 }
 
 void Bullet::Draw()
@@ -70,7 +77,9 @@ void Bullet::Draw()
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)
 {
 	Bullet* pBullet = new Bullet(f3Position);
-	ManagerT::AddGameObjectFromManager(pBullet);
+	ManagerT::GetScene()->AddGameObject(pBullet);
+	pBullet->m_direction = f3Direction;
+	pBullet->m_speed = fSpeed;
 	return pBullet;
 }
 

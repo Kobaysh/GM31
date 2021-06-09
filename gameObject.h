@@ -18,5 +18,6 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
+	void SetPosition(XMFLOAT3 pos) { m_Position = pos; }
 };
 
