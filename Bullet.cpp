@@ -52,6 +52,10 @@ void Bullet::Update()
 	XMVECTOR vDirection = XMLoadFloat3(&m_direction);
 	vPosition += vDirection * m_speed;
 	XMStoreFloat3(&m_Position, vPosition);
+
+	if (m_Position.z > 10.0f) {
+		SetDead();
+	}
 }
 
 void Bullet::Draw()
