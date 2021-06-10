@@ -67,8 +67,8 @@ public:
 		AppendGameObject<Polygon2D>();
 		AppendGameObject<Enemy>();*/
 
-		/*Polygon2D* polygon2D = new Polygon2D();
-		AddGameObject(polygon2D);*/
+		Polygon2D* polygon2D = new Polygon2D();
+		AddGameObject(polygon2D, GameObject::GOT_OBJECT2D);
 		Camera* camera = new Camera();
 		AddGameObject(camera, GameObject::GOT_CAMERA);
 		

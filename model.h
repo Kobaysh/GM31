@@ -1,6 +1,6 @@
 #pragma once
 #include "renderer.h"
-
+#include <string>
 // マテリアル構造体
 struct MODEL_MATERIAL
 {
@@ -47,12 +47,11 @@ private:
 
 	SUBSET*	m_SubsetArray;
 	unsigned int	m_SubsetNum;
-
 	void LoadObj( const char *FileName, MODEL *Model );
 	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
 
 public:
-
+	static void Init();
 	void Draw();
 
 	void Load( const char *FileName );
