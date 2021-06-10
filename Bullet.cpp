@@ -59,6 +59,8 @@ void Bullet::Update()
 		return;
 	}
 
+	// Enemy‚Æ‚Ì“–‚½‚è”»’è
+
 	Scene* scene = ManagerT::GetScene();
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>();
 	for (Enemy* enemy : enemies) {
@@ -97,8 +99,10 @@ void Bullet::Draw()
 
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)
 {
-	Bullet* pBullet = new Bullet(f3Position);
+	Bullet* pBullet = new Bullet();
 	ManagerT::GetScene()->AddGameObject(pBullet);
+//	Bullet* pBullet =  ManagerT::GetScene()->AppendGameObject<Bullet>();
+	pBullet->SetPosition(f3Position);
 	pBullet->m_direction = f3Direction;
 	pBullet->m_speed = fSpeed;
 	return pBullet;

@@ -21,8 +21,6 @@ void Player::Init()
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_speed = 0.1f;
 
-	m_bTrriger = false;
-
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
@@ -92,10 +90,6 @@ void Player::Move()
 void Player::Shoot()
 {
 	if (KeyLogger_Trigger(KL_FIRE)) {
-		if (!m_bTrriger) {
-			m_bTrriger = true;
-			Bullet::Create(m_Position, m_front, 0.5f);
-		}
+		Bullet::Create(m_Position, m_front, 0.5f);
 	}
-	else m_bTrriger = false;
 }
