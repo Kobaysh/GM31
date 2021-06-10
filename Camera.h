@@ -8,14 +8,12 @@ private:
 	XMFLOAT3 m_front;
 	XMFLOAT3 m_right;
 	XMFLOAT3 m_up;
-	
-//	D3DXVECTOR3 m_Position;
-//	D3DXVECTOR3 m_target;
+	bool m_isActive;
 public:
 	void Init();
 	void Uninit();
 	void Update();
 	void Draw();
-
+	bool GetIsActive() { return m_isActive; }
 };
 

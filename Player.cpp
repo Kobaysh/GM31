@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include "model.h"
 #include "manager.h"
+#include "scene.h"
 #include "keylogger.h"
 #include "bullet.h"
 #include "player.h"
@@ -65,6 +66,7 @@ void Player::Draw()
 
 void Player::Move()
 {
+	if (ManagerT::GetScene()->GetGameObject<Camera>()->GetIsActive()) return;
 	XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_Position);

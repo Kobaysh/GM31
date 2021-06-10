@@ -4,6 +4,7 @@
 #include "keylogger.h"
 
 static float g_RoutationalSpeed;
+static float g_MoveSpeed;
 
 void Camera::Init()
 {
@@ -13,6 +14,8 @@ void Camera::Init()
 	m_right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	g_RoutationalSpeed = 0.02f;
+	g_MoveSpeed = 0.2f;
+	m_isActive = false;
 }
 
 void Camera::Uninit()
@@ -21,8 +24,14 @@ void Camera::Uninit()
 
 void Camera::Update()
 {
+	if (KeyLogger_Trigger(KL_CAMERA)) {
+		if (!m_isActive) m_isActive = true;
+		else m_isActive = false;
+	}
+
+
 	// ïœêîópà”
-	XMVECTOR vDirection =  XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVector3Normalize(vFront);
@@ -32,15 +41,15 @@ void Camera::Update()
 	XMVector3Normalize(vUp);
 	XMFLOAT3 tempFront = m_front;
 	tempFront.y = 0.0f;
-	XMVECTOR newvFront = XMLoadFloat3(&tempFront);
-	XMVector3Normalize(newvFront);
+	XMVECTOR yZeroFront = XMLoadFloat3(&tempFront);
+	XMVector3Normalize(yZeroFront);
+		if (m_isActive) {
 
-	if (KeyLogger_Press(KL_CAMERA)) {
 		if (KeyLogger_Press(KL_UP)) {
-			vDirection += +newvFront;
+			vDirection += +yZeroFront;
 		}
 		if (KeyLogger_Press(KL_DOWN)) {
-			vDirection += -newvFront;
+			vDirection += -yZeroFront;
 		}
 		if (KeyLogger_Press(KL_LEFT)) {
 			vDirection += -vRight;
@@ -67,7 +76,7 @@ void Camera::Update()
 			vUp = XMVector3Cross(vFront, vRight);
 		}
 		if (KeyLogger_Press(KL_TURN_UP)) {
-			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight,g_RoutationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight, g_RoutationalSpeed);
 			vFront = XMVector3TransformNormal(vFront, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
@@ -78,7 +87,7 @@ void Camera::Update()
 		}
 	}
 	// à⁄ìÆ
-	vPosition += vDirection;
+	vPosition += vDirection * g_MoveSpeed;
 	
 	// íçéãì_åvéZ
 	XMVECTOR vAt = XMLoadFloat3(&m_target);
