@@ -100,7 +100,7 @@ void Bullet::Draw()
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)
 {
 	Bullet* pBullet = new Bullet();
-	ManagerT::GetScene()->AddGameObject(pBullet);
+	ManagerT::GetScene()->AddGameObject(pBullet, GameObject::GOT_OBJECT3D);
 //	Bullet* pBullet =  ManagerT::GetScene()->AppendGameObject<Bullet>();
 	pBullet->SetPosition(f3Position);
 	pBullet->m_direction = f3Direction;
