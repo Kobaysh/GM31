@@ -9,6 +9,8 @@
 #include "model.h"
 
 
+//std::list<Model*> Model::m_ModelList;
+std::vector<Model> Model::m_ModelList;
 
 void Model::Draw()
 {
@@ -156,6 +158,50 @@ void Model::Unload()
 
 	delete[] m_SubsetArray;
 
+}
+
+int Model::SetModelLoadfile(std::string pFileName)
+{
+	int i = 0;
+	for (auto it = m_ModelList.begin(); it != m_ModelList.end();++it, i++) {
+		if (it._Ptr->m_FileName[0] == 0) {
+			continue;
+		}
+		if (it._Ptr->m_FileName == pFileName) {
+			return i;
+		}
+	}
+	i = 0;
+	for (auto it = m_ModelList.begin(); it != m_ModelList.end(); ++it, i++) {
+		if (it._Ptr->m_FileName[0] != 0) {
+			continue;
+		}
+		Model newModel;
+		newModel.m_FileName = pFileName;
+		m_ModelList.push_back(newModel);
+
+		return i;
+	}
+
+
+	for (int i = 0; i < m_ModelList.size; i++) {
+		if (m_ModelList[i].m_FileName[0] == 0) {
+			continue;
+		}
+		if (m_ModelList[i].m_FileName == pFileName) {
+			return i;
+		}
+	}
+	
+	// V‹K—\–ñ
+	for (int i = 0; i < m_ModelList.size; i++) {
+		if (m_ModelList[i].m_FileName[0] != 0) {
+			continue;
+		}
+		m_FileName = pFileName;
+		return i;
+	}
+	return 0;
 }
 
 

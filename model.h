@@ -1,6 +1,8 @@
 #pragma once
 #include "renderer.h"
 #include <string>
+#include <list>
+#include <vector>
 // マテリアル構造体
 struct MODEL_MATERIAL
 {
@@ -50,11 +52,16 @@ private:
 	void LoadObj( const char *FileName, MODEL *Model );
 	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
 
+	int m_Index;
+	std::string m_FileName;
+//	static std::list<Model*> m_ModelList;
+	static std::vector<Model> m_ModelList;
+
 public:
 	static void Init();
 	void Draw();
 
 	void Load( const char *FileName );
 	void Unload();
-
+	int SetModelLoadfile(std::string pFileName);
 };
