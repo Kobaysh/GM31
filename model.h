@@ -71,5 +71,5 @@ public:
 	void Unload();
 	static void Release(unsigned int modelId);
 	static void AllRelease();
-	int SetModelLoadfile(std::string pFileName);
+	static int SetModelLoadfile(std::string pFileName);
 };
