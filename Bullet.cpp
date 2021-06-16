@@ -33,7 +33,7 @@ void Bullet::Init()
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
-	if (m_sIsVoidPS) {
+	if (ms_IsVoidPS) {
 		Renderer::CreatePixelShader(&m_PixelShader, "LightingVoidPS.cso");
 	}
 	else
