@@ -8,7 +8,7 @@
 #include "bullet.h"
 #include "player.h"
 
-bool GameObject::m_sIsVoidPS = false;
+bool GameObject::ms_IsVoidPS = false;
 
 void Player::Init()
 {
@@ -102,14 +102,14 @@ void Player::Shoot()
 void Player::VoidDimension()
 {
 	if (KeyLogger_Trigger(KL_WIRE)) {
-		if (m_sIsVoidPS) {
+		if (ms_IsVoidPS) {
 			ManagerT::GetScene()->AllPSChange("vertexLightingPS.cso");
-			m_sIsVoidPS = false;
+			ms_IsVoidPS = false;
 		}
 		else
 		{
 			ManagerT::GetScene()->AllPSChange("LightingVoidPS.cso");
-			m_sIsVoidPS = true;
+			ms_IsVoidPS = true;
 		}
 	}
 }
