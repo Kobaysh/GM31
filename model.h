@@ -49,6 +49,8 @@ private:
 
 	SUBSET*	m_SubsetArray;
 	unsigned int	m_SubsetNum;
+
+	bool m_isLoaded;
 	void LoadObj( const char *FileName, MODEL *Model );
 	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
 
@@ -56,15 +58,18 @@ private:
 	static void SLoadMaterial(std::string FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum);
 
 	std::string m_FileName;
-//	static std::list<Model*> m_ModelList;
-	static std::vector<Model> m_ModelList;
+	static std::list<Model*> m_ModelList;
+//	static std::vector<Model> m_ModelList;
 
 public:
 	static void Init();
 	void Draw();
+	static void Draw(unsigned int modelId);
 
 	void Load( const char *FileName );
 	static void AllLoad();
 	void Unload();
+	static void Release(unsigned int modelId);
+	static void AllRelease();
 	int SetModelLoadfile(std::string pFileName);
 };
