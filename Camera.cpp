@@ -10,7 +10,7 @@ void Camera::Init()
 {
 	m_Position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
 	m_target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_front		 = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_front		 = XMFLOAT3(0.0f, -0.3f, 1.0f);
 	m_right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	g_RoutationalSpeed = 0.02f;

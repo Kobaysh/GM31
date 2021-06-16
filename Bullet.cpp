@@ -12,7 +12,7 @@ Bullet::Bullet()
 {
 	m_Position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
+	m_Scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
 }
@@ -33,8 +33,14 @@ void Bullet::Init()
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
-
-	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	if (m_sIsVoidPS) {
+		Renderer::CreatePixelShader(&m_PixelShader, "LightingVoidPS.cso");
+	}
+	else
+	{
+		Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	}
+//	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 
 }
 
@@ -63,10 +69,10 @@ void Bullet::Update()
 
 	Scene* scene = ManagerT::GetScene();
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>();
+
 	for (Enemy* enemy : enemies) {
-		XMFLOAT3 enemyPosition = enemy->GetPosition();
 		XMVECTOR direction;
-		direction = XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemyPosition);
+		direction = XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemy->GetPosition());
 		XMVECTOR length =  XMVector3Length(direction);
 		float distance = 0.0f;
 		XMStoreFloat(&distance, length);
@@ -99,9 +105,9 @@ void Bullet::Draw()
 
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)
 {
-	Bullet* pBullet = new Bullet();
-	ManagerT::GetScene()->AddGameObject(pBullet, GameObject::GOT_OBJECT3D);
-//	Bullet* pBullet =  ManagerT::GetScene()->AppendGameObject<Bullet>();
+//	Bullet* pBullet = new Bullet();
+//	ManagerT::GetScene()->AddGameObject(pBullet, GameObject::GOT_OBJECT3D);
+	Bullet* pBullet =  ManagerT::GetScene()->AppendGameObject<Bullet>(GameObject::GOT_OBJECT3D);
 	pBullet->SetPosition(f3Position);
 	pBullet->m_direction = f3Direction;
 	pBullet->m_speed = fSpeed;

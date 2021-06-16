@@ -85,9 +85,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="gameObject.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -157,6 +154,9 @@
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
     <FxCompile Include="vertexLightingVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="LightingVoidPS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>

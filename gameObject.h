@@ -1,5 +1,7 @@
 #pragma once
 #include "main.h"
+#include "renderer.h"
+
 class GameObject
 {
 public:
@@ -27,6 +29,8 @@ protected:
 	ID3D11PixelShader*		m_PixelShader = NULL;
 	ID3D11InputLayout*		m_VertexLayout = NULL;
 
+	bool m_isVoidPS = false;
+	static bool m_sIsVoidPS;
 public:
 	
 	virtual void Init() = 0;
@@ -56,6 +60,9 @@ public:
 		else{
 			return false;
 		}*/
+	}
+	void SetPShader(const char* pFileName){
+		Renderer::CreatePixelShader(&m_PixelShader, pFileName);
 	}
 };
 

@@ -18,6 +18,7 @@ public:
 
 	void Move();
 	void Shoot();
+	void VoidDimension();
 
 };
 

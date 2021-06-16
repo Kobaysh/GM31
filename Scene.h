@@ -61,28 +61,30 @@ public:
 	}
 
 	virtual void Init() {
-		/*AppendGameObject<Camera>();
-		AppendGameObject<Field>();
-		AppendGameObject<Player>();
-		AppendGameObject<Polygon2D>();
-		AppendGameObject<Enemy>();*/
+		AppendGameObject<Camera>(GameObject::GOT_CAMERA);
+		AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
+		AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
+		AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);
+		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
+		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
+		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
 
-		Polygon2D* polygon2D = new Polygon2D();
-		AddGameObject(polygon2D, GameObject::GOT_OBJECT2D);
-		Camera* camera = new Camera();
-		AddGameObject(camera, GameObject::GOT_CAMERA);
-		
-		Field* field = new Field();
-		AddGameObject(field, GameObject::GOT_OBJECT3D);
-		Player* player = new Player();
-		AddGameObject(player, GameObject::GOT_OBJECT3D);
-		player->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
-		Enemy* enemy = new Enemy();
-		AddGameObject(enemy, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
-		Enemy* enemy02 = new Enemy();
-		AddGameObject(enemy02, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
-		Enemy* enemy03 = new Enemy();
-		AddGameObject(enemy03, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
+		//Polygon2D* polygon2D = new Polygon2D();
+		//AddGameObject(polygon2D, GameObject::GOT_OBJECT2D);
+		//Camera* camera = new Camera();
+		//AddGameObject(camera, GameObject::GOT_CAMERA);
+		//
+		//Field* field = new Field();
+		//AddGameObject(field, GameObject::GOT_OBJECT3D);
+		//Player* player = new Player();
+		//AddGameObject(player, GameObject::GOT_OBJECT3D);
+		//player->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
+		//Enemy* enemy = new Enemy();
+		//AddGameObject(enemy, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
+		//Enemy* enemy02 = new Enemy();
+		//AddGameObject(enemy02, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
+		//Enemy* enemy03 = new Enemy();
+		//AddGameObject(enemy03, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
 		
 	}
 	virtual void Uninit() {
@@ -112,6 +114,14 @@ public:
 		for (int i = 0; i < GameObject::GOT_MAX; i++) {
 			for (GameObject* object : m_GameObject[i]) {
 				object->Draw();
+			}
+		}
+	}
+
+	virtual void AllPSChange(const char* pFileName) {
+		for (int i = GameObject::GOT_OBJECT3D; i < GameObject::GOT_MAX; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->SetPShader(pFileName);
 			}
 		}
 	}

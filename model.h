@@ -52,7 +52,9 @@ private:
 	void LoadObj( const char *FileName, MODEL *Model );
 	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
 
-	int m_Index;
+	static void SLoadObj(std::string FileName, MODEL *Model);
+	static void SLoadMaterial(std::string FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum);
+
 	std::string m_FileName;
 //	static std::list<Model*> m_ModelList;
 	static std::vector<Model> m_ModelList;
@@ -62,6 +64,7 @@ public:
 	void Draw();
 
 	void Load( const char *FileName );
+	static void AllLoad();
 	void Unload();
 	int SetModelLoadfile(std::string pFileName);
 };
