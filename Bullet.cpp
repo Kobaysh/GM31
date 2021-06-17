@@ -50,11 +50,11 @@ void Bullet::Init()
 
 void Bullet::Uninit()
 {
-	if (m_model) {
+	/*if (m_model) {
 		m_model->Unload();
 		delete m_model;
 		m_model = NULL;
-	}
+	}*/
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
@@ -78,11 +78,8 @@ void Bullet::Update()
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>();
 
 	for (Enemy* enemy : enemies) {
-		XMVECTOR direction;
-		direction = XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemy->GetPosition());
-		XMVECTOR length =  XMVector3Length(direction);
 		float distance = 0.0f;
-		XMStoreFloat(&distance, length);
+		XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemy->GetPosition())));
 		if (distance < 2.0f) {
 			enemy->SetDead();
 			SetDead();
