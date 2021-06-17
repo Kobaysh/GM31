@@ -9,8 +9,13 @@
 #include "model.h"
 
 
-//std::list<Model*> Model::m_ModelList;
-std::vector<Model> Model::m_ModelList;
+std::list<Model*> Model::m_ModelList;
+//std::vector<Model> Model::m_ModelList;
+
+void Model::Uninit()
+{
+	AllRelease();
+}
 
 void Model::Draw()
 {
@@ -59,6 +64,37 @@ void Model::Draw()
 
 		// ポリゴン描画
 		Renderer::GetpDeviceContext()->DrawIndexed(m_SubsetArray[i].IndexNum, m_SubsetArray[i].StartIndex, 0);
+	}
+
+}
+
+void Model::Draw(int modelId)
+{
+	if (modelId == INVALID_MODEL_ID) return;
+	auto it = (m_ModelList.front() + modelId);
+	
+	// 頂点バッファ設定
+	UINT stride = sizeof(VERTEX_3DX);
+	UINT offset = 0;
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &it->m_VertexBuffer, &stride, &offset);
+
+	// インデックスバッファ設定
+	Renderer::GetpDeviceContext()->IASetIndexBuffer(it->m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+	// プリミティブトポロジ設定
+	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	for (unsigned int i = 0; i < it->m_SubsetNum; i++)
+	{
+		// マテリアル設定
+		Renderer::SetMaterial(it->m_SubsetArray[i].Material.Material);
+
+		// テクスチャ設定
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &it->m_SubsetArray[i].Material.Texture);
+
+		// ポリゴン描画
+		Renderer::GetpDeviceContext()->DrawIndexed(it->m_SubsetArray[i].IndexNum, it->m_SubsetArray[i].StartIndex, 0);
 	}
 
 }
@@ -144,9 +180,14 @@ void Model::Load( const char *FileName )
 
 void Model::AllLoad()
 {
-	for (Model model : m_ModelList) {
+	for (Model* model : m_ModelList) {
+
+		if (model->m_FileName[0] == 0) continue;	// 空のテーブル
+		if (model->m_isLoaded) continue;			// 読み込み済み
+
+
 		MODEL _Model;
-		SLoadObj(model.m_FileName, &_Model);
+		SLoadObj(model->m_FileName, &_Model);
 
 
 
@@ -164,7 +205,7 @@ void Model::AllLoad()
 			sd.pSysMem = _Model.VertexArray;
 
 			//Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_VertexBuffer );
-			Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &model.m_VertexBuffer);
+			Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &model->m_VertexBuffer);
 		}
 
 
@@ -182,22 +223,22 @@ void Model::AllLoad()
 			sd.pSysMem = _Model.IndexArray;
 
 			//Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_IndexBuffer );
-			Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &model.m_IndexBuffer);
+			Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &model->m_IndexBuffer);
 		}
 
 		// サブセット設定
 		{
-			model.m_SubsetArray = new SUBSET[_Model.SubsetNum];
-			model.m_SubsetNum = _Model.SubsetNum;
+			model->m_SubsetArray = new SUBSET[_Model.SubsetNum];
+			model->m_SubsetNum = _Model.SubsetNum;
 
 			for (unsigned int i = 0; i < _Model.SubsetNum; i++)
 			{
-				model.m_SubsetArray[i].StartIndex = _Model.SubsetArray[i].StartIndex;
-				model.m_SubsetArray[i].IndexNum = _Model.SubsetArray[i].IndexNum;
+				model->m_SubsetArray[i].StartIndex = _Model.SubsetArray[i].StartIndex;
+				model->m_SubsetArray[i].IndexNum = _Model.SubsetArray[i].IndexNum;
 
-				model.m_SubsetArray[i].Material.Material = _Model.SubsetArray[i].Material.Material;
+				model->m_SubsetArray[i].Material.Material = _Model.SubsetArray[i].Material.Material;
 
-				model.m_SubsetArray[i].Material.Texture = NULL;
+				model->m_SubsetArray[i].Material.Texture = NULL;
 
 				D3DX11CreateShaderResourceViewFromFile(
 					//Renderer::GetDevice(),
@@ -205,10 +246,10 @@ void Model::AllLoad()
 					_Model.SubsetArray[i].Material.TextureName,
 					NULL,
 					NULL,
-					&model.m_SubsetArray[i].Material.Texture,
+					&model->m_SubsetArray[i].Material.Texture,
 					NULL);
 
-				assert(model.m_SubsetArray[i].Material.Texture);
+				assert(model->m_SubsetArray[i].Material.Texture);
 
 			}
 		}
@@ -216,6 +257,7 @@ void Model::AllLoad()
 		delete[] _Model.VertexArray;
 		delete[] _Model.IndexArray;
 		delete[] _Model.SubsetArray;
+		model->m_isLoaded = true;
 	}
 }
 
@@ -230,37 +272,57 @@ void Model::Unload()
 
 	for (unsigned int i = 0; i < m_SubsetNum; i++)
 	{
-		m_SubsetArray[i].Material.Texture->Release();
+ 		m_SubsetArray[i].Material.Texture->Release();
 	}
 
 	delete[] m_SubsetArray;
 
 }
 
+void Model::Release(int modelId)
+{
+	if (modelId == INVALID_MODEL_ID) return;
+	(m_ModelList.front() + modelId)->Unload();
+	m_ModelList.erase(std::next(m_ModelList.begin(),modelId));
+}
+
+void Model::AllRelease()
+{
+	for (Model* model : m_ModelList) {
+		model->Unload();
+	}
+}
+
 int Model::SetModelLoadfile(std::string pFileName)
 {
 	int i = 0;
-	for (Model model : m_ModelList) {
-		if (model.m_FileName[0] == 0) {
+	if (m_ModelList.empty()) {
+		Model* newModel = new Model();
+		newModel->m_FileName = pFileName;
+		m_ModelList.push_back(newModel);
+		return i;
+	}
+	for (Model* model : m_ModelList) {
+		if (model->m_FileName[0] == 0) {
 			i++;
 			continue;
 		}
-		if (model.m_FileName == pFileName) {
+		if (model->m_FileName == pFileName) {
 			return i;
 		}
 	}
 	i = 0;
-	for (Model model : m_ModelList) {
-		if (model.m_FileName[0] != 0) {
+	for (Model* model : m_ModelList) {
+		if (model->m_FileName[0] != 0) {
 			i++;
 			continue;
 		}
-		Model newModel;
-		newModel.m_FileName = pFileName;
+		Model* newModel = new Model();
+		newModel->m_FileName = pFileName;
 		m_ModelList.push_back(newModel);
 		return i;
 	}
-	return 0;
+	return INVALID_MODEL_ID;
 }
 
 

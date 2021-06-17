@@ -8,6 +8,8 @@
 
 #define FILENAME ("asset\\model\\bullet\\kidantorus.obj")
 
+int Bullet::ms_modelId = INVALID_MODEL_ID;
+
 Bullet::Bullet()
 {
 	m_Position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
@@ -28,8 +30,10 @@ Bullet::Bullet(XMFLOAT3 f3Position)
 
 void Bullet::Init()
 {
-	m_model = new Model();
-	m_model->Load(FILENAME);
+	/*m_model = new Model();
+	m_model->Load(FILENAME);*/
+	ms_modelId = Model::SetModelLoadfile(FILENAME);
+	Model::AllLoad();
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -46,8 +50,11 @@ void Bullet::Init()
 
 void Bullet::Uninit()
 {
-	m_model->Unload();
-	delete m_model;
+	/*if (m_model) {
+		m_model->Unload();
+		delete m_model;
+		m_model = NULL;
+	}*/
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
@@ -71,11 +78,8 @@ void Bullet::Update()
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>();
 
 	for (Enemy* enemy : enemies) {
-		XMVECTOR direction;
-		direction = XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemy->GetPosition());
-		XMVECTOR length =  XMVector3Length(direction);
 		float distance = 0.0f;
-		XMStoreFloat(&distance, length);
+		XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemy->GetPosition())));
 		if (distance < 2.0f) {
 			enemy->SetDead();
 			SetDead();
@@ -100,7 +104,8 @@ void Bullet::Draw()
 	Renderer::SetWorldMatrixX(&worldX);
 
 
-	m_model->Draw();
+//	m_model->Draw();
+	Model::Draw(ms_modelId);
 }
 
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)

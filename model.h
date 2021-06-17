@@ -3,6 +3,9 @@
 #include <string>
 #include <list>
 #include <vector>
+
+
+#define INVALID_MODEL_ID (-1)
 // マテリアル構造体
 struct MODEL_MATERIAL
 {
@@ -49,6 +52,8 @@ private:
 
 	SUBSET*	m_SubsetArray;
 	unsigned int	m_SubsetNum;
+
+	bool m_isLoaded;
 	void LoadObj( const char *FileName, MODEL *Model );
 	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
 
@@ -56,15 +61,19 @@ private:
 	static void SLoadMaterial(std::string FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum);
 
 	std::string m_FileName;
-//	static std::list<Model*> m_ModelList;
-	static std::vector<Model> m_ModelList;
+	static std::list<Model*> m_ModelList;
+//	static std::vector<Model> m_ModelList;
 
 public:
 	static void Init();
+	static void Uninit();
 	void Draw();
+	static void Draw(int modelId);
 
 	void Load( const char *FileName );
 	static void AllLoad();
 	void Unload();
-	int SetModelLoadfile(std::string pFileName);
+	static void Release(int modelId);
+	static void AllRelease();
+	static int SetModelLoadfile(std::string pFileName);
 };
