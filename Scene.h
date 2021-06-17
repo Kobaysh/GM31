@@ -10,6 +10,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
+#include "explosion.h"
 
 
 class Scene
@@ -69,7 +70,7 @@ public:
 		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
 		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
 		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
-
+		AppendGameObject<Explosion>(GameObject::GOT_OBJECT3D);
 		//Polygon2D* polygon2D = new Polygon2D();
 		//AddGameObject(polygon2D, GameObject::GOT_OBJECT2D);
 		//Camera* camera = new Camera();
