@@ -1,28 +1,31 @@
 #include "main.h"
 #include "renderer.h"
 #include "explosion.h"
+#include "camera.h"
+#include "manager.h"
+#include "scene.h"
 
 #define FILENAME ("asset/texture/explosion.png")
 
 void Explosion::Init()
 {
 	VERTEX_3DX vertexx[4];
-	vertexx[0].Position = XMFLOAT3(-1.0f, 1.0f + 5.0f, 10.0f);
+	vertexx[0].Position = XMFLOAT3(-1.0f, 1.0f + 1.0f, 10.0f);
 	vertexx[0].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-	vertexx[1].Position = XMFLOAT3(1.0f, 1.0f + 5.0f, 10.0f);
+	vertexx[1].Position = XMFLOAT3(1.0f, 1.0f + 1.0f, 10.0f);
 	vertexx[1].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	vertexx[2].Position = XMFLOAT3(-1.0f, -1.0f + 5.0f, 10.0f);
+	vertexx[2].Position = XMFLOAT3(-1.0f, -1.0f + 1.0f, 10.0f);
 	vertexx[2].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-	vertexx[3].Position = XMFLOAT3(1.0f, -1.0f + 5.0f, 10.0f);
+	vertexx[3].Position = XMFLOAT3(1.0f, -1.0f + 1.0f, 10.0f);
 	vertexx[3].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
@@ -86,10 +89,23 @@ void Explosion::Draw()
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
+
+	Scene* scene = ManagerT::GetScene();
+	XMMATRIX mtxInvView;
+	XMMATRIX view = scene->GetGameObject<Camera>()->GetView();
+
+	view.r[0].m128_f32[3] = 0.0f;
+	view.r[1].m128_f32[3] = 0.0f;
+	view.r[2].m128_f32[3] = 0.0f;
+
+	mtxInvView = XMMatrixInverse(nullptr, view);
+	/*mtxInvView.r[3].m128_f32[0] = 0.0f;
+	mtxInvView.r[3].m128_f32[1] = 0.0f;
+	mtxInvView.r[3].m128_f32[2] = 0.0f;*/
+	
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-	XMMATRIX worldX = scaleX * rotX * transX;
+	XMMATRIX worldX = scaleX * mtxInvView * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 
 
