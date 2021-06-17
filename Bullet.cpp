@@ -32,8 +32,8 @@ void Bullet::Init()
 {
 	/*m_model = new Model();
 	m_model->Load(FILENAME);*/
-	ms_modelId = Model::SetModelLoadfile(FILENAME);
-	Model::AllLoad();
+	/*ms_modelId = Model::SetModelLoadfile(FILENAME);
+	Model::AllLoad();*/
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -106,6 +106,18 @@ void Bullet::Draw()
 
 //	m_model->Draw();
 	Model::Draw(ms_modelId);
+}
+
+void Bullet::Load()
+{
+	ms_modelId = Model::SetModelLoadfile(FILENAME);
+//	Model::AllLoad();
+	Model::Load(ms_modelId);
+}
+
+void Bullet::UnLoad()
+{
+	Model::Release(ms_modelId);
 }
 
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)

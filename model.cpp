@@ -178,6 +178,86 @@ void Model::Load( const char *FileName )
 
 }
 
+void Model::Load(int modelId)
+{
+	Model* model = (m_ModelList.front() + modelId);
+	if (model->m_FileName[0] == 0) return;
+	if (model->m_isLoaded) return;
+	MODEL _Model;
+	SLoadObj(model->m_FileName, &_Model);
+
+
+
+	// 頂点バッファ生成
+	{
+		D3D11_BUFFER_DESC bd;
+		ZeroMemory(&bd, sizeof(bd));
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(VERTEX_3D) * _Model.VertexNum;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA sd;
+		ZeroMemory(&sd, sizeof(sd));
+		sd.pSysMem = _Model.VertexArray;
+
+		//Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_VertexBuffer );
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &model->m_VertexBuffer);
+	}
+
+
+	// インデックスバッファ生成
+	{
+		D3D11_BUFFER_DESC bd;
+		ZeroMemory(&bd, sizeof(bd));
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(unsigned int) * _Model.IndexNum;
+		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA sd;
+		ZeroMemory(&sd, sizeof(sd));
+		sd.pSysMem = _Model.IndexArray;
+
+		//Renderer::GetDevice()->CreateBuffer( &bd, &sd, &m_IndexBuffer );
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &model->m_IndexBuffer);
+	}
+
+	// サブセット設定
+	{
+		model->m_SubsetArray = new SUBSET[_Model.SubsetNum];
+		model->m_SubsetNum = _Model.SubsetNum;
+
+		for (unsigned int i = 0; i < _Model.SubsetNum; i++)
+		{
+			model->m_SubsetArray[i].StartIndex = _Model.SubsetArray[i].StartIndex;
+			model->m_SubsetArray[i].IndexNum = _Model.SubsetArray[i].IndexNum;
+
+			model->m_SubsetArray[i].Material.Material = _Model.SubsetArray[i].Material.Material;
+
+			model->m_SubsetArray[i].Material.Texture = NULL;
+
+			D3DX11CreateShaderResourceViewFromFile(
+				//Renderer::GetDevice(),
+				Renderer::GetpDevice().Get(),
+				_Model.SubsetArray[i].Material.TextureName,
+				NULL,
+				NULL,
+				&model->m_SubsetArray[i].Material.Texture,
+				NULL);
+
+			assert(model->m_SubsetArray[i].Material.Texture);
+
+		}
+	}
+
+	delete[] _Model.VertexArray;
+	delete[] _Model.IndexArray;
+	delete[] _Model.SubsetArray;
+	model->m_isLoaded = true;
+
+}
+
 void Model::AllLoad()
 {
 	for (Model* model : m_ModelList) {

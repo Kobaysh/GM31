@@ -61,6 +61,7 @@ public:
 	}
 
 	virtual void Init() {
+		Bullet::Load();
 		AppendGameObject<Camera>(GameObject::GOT_CAMERA);
 		AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
 		AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
@@ -95,6 +96,7 @@ public:
 			}
 			m_GameObject[i].clear();	// リストのクリア
 		}
+		Bullet::UnLoad();
 		Model::Uninit();
 	}
 	virtual void Update() {

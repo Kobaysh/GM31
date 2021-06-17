@@ -11,6 +11,9 @@ public:
 	void Update();
 	void Draw();
 
+	static void Load();
+	static void UnLoad();
+
 	static Bullet* Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed);
 	static void Destroy(Bullet* pBullet);
 private:

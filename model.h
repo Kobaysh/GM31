@@ -71,6 +71,7 @@ public:
 	static void Draw(int modelId);
 
 	void Load( const char *FileName );
+	static void Load(int modelId);
 	static void AllLoad();
 	void Unload();
 	static void Release(int modelId);
