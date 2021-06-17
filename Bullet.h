@@ -17,5 +17,5 @@ private:
 	Model* m_model;
 	XMFLOAT3 m_direction;
 	float m_speed;
-	static unsigned int ms_modelId;
+	static  int ms_modelId;
 };

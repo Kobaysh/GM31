@@ -12,6 +12,11 @@
 std::list<Model*> Model::m_ModelList;
 //std::vector<Model> Model::m_ModelList;
 
+void Model::Uninit()
+{
+	AllRelease();
+}
+
 void Model::Draw()
 {
 
@@ -63,8 +68,9 @@ void Model::Draw()
 
 }
 
-void Model::Draw(unsigned int modelId)
+void Model::Draw(int modelId)
 {
+	if (modelId == INVALID_MODEL_ID) return;
 	auto it = (m_ModelList.front() + modelId);
 	
 	// 頂点バッファ設定
@@ -266,16 +272,18 @@ void Model::Unload()
 
 	for (unsigned int i = 0; i < m_SubsetNum; i++)
 	{
-		m_SubsetArray[i].Material.Texture->Release();
+ 		m_SubsetArray[i].Material.Texture->Release();
 	}
 
 	delete[] m_SubsetArray;
 
 }
 
-void Model::Release(unsigned int modelId)
+void Model::Release(int modelId)
 {
+	if (modelId == INVALID_MODEL_ID) return;
 	(m_ModelList.front() + modelId)->Unload();
+	m_ModelList.erase(std::next(m_ModelList.begin(),modelId));
 }
 
 void Model::AllRelease()
@@ -314,7 +322,7 @@ int Model::SetModelLoadfile(std::string pFileName)
 		m_ModelList.push_back(newModel);
 		return i;
 	}
-	return 0;
+	return INVALID_MODEL_ID;
 }
 
 

@@ -15,5 +15,6 @@ public:
 	void Update();
 	void Draw();
 	bool GetIsActive() { return m_isActive; }
+	XMFLOAT3 GetFront()const { return m_front; }
 };
 

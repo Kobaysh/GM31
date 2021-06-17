@@ -3,6 +3,9 @@
 #include <string>
 #include <list>
 #include <vector>
+
+
+#define INVALID_MODEL_ID (-1)
 // マテリアル構造体
 struct MODEL_MATERIAL
 {
@@ -63,13 +66,14 @@ private:
 
 public:
 	static void Init();
+	static void Uninit();
 	void Draw();
-	static void Draw(unsigned int modelId);
+	static void Draw(int modelId);
 
 	void Load( const char *FileName );
 	static void AllLoad();
 	void Unload();
-	static void Release(unsigned int modelId);
+	static void Release(int modelId);
 	static void AllRelease();
 	static int SetModelLoadfile(std::string pFileName);
 };

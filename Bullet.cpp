@@ -8,7 +8,7 @@
 
 #define FILENAME ("asset\\model\\bullet\\kidantorus.obj")
 
-unsigned int Bullet::ms_modelId;
+int Bullet::ms_modelId = INVALID_MODEL_ID;
 
 Bullet::Bullet()
 {

@@ -95,6 +95,7 @@ public:
 			}
 			m_GameObject[i].clear();	// リストのクリア
 		}
+		Model::Uninit();
 	}
 	virtual void Update() {
 		for (int i = 0; i < GameObject::GOT_MAX; i++) {
