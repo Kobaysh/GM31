@@ -2,8 +2,9 @@
 #include "gameObject.h"
 class Enemy : public GameObject
 {
-private:
+protected:
 	Model* m_model;
+	int m_modelId;
 public:
 	void Init();
 	void Uninit();
