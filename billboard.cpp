@@ -25,11 +25,12 @@ void Billboard::Draw()
 
 	// マトリクス設定
 	Scene* scene = ManagerT::GetScene();
-	XMMATRIX view = scene->GetGameObject<Camera>()->GetView();
+	XMMATRIX view = XMLoadFloat4x4(&scene->GetGameObject<Camera>()->GetView());
+	XMMATRIX invView = XMMatrixTranspose(view);
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-	XMMATRIX worldX = scaleX * rotX  * transX;
+	XMMATRIX worldX = scaleX * rotX * invView * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 
 

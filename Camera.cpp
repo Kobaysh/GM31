@@ -105,8 +105,8 @@ void Camera::Update()
 void Camera::Draw()
 {
 	// ビューマトリクス設定
-	m_viewMatrix = XMMatrixLookAtLH(XMLoadFloat3(&m_Position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_up));
-	Renderer::SetViewMatrixX(&m_viewMatrix);
+	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_Position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_up)));
+	Renderer::SetViewMatrixX(&XMLoadFloat4x4(&m_viewMatrix));
 	
 	//D3DXMATRIX viewMatrix;
 	//D3DXMatrixLookAtLH(&viewMatrix, &m_Position, &m_target, &D3DXVECTOR3(0.0f,1.0f,0.0f));

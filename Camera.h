@@ -9,7 +9,7 @@ private:
 	XMFLOAT3 m_right;
 	XMFLOAT3 m_up;
 	bool m_isActive;
-	XMMATRIX m_viewMatrix;
+	XMFLOAT4X4 m_viewMatrix;
 public:
 	void Init();
 	void Uninit();
@@ -17,7 +17,7 @@ public:
 	void Draw();
 	bool GetIsActive() { return m_isActive; }
 	XMFLOAT3 GetFront()const { return m_front; }
-	XMMATRIX GetView()const { return m_viewMatrix; }
+	XMFLOAT4X4 GetView()const { return m_viewMatrix; }
 	
 };
 

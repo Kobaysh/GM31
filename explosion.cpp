@@ -10,22 +10,22 @@
 void Explosion::Init()
 {
 	VERTEX_3DX vertexx[4];
-	vertexx[0].Position = XMFLOAT3(-1.0f, 1.0f + 1.0f, 10.0f);
+	vertexx[0].Position = XMFLOAT3(-0.5f, 0.5f, 0.0f);
 	vertexx[0].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-	vertexx[1].Position = XMFLOAT3(1.0f, 1.0f + 1.0f, 10.0f);
+	vertexx[1].Position = XMFLOAT3(0.5f, 0.5f, 0.0f);
 	vertexx[1].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	vertexx[2].Position = XMFLOAT3(-1.0f, -1.0f + 1.0f, 10.0f);
+	vertexx[2].Position = XMFLOAT3(-0.5f, -0.5f, 0.0f);
 	vertexx[2].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-	vertexx[3].Position = XMFLOAT3(1.0f, -1.0f + 1.0f, 10.0f);
+	vertexx[3].Position = XMFLOAT3(0.5f, -0.5f, 0.0f);
 	vertexx[3].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
@@ -57,11 +57,11 @@ void Explosion::Init()
 	);
 	assert(m_Texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
 
-	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 }
@@ -92,20 +92,20 @@ void Explosion::Draw()
 
 	Scene* scene = ManagerT::GetScene();
 	XMMATRIX mtxInvView;
-	XMMATRIX view = scene->GetGameObject<Camera>()->GetView();
+	XMMATRIX view =XMLoadFloat4x4(&scene->GetGameObject<Camera>()->GetView());
+	XMFLOAT4X4 temp;
+	XMStoreFloat4x4(&temp, view);
+	temp._41 = 0.0f;
+	temp._42 = 0.0f;
+	temp._43 = 0.0f;
+    view =	XMLoadFloat4x4(&temp);
 
-	view.r[0].m128_f32[3] = 0.0f;
-	view.r[1].m128_f32[3] = 0.0f;
-	view.r[2].m128_f32[3] = 0.0f;
-
-	mtxInvView = XMMatrixInverse(nullptr, view);
-	/*mtxInvView.r[3].m128_f32[0] = 0.0f;
-	mtxInvView.r[3].m128_f32[1] = 0.0f;
-	mtxInvView.r[3].m128_f32[2] = 0.0f;*/
+	mtxInvView = XMMatrixTranspose(view);
+//	mtxInvView = XMMatrixInverse(nullptr, mtxInvView);
 	
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-	XMMATRIX worldX = scaleX * mtxInvView * transX;
+	XMMATRIX worldX = mtxInvView * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 
 
