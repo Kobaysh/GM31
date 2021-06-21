@@ -14,7 +14,8 @@ cbuffer ProjectionBuffer : register(b2)
 	matrix Projection;
 }
 
-
+uniform int g_Loacation;
+Texture2D g_VATexture;
 
 
 struct MATERIAL
@@ -61,10 +62,42 @@ struct VS_IN
 	float2 TexCoord		: TEXCOORD0;
 };
 
+//struct VS_OUT
+//{
+//	float4 HPos : SV_Position;
+//	float3 VATColor : TEXCOORD1;
+//};
+
+//VS_OUT VS(VS_IN In)
+//{
+//	VS_OUT Out = (VS_OUT)0;
+//	float3 w_pos = mul(In.Position, World).xyz;
+//	float3 vat_pos = g_VATexture.Load(int3(int(In.TexCoord.x), g_Loacation, 0)).xyz;
+//	w_pos = w_pos + vat_pos;
+//	Out.HPos = mul(mul(float4(w_pos, 1.0f), View), Projection);
+//	Out.VATColor = vat_pos;
+//	return Out;
+//}
 
 struct PS_IN
 {
-	float4 Position		: SV_POSITION;
-	float4 Diffuse		: COLOR0;
-	float2 TexCoord		: TEXCOORD0;
+	float4 Position : SV_POSITION;
+	float4 Diffuse : COLOR0;
+	float2 TexCoord : TEXCOORD0;
 };
+
+//float4 PS(VS_OUT In) :SV_Target
+//{
+//	return float4(In.VATColor, 1.0);
+
+//}
+
+//technique11 VertexAnimationTexture
+//{
+//	pass p0
+//	{
+//		SetVertexShader(CompileShader(vs_4_0, VS()));
+//		SetGeometryShader(NULL);
+//		SetPixelShader(CompileShader(ps_4_0, PS()));
+//	}
+//}

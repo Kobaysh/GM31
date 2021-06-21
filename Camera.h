@@ -17,7 +17,7 @@ public:
 	void Draw();
 	bool GetIsActive() { return m_isActive; }
 	XMFLOAT3 GetFront()const { return m_front; }
-	XMFLOAT4X4 GetView()const { return m_viewMatrix; }
+	XMFLOAT4X4* GetView() { return &m_viewMatrix; }
 	
 };
 

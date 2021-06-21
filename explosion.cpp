@@ -78,6 +78,7 @@ void Explosion::Uninit()
 
 void Explosion::Update()
 {
+	
 }
 
 void Explosion::Draw()
@@ -92,7 +93,7 @@ void Explosion::Draw()
 
 	Scene* scene = ManagerT::GetScene();
 	XMMATRIX mtxInvView;
-	XMMATRIX view =XMLoadFloat4x4(&scene->GetGameObject<Camera>()->GetView());
+	XMMATRIX view =XMLoadFloat4x4(scene->GetGameObject<Camera>()->GetView());
 	XMFLOAT4X4 temp;
 	XMStoreFloat4x4(&temp, view);
 	temp._41 = 0.0f;
@@ -101,14 +102,14 @@ void Explosion::Draw()
     view =	XMLoadFloat4x4(&temp);
 
 	mtxInvView = XMMatrixTranspose(view);
-//	mtxInvView = XMMatrixInverse(nullptr, mtxInvView);
+//	mtxInvView = XMMatrixInverse(nullptr, view);
 	
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = mtxInvView * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 
-
+	
 
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
