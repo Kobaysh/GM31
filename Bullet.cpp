@@ -5,6 +5,7 @@
 #include "model.h"
 #include "enemy.h"
 #include "bullet.h"
+#include "explosion.h"
 
 #define FILENAME ("asset\\model\\bullet\\kidantorus.obj")
 
@@ -62,6 +63,8 @@ void Bullet::Uninit()
 
 void Bullet::Update()
 {
+	Scene* scene = ManagerT::GetScene();
+
 	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
 	XMVECTOR vDirection = XMLoadFloat3(&m_direction);
 	vPosition += vDirection * m_speed;
@@ -69,12 +72,14 @@ void Bullet::Update()
 
 	if (m_Position.z > 10.0f) {
 		SetDead();
+		// 爆発エフェクト
+		scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
 		return;
 	}
 
 	// Enemyとの当たり判定
 
-	Scene* scene = ManagerT::GetScene();
+	
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>();
 
 	for (Enemy* enemy : enemies) {
@@ -83,6 +88,8 @@ void Bullet::Update()
 		if (distance < 2.0f) {
 			enemy->SetDead();
 			SetDead();
+			// 爆発エフェクト
+			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
 		}
 	}
 }

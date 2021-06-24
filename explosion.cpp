@@ -4,28 +4,32 @@
 #include "camera.h"
 #include "manager.h"
 #include "scene.h"
+#include "keylogger.h"
 
 #define FILENAME ("asset/texture/explosion.png")
+#define ANIMATION_MAG (6)
+
+int Explosion::m_animationMag = 3;
 
 void Explosion::Init()
 {
 	VERTEX_3DX vertexx[4];
-	vertexx[0].Position = XMFLOAT3(-0.5f, 0.5f, 0.0f);
+	vertexx[0].Position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
 	vertexx[0].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-	vertexx[1].Position = XMFLOAT3(0.5f, 0.5f, 0.0f);
+	vertexx[1].Position = XMFLOAT3(1.0f, 1.0f, 0.0f);
 	vertexx[1].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	vertexx[2].Position = XMFLOAT3(-0.5f, -0.5f, 0.0f);
+	vertexx[2].Position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
 	vertexx[2].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-	vertexx[3].Position = XMFLOAT3(0.5f, -0.5f, 0.0f);
+	vertexx[3].Position = XMFLOAT3(1.0f, -1.0f, 0.0f);
 	vertexx[3].Normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 	vertexx[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
@@ -33,13 +37,15 @@ void Explosion::Init()
 
 	// 頂点バッファ生成
 	D3D11_BUFFER_DESC bd{};
-
-	bd.Usage = D3D11_USAGE_DEFAULT;
+	ZeroMemory(&bd, sizeof(bd));
+//	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.Usage = D3D11_USAGE_DYNAMIC;	// 頂点バッファを動的変更可能に
 	bd.ByteWidth = sizeof(VERTEX_3DX) * 4; // バイト幅
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
-	bd.CPUAccessFlags = 0;
-
+//	bd.CPUAccessFlags = 0;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	D3D11_SUBRESOURCE_DATA sd{};
+	ZeroMemory(&sd, sizeof(sd));
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
@@ -64,6 +70,10 @@ void Explosion::Init()
 	m_Position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+	m_textureOffset = XMFLOAT2(4.0f, 4.0f);
+	m_frame = 0;
+//	m_animationMag = 3;
 }
 
 void Explosion::Uninit()
@@ -78,11 +88,57 @@ void Explosion::Uninit()
 
 void Explosion::Update()
 {
-	
+	if (KeyLogger_Trigger(KL_TURN_RIGHT)) {
+		m_animationMag++;
+	}
+	else if (KeyLogger_Trigger(KL_TURN_LEFT)) {
+		if (--m_animationMag < 1) {
+			m_animationMag = 1;
+		}
+	}
+
+	if (++m_frame > m_textureOffset.x * m_textureOffset.y * m_animationMag) {
+		m_frame = 0;
+		SetDead();
+		return;
+	}
 }
 
 void Explosion::Draw()
 {
+	float fx = 1.0f / m_textureOffset.x;
+	float fy = 1.0f / m_textureOffset.y;
+	float x = m_frame / m_animationMag % (int)m_textureOffset.x * fx;
+	float y = m_frame / m_animationMag / (int)m_textureOffset.x * fy;
+
+	// 頂点データを書き換え
+	D3D11_MAPPED_SUBRESOURCE msr;
+	Renderer::GetpDeviceContext()->Map(m_Vertexbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	
+	VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
+
+	vertex[0].Position	= XMFLOAT3(-1.0f, 1.0f, 0.0f);
+	vertex[0].Normal	= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f,1.0f);
+	vertex[0].TexCoord = XMFLOAT2(x, y);
+
+	vertex[1].Position = XMFLOAT3(1.0f, 1.0f, 0.0f);
+	vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[1].TexCoord = XMFLOAT2(x + fx, y);
+
+	vertex[2].Position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
+	vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[2].TexCoord = XMFLOAT2(x , y + fy);
+
+	vertex[3].Position = XMFLOAT3(1.0f, -1.0f, 0.0f);
+	vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertex[3].TexCoord = XMFLOAT2(x + fx, y + fy);
+
+	Renderer::GetpDeviceContext()->Unmap(m_Vertexbuffer, 0);
+
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
@@ -93,7 +149,7 @@ void Explosion::Draw()
 
 	Scene* scene = ManagerT::GetScene();
 	XMMATRIX mtxInvView;
-	XMMATRIX view =XMLoadFloat4x4(scene->GetGameObject<Camera>()->GetView());
+	XMMATRIX view =XMLoadFloat4x4(scene->GetGameObject<Camera>(GOT_CAMERA)->GetView());
 	XMFLOAT4X4 temp;
 	XMStoreFloat4x4(&temp, view);
 	temp._41 = 0.0f;

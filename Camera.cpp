@@ -2,6 +2,9 @@
 #include "camera.h"
 #include "renderer.h"
 #include "keylogger.h"
+#include "manager.h"
+#include "scene.h"
+#include "player.h"
 
 static float g_RoutationalSpeed;
 static float g_MoveSpeed;
@@ -43,6 +46,7 @@ void Camera::Update()
 	tempFront.y = 0.0f;
 	XMVECTOR yZeroFront = XMLoadFloat3(&tempFront);
 	XMVector3Normalize(yZeroFront);
+	XMVECTOR vAt = XMLoadFloat3(&m_target);
 		if (m_isActive) {
 
 		if (KeyLogger_Press(KL_UP)) {
@@ -85,12 +89,22 @@ void Camera::Update()
 			vFront = XMVector3TransformNormal(vFront, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
+		vPosition += vDirection * g_MoveSpeed;
 	}
+		else {
+			Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+			/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
+			vFront = pFront;*/
+			
+			vDirection += XMLoadFloat3(&player->GetMove());
+			// プレイヤーを追いかける
+			vPosition += vDirection;
+		}
 	// 移動
-	vPosition += vDirection * g_MoveSpeed;
+//	vPosition += vDirection * g_MoveSpeed;
 	
 	// 注視点計算
-	XMVECTOR vAt = XMLoadFloat3(&m_target);
+
 	vAt = vPosition + vFront;
 
 	// 変数保存

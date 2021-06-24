@@ -25,7 +25,7 @@ void Billboard::Draw()
 
 	// マトリクス設定
 	Scene* scene = ManagerT::GetScene();
-	XMMATRIX view = XMLoadFloat4x4(scene->GetGameObject<Camera>()->GetView());
+	XMMATRIX view = XMLoadFloat4x4(scene->GetGameObject<Camera>(GOT_CAMERA)->GetView());
 	
 	XMFLOAT4X4 temp;
 	XMStoreFloat4x4(&temp, view);

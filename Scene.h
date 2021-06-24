@@ -37,14 +37,14 @@ public:
 	}
 
 	template<typename TS>
-	TS* GetGameObject() {
-		for (int i = 0; i < GameObject::GOT_MAX; i++) {
-			for (GameObject*object : m_GameObject[i]) {
-				if (typeid(*object) == typeid(TS)) {	// Œ^‚ð’²‚×‚é(RTTI“®“IŒ^î•ñ)
-					return (TS*)object;
-				}
+	TS* GetGameObject(GameObject::GameObject_Type type) {
+
+		for (GameObject*object : m_GameObject[type]) {
+			if (typeid(*object) == typeid(TS)) {	// Œ^‚ð’²‚×‚é(RTTI“®“IŒ^î•ñ)
+				return (TS*)object;
 			}
 		}
+
 		return nullptr;
 	}
 
@@ -70,7 +70,6 @@ public:
 		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
 		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
 		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
-		AppendGameObject<Explosion>(GameObject::GOT_OBJECT3D);
 		//Polygon2D* polygon2D = new Polygon2D();
 		//AddGameObject(polygon2D, GameObject::GOT_OBJECT2D);
 		//Camera* camera = new Camera();
