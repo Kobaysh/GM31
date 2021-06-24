@@ -72,7 +72,7 @@ void Explosion::Init()
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 	m_textureOffset = XMFLOAT2(4.0f, 4.0f);
-	m_frame = 0;
+	m_frame = -1;	// ++0‚©‚çŽn‚ß‚é
 //	m_animationMag = 3;
 }
 

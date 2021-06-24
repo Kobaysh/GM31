@@ -70,7 +70,8 @@ void Bullet::Update()
 	vPosition += vDirection * m_speed;
 	XMStoreFloat3(&m_Position, vPosition);
 
-	if (m_Position.z > 10.0f) {
+	if (m_Position.z > 10.0f || m_Position.z < -10.0f ||
+		m_Position.x > 10.0f || m_Position.x < -10.0f) {
 		SetDead();
 		// 爆発エフェクト
 		scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
