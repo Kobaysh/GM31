@@ -38,6 +38,8 @@ public:
 	virtual void Draw() = 0;
 
 	void SetPosition(XMFLOAT3 pos) { m_Position = pos; }
+	void SetRotation(XMFLOAT3 rot) { m_Rotation = rot; }
+	void SetScale(XMFLOAT3 scale) { m_Scale = scale; }
 	XMFLOAT3 GetPosition() { return m_Position; }
 //	void SetDestroy() { m_Destroy = true; }
 

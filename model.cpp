@@ -71,8 +71,12 @@ void Model::Draw()
 void Model::Draw(int modelId)
 {
 	if (modelId == INVALID_MODEL_ID) return;
-	auto it = (m_ModelList.front() + modelId);
-	
+	//std::list<Model*>::iterator it = m_ModelList.begin();
+	auto itr = m_ModelList.begin();
+	for (int i = 0; i <  modelId; i++) {
+		itr++ ;
+	}
+	Model* it = *itr;
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
@@ -180,7 +184,12 @@ void Model::Load( const char *FileName )
 
 void Model::Load(int modelId)
 {
-	Model* model = (m_ModelList.front() + modelId);
+	if (modelId <= INVALID_MODEL_ID) return;
+	auto it = m_ModelList.begin();
+	for (int i = 0; i < modelId; i++) {
+		it++;
+	}
+	Model* model = *it;
 	if (model->m_FileName[0] == 0) return;
 	if (model->m_isLoaded) return;
 	MODEL _Model;
@@ -390,6 +399,7 @@ int Model::SetModelLoadfile(std::string pFileName)
 		if (model->m_FileName == pFileName) {
 			return i;
 		}
+		i++;
 	}
 	i = 0;
 	for (Model* model : m_ModelList) {
@@ -397,11 +407,12 @@ int Model::SetModelLoadfile(std::string pFileName)
 			i++;
 			continue;
 		}
-		Model* newModel = new Model();
-		newModel->m_FileName = pFileName;
-		m_ModelList.push_back(newModel);
-		return i;
 	}
+	Model* newModel = new Model();
+	newModel->m_FileName = pFileName;
+	m_ModelList.push_back(newModel);
+	return i;
+
 	return INVALID_MODEL_ID;
 }
 

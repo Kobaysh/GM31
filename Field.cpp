@@ -5,22 +5,22 @@
 void Field::Init()
 {
 	VERTEX_3DX vertexx[4];
-	vertexx[0].Position = XMFLOAT3(-10.0f, 0.0f, 10.0f);
+	vertexx[0].Position = XMFLOAT3(-100.0f, 0.0f, 100.0f);
 	vertexx[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-	vertexx[1].Position = XMFLOAT3(10.0f, 0.0f, 10.0f);
+	vertexx[1].Position = XMFLOAT3(100.0f, 0.0f, 100.0f);
 	vertexx[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	vertexx[2].Position = XMFLOAT3(-10.0f,0.0f, -10.0f);
+	vertexx[2].Position = XMFLOAT3(-100.0f,0.0f, -100.0f);
 	vertexx[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-	vertexx[3].Position = XMFLOAT3(10.0f, 0.0f, -10.0f);
+	vertexx[3].Position = XMFLOAT3(100.0f, 0.0f, -100.0f);
 	vertexx[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
@@ -57,7 +57,7 @@ void Field::Init()
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
-
+//	Renderer::GetpDeviceContext()->GenerateMips(m_Texture);
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
@@ -122,7 +122,7 @@ void Field::Draw()
 	material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	material.Emission = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f);
 	Renderer::SetMaterial(material);
-
+	
 
 	// テクスチャ設定
 	//Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);

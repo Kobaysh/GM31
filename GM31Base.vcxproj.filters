@@ -95,6 +95,12 @@
     <ClInclude Include="explosion.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
+    <ClInclude Include="sky.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="rock.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -161,6 +167,12 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="explosion.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="sky.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="rock.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
   </ItemGroup>

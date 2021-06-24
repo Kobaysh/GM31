@@ -176,9 +176,11 @@
     <ClInclude Include="polygon2D.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="rock.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shaderManager.h" />
     <ClInclude Include="singleton.h" />
+    <ClInclude Include="sky.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />
@@ -201,8 +203,10 @@
     <ClCompile Include="polygon2D.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resource.cpp" />
+    <ClCompile Include="rock.cpp" />
     <ClCompile Include="shaderManager.cpp" />
     <ClCompile Include="singleton.cpp" />
+    <ClCompile Include="sky.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="title.cpp" />
