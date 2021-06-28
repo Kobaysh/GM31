@@ -8,6 +8,7 @@
 
 static float g_RoutationalSpeed;
 static float g_MoveSpeed;
+#define CAMERA_SPEED (0.2f)
 
 void Camera::Init()
 {
@@ -17,7 +18,7 @@ void Camera::Init()
 	m_right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	g_RoutationalSpeed = 0.02f;
-	g_MoveSpeed = 0.2f;
+	g_MoveSpeed = CAMERA_SPEED;
 	m_isActive = false;
 }
 
@@ -32,9 +33,10 @@ void Camera::Update()
 		else m_isActive = false;
 	}
 
-
+	
 	// 変数用意
 	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMStoreFloat3(&m_move, vDirection);
 	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVector3Normalize(vFront);
@@ -90,7 +92,16 @@ void Camera::Update()
 			vFront = XMVector3TransformNormal(vFront, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
-		vPosition += vDirection * g_MoveSpeed;
+		vPosition += vDirection * CAMERA_SPEED;
+		float len;  
+		XMStoreFloat(&len, XMVector3Length(vDirection));
+		if ( len == 0.0f) {
+			g_MoveSpeed = 0.0f;
+		}
+		else
+		{
+			g_MoveSpeed = CAMERA_SPEED;
+		}
 	}
 	else {
 		Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
@@ -100,10 +111,19 @@ void Camera::Update()
 		vDirection += XMLoadFloat3(&player->GetMove());
 		// プレイヤーを追いかける
 		vPosition += vDirection;
+
+		float len;
+		XMStoreFloat(&len, XMVector3Length(vDirection));
+		if (len == 0.0f) {
+			g_MoveSpeed = 0.0f;
+		}
+		else
+		{
+			g_MoveSpeed = player->GetSpeed();
+		}
 	}
 	// 移動
 //	vPosition += vDirection * g_MoveSpeed;
-	
 	// 注視点計算
 
 	vAt = vPosition + vFront;
@@ -114,6 +134,7 @@ void Camera::Update()
 	XMStoreFloat3(&m_front, vFront);
 	XMStoreFloat3(&m_right, vRight);
 	XMStoreFloat3(&m_up, vUp);
+	XMStoreFloat3(&m_move, vDirection);
 
 }
 
@@ -138,4 +159,9 @@ void Camera::Draw()
 	/*D3DXMATRIX projectionMatrix;
 	D3DXMatrixPerspectiveFovLH(&projectionMatrix, 1.0f, (float)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0f, 1000.0f);
 	Renderer::SetProjectionMatrix(&projectionMatrix);*/
+}
+
+float Camera::GetSpeed()
+{
+	return g_MoveSpeed;
 }

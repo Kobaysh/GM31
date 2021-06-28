@@ -12,7 +12,7 @@
 #define NEARLY_ZERO_VALUE 0.01f
 #define ROTATION_SPEED (0.01f)
 #define ROTATION_VALUE (0.22f)
-#define MOVE_SPEED (0.1f)
+#define MOVE_SPEED (1.1f)
 
 bool GameObject::ms_IsVoidPS = false;
 

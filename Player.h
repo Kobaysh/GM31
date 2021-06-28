@@ -24,5 +24,6 @@ public:
 	void VoidDimension();
 	XMFLOAT3 GetMove()const { return m_moveVector; }
 	XMFLOAT3* GetFront() { return &m_front; }
+	float GetSpeed() { return m_speed; }
 };
 

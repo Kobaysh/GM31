@@ -10,6 +10,7 @@ private:
 	XMFLOAT3 m_up;
 	bool m_isActive;
 	XMFLOAT4X4 m_viewMatrix;
+	XMFLOAT3 m_move;
 public:
 	void Init();
 	void Uninit();
@@ -20,5 +21,7 @@ public:
 	XMFLOAT3* GetRight() { return &m_right; }
 	XMFLOAT3* GetUp() { return &m_up; }
 	XMFLOAT4X4* GetView() { return &m_viewMatrix; }
+	XMFLOAT3* GetMove() { return &m_move; }
+	float GetSpeed();
 };
 

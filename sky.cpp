@@ -48,33 +48,43 @@ void Sky::Uninit()
 
 void Sky::Update()
 {
-
-	
+	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
+	XMVECTOR vPos = XMLoadFloat3(&m_Position);
+	// カメラ移動に併せて移動
+	if (pCamera->GetIsActive()) {
+		XMVECTOR cameraFront = XMLoadFloat3(pCamera->GetMove());
+		cameraFront.m128_f32[1] = 0.0f;
+		vPos += cameraFront * pCamera->GetSpeed();
+	}
+	else {
+		vPos += XMLoadFloat3(&ManagerT::GetScene()->GetGameObject<Player>(GOT_OBJECT3D)->GetMove());
+	}
+	XMStoreFloat3(&m_Position, vPos);
 }
 
 void Sky::Draw()
 {
-	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
-	XMMATRIX mCamera = XMLoadFloat4x4(pCamera->GetView());
-	// カメラ移動に併せて移動
 
-	XMFLOAT4X4 fCamera;
-	XMStoreFloat4x4(&fCamera, mCamera);
-	XMFLOAT4X4 temp;
-	XMStoreFloat4x4(&temp, XMMatrixIdentity());
-	/*temp._41 = -fCamera._43;
+    
+
+//	XMFLOAT4X4 fCamera;
+//	XMStoreFloat4x4(&fCamera, mCamera);
+//	XMFLOAT4X4 temp;
+//	XMStoreFloat4x4(&temp, XMMatrixIdentity());
+//	/*temp._41 = -fCamera._43;
 //	temp._42 = -fCamera._42;
-	temp._43 = fCamera._41;*/
-
-	temp._41 = -fCamera._41;
-//	temp._42 = fCamera._42;
-	temp._43 = -fCamera._43;
-
-	mCamera = XMLoadFloat4x4(&temp);
-//	mCamera = XMLoadFloat4x4(&fCamera);
-
-//	mCamera *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-
+//	temp._43 = fCamera._41;*/
+//
+//	temp._41 = -fCamera._41;
+////	temp._42 = fCamera._42;
+//	temp._43 = -fCamera._43;
+//
+//	mCamera = XMLoadFloat4x4(&temp);
+////	mCamera = XMLoadFloat4x4(&fCamera);
+//
+////	mCamera *= XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+//	
+	
 	// 入力レイアウト設定
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
@@ -87,7 +97,7 @@ void Sky::Draw()
 //	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
-	XMMATRIX worldX = scaleX* rotX *mCamera *transX;
+	XMMATRIX worldX = scaleX* rotX /**mCamera*/ *transX;
 	Renderer::SetWorldMatrixX(&worldX);
 
 
