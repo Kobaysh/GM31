@@ -47,7 +47,8 @@ void Camera::Update()
 	XMVECTOR yZeroFront = XMLoadFloat3(&tempFront);
 	XMVector3Normalize(yZeroFront);
 	XMVECTOR vAt = XMLoadFloat3(&m_target);
-		if (m_isActive) {
+
+	if (m_isActive) {
 
 		if (KeyLogger_Press(KL_UP)) {
 			vDirection += +yZeroFront;
@@ -91,15 +92,15 @@ void Camera::Update()
 		}
 		vPosition += vDirection * g_MoveSpeed;
 	}
-		else {
-			Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
-			/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
-			vFront = pFront;*/
-			
-			vDirection += XMLoadFloat3(&player->GetMove());
-			// プレイヤーを追いかける
-			vPosition += vDirection;
-		}
+	else {
+		Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+		/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
+		vFront = pFront;*/
+
+		vDirection += XMLoadFloat3(&player->GetMove());
+		// プレイヤーを追いかける
+		vPosition += vDirection;
+	}
 	// 移動
 //	vPosition += vDirection * g_MoveSpeed;
 	

@@ -114,29 +114,29 @@ void Explosion::Draw()
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
 	Renderer::GetpDeviceContext()->Map(m_Vertexbuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
-	
-	VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
+	{
+		VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
-	vertex[0].Position	= XMFLOAT3(-1.0f, 1.0f, 0.0f);
-	vertex[0].Normal	= XMFLOAT3(0.0f, 1.0f, 0.0f);
-	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f,1.0f);
-	vertex[0].TexCoord = XMFLOAT2(x, y);
+		vertex[0].Position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
+		vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertex[0].TexCoord = XMFLOAT2(x, y);
 
-	vertex[1].Position = XMFLOAT3(1.0f, 1.0f, 0.0f);
-	vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[1].TexCoord = XMFLOAT2(x + fx, y);
+		vertex[1].Position = XMFLOAT3(1.0f, 1.0f, 0.0f);
+		vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertex[1].TexCoord = XMFLOAT2(x + fx, y);
 
-	vertex[2].Position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
-	vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[2].TexCoord = XMFLOAT2(x , y + fy);
+		vertex[2].Position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
+		vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertex[2].TexCoord = XMFLOAT2(x, y + fy);
 
-	vertex[3].Position = XMFLOAT3(1.0f, -1.0f, 0.0f);
-	vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[3].TexCoord = XMFLOAT2(x + fx, y + fy);
-
+		vertex[3].Position = XMFLOAT3(1.0f, -1.0f, 0.0f);
+		vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertex[3].TexCoord = XMFLOAT2(x + fx, y + fy);
+	}
 	Renderer::GetpDeviceContext()->Unmap(m_Vertexbuffer, 0);
 
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
