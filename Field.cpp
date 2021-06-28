@@ -13,17 +13,17 @@ void Field::Init()
 	vertexx[1].Position = XMFLOAT3(100.0f, 0.0f, 100.0f);
 	vertexx[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertexx[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
+	vertexx[1].TexCoord = XMFLOAT2(100.0f, 0.0f);
 
 	vertexx[2].Position = XMFLOAT3(-100.0f,0.0f, -100.0f);
 	vertexx[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertexx[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
+	vertexx[2].TexCoord = XMFLOAT2(0.0f, 100.0f);
 
 	vertexx[3].Position = XMFLOAT3(100.0f, 0.0f, -100.0f);
 	vertexx[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertexx[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertexx[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
+	vertexx[3].TexCoord = XMFLOAT2(100.0f, 100.0f);
 
 
 	// 頂点バッファ生成
