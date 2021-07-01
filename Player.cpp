@@ -6,6 +6,8 @@
 #include "scene.h"
 #include "keylogger.h"
 #include "bullet.h"
+#include "camera.h"
+#include "playerState.h"
 #include "player.h"
 
 

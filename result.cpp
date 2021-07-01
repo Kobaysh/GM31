@@ -1,15 +1,13 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
-#include "title.h"
+#include "result.h"
 
-
-void Title::Init()
+void Result::Init()
 {
-	
 }
 
-void Title::Uninit()
+void Result::Uninit()
 {
 	Scene::Uninit();
 }

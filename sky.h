@@ -5,7 +5,7 @@ class Sky : public GameObject
 {
 private:
 
-	Model* m_Model;
+	class Model* m_Model;
 
 	float m_speed;
 

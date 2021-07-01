@@ -1,13 +1,16 @@
 #include "main.h"
 #include "renderer.h"
 #include "scene.h"
+#include "title.h"
+#include "game.h"
+#include "result.h"
 #include "manager.h"
 Scene* ManagerT::m_Scene;
 
 void ManagerT::Init()
 {
 	Renderer::Init();
-	m_Scene = new Scene();
+	m_Scene = new Game();
 	m_Scene->Init();
 }
 

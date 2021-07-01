@@ -1,13 +1,14 @@
 #pragma once
 #include "gameObject.h"
+#include "playerState.h"
 
 class Player : public GameObject
 {
 private:
 
 
-
-	Model* m_Model;
+	class PlayerState m_playerState;
+	class Model* m_Model;
 
 	float m_speed;
 

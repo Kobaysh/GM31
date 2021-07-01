@@ -3,16 +3,6 @@
 #include <vector>
 #include <typeinfo>
 #include "gameObject.h"
-#include "polygon2D.h"
-#include "camera.h"
-#include "field.h"
-#include "model.h"
-#include "player.h"
-#include "enemy.h"
-#include "bullet.h"
-#include "explosion.h"
-#include "sky.h"
-#include "rock.h"
 
 
 class Scene
@@ -63,46 +53,8 @@ public:
 		return objects;
 	}
 
-	virtual void Init() {
-		Bullet::Load();
-		AppendGameObject<Camera>(GameObject::GOT_CAMERA);
-		AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
-		AppendGameObject<Sky>(GameObject::GOT_OBJECT3D);
-		AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
-		AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);
-		for (int i = 0; i < 20; i++){
-			XMFLOAT3 pos;
-			XMFLOAT3 scl;
-			scl.x = scl.y = scl.z = (float)rand() / RAND_MAX * 3.0f + 2.0f;
-			pos.x = (float)rand() / RAND_MAX * 100.f - 100.f;
-			pos.z = (float)rand() / RAND_MAX * 100.f - 100.f;
-			pos.y = 0.0f + scl.y / 2;
-			Rock* rock = AppendGameObject<Rock>(GameObject::GOT_OBJECT3D);
-			rock->SetPosition(pos);
-			rock->SetRotation(pos);
-			rock->SetScale(scl);
-		}	
-		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
-		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
-		AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
-		//Polygon2D* polygon2D = new Polygon2D();
-		//AddGameObject(polygon2D, GameObject::GOT_OBJECT2D);
-		//Camera* camera = new Camera();
-		//AddGameObject(camera, GameObject::GOT_CAMERA);
-		//
-		//Field* field = new Field();
-		//AddGameObject(field, GameObject::GOT_OBJECT3D);
-		//Player* player = new Player();
-		//AddGameObject(player, GameObject::GOT_OBJECT3D);
-		//player->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
-		//Enemy* enemy = new Enemy();
-		//AddGameObject(enemy, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
-		//Enemy* enemy02 = new Enemy();
-		//AddGameObject(enemy02, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
-		//Enemy* enemy03 = new Enemy();
-		//AddGameObject(enemy03, GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
-		
-	}
+	virtual void Init() = 0;
+
 	virtual void Uninit() {
 		for (int i = 0; i < GameObject::GOT_MAX; i++) {
 			for (GameObject* object : m_GameObject[i]) {
@@ -111,8 +63,6 @@ public:
 			}
 			m_GameObject[i].clear();	// リストのクリア
 		}
-		Bullet::UnLoad();
-		Model::Uninit();
 	}
 	virtual void Update() {
 		for (int i = 0; i < GameObject::GOT_MAX; i++) {

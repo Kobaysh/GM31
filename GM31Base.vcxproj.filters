@@ -107,6 +107,12 @@
     <ClInclude Include="playerState.h">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -183,6 +189,12 @@
     </ClCompile>
     <ClCompile Include="playerState.cpp">
       <Filter>ソース ファイル\game_object\player</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
