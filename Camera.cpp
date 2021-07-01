@@ -28,6 +28,7 @@ void Camera::Uninit()
 
 void Camera::Update()
 {
+	
 	if (KeyLogger_Trigger(KL_CAMERA)) {
 		if (!m_isActive) m_isActive = true;
 		else m_isActive = false;
@@ -50,7 +51,7 @@ void Camera::Update()
 	XMVector3Normalize(yZeroFront);
 	XMVECTOR vAt = XMLoadFloat3(&m_target);
 
-	if (m_isActive) {
+	if (m_isActive && m_movable) {
 
 		if (KeyLogger_Press(KL_UP)) {
 			vDirection += +yZeroFront;
@@ -103,7 +104,7 @@ void Camera::Update()
 			g_MoveSpeed = CAMERA_SPEED;
 		}
 	}
-	else {
+	else if(!m_isActive && m_movable) {
 		Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 		/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
 		vFront = pFront;*/
@@ -121,6 +122,9 @@ void Camera::Update()
 		{
 			g_MoveSpeed = player->GetSpeed();
 		}
+	}
+	else {
+		// ƒJƒƒ‰‚ª“®‚©‚¹‚È‚¢ó‘Ô
 	}
 	// ˆÚ“®
 //	vPosition += vDirection * g_MoveSpeed;

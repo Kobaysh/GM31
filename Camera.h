@@ -9,9 +9,12 @@ private:
 	XMFLOAT3 m_right;
 	XMFLOAT3 m_up;
 	bool m_isActive;
+	bool m_movable;
 	XMFLOAT4X4 m_viewMatrix;
 	XMFLOAT3 m_move;
 public:
+	Camera():m_movable(true){}
+	Camera(bool movable):m_movable(movable){}
 	void Init();
 	void Uninit();
 	void Update();

@@ -24,6 +24,9 @@
     <Filter Include="ソース ファイル\game_object\player">
       <UniqueIdentifier>{54b3f55a-724b-42af-bd14-bc95a46b9fd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\scene_inheritance">
+      <UniqueIdentifier>{2258f1d7-3e09-4808-99ea-74586eb284c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -57,9 +60,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="title.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="renderer.h">
@@ -107,11 +107,17 @@
     <ClInclude Include="playerState.h">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClInclude>
-    <ClInclude Include="result.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>ソース ファイル\Scene</Filter>
+      <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
+    </ClInclude>
+    <ClInclude Include="titleLogo.h">
+      <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +138,6 @@
     </ClCompile>
     <ClCompile Include="wall.cpp">
       <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\system</Filter>
@@ -191,10 +194,16 @@
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
+      <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
     </ClCompile>
     <ClCompile Include="result.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
+      <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
+    </ClCompile>
+    <ClCompile Include="titleLogo.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

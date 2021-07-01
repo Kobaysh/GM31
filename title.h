@@ -1,11 +1,12 @@
 #pragma once
 
-#include "singleton.h"
+
 #include "scene.h"
-class Title:SingletonT<Title>, Scene
+class Title:public Scene
 {
 public:
 	void Init() override;
 	void Uninit() override;
+	void Update() override;
 };
 

@@ -6,6 +6,7 @@
 
 #include "main.h"
 
+#include "texture.h"
 #include "model.h"
 
 
@@ -264,7 +265,7 @@ void Model::Load(int modelId)
 	delete[] _Model.IndexArray;
 	delete[] _Model.SubsetArray;
 	model->m_isLoaded = true;
-
+//	Texture::AllLoad();
 }
 
 void Model::AllLoad()
@@ -380,6 +381,7 @@ void Model::AllRelease()
 	for (Model* model : m_ModelList) {
 		model->Unload();
 	}
+	m_ModelList.clear();
 }
 
 int Model::SetModelLoadfile(std::string pFileName)
@@ -962,7 +964,7 @@ void Model::SLoadObj(std::string FileName, MODEL * Model)
 					Model->SubsetArray[sc].Material.Material = materialArray[i].Material;
 					strcpy(Model->SubsetArray[sc].Material.TextureName, materialArray[i].TextureName);
 					strcpy(Model->SubsetArray[sc].Material.Name, materialArray[i].Name);
-
+					Texture::SetTextureLoadFile(Model->SubsetArray[sc].Material.TextureName);
 					break;
 				}
 			}
@@ -1134,6 +1136,7 @@ void Model::SLoadMaterial(std::string FileName, MODEL_MATERIAL ** MaterialArray,
 			strcat(path, str);
 
 			strcat(materialArray[mc].TextureName, path);
+			Texture::SetTextureLoadFile(materialArray[mc].TextureName);
 		}
 	}
 

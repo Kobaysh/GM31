@@ -62,6 +62,7 @@ private:
 
 	std::string m_FileName;
 	static std::list<Model*> m_ModelList;
+	int m_textureId;
 //	static std::vector<Model> m_ModelList;
 
 public:

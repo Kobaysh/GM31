@@ -9,6 +9,8 @@
 
 #define FILENAME ("asset\\model\\bullet\\kidantorus.obj")
 
+#define	BULLET_MAX_RECT (100.0f)
+
 int Bullet::ms_modelId = INVALID_MODEL_ID;
 
 Bullet::Bullet()
@@ -70,8 +72,8 @@ void Bullet::Update()
 	vPosition += vDirection * m_speed;
 	XMStoreFloat3(&m_Position, vPosition);
 
-	if (m_Position.z > 10.0f || m_Position.z < -10.0f ||
-		m_Position.x > 10.0f || m_Position.x < -10.0f) {
+	if (m_Position.z > BULLET_MAX_RECT || m_Position.z < -BULLET_MAX_RECT ||
+		m_Position.x > BULLET_MAX_RECT || m_Position.x < -BULLET_MAX_RECT) {
 		SetDead();
 		// 爆発エフェクト
 		scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);

@@ -4,34 +4,43 @@
 #include "title.h"
 #include "game.h"
 #include "result.h"
+#include "keylogger.h"
 #include "manager.h"
-Scene* ManagerT::m_Scene;
+Scene* ManagerT::m_Scene = nullptr;
 
 void ManagerT::Init()
 {
+	KeyLogger_Init();
 	Renderer::Init();
-	m_Scene = new Game();
-	m_Scene->Init();
+//	SetScene<Title>();
+	SetScene<Game>();
+//	SetScene<Result>();
 }
 
 void ManagerT::Uninit()
 {
-	m_Scene->Uninit();
-	delete m_Scene;
+	if (m_Scene) {
+		m_Scene->Uninit();
+		delete m_Scene;
+	}
 	Renderer::Uninit();
+	KeyLogger_Fin();
 }
 
 void ManagerT::Update()
 {
-	m_Scene->Update();
+	KeyLogger_Update();
+	if (m_Scene) {
+		m_Scene->Update();
+	}
 }
 
 void ManagerT::Draw()
 {
 	Renderer::Begin();
-	
-	m_Scene->Draw();
-
+	if (m_Scene) {
+		m_Scene->Draw();
+	}
 	Renderer::End();
 }
 

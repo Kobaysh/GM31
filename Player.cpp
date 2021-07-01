@@ -1,10 +1,9 @@
 #include "main.h"
-
 #include "renderer.h"
-#include "model.h"
 #include "manager.h"
 #include "scene.h"
 #include "keylogger.h"
+#include "model.h"
 #include "bullet.h"
 #include "camera.h"
 #include "playerState.h"
@@ -32,6 +31,7 @@ void Player::Init()
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale		= XMFLOAT3(1.0f, 1.0f, 1.0f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -52,7 +52,7 @@ void Player::Uninit()
 
 void Player::Update()
 {
-
+	Jump();
 	Move();
 	Shoot();
 	VoidDimension();
@@ -89,6 +89,16 @@ void Player::Move()
 	vPositon = XMLoadFloat3(&m_Position);
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVECTOR direction = vFront;
+
+	if (m_isjump) {
+		XMFLOAT3 temp = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		temp.y += m_jumpForce;
+		m_jumpForce -= 0.98f;
+		direction += XMLoadFloat3(&temp);
+		if (m_Position.y <= 0.0f) {
+			m_isjump = false;
+		}
+	}
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
 		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		if (KeyLogger_Press(KL_UP)) {
@@ -145,6 +155,14 @@ void Player::Move()
 	vPositon += direction * m_speed;
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
 	XMStoreFloat3(&m_Position, vPositon);
+}
+
+void Player::Jump()
+{
+	if(KeyLogger_Trigger(KL_FIRE)) {
+		m_jumpForce = 5.0f;
+		m_isjump = true;
+	}
 }
 
 void Player::Shoot()

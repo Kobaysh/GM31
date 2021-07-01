@@ -3,7 +3,6 @@
 #include "main.h"
 
 #include "keyboard.h"
-#include "keylogger.h"
 #include "manager.h"
 
 const char* CLASS_NAME = "AppClass";
@@ -66,7 +65,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 //	ManagerT::singleton();
 	Keyboard_Initialize();
-	KeyLogger_Init();
 	ManagerT::Init();
 
 
@@ -110,7 +108,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 			//	Manager::Update();
 			//	Manager::Draw();
-				KeyLogger_Update();
 				ManagerT::Update();
 				
 				ManagerT::Draw();
@@ -124,7 +121,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 //	Manager::Uninit();
 	ManagerT::Uninit();
-	KeyLogger_Fin();
 	return (int)msg.wParam;
 }
 

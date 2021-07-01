@@ -13,10 +13,13 @@ private:
 	float m_speed;
 
 	XMFLOAT3 m_front;
+	XMFLOAT3 m_up;
+
 	XMFLOAT3 m_moveVector;
 	int m_sign;
 
-
+	bool m_isjump = false;
+	float m_jumpForce;
 
 	int m_nowHp;					// ヒットポイント
 	int m_maxHp;					// Maxヒットポイント
@@ -41,6 +44,7 @@ public:
 	void Draw();
 
 	void Move();
+	void Jump();
 	void Shoot();
 	void VoidDimension();
 	XMFLOAT3 GetMove()const { return m_moveVector; }
