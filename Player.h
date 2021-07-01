@@ -5,6 +5,8 @@ class Player : public GameObject
 {
 private:
 
+
+
 	Model* m_Model;
 
 	float m_speed;
