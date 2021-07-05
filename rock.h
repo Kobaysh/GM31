@@ -13,6 +13,11 @@ private:
 	XMFLOAT3 m_moveVector;
 	int m_sign;
 
+	static ID3D11VertexShader* m_VertexShader;
+	static ID3D11PixelShader* m_PixelShader;
+	static ID3D11InputLayout* m_VertexLayout;
+
+
 public:
 	void Init();
 	void Uninit();
@@ -21,4 +26,3 @@ public:
 	XMFLOAT3 GetMove()const { return m_moveVector; }
 	XMFLOAT3* GetFront() { return &m_front; }
 };
-

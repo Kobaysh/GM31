@@ -90,17 +90,9 @@ void Player::Move()
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVECTOR direction = vFront;
 
-	if (m_isjump) {
-		XMFLOAT3 temp = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		temp.y += m_jumpForce;
-		m_jumpForce -= 0.98f;
-		direction += XMLoadFloat3(&temp);
-		if (m_Position.y <= 0.0f) {
-			m_isjump = false;
-		}
-	}
+	
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
-		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+//		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		if (KeyLogger_Press(KL_UP)) {
 			XMFLOAT3 temp = *pCamera->GetFront();
 			temp.y = 0.0f;
@@ -125,7 +117,9 @@ void Player::Move()
 	else{
 		m_speed = 0.0f;
 	}
-	direction = XMVector3Normalize(direction);
+
+	direction = XMVector3Normalize(direction);	
+
 	XMVECTOR cross = XMVector3Cross(vFront, direction);
 	m_sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
 
@@ -153,6 +147,23 @@ void Player::Move()
 	
 
 	vPositon += direction * m_speed;
+
+	if (m_isjump) {
+		XMVECTOR tempDir = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+		XMFLOAT3 temp = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		temp.y += m_jumpForce;
+		m_jumpForce -= 0.098f * 0.5f;
+	
+		tempDir += XMVector3Normalize(XMLoadFloat3(&temp));
+		vPositon += tempDir /** m_jumpForce*/;
+		if (vPositon.m128_f32[1] <= 0.0f) {
+			m_isjump = false;
+		}
+	}
+	if (vPositon.m128_f32[1] - m_Scale.y <= 0.0f) {
+		vPositon.m128_f32[1] = m_Scale.y + 0.0f;	// 接地面+サイズ
+	}
+
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
 	XMStoreFloat3(&m_Position, vPositon);
 }
@@ -160,7 +171,8 @@ void Player::Move()
 void Player::Jump()
 {
 	if(KeyLogger_Trigger(KL_FIRE)) {
-		m_jumpForce = 5.0f;
+		if (m_isjump) return;
+		m_jumpForce = 1.0f;
 		m_isjump = true;
 	}
 }

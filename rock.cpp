@@ -14,6 +14,10 @@
 #define ROTATION_VALUE (0.22f)
 #define MOVE_SPEED (0.1f)
 
+ID3D11VertexShader* Rock::m_VertexShader = nullptr;
+ID3D11PixelShader* Rock::m_PixelShader = nullptr;
+ID3D11InputLayout* Rock::m_VertexLayout = nullptr;
+
 
 void Rock::Init()
 {
@@ -31,10 +35,12 @@ void Rock::Init()
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_speed = MOVE_SPEED;
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
-
-	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
-
+	if (!m_VertexShader) {
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	}
+	if (!m_PixelShader) {
+		Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	}
 }
 
 void Rock::Uninit()

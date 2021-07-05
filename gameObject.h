@@ -65,5 +65,8 @@ public:
 	void SetPShader(const char* pFileName){
 		Renderer::CreatePixelShader(&m_PixelShader, pFileName);
 	}
+	void SetVShader(const char* pFileName) {
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, pFileName);
+	}
 };
 
