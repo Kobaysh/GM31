@@ -26,5 +26,7 @@ public:
 	XMFLOAT4X4* GetView() { return &m_viewMatrix; }
 	XMFLOAT3* GetMove() { return &m_move; }
 	float GetSpeed();
+
+	void ChangeDir(float angle, bool isRight);
 };
 

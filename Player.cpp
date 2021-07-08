@@ -16,6 +16,7 @@
 #define ROTATION_VALUE (0.22f)
 #define MOVE_SPEED (0.1f)
 
+
 bool GameObject::ms_IsVoidPS = false;
 
 
@@ -57,6 +58,7 @@ void Player::Update()
 {
 	Jump();
 	Move();
+//	ChangeCameraDir();
 	Shoot();
 	VoidDimension();
 }
@@ -153,12 +155,12 @@ void Player::Move()
 
 	if (m_isjump) {
 		XMVECTOR tempDir = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-		XMFLOAT3 temp = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		temp.y += m_jumpForce;
-		m_jumpForce -= 0.098f * 0.5f;
+		XMFLOAT3 temp = m_up;
+
 	
-		tempDir += XMVector3Normalize(XMLoadFloat3(&temp));
-		vPositon += tempDir /** m_jumpForce*/;
+		tempDir = XMVector3Normalize(XMLoadFloat3(&temp));
+		vPositon += tempDir * m_jumpForce;
+		m_jumpForce -= GRAVITY;
 		if (vPositon.m128_f32[1] <= 0.0f) {
 			m_isjump = false;
 		}
@@ -175,7 +177,7 @@ void Player::Jump()
 {
 	if(KeyLogger_Trigger(KL_JUMP)) {
 		if (m_isjump) return;
-		m_jumpForce = 1.0f;
+		m_jumpForce = 0.5f;
 		m_isjump = true;
 	}
 }
@@ -187,6 +189,19 @@ void Player::Shoot()
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 		Bullet::Create(m_Position, m_front, 0.3f);
 		m_shotSE->Play(0.1f);
+	}
+}
+
+void Player::ChangeCameraDir()
+{
+	Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
+	if(!camera->GetIsActive()){
+	if (KeyLogger_Press(KL_TURN_LEFT)) {
+		camera->ChangeDir(-0.02f, false);
+	}
+	if (KeyLogger_Press(KL_TURN_RIGHT)) {
+		camera->ChangeDir(0.02f, true);
+	}
 	}
 }
 

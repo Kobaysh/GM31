@@ -9,6 +9,7 @@
 static float g_RoutationalSpeed;
 static float g_MoveSpeed;
 #define CAMERA_SPEED (0.2f)
+#define AT_LENGTH (1.0f)
 
 void Camera::Init()
 {
@@ -130,7 +131,7 @@ void Camera::Update()
 //	vPosition += vDirection * g_MoveSpeed;
 	// íçéãì_åvéZ
 
-	vAt = vPosition + vFront;
+	vAt = vPosition + vFront * AT_LENGTH;
 
 	// ïœêîï€ë∂
 	XMStoreFloat3(&m_target, vAt);
@@ -169,3 +170,46 @@ float Camera::GetSpeed()
 {
 	return g_MoveSpeed;
 }
+
+void  Camera::ChangeDir(float angle, bool isRight) {
+
+	XMVECTOR vPositon = XMLoadFloat3(&m_Position);
+	
+	XMVECTOR vFront = XMLoadFloat3(&m_front);
+	XMVector3Normalize(vFront);
+	XMVECTOR vRight = XMLoadFloat3(&m_right);
+	XMVector3Normalize(vRight);
+	XMVECTOR vUp = XMLoadFloat3(&m_up);
+	XMVector3Normalize(vUp);	
+
+	XMVECTOR vAt = vPositon + vFront * AT_LENGTH;
+
+
+	XMMATRIX mtxR = XMMatrixRotationY(angle);
+	vFront = XMVector3TransformNormal(vFront, mtxR);
+	vRight = XMVector3TransformNormal(vRight, mtxR);
+	vUp = XMVector3Cross(vFront, vRight);
+	
+	vPositon = XMLoadFloat3(&m_target) - vFront * AT_LENGTH;
+
+	isRight = isRight;
+	// if(isRight){
+	// XMMATRIX mtxR = XMMatrixRotationY(angle);
+	// 		vFront = XMVector3TransformNormal(vFront, mtxR);
+	// 		vRight = XMVector3TransformNormal(vRight, mtxR);
+	// 		vUp = XMVector3Cross(vFront, vRight);
+	// }
+	// else{
+	// XMMATRIX mtxR = XMMatrixRotationY(angle);
+	// 		vFront = XMVector3TransformNormal(vFront, mtxR);
+	// 		vRight = XMVector3TransformNormal(vRight, mtxR);
+	// 		vUp = XMVector3Cross(vFront, vRight);
+	// }
+	
+
+	XMStoreFloat3(&m_front, vFront);
+	XMStoreFloat3(&m_right, vRight);
+	XMStoreFloat3(&m_up, vUp);
+	XMStoreFloat3(&m_Position, vPositon);
+}
+

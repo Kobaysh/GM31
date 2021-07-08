@@ -2,6 +2,8 @@
 #include "main.h"
 #include "renderer.h"
 
+#define GRAVITY (0.098f * 0.3f)
+
 class GameObject
 {
 public:
