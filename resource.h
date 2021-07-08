@@ -8,6 +8,8 @@ class Resource
 protected:
 	std::string m_FileName;
 	static std::list<Resource*> m_pool;
+//	static std::map<Resource*> m_poolMap;
+	
 public:
 	virtual void Load(std::string FileName) = 0;
 	virtual void UnLoad() = 0;

@@ -12,14 +12,14 @@
 // http://go.microsoft.com/fwlink/?LinkId=248929
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //--------------------------------------------------------------------------------------
-#ifndef HAL_YOUHEI_KEYBOARD_H
-#define HAL_YOUHEI_KEYBOARD_H
+#ifndef _KEYBOARD_H
+#define _KEYBOARD_H
 #pragma once
 
 
 #include <windows.h>
 #include <memory>
-#include <d3dx9.h>
+//#include <d3dx9.h>
 
 
 // ÉLÅ[óÒãì

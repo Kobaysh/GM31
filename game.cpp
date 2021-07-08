@@ -32,7 +32,7 @@ void Game::Init()
 		XMFLOAT3 pos;
 		XMFLOAT3 scl;
 		scl.x = scl.y = scl.z = (float)rand() / RAND_MAX * 3.0f + 2.0f;
-		pos.x = (float)rand() / RAND_MAX * 100.f - 100.f;
+		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
 		pos.z = (float)rand() / RAND_MAX * 100.f - 100.f;
 		pos.y = 0.0f + scl.y / 2;
 		Rock* rock = AppendGameObject<Rock>(GameObject::GOT_OBJECT3D);
@@ -60,8 +60,13 @@ void Game::Uninit()
 void Game::Update()
 {
 	Scene::Update();
+
 	if (KeyLogger_Trigger(KL_RESET)) {	// Rキー?
+		std::vector<Enemy*>  enemy = Scene::GetGameObjects<Enemy>();
+		if(enemy.empty()){
+
 		// シーン遷移
 		ManagerT::SetScene<Result>();
+		}
 	}
 }

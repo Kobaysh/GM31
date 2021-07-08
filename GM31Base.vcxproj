@@ -169,6 +169,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="katana.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="keylogger.h" />
     <ClInclude Include="main.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="katana.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="keylogger.cpp" />
     <ClCompile Include="main.cpp" />

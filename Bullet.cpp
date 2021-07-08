@@ -65,9 +65,9 @@ void Bullet::Uninit()
 		delete m_model;
 		m_model = NULL;
 	}*/
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	// m_VertexLayout->Release();
+	// m_VertexShader->Release();
+	// m_PixelShader->Release();
 }
 
 void Bullet::Update()
@@ -135,6 +135,18 @@ void Bullet::Load()
 void Bullet::UnLoad()
 {
 	Model::Release(ms_modelId);
+	if (m_VertexLayout) {
+		m_VertexLayout->Release();
+		m_VertexLayout = nullptr;
+	}
+	if (m_VertexLayout) {
+		m_VertexShader->Release();
+		m_VertexShader = nullptr;
+	}
+	if (m_VertexLayout) {
+			m_PixelShader->Release();
+			m_PixelShader = nullptr;
+	}
 }
 
 Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)
