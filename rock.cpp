@@ -8,12 +8,6 @@
 #include "bullet.h"
 #include "rock.h"
 
-
-#define NEARLY_ZERO_VALUE 0.01f
-#define ROTATION_SPEED (0.01f)
-#define ROTATION_VALUE (0.22f)
-#define MOVE_SPEED (0.1f)
-
 ID3D11VertexShader* Rock::m_VertexShader = nullptr;
 ID3D11PixelShader* Rock::m_PixelShader = nullptr;
 ID3D11InputLayout* Rock::m_VertexLayout = nullptr;
@@ -33,7 +27,6 @@ void Rock::Init()
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale		= XMFLOAT3(3.0f, 3.0f, 3.0f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
-	m_speed = MOVE_SPEED;
 
 	if (!m_VertexShader) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -49,9 +42,18 @@ void Rock::Uninit()
 	//delete m_Model;
 
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	if (m_VertexLayout) {
+		m_VertexLayout->Release();
+		m_VertexLayout = nullptr;
+	}
+	if (m_VertexLayout) {
+		m_VertexShader->Release();
+		m_VertexShader = nullptr;
+	}
+	if (m_VertexLayout) {
+			m_PixelShader->Release();
+			m_PixelShader = nullptr;
+	}
 }
 
 void Rock::Update()
