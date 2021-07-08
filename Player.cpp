@@ -6,6 +6,7 @@
 #include "model.h"
 #include "bullet.h"
 #include "camera.h"
+#include "audio.h"
 #include "playerState.h"
 #include "player.h"
 
@@ -38,6 +39,8 @@ void Player::Init()
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 
+	m_shotSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	m_shotSE->Load("asset\\audio\\se\\shot.wav");
 }
 
 void Player::Uninit()
@@ -170,7 +173,7 @@ void Player::Move()
 
 void Player::Jump()
 {
-	if(KeyLogger_Trigger(KL_FIRE)) {
+	if(KeyLogger_Trigger(KL_JUMP)) {
 		if (m_isjump) return;
 		m_jumpForce = 1.0f;
 		m_isjump = true;
@@ -181,8 +184,9 @@ void Player::Shoot()
 {
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetIsActive()) return;
 
-	if (KeyLogger_Trigger(KL_FIRE)) {
+	if (KeyLogger_Trigger(KL_ATTACK)) {
 		Bullet::Create(m_Position, m_front, 0.3f);
+		m_shotSE->Play(0.1f);
 	}
 }
 

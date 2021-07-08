@@ -5,17 +5,28 @@
 #include "keylogger.h"
 #include "gameObject.h"
 #include "polygon2D.h"
+#include "resultLogo.h"
 
 
+#include "title.h"
 #include "result.h"
 
 void Result::Init()
 {
-	AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);
+	AppendGameObject<ResultLogo>(GameObject::GOT_OBJECT2D);
 
 }
 
 void Result::Uninit()
 {
 	Scene::Uninit();
+}
+
+void Result::Update()
+{
+	Scene::Update();
+	if (KeyLogger_Trigger(KL_DICISION)) {
+		// ÉVÅ[ÉìëJà⁄
+		ManagerT::SetScene<Title>();
+	}
 }

@@ -12,6 +12,10 @@
 #define	BULLET_MAX_RECT (100.0f)
 
 int Bullet::ms_modelId = INVALID_MODEL_ID;
+ID3D11VertexShader*		Bullet::m_VertexShader = nullptr;
+ID3D11PixelShader*		Bullet::m_PixelShader = nullptr;
+ID3D11InputLayout*		Bullet::m_VertexLayout = nullptr;
+
 
 Bullet::Bullet()
 {
@@ -37,15 +41,18 @@ void Bullet::Init()
 	m_model->Load(FILENAME);*/
 	/*ms_modelId = Model::SetModelLoadfile(FILENAME);
 	Model::AllLoad();*/
+	if (!m_VertexShader) {
 
-
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
-	if (ms_IsVoidPS) {
-		Renderer::CreatePixelShader(&m_PixelShader, "LightingVoidPS.cso");
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 	}
-	else
-	{
-		Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	if (!m_PixelShader) {
+		if (ms_IsVoidPS) {
+			Renderer::CreatePixelShader(&m_PixelShader, "LightingVoidPS.cso");
+		}
+		else
+		{
+			Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+		}
 	}
 //	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 

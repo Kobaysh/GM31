@@ -9,6 +9,7 @@ private:
 
 	class PlayerState m_playerState;
 	class Model* m_Model;
+	class Audio* m_shotSE;
 
 	float m_speed;
 
@@ -24,8 +25,7 @@ private:
 	int m_nowHp;					// ヒットポイント
 	int m_maxHp;					// Maxヒットポイント
 	int m_attackPower;				// 攻め力
-	int m_nowTrunk;					// 体幹
-	int m_maxtrunk;					// Max体幹
+
 	int m_soundVolume;				// プレイヤーの出す音
 	int m_nowWepon;					// 現在装備中の忍び義手の種類(番号)
 	

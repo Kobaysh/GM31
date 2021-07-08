@@ -2,6 +2,7 @@
 #include "renderer.h"
 #include "titleLogo.h"
 
+#define FILENAME ("asset/texture/kusodekatitle.png")
 
 void TitleLogo::Init()
 {
@@ -68,7 +69,7 @@ void TitleLogo::Init()
 	D3DX11CreateShaderResourceViewFromFile(
 	//	Renderer::GetDevice(),
 		Renderer::GetpDevice().Get(),
-		"asset/texture/grass02.jpg",
+		FILENAME,
 		NULL,
 		NULL,
 		&m_Texture,

@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="audio.h" />
     <ClInclude Include="billboard.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="resultLogo.h" />
     <ClInclude Include="rock.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shaderManager.h" />
@@ -190,9 +192,11 @@
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="titleLogo.h" />
+    <ClInclude Include="trunk.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="audio.cpp" />
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -213,6 +217,7 @@
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resource.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="resultLogo.cpp" />
     <ClCompile Include="rock.cpp" />
     <ClCompile Include="shaderManager.cpp" />
     <ClCompile Include="singleton.cpp" />

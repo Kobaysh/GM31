@@ -177,7 +177,7 @@ void Sky::Shoot()
 {
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetIsActive()) return;
 
-	if (KeyLogger_Trigger(KL_FIRE)) {
+	if (KeyLogger_Trigger(KL_JUMP)) {
 		Bullet::Create(m_Position, m_front, 0.3f);
 	}
 }

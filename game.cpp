@@ -14,6 +14,9 @@
 #include "explosion.h"
 #include "sky.h"
 #include "rock.h"
+#include "audio.h"
+#include "keylogger.h"
+#include "result.h"
 
 #include "game.h"
 
@@ -40,6 +43,11 @@ void Game::Init()
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
+
+	Audio* bgm = AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	bgm->Load("asset\\audio\\bgm\\bgm.wav");
+	
+	bgm->Play(0.1f , true);
 }
 
 void Game::Uninit()
@@ -47,4 +55,13 @@ void Game::Uninit()
 	Scene::Uninit();	// 継承元クラスのメソッド呼び出し(staticメソッドと書き方同じ)
 	Bullet::UnLoad();
 	Model::Uninit();
+}
+
+void Game::Update()
+{
+	Scene::Update();
+	if (KeyLogger_Trigger(KL_RESET)) {	// Rキー?
+		// シーン遷移
+		ManagerT::SetScene<Result>();
+	}
 }

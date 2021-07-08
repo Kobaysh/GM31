@@ -5,6 +5,7 @@
 #include "game.h"
 #include "result.h"
 #include "keylogger.h"
+#include "audio.h"
 #include "manager.h"
 Scene* ManagerT::m_Scene = nullptr;
 
@@ -12,9 +13,14 @@ void ManagerT::Init()
 {
 	KeyLogger_Init();
 	Renderer::Init();
+	Audio::InitMaster();
+
+
 //	SetScene<Title>();
 	SetScene<Game>();
 //	SetScene<Result>();
+
+	
 }
 
 void ManagerT::Uninit()
@@ -23,6 +29,7 @@ void ManagerT::Uninit()
 		m_Scene->Uninit();
 		delete m_Scene;
 	}
+	Audio::UninitMaster();
 	Renderer::Uninit();
 	KeyLogger_Fin();
 }

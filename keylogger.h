@@ -24,7 +24,7 @@ typedef enum KeyloggerKey_tag {
 	KL_TURN_UP,					// 上回転
 	KL_TURN_DOWN,				// 下回転
 	KL_WIRE,					// ワイヤフレーム切り替え
-	KL_FIRE,						// サブ
+	KL_JUMP,						// サブ
 	KL_CAMERA,					// カメラ切り替え
 	KL_TURBO,					// ターボ
 	KL_MAX,						// 最大数

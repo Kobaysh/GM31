@@ -21,4 +21,8 @@ private:
 	XMFLOAT3 m_direction;
 	float m_speed;
 	static  int ms_modelId;
+
+	static ID3D11VertexShader*		m_VertexShader;
+	static ID3D11PixelShader*		m_PixelShader;
+	static ID3D11InputLayout*		m_VertexLayout;
 };

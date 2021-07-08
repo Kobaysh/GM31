@@ -51,7 +51,7 @@ static const Keyboard_Keys g_KKs[KL_MAX] = {
 	KK_UP,		//KL_TURN_UP,					// 上回転
 	KK_DOWN,	//KL_TURN_DOWN,					// 下回転
 	KK_L,		//KL_WIRE						// ワイヤフレーム切り替え
-	KK_SPACE,	//KL_FIRE,						// サブ
+	KK_SPACE,	//KL_JUMP,						// サブ
 	KK_D0,		//KL_CAMERA,					// カメラ切り替え
 	KK_LEFTSHIFT //	KL_TURBO,					// ターボ
 	//KL_MAX
