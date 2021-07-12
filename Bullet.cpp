@@ -139,11 +139,11 @@ void Bullet::UnLoad()
 		m_VertexLayout->Release();
 		m_VertexLayout = nullptr;
 	}
-	if (m_VertexLayout) {
+	if (m_VertexShader) {
 		m_VertexShader->Release();
 		m_VertexShader = nullptr;
 	}
-	if (m_VertexLayout) {
+	if (m_PixelShader) {
 			m_PixelShader->Release();
 			m_PixelShader = nullptr;
 	}

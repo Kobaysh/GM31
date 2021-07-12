@@ -1,14 +1,19 @@
 #include "main.h"
 #include "renderer.h"
+#include "manager.h"
+#include "Scene.h"
 #include "model.h"
+#include "audio.h"
 #include "enemy.h"
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
 
 void Enemy::Init()
 {
-	m_model = new Model();
-	m_model->Load(FILENAME);
+	// m_model = new Model();
+	// m_model->Load(FILENAME);
+	m_modelId = Model::SetModelLoadfile(FILENAME);
+	Model::Load(m_modelId);
 	m_Position = XMFLOAT3(2.0f, 1.0f, 1.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
@@ -17,12 +22,16 @@ void Enemy::Init()
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 	
+	m_explosionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	m_explosionSE->Load("asset\\audio\\se\\small_explosion1.wav");
 }
 
 void Enemy::Uninit()
 {
-	m_model->Unload();
-	delete m_model;
+	// m_model->Unload();
+	// delete m_model;
+
+	m_explosionSE->Play(0.1f);
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
@@ -51,5 +60,6 @@ void Enemy::Draw()
 	Renderer::SetWorldMatrixX(&worldX);
 
 
-	m_model->Draw();
+//	m_model->Draw();
+	Model::Draw(m_modelId);
 }
