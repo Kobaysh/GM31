@@ -20,7 +20,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 	float rA, rB, L;
 
-	XMFLOAT3 N, e1, e2, e3;
+	XMFLOAT3 N, e1, e2, e3, fCross;
 
 	// •ª—£²Ae1
 	vLength = XMVector3Length(Ae1);
@@ -76,7 +76,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	L = fabsf(L);
 	if (L > rA + rB) return false;
 
-	// •ª—£²Ae2
+	// •ª—£²Be2
 	vLength = XMVector3Length(Be2);
 	XMStoreFloat(&rB, vLength);
 	XMStoreFloat3(&N, NBe2);
@@ -90,7 +90,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB) return false;
 
 
-	// •ª—£²Ae3
+	// •ª—£²Be3
 	vLength = XMVector3Length(Be3);
 	XMStoreFloat(&rB, vLength);
 	XMStoreFloat3(&N, NBe3);
@@ -105,79 +105,132 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 
 	// •ª—£²C11
-	/*
-	D3DXVECTOR3 Cross;
-	D3DXVec3Cross(&Cross, &NAe1, &NBe1);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae2, &Ae3);
-	rB = LenSegOnSeparateAxis(&Cross, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	XMFLOAT3 ee1, ee2, ee3, ee4;
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae2);
+	XMStoreFloat3(&ee2, Ae3);
+	XMStoreFloat3(&ee3, Be2);
+	XMStoreFloat3(&ee4, Be3);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	vDot = XMVector3Dot(Interval, vCross);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C12
-	D3DXVec3Cross(&Cross, &NAe1, &NBe2);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae2, &Ae3);
-	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae2);
+	XMStoreFloat3(&ee2, Ae3);
+	XMStoreFloat3(&ee3, Be1);
+	XMStoreFloat3(&ee4, Be3);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C13
-	D3DXVec3Cross(&Cross, &NAe1, &NBe3);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae2, &Ae3);
-	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be2);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae2);
+	XMStoreFloat3(&ee2, Ae3);
+	XMStoreFloat3(&ee3, Be1);
+	XMStoreFloat3(&ee4, Be2);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C21
-	D3DXVec3Cross(&Cross, &NAe2, &NBe1);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae3);
-	rB = LenSegOnSeparateAxis(&Cross, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae1);
+	XMStoreFloat3(&ee2, Ae3);
+	XMStoreFloat3(&ee3, Be2);
+	XMStoreFloat3(&ee4, Be3);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C22
-	D3DXVec3Cross(&Cross, &NAe2, &NBe2);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae3);
-	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae1);
+	XMStoreFloat3(&ee2, Ae3);
+	XMStoreFloat3(&ee3, Be1);
+	XMStoreFloat3(&ee4, Be3);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C23
-	D3DXVec3Cross(&Cross, &NAe2, &NBe3);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae3);
-	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be2);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae1);
+	XMStoreFloat3(&ee2, Ae3);
+	XMStoreFloat3(&ee3, Be1);
+	XMStoreFloat3(&ee4, Be2);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C31
-	D3DXVec3Cross(&Cross, &NAe3, &NBe1);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae2);
-	rB = LenSegOnSeparateAxis(&Cross, &Be2, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae1);
+	XMStoreFloat3(&ee2, Ae2);
+	XMStoreFloat3(&ee3, Be2);
+	XMStoreFloat3(&ee4, Be3);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C32
-	D3DXVec3Cross(&Cross, &NAe3, &NBe2);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae2);
-	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be3);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae1);
+	XMStoreFloat3(&ee2, Ae2);
+	XMStoreFloat3(&ee3, Be1);
+	XMStoreFloat3(&ee4, Be3);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
 
 	// •ª—£² : C33
-	D3DXVec3Cross(&Cross, &NAe3, &NBe3);
-	rA = LenSegOnSeparateAxis(&Cross, &Ae1, &Ae2);
-	rB = LenSegOnSeparateAxis(&Cross, &Be1, &Be2);
-	L = fabs(D3DXVec3Dot(&Interval, &Cross));
+	vCross = XMVector3Cross(NAe1, NBe1);
+	XMStoreFloat3(&fCross, vCross);
+	XMStoreFloat3(&ee1, Ae1);
+	XMStoreFloat3(&ee2, Ae2);
+	XMStoreFloat3(&ee3, Be1);
+	XMStoreFloat3(&ee4, Be2);
+	rA = LenSegOnSeparateAxis(&fCross, &ee1, &ee2);
+	rB = LenSegOnSeparateAxis(&fCross, &ee3, &ee4);
+	XMStoreFloat(&L, vDot);
+	L = fabs(L);
 	if (L > rA + rB)
 		return false;
-	*/
+	
 
 	return true;
 }
