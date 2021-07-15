@@ -29,6 +29,7 @@ private:
 	int m_soundVolume;				// プレイヤーの出す音
 	int m_nowWepon;					// 現在装備中の忍び義手の種類(番号)
 	
+	XMFLOAT4 m_quaternion;
 
 
 	// 所持品
@@ -52,4 +53,3 @@ public:
 	XMFLOAT3* GetFront() { return &m_front; }
 	float GetSpeed() { return m_speed; }
 };
-

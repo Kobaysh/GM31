@@ -30,18 +30,17 @@ void Player::Init()
 	
 
 	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
-	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+//	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale		= XMFLOAT3(1.0f, 1.0f, 1.0f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_quaternion = XMFLOAT4(0.0f,0.0f,0.0f,1.0f);
 	m_speed = MOVE_SPEED;
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 
-	m_shotSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-	m_shotSE->Load("asset\\audio\\se\\shot.wav");
 }
 
 void Player::Uninit()
@@ -75,7 +74,7 @@ void Player::Draw()
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
-	float a= -atan2f(m_front.z, m_front.x);
+	rotX = XMMatrixRotationQuaternion(XMLoadFloat4(&m_quaternion));
 	//rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
@@ -94,60 +93,83 @@ void Player::Move()
 	vPositon = XMLoadFloat3(&m_Position);
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVECTOR direction = vFront;
-
+	XMVECTOR quaternion = XMLoadFloat4(&m_quaternion);
 	
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
-//		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		if (KeyLogger_Press(KL_UP)) {
 			XMFLOAT3 temp = *pCamera->GetFront();
 			temp.y = 0.0f;
 			direction += XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
+
+			XMFLOAT3 fAxis = XMFLOAT3(1.0f, 0.0f, 0.0f);
+			XMVECTOR axis = XMLoadFloat3(&fAxis);
+			XMVECTOR quat = XMQuaternionRotationAxis(axis, 0.1f);
+			quaternion = XMQuaternionMultiply(quaternion, quat);
 		}
 		if (KeyLogger_Press(KL_DOWN)) {
 			XMFLOAT3 temp = *pCamera->GetFront();
 			temp.y = 0.0f;
-			direction -= XMLoadFloat3(&temp);
+			direction += -XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
+
+			XMFLOAT3 fAxis = XMFLOAT3(1.0f, 0.0f, 0.0f);
+			XMVECTOR axis = XMLoadFloat3(&fAxis);
+			XMVECTOR quat
+				= XMQuaternionRotationAxis(axis, -0.1f);
+			quaternion = XMQuaternionMultiply(quaternion, quat);
 		}
 		if (KeyLogger_Press(KL_RIGHT)) {
 			direction += XMLoadFloat3(pCamera->GetRight());
 			m_speed = MOVE_SPEED;
+
+			XMFLOAT3 fAxis = XMFLOAT3(0.0f,0.0f,1.0f);
+			XMVECTOR axis = XMLoadFloat3(&fAxis);
+			XMVECTOR quat
+			 = XMQuaternionRotationAxis(axis, 0.1f);
+			quaternion = XMQuaternionMultiply(quaternion, quat);
 		}
 		if (KeyLogger_Press(KL_LEFT)) {
-			direction -= XMLoadFloat3(pCamera->GetRight());
+			direction += -XMLoadFloat3(pCamera->GetRight());
 			m_speed = MOVE_SPEED;
+			
+			XMFLOAT3 fAxis = XMFLOAT3(0.0f,0.0f,1.0f);
+			XMVECTOR axis = XMLoadFloat3(&fAxis);
+			XMVECTOR quat
+			 = XMQuaternionRotationAxis(axis, -0.1f);
+			quaternion = XMQuaternionMultiply(quaternion, quat);
 		}
 	}
 	else{
 		m_speed = 0.0f;
 	}
 
-	direction = XMVector3Normalize(direction);	
+	 direction = XMVector3Normalize(direction);	
 
-	XMVECTOR cross = XMVector3Cross(vFront, direction);
-	m_sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
+	// XMVECTOR cross = XMVector3Cross(vFront, direction);
+	// m_sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
 
-	XMVECTOR dot = XMVector3Dot(vFront, direction);
-	float fDot = 0.0f;
-	XMStoreFloat(&fDot, dot);
-	float dir_difference = acosf(fDot);
+	// XMVECTOR dot = XMVector3Dot(vFront, direction);
+	// float fDot = 0.0f;
+	// XMStoreFloat(&fDot, dot);
+	// float dir_difference = acosf(fDot);
 
-	float rot = ROTATION_VALUE * m_sign;
-	if (fabsf(dir_difference) <= NEARLY_ZERO_VALUE) {
-		dir_difference = 0.0f;
-		rot = 0.0f;
-	}
-	if (rot > dir_difference) {
-		rot = dir_difference;
-	}
-	if (m_speed <= 0.0f) {
-		rot = 0.0f;
-	}
-	XMMATRIX mtxRot;
-	mtxRot = XMMatrixRotationY(rot);
-	vFront = XMVector3TransformNormal(vFront, mtxRot);
-	XMStoreFloat3(&m_front, vFront);
+	// float rot = ROTATION_VALUE * m_sign;
+	// if (fabsf(dir_difference) <= NEARLY_ZERO_VALUE) {
+	// 	dir_difference = 0.0f;
+	// 	rot = 0.0f;
+	// }
+	// if (rot > dir_difference) {
+	// 	rot = dir_difference;
+	// }
+	// if (m_speed <= 0.0f) {
+	// 	rot = 0.0f;
+	// }
+	// XMMATRIX mtxRot;
+	// mtxRot = XMMatrixRotationY(rot);
+	// vFront = XMVector3TransformNormal(vFront, mtxRot);
+	// XMStoreFloat3(&m_front, vFront);
 
 	
 
@@ -171,6 +193,7 @@ void Player::Move()
 
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
 	XMStoreFloat3(&m_Position, vPositon);
+	XMStoreFloat4(&m_quaternion , quaternion);
 }
 
 void Player::Jump()
@@ -188,7 +211,7 @@ void Player::Shoot()
 
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 		Bullet::Create(m_Position, m_front, 0.3f);
-		m_shotSE->Play(0.1f);
+	//	m_shotSE->Play(0.1f);
 	}
 }
 
