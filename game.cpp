@@ -4,6 +4,7 @@
 
 
 #include "gameObject.h"
+#include "obb.h"
 #include "polygon2D.h"
 #include "camera.h"
 #include "field.h"
@@ -62,7 +63,7 @@ void Game::Update()
 	Scene::Update();
 
 	if (KeyLogger_Trigger(KL_RESET)) {	// Rキー?
-		std::vector<Enemy*>  enemy = Scene::GetGameObjects<Enemy>();
+		std::vector<Enemy*>  enemy = Scene::GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
 		if(enemy.empty()){
 
 		// シーン遷移

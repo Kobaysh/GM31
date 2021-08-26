@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "model.h"
 #include "audio.h"
+#include "obb.h"
 #include "enemy.h"
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
@@ -17,6 +18,9 @@ void Enemy::Init()
 	m_Position = XMFLOAT3(2.0f, 1.0f, 1.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
+
+	m_obb = new OBB(m_Position, XMFLOAT3(1.0f, 1.0f, 1.0f));
+	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
@@ -41,6 +45,7 @@ void Enemy::Update()
 {
 	m_Rotation.y += 0.01f;
 	m_Rotation.z += 0.01f;
+	m_obb->SetPosition(m_Position);
 }
 
 void Enemy::Draw()

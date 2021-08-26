@@ -3,6 +3,7 @@
 #include "scene.h"
 #include "manager.h"
 #include "model.h"
+#include "obb.h"
 #include "enemy.h"
 #include "bullet.h"
 #include "explosion.h"
@@ -90,7 +91,7 @@ void Bullet::Update()
 	// Enemy‚Æ‚Ì“–‚½‚è”»’è
 
 	
-	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>();
+	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
 
 	for (Enemy* enemy : enemies) {
 		float distance = 0.0f;

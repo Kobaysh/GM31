@@ -3,8 +3,10 @@
 #include "manager.h"
 #include "scene.h"
 #include "keylogger.h"
+#include "obb.h"
 #include "model.h"
 #include "bullet.h"
+#include "enemy.h"
 #include "camera.h"
 #include "audio.h"
 #include "playerState.h"
@@ -36,6 +38,9 @@ void Player::Init()
 	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 
+	m_obb = new OBB(m_Position, XMFLOAT3(1.0f, 1.0f, 1.0f));
+	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
@@ -60,6 +65,7 @@ void Player::Update()
 	Move();
 //	ChangeCameraDir();
 	Shoot();
+	CollisionOther();
 	VoidDimension();
 }
 
@@ -171,6 +177,7 @@ void Player::Move()
 
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
 	XMStoreFloat3(&m_Position, vPositon);
+	m_obb->SetPosition(m_Position);
 }
 
 void Player::Jump()
@@ -189,6 +196,16 @@ void Player::Shoot()
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 		Bullet::Create(m_Position, m_front, 0.3f);
 		m_shotSE->Play(0.1f);
+	}
+}
+
+void Player::CollisionOther()
+{
+	std::vector<Enemy*>  enemies = ManagerT::GetScene()->GetGameObjects<Enemy>(GOT_OBJECT3D);
+	for (Enemy* enemy : enemies) {
+		if (OBB::ColOBBs(enemy->GetObb(), GetObb())) {
+			enemy->SetDead();
+		}
 	}
 }
 

@@ -7,10 +7,12 @@
 #include "keylogger.h"
 #include "audio.h"
 #include "manager.h"
+
 Scene* ManagerT::m_Scene = nullptr;
 
 void ManagerT::Init()
 {
+
 	KeyLogger_Init();
 	Renderer::Init();
 	Audio::InitMaster();

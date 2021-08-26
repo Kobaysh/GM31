@@ -41,15 +41,13 @@ public:
 	}
 
 	template<typename TS>
-	std::vector<TS*> GetGameObjects() {
+	std::vector<TS*> GetGameObjects(GameObject::GameObject_Type type) {
 		std::vector<TS*> objects;
-		for (int i = 0; i < GameObject::GOT_MAX; i++) {
-			for (GameObject* object : m_GameObject[i]) {
+			for (GameObject* object : m_GameObject[type]) {
 				if (typeid(*object) == typeid(TS)) {
 					objects.push_back((TS*)object);
 				}
 			}
-		}
 		return objects;
 	}
 

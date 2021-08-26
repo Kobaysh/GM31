@@ -1,10 +1,12 @@
 #pragma once
-class PlayerState
+#include "state.h"
+
+class PlayerState : public State
 {
 public:
 	PlayerState(){}
 	~PlayerState(){}
-	enum Player_State {
+	enum En_Player_State {
 		NONE = -1,
 		IDLE,
 		CROUCH,
@@ -16,9 +18,9 @@ public:
 		MAX,
 	};
 private:
-	Player_State m_nowState;
+	En_Player_State m_nowState;
 public:
 	void Update();
-	void ChangeState(PlayerState newState);
+	void ChangeState(En_Player_State newState);
 };
 

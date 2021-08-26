@@ -4,6 +4,6 @@ void PlayerState::Update()
 {
 }
 
-void PlayerState::ChangeState(PlayerState newState)
+void PlayerState::ChangeState(En_Player_State newState)
 {
 }

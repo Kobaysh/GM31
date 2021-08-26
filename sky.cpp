@@ -5,6 +5,7 @@
 #include "manager.h"
 #include "scene.h"
 #include "keylogger.h"
+#include "obb.h"
 #include "bullet.h"
 #include "camera.h"
 #include "player.h"

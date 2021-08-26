@@ -4,6 +4,7 @@
 #include "keylogger.h"
 #include "manager.h"
 #include "scene.h"
+#include "obb.h"
 #include "player.h"
 
 static float g_RoutationalSpeed;
