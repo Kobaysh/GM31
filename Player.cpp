@@ -61,6 +61,8 @@ void Player::Uninit()
 
 void Player::Update()
 {
+	m_playerState.Update();
+
 	Jump();
 	Move();
 //	ChangeCameraDir();

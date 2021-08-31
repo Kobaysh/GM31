@@ -41,7 +41,10 @@ static const Keyboard_Keys g_KKs[KL_MAX] = {
 	KK_S,	    //KL_DOWN,						// 下移動
 	KK_A,	    //KL_LEFT,						// 左移動
 	KK_D,	    //KL_RIGHT,						// 右移動
-	KK_ENTER,   //KL_ATTACK,	KL_DICISION 	// 攻撃キー,決定キー
+	KK_O,		//KL_ATTACK,				 	// 攻撃キー
+	KK_L,		//KL_DICISION 					// 決定キー
+	KK_U,		//KL_GUARD,						// ガードキー
+	KK_I,		//KL_CHANGENINGU,				// 忍具切り替えキー
 	KK_E,		//KL_RISE,						// 上昇
 	KK_Q,		//KL_fALL,						// 下降
 	KK_ESCAPE,	//KL_CANCEL,					// キャンセル
@@ -53,7 +56,7 @@ static const Keyboard_Keys g_KKs[KL_MAX] = {
 	KK_L,		//KL_WIRE						// ワイヤフレーム切り替え
 	KK_SPACE,	//KL_JUMP,						// サブ
 	KK_D0,		//KL_CAMERA,					// カメラ切り替え
-	KK_LEFTSHIFT //	KL_TURBO,					// ターボ
+	KK_LEFTSHIFT //	KL_DASH,					// ダッシュ
 	//KL_MAX
 };			   
 

@@ -1,7 +1,7 @@
 #pragma once
-#include "gameObject.h"
+#include "weapon.h"
 
-class Katana :public GameObject
+class Katana :public Weapon
 {
 public:
 	Katana();

@@ -20,7 +20,7 @@ public:
 private:
 	En_Player_State m_nowState;
 public:
-	void Update();
+	void Update()override;
 	void ChangeState(En_Player_State newState);
 };
 

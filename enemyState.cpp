@@ -5,7 +5,7 @@ void EnemyState::Update()
     
 }
 
-void EnemyState::ChangeState(En_Player_State newState)
+void EnemyState::ChangeState(En_Enemy_State newState)
 {
-
+    m_nowState = newState;
 }

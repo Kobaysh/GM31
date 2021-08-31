@@ -5,6 +5,7 @@
 #include "model.h"
 #include "audio.h"
 #include "obb.h"
+#include "enemyState.h"
 #include "enemy.h"
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
@@ -43,6 +44,7 @@ void Enemy::Uninit()
 
 void Enemy::Update()
 {
+	m_state.Update();
 	m_Rotation.y += 0.01f;
 	m_Rotation.z += 0.01f;
 	m_obb->SetPosition(m_Position);

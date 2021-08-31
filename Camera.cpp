@@ -6,6 +6,8 @@
 #include "scene.h"
 #include "obb.h"
 #include "player.h"
+#include "input.h"
+
 
 static float g_RoutationalSpeed;
 static float g_MoveSpeed;
@@ -73,6 +75,7 @@ void Camera::Update()
 		if (KeyLogger_Press(KL_FALL)) {
 			vDirection += -vUp;
 		}
+
 		if (KeyLogger_Press(KL_TURN_LEFT)) {
 			XMMATRIX mtxR = XMMatrixRotationY(-g_RoutationalSpeed);
 			vFront = XMVector3TransformNormal(vFront, mtxR);
@@ -110,6 +113,51 @@ void Camera::Update()
 		Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 		/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
 		vFront = pFront;*/
+		XMVECTOR quateranion;
+		XMMATRIX matTransRot;
+		if (/*JudgeActiveWindow()*/false) {
+		
+			if (Input::GetMouseVelocity().x >= 1.0f)
+			{
+				XMMATRIX mtxR = XMMatrixRotationY(g_RoutationalSpeed);
+				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vRight = XMVector3TransformNormal(vRight, mtxR);
+				vUp = XMVector3Cross(vFront, vRight);
+				quateranion = XMQuaternionRotationAxis(XMVectorSet(0.0f,1.0f,0.0f,0.0f), g_RoutationalSpeed);
+				matTransRot = XMMatrixRotationQuaternion(quateranion);
+				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+			}
+			if (Input::GetMouseVelocity().x <= -1.0f)
+			{
+				XMMATRIX mtxR = XMMatrixRotationY(-g_RoutationalSpeed);
+				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vRight = XMVector3TransformNormal(vRight, mtxR);
+				vUp = XMVector3Cross(vFront, vRight);
+				quateranion = XMQuaternionRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), -g_RoutationalSpeed);
+				matTransRot = XMMatrixRotationQuaternion(quateranion);
+				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+			}
+			if (Input::GetMouseVelocity().y >= 1.0f)
+			{
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, g_RoutationalSpeed / 4);
+				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vUp = XMVector3TransformNormal(vUp, mtxR);
+				quateranion = XMQuaternionRotationAxis(vRight, g_RoutationalSpeed / 4);
+				matTransRot = XMMatrixRotationQuaternion(quateranion);
+				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+			}
+			if (Input::GetMouseVelocity().y <= -1.0f)
+			{
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -g_RoutationalSpeed / 4);
+				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vUp = XMVector3TransformNormal(vUp, mtxR);
+				quateranion = XMQuaternionRotationAxis(vRight, -g_RoutationalSpeed / 4);
+				matTransRot = XMMatrixRotationQuaternion(quateranion);
+				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+			}
+			vAt = XMLoadFloat3(&player->GetPosition());
+	
+		}
 
 		vDirection += XMLoadFloat3(&player->GetMove());
 		// プレイヤーを追いかける
@@ -124,6 +172,8 @@ void Camera::Update()
 		{
 			g_MoveSpeed = player->GetSpeed();
 		}
+
+
 	}
 	else {
 		// カメラが動かせない状態

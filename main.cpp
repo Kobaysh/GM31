@@ -1,12 +1,14 @@
 
 
 #include "main.h"
-
+#include <dinput.h>
 #include "keyboard.h"
 #include "manager.h"
+#include "input.h"
 
-const char* CLASS_NAME = "AppClass";
-const char* WINDOW_NAME = "DX11ゲーム";
+
+
+
 
 // ウィンドウスタイル(拡大縮小不可)
 #define GAME_WIN_STYLE (WS_OVERLAPPEDWINDOW ^ (WS_THICKFRAME | WS_MAXIMIZEBOX))
@@ -15,16 +17,21 @@ const char* WINDOW_NAME = "DX11ゲーム";
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
-HWND g_Window;
+static HWND g_Window;
 
 HWND GetWindow()
 {
 	return g_Window;
 }
-
+bool JudgeActiveWindow()
+{
+	HWND hWnd = GetActiveWindow();
+	return  (hWnd == g_Window);
+}
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	
 	WNDCLASSEX wcex =
 	{
 		sizeof(WNDCLASSEX),
@@ -66,7 +73,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //	ManagerT::singleton();
 	Keyboard_Initialize();
 	ManagerT::Init();
-
+	Input::Init(hInstance);
 
 
 	ShowWindow(g_Window, nCmdShow);
@@ -108,6 +115,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 			//	Manager::Update();
 			//	Manager::Draw();
+				Input::Update();
 				ManagerT::Update();
 				
 				ManagerT::Draw();
@@ -119,6 +127,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
+	Input::Uninit();
 //	Manager::Uninit();
 	ManagerT::Uninit();
 	return (int)msg.wParam;

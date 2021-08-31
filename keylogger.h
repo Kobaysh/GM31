@@ -14,7 +14,9 @@ typedef enum KeyloggerKey_tag {
 	KL_LEFT,					// 左移動
 	KL_RIGHT,					// 右移動
 	KL_ATTACK,					// 攻撃キー
-	KL_DICISION = KL_ATTACK,	// 決定キー
+	KL_DICISION,				// 決定キー
+	KL_GUARD,					// ガードキー
+	KL_CHANGENINGU,				// 忍具切り替えキー
 	KL_RISE,					// 上昇
 	KL_FALL,					// 下降
 	KL_CANCEL,					// キャンセル
@@ -26,7 +28,7 @@ typedef enum KeyloggerKey_tag {
 	KL_WIRE,					// ワイヤフレーム切り替え
 	KL_JUMP,						// サブ
 	KL_CAMERA,					// カメラ切り替え
-	KL_TURBO,					// ターボ
+	KL_DASH,					// ターボ
 	KL_MAX,						// 最大数
 }KeyloggerKey;
 

@@ -7,7 +7,7 @@ class Player : public GameObject
 private:
 
 
-	class PlayerState m_playerState;
+	class PlayerState  m_playerState;
 	class Model* m_Model;
 	class Audio* m_shotSE;
 	class OBB* m_obb;
