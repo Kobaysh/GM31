@@ -16,13 +16,6 @@ public:
 	static void UnLoad();
 
 private:
+	int m_modelId;
 
 };
-
-Katana::Katana()
-{
-}
-
-Katana::~Katana()
-{
-}

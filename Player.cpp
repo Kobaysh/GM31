@@ -68,7 +68,7 @@ void Player::Update()
 //	ChangeCameraDir();
 	Shoot();
 	CollisionOther();
-	VoidDimension();
+//	VoidDimension();
 }
 
 void Player::Draw()

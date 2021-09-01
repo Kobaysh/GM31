@@ -15,6 +15,7 @@
 #include "explosion.h"
 #include "sky.h"
 #include "rock.h"
+#include "wood.h"
 #include "audio.h"
 #include "keylogger.h"
 #include "result.h"
@@ -40,6 +41,13 @@ void Game::Init()
 		rock->SetPosition(pos);
 		rock->SetRotation(pos);
 		rock->SetScale(scl);
+		Wood* wood = AppendGameObject<Wood>(GameObject::GOT_OBJECT2D);
+		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
+		pos.z = (float)rand() / RAND_MAX * 100.f - 50.f;
+		pos.y += 2.5f;
+		wood->SetPosition(pos);
+		wood->SetScale(XMFLOAT3(5.0f, 5.0f, 1.0f));
+		
 	}
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));

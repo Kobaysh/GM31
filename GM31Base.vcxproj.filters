@@ -146,6 +146,9 @@
     <ClInclude Include="weapon.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="wood.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -249,6 +252,9 @@
     </ClCompile>
     <ClCompile Include="weapon.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="wood.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
