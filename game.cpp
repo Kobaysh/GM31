@@ -19,11 +19,16 @@
 #include "audio.h"
 #include "keylogger.h"
 #include "result.h"
+#include "fade.h"
+#include "pressSpaceKey.h"
 
 #include "game.h"
 
 void Game::Init()
 {
+	m_isFading = false;
+	m_isGameClear = false;
+
 	Bullet::Load();
 	AppendGameObject<Camera>(GameObject::GOT_CAMERA);
 	AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
@@ -37,14 +42,10 @@ void Game::Init()
 		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
 		pos.z = (float)rand() / RAND_MAX * 100.f - 100.f;
 		pos.y = 0.0f + scl.y / 2;
-		Rock* rock = AppendGameObject<Rock>(GameObject::GOT_OBJECT3D);
-		rock->SetPosition(pos);
-		rock->SetRotation(pos);
-		rock->SetScale(scl);
+		AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
+
 		Wood* wood = AppendGameObject<Wood>(GameObject::GOT_OBJECT2D);
-		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
-		pos.z = (float)rand() / RAND_MAX * 100.f - 50.f;
-		pos.y += 2.5f;
+		
 		wood->SetPosition(pos);
 		wood->SetScale(XMFLOAT3(5.0f, 5.0f, 1.0f));
 		
@@ -53,6 +54,9 @@ void Game::Init()
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
 
+
+	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
+	Fade::SetFade(Fade::FADE_IN);
 	Audio* bgm = AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	bgm->Load("asset\\audio\\bgm\\bgm.wav");
 	
@@ -69,13 +73,25 @@ void Game::Uninit()
 void Game::Update()
 {
 	Scene::Update();
+	std::vector<Enemy*>  enemy = Scene::GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
+	if (enemy.empty()) {
+		if (!m_isGameClear) {
+			AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
+			AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
+			m_isGameClear = true;
+		}
+		if (!m_isFading && KeyLogger_Trigger(KL_DICISION) || KeyLogger_Trigger(KL_JUMP)) {	// 決定キーかスペースキー
 
-	if (KeyLogger_Trigger(KL_RESET)) {	// Rキー?
-		std::vector<Enemy*>  enemy = Scene::GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
-		if(enemy.empty()){
+			// シーン遷移
+			Fade::SetFade(Fade::FADE_OUT);
+			m_isFading = true;
 
-		// シーン遷移
-		ManagerT::SetScene<Result>();
+		}
+		if (m_isFading) {
+			if (Fade::GetFadeType() == Fade::FADE_NONE) {
+				ManagerT::SetScene<Result>();
+				m_isFading = false;
+			}
 		}
 	}
 }

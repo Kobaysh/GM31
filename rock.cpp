@@ -6,6 +6,7 @@
 #include "scene.h"
 #include "keylogger.h"
 #include "bullet.h"
+#include "obb.h"
 #include "rock.h"
 
 ID3D11VertexShader* Rock::m_VertexShader = nullptr;
@@ -27,6 +28,28 @@ void Rock::Init()
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale		= XMFLOAT3(3.0f, 3.0f, 3.0f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
+
+	m_obb = new OBB(m_Position, XMFLOAT3(3.0f, 3.0f, 3.0f));
+
+	if (!m_VertexShader) {
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	}
+	if (!m_PixelShader) {
+		Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	}
+}
+
+void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
+{
+	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
+	//	Model::Load(m_modelId);
+	Model::AllLoad();
+	m_Position = pos;
+	m_Rotation = rot;
+	m_Scale = scale;
+	m_front = XMFLOAT3(0.0f, 0.0f, 1.0f);
+
+	m_obb = new OBB(m_Position, m_Scale);
 
 	if (!m_VertexShader) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -53,6 +76,10 @@ void Rock::Uninit()
 	if (m_VertexLayout) {
 			m_PixelShader->Release();
 			m_PixelShader = nullptr;
+	}
+	if (m_obb) {
+		delete m_obb;
+		m_obb = nullptr;
 	}
 }
 

@@ -6,6 +6,7 @@
 #include "obb.h"
 #include "enemy.h"
 #include "bullet.h"
+#include "rock.h"
 #include "explosion.h"
 
 #define FILENAME ("asset\\model\\bullet\\kidantorus.obj")
@@ -25,6 +26,7 @@ Bullet::Bullet()
 	m_Scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
+	m_obb = new OBB(m_Position, m_Scale);
 }
 
 Bullet::Bullet(XMFLOAT3 f3Position)
@@ -34,6 +36,7 @@ Bullet::Bullet(XMFLOAT3 f3Position)
 	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
+	m_obb = new OBB(m_Position, m_Scale);
 }
 
 void Bullet::Init()
@@ -69,6 +72,10 @@ void Bullet::Uninit()
 	// m_VertexLayout->Release();
 	// m_VertexShader->Release();
 	// m_PixelShader->Release();
+	if (m_obb) {
+		delete m_obb;
+		m_obb = nullptr;
+	}
 }
 
 void Bullet::Update()
@@ -100,6 +107,17 @@ void Bullet::Update()
 			enemy->SetDead();
 			SetDead();
 			// 爆発エフェクト
+			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
+		}
+	}
+
+	// rockとの当たり判定
+
+	std::vector<Rock*> rocks = scene->GetGameObjects<Rock>(GOT_OBJECT3D);
+
+	for (Rock* rock : rocks) {
+		if (OBB::ColOBBs(*m_obb, rock->GetObb())){
+			SetDead();
 			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
 		}
 	}

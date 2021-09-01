@@ -1,7 +1,7 @@
 
 
 #include "main.h"
-#include <dinput.h>
+//#include <dinput.h>
 #include "keyboard.h"
 #include "manager.h"
 #include "input.h"
@@ -73,7 +73,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //	ManagerT::singleton();
 	Keyboard_Initialize();
 	ManagerT::Init();
-	Input::Init(hInstance);
+//	Input::Init(hInstance);
 
 
 	ShowWindow(g_Window, nCmdShow);
@@ -115,7 +115,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 			//	Manager::Update();
 			//	Manager::Draw();
-				Input::Update();
+//				Input::Update();
 				ManagerT::Update();
 				
 				ManagerT::Draw();
@@ -127,7 +127,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
-	Input::Uninit();
+//	Input::Uninit();
 //	Manager::Uninit();
 	ManagerT::Uninit();
 	return (int)msg.wParam;

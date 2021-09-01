@@ -4,20 +4,22 @@
 
 #include "keylogger.h"
 #include "gameObject.h"
-//#include "camera.h"
-//#include "polygon2D.h"
-#include "titleLogo.h"
 
+#include "titleLogo.h"
+#include "fade.h"
+#include "pressSpaceKey.h"
 #include "title.h"
 #include "game.h"
 
 
 void Title::Init()
 {
-	/*Camera* pCamera = new Camera(false);
-	AddGameObject(pCamera, GameObject::GOT_CAMERA);*/
-	//AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);
+
 	AppendGameObject<TitleLogo>(GameObject::GOT_OBJECT2D);
+	AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
+	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
+	m_isFading = false;
+	Fade::SetFade(Fade::FADE_IN);
 }
 
 void Title::Uninit()
@@ -28,8 +30,15 @@ void Title::Uninit()
 void Title::Update()
 {
 	Scene::Update();
-	if (KeyLogger_Trigger(KL_DICISION)) {
+	if (!m_isFading && KeyLogger_Trigger(KL_DICISION) || KeyLogger_Trigger(KL_JUMP)) {
 		// ÉVÅ[ÉìëJà⁄
-		ManagerT::SetScene<Game>();
+		Fade::SetFade(Fade::FADE_OUT);
+		m_isFading = true;
+	}
+	if (m_isFading) {
+		if (Fade::GetFadeType() == Fade::FADE_NONE) {
+			ManagerT::SetScene<Game>();
+			m_isFading = false;
+		}
 	}
 }

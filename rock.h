@@ -7,6 +7,7 @@ private:
 
 //	Model* m_Model;
 	int m_modelId;
+	class OBB* m_obb;
 
 	XMFLOAT3 m_front;
 
@@ -17,8 +18,10 @@ private:
 
 public:
 	void Init();
+	void Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale);
 	void Uninit();
 	void Update();
 	void Draw();
 	XMFLOAT3* GetFront() { return &m_front; }
+	OBB& GetObb() { return *m_obb; }
 };

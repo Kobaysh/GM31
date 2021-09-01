@@ -166,6 +166,7 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyState.h" />
     <ClInclude Include="explosion.h" />
+    <ClInclude Include="fade.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameObject.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="playerState.h" />
     <ClInclude Include="polygon2D.h" />
+    <ClInclude Include="pressSpaceKey.h" />
     <ClInclude Include="primitive.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
@@ -208,6 +210,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyState.cpp" />
     <ClCompile Include="explosion.cpp" />
+    <ClCompile Include="fade.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -221,6 +224,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerState.cpp" />
     <ClCompile Include="polygon2D.cpp" />
+    <ClCompile Include="pressSpaceKey.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resource.cpp" />
     <ClCompile Include="result.cpp" />
@@ -240,6 +244,9 @@
   <ItemGroup>
     <FxCompile Include="common.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="LightingVoidPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

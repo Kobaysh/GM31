@@ -9,7 +9,7 @@ class Scene
 {
 protected:
 	std::list<GameObject*> m_GameObject[GameObject::GOT_MAX];	// STLのリスト構造
-
+	bool m_isFading;											// フェード中かどうか
 public:
 	Scene(){}
 	virtual ~Scene(){}

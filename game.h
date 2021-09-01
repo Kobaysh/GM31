@@ -8,5 +8,8 @@ public:
 	void Init() override;
 	void Uninit()override;
 	void Update()override;
+
+private:
+	bool m_isGameClear;
 };
 
