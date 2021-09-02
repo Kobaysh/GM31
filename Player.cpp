@@ -5,6 +5,7 @@
 #include "keylogger.h"
 #include "obb.h"
 #include "model.h"
+#include "animationModel.h"
 #include "bullet.h"
 #include "enemy.h"
 #include "camera.h"
@@ -24,16 +25,21 @@ bool GameObject::ms_IsVoidPS = false;
 
 void Player::Init()
 {
-	m_Model = new Model();
+//	m_Model = new Model();
 //	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
 //	m_Model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
 //	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
-	m_Model->Load("asset\\model\\test\\woodcube.obj");	 // \\か//しか使えない
+//	m_Model->Load("asset\\model\\test\\woodcube.obj");	 // \\か//しか使えない
 	
+	m_Model = new AnimationModel();
+
+//	m_Model->Load("asset\\model\\human\\maria_j_j_ong.fbx");
+//	m_Model->Load("asset\\model\\human\\ely_k_atienza.fbx");
+	m_Model->Load("asset\\model\\human\\Akai_Idle.fbx");
 
 	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale		= XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_Scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
@@ -53,6 +59,11 @@ void Player::Uninit()
 {
 	m_Model->Unload();
 	delete m_Model;
+	
+	delete m_obb;
+	m_shotSE->Destroy();
+	delete m_shotSE;
+
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();

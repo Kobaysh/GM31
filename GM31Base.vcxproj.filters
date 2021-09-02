@@ -80,9 +80,6 @@
     <ClInclude Include="keylogger.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
     <ClInclude Include="shaderManager.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
@@ -155,6 +152,9 @@
     <ClInclude Include="pressSpaceKey.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
+    <ClInclude Include="animationModel.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -197,9 +197,6 @@
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="keyboard.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="shaderManager.cpp">
@@ -268,12 +265,12 @@
     <ClCompile Include="pressSpaceKey.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
+    <ClCompile Include="animationModel.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="common.hlsl">
-      <Filter>シェーダーファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="unlitTexturePS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
     <FxCompile Include="unlitTextureVS.hlsl">
@@ -287,6 +284,9 @@
     </FxCompile>
     <FxCompile Include="LightingVoidPS.hlsl">
       <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="unlitTexturePS.hlsl">
+      <Filter>ソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

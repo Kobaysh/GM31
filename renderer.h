@@ -101,6 +101,7 @@ public:
 	static void SetViewMatrixX(XMMATRIX* ViewMatrix);
 	static void SetProjectionMatrixX(XMMATRIX* ProjectionMatrix);
 	static void SetMaterial(MATERIAL Material);
+	static void SetMaterialX(MATERIALX Material);
 	static void SetLight(LIGHT Light);
 
 	static ID3D11Device* GetDevice( void ){ return m_Device; }

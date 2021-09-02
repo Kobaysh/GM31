@@ -1,10 +1,10 @@
 
-
+#define NOMINMAX
 #include "main.h"
 //#include <dinput.h>
 #include "keyboard.h"
 #include "manager.h"
-#include "input.h"
+//#include "input.h"
 
 
 

@@ -35,24 +35,28 @@ void Game::Init()
 	AppendGameObject<Sky>(GameObject::GOT_OBJECT3D);
 	AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
 //	AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 10; i++) {
 		XMFLOAT3 pos;
 		XMFLOAT3 scl;
 		scl.x = scl.y = scl.z = (float)rand() / RAND_MAX * 3.0f + 2.0f;
-		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
+		pos.x = (float)rand() / RAND_MAX * 100.f - 40.f;
 		pos.z = (float)rand() / RAND_MAX * 100.f - 100.f;
 		pos.y = 0.0f + scl.y / 2;
 		AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
 
 		Wood* wood = AppendGameObject<Wood>(GameObject::GOT_OBJECT2D);
-		
+		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
+		pos.z = (float)rand() / RAND_MAX * 100.f - 50.f;
+		pos.y = 0.0f + 2.5f;
 		wood->SetPosition(pos);
 		wood->SetScale(XMFLOAT3(5.0f, 5.0f, 1.0f));
 		
 	}
-	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 1.0f));
+	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(15.0f, 1.0f, 10.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
-	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 1.0f));
+	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-15.0f, 1.0f, 7.0f));
+	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 2.0f));
+	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(20.0f, 1.0f, 5.0f));
 
 
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);

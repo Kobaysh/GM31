@@ -13,6 +13,6 @@ void main(in PS_IN In, out float4 outDiffuse : SV_Target)
     // アルファテスト
     if (outDiffuse.a < 0.1f)
     {
-        discard;
+       discard;
     }
 }

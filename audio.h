@@ -1,5 +1,5 @@
 #pragma once
-
+#define NOMINMAX
 #include <xaudio2.h>
 #include "gameObject.h"
 

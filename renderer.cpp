@@ -457,6 +457,12 @@ void Renderer::SetMaterial( MATERIAL Material )
 	m_pDeviceContext->UpdateSubresource( m_pMaterialBuffer.Get(), 0, NULL, &Material, 0, 0 );
 }
 
+void Renderer::SetMaterialX(MATERIALX Material)
+{
+	m_pDeviceContext->UpdateSubresource(m_pMaterialBuffer.Get(), 0, NULL, &Material, 0, 0);
+
+}
+
 void Renderer::SetLight( LIGHT Light )
 {
 //	m_DeviceContext->UpdateSubresource(m_LightBuffer, 0, NULL, &Light, 0, 0);

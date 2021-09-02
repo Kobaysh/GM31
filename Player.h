@@ -8,9 +8,10 @@ private:
 
 
 	class PlayerState  m_playerState;
-	class Model* m_Model;
+//	class Model* m_Model;
 	class Audio* m_shotSE;
 	class OBB* m_obb;
+	class AnimationModel*  m_Model;
 
 	float m_speed;
 

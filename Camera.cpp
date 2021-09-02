@@ -6,7 +6,7 @@
 #include "scene.h"
 #include "obb.h"
 #include "player.h"
-#include "input.h"
+//#include "input.h"
 
 
 static float g_RoutationalSpeed;
@@ -33,7 +33,7 @@ void Camera::Uninit()
 void Camera::Update()
 {
 	
-	if (KeyLogger_Trigger(KL_CAMERA)) {
+	if (KeyLogger_Trigger(KL_GUARD)) {
 		if (!m_isActive) m_isActive = true;
 		else m_isActive = false;
 	}
@@ -117,7 +117,7 @@ void Camera::Update()
 		XMMATRIX matTransRot;
 		if (/*JudgeActiveWindow()*/false) {
 		
-			if (Input::GetMouseVelocity().x >= 1.0f)
+			/*if (Input::GetMouseVelocity().x >= 1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationY(g_RoutationalSpeed);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
@@ -155,7 +155,7 @@ void Camera::Update()
 				matTransRot = XMMatrixRotationQuaternion(quateranion);
 				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
 			}
-			vAt = XMLoadFloat3(&player->GetPosition());
+			vAt = XMLoadFloat3(&player->GetPosition());*/
 	
 		}
 
