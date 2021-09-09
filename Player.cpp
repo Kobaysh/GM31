@@ -33,9 +33,25 @@ void Player::Init()
 	
 	m_Model = new AnimationModel();
 
-//	m_Model->Load("asset\\model\\human\\maria_j_j_ong.fbx");
-//	m_Model->Load("asset\\model\\human\\ely_k_atienza.fbx");
-	m_Model->Load("asset\\model\\human\\Akai_Idle.fbx");
+
+//	m_Model->Load("asset\\model\\human\\Akai_Idle.fbx");
+//	m_Model->Load("asset\\model\\AAP\\Ch24_nonPBR.fbx");
+//	m_Model->Load("asset\\model\\PSS7.4\\Ch24_nonPBR.fbx");
+//	m_Model->Load("asset\\model\\test\\woodcube.fbx");	 // \\‚©//‚µ‚©Žg‚¦‚È‚¢
+//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield walk.fbx", "attack");
+//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield idle.fbx", "idle");
+
+
+	m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
+	m_animationName = "idle";
+	m_Model->LoadAnimaiton("asset\\model\\player\\idle.fbx", m_animationName.data());
+	m_animationName = "attack";
+	m_Model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
+	m_animationName = "run";
+	m_Model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_animationName.data());
+	
+	m_animationName = "idle";
+
 
 	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -60,11 +76,6 @@ void Player::Uninit()
 	m_Model->Unload();
 	delete m_Model;
 	
-	delete m_obb;
-	m_shotSE->Destroy();
-	delete m_shotSE;
-
-
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
@@ -73,7 +84,8 @@ void Player::Uninit()
 void Player::Update()
 {
 	m_playerState.Update();
-
+//	m_Model->Update(m_animationName.data(), ++m_frame);
+	m_Model->Update(++m_frame);
 	Jump();
 	Move();
 //	ChangeCameraDir();
@@ -137,6 +149,7 @@ void Player::Move()
 			direction -= XMLoadFloat3(pCamera->GetRight());
 			m_speed = MOVE_SPEED;
 		}
+		m_animationName = "run";
 	}
 	else{
 		m_speed = 0.0f;
@@ -197,6 +210,7 @@ void Player::Jump()
 {
 	if(KeyLogger_Trigger(KL_JUMP)) {
 		if (m_isjump) return;
+		m_animationName = "idle";
 		m_jumpForce = 0.5f;
 		m_isjump = true;
 	}
@@ -208,6 +222,7 @@ void Player::Shoot()
 
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 		Bullet::Create(m_Position, m_front, 0.3f);
+		m_animationName = "attack";
 		m_shotSE->Play(0.1f);
 	}
 }

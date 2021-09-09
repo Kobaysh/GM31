@@ -64,7 +64,7 @@ void Game::Init()
 	Audio* bgm = AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	bgm->Load("asset\\audio\\bgm\\bgm.wav");
 	
-	bgm->Play(0.1f , true);
+	bgm->Play(0.0f , true);
 }
 
 void Game::Uninit()
