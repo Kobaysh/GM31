@@ -34,7 +34,8 @@ void Player::Init()
 	m_Model = new AnimationModel();
 
 
-//	m_Model->Load("asset\\model\\human\\Akai_Idle.fbx");
+//	m_Model->Load("asset\\model\\player\\Akai_Idle.fbx");
+//	m_Model->Load("asset\\model\\player\\Idle (3).fbx");
 //	m_Model->Load("asset\\model\\AAP\\Ch24_nonPBR.fbx");
 //	m_Model->Load("asset\\model\\PSS7.4\\Ch24_nonPBR.fbx");
 //	m_Model->Load("asset\\model\\test\\woodcube.fbx");	 // \\か//しか使えない
@@ -42,13 +43,16 @@ void Player::Init()
 //	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield idle.fbx", "idle");
 
 
-	m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
+//	m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
+	m_Model->Load("asset\\model\\player\\Idle (6).fbx");
 	m_animationName = "idle";
-	m_Model->LoadAnimaiton("asset\\model\\player\\idle.fbx", m_animationName.data());
-	m_animationName = "attack";
-	m_Model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
+	m_Model->LoadAnimaiton("asset\\model\\player\\Idle.fbx", m_animationName.data());
+//	m_animationName = "attack";
+//	m_Model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
 	m_animationName = "run";
 	m_Model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_animationName.data());
+	m_animationName = "jump";
+	m_Model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_animationName.data());
 	
 	m_animationName = "idle";
 
@@ -84,10 +88,11 @@ void Player::Uninit()
 void Player::Update()
 {
 	m_playerState.Update();
-//	m_Model->Update(m_animationName.data(), ++m_frame);
-	m_Model->Update(++m_frame);
+	m_Model->Update(m_animationName.data(), ++m_frame);
+//	m_Model->Update(++m_frame);
 	Jump();
 	Move();
+
 //	ChangeCameraDir();
 	Shoot();
 	CollisionOther();
@@ -105,7 +110,8 @@ void Player::Draw()
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
+	XMMATRIX rotX = /*XMMatrixRotationY(180);*/XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
+	rotX *= XMMatrixRotationY(XMConvertToRadians(-90));
 	float a= -atan2f(m_front.z, m_front.x);
 	//rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
@@ -149,10 +155,15 @@ void Player::Move()
 			direction -= XMLoadFloat3(pCamera->GetRight());
 			m_speed = MOVE_SPEED;
 		}
-		m_animationName = "run";
+		if (m_animationName != "jump") {
+			m_animationName = "run";
+		}
 	}
 	else{
 		m_speed = 0.0f;
+		if (m_animationName != "jump") {
+			m_animationName = "idle";
+		}
 	}
 
 	direction = XMVector3Normalize(direction);	
@@ -194,6 +205,7 @@ void Player::Move()
 		vPositon += tempDir * m_jumpForce;
 		m_jumpForce -= GRAVITY;
 		if (vPositon.m128_f32[1] <= 0.0f) {
+			m_animationName = "idle";
 			m_isjump = false;
 		}
 	}
@@ -210,8 +222,8 @@ void Player::Jump()
 {
 	if(KeyLogger_Trigger(KL_JUMP)) {
 		if (m_isjump) return;
-		m_animationName = "idle";
-		m_jumpForce = 0.5f;
+		m_animationName = "jump";
+		m_jumpForce = 0.4f;
 		m_isjump = true;
 	}
 }
@@ -222,7 +234,7 @@ void Player::Shoot()
 
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 		Bullet::Create(m_Position, m_front, 0.3f);
-		m_animationName = "attack";
+//		m_animationName = "attack";
 		m_shotSE->Play(0.1f);
 	}
 }

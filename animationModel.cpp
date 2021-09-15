@@ -279,9 +279,9 @@ void AnimationModel::Update(int frame)
 					+ matrix[3].b4 * deformVertex->boneWeight[3];
 
 				outMatrix.c1 = matrix[0].c1 * deformVertex->boneWeight[0]
-					+ matrix[1].a1 * deformVertex->boneWeight[1]
-					+ matrix[2].a1 * deformVertex->boneWeight[2]
-					+ matrix[3].a1 * deformVertex->boneWeight[3];
+					+ matrix[1].c1 * deformVertex->boneWeight[1]
+					+ matrix[2].c1 * deformVertex->boneWeight[2]
+					+ matrix[3].c1 * deformVertex->boneWeight[3];
 
 				outMatrix.c2 = matrix[0].c2 * deformVertex->boneWeight[0]
 					+ matrix[1].c2 * deformVertex->boneWeight[1]
@@ -367,8 +367,10 @@ void AnimationModel::Update(const char * animationName, int frame)
 		f = frame % nodeAnim->mNumRotationKeys;	// 簡易実装
 		aiQuaternion rot = nodeAnim->mRotationKeys[f].mValue;
 
-		f = frame % nodeAnim->mNumPositionKeys;
-		aiVector3D pos = nodeAnim->mPositionKeys[f].mValue;
+	//	f = frame % nodeAnim->mNumPositionKeys;
+	//	aiVector3D pos = nodeAnim->mPositionKeys[f].mValue;
+		aiVector3D pos = aiVector3D(0.0f,0.0f,0.0f);
+
 
 		bone->animationMatrix = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rot, pos);
 
@@ -396,96 +398,6 @@ void AnimationModel::Update(const char * animationName, int frame)
 			matrix[3] = m_bone[deformVertex->boneName[3]].matrix;
 
 			// ウェイトを考慮してマトリクス算出
-		/*	outMatrix   = matrix[0] * deformVertex->boneWeight[0]
-						+ matrix[1] * deformVertex->boneWeight[1]
-						+ matrix[2] * deformVertex->boneWeight[2]
-						+ matrix[3] * deformVertex->boneWeight[3];
-		*/
-			/*{
-				outMatrix.a1 = matrix[0].a1 * deformVertex->boneWeight[0]
-					+ matrix[1].a1 * deformVertex->boneWeight[1]
-					+ matrix[2].a1 * deformVertex->boneWeight[2]
-					+ matrix[3].a1 * deformVertex->boneWeight[3];
-
-				outMatrix.a2 = matrix[0].a2 * deformVertex->boneWeight[0]
-					+ matrix[1].a2 * deformVertex->boneWeight[1]
-					+ matrix[2].a2 * deformVertex->boneWeight[2]
-					+ matrix[3].a2 * deformVertex->boneWeight[3];
-
-
-				outMatrix.a3 = matrix[0].a3 * deformVertex->boneWeight[0]
-					+ matrix[1].a3 * deformVertex->boneWeight[1]
-					+ matrix[2].a3 * deformVertex->boneWeight[2]
-					+ matrix[3].a3 * deformVertex->boneWeight[3];
-
-				outMatrix.a4 = matrix[0].a4 * deformVertex->boneWeight[0]
-					+ matrix[1].a4 * deformVertex->boneWeight[1]
-					+ matrix[2].a4 * deformVertex->boneWeight[2]
-					+ matrix[3].a4 * deformVertex->boneWeight[3];
-
-				outMatrix.b1 = matrix[0].b1 * deformVertex->boneWeight[0]
-					+ matrix[1].b1 * deformVertex->boneWeight[1]
-					+ matrix[2].b1 * deformVertex->boneWeight[2]
-					+ matrix[3].b1 * deformVertex->boneWeight[3];
-
-				outMatrix.b2 = matrix[0].b2 * deformVertex->boneWeight[0]
-					+ matrix[1].b2 * deformVertex->boneWeight[1]
-					+ matrix[2].b2 * deformVertex->boneWeight[2]
-					+ matrix[3].b2 * deformVertex->boneWeight[3];
-
-
-				outMatrix.b3 = matrix[0].b3 * deformVertex->boneWeight[0]
-					+ matrix[1].b3 * deformVertex->boneWeight[1]
-					+ matrix[2].b3 * deformVertex->boneWeight[2]
-					+ matrix[3].b3 * deformVertex->boneWeight[3];
-
-				outMatrix.b4 = matrix[0].b4 * deformVertex->boneWeight[0]
-					+ matrix[1].b4 * deformVertex->boneWeight[1]
-					+ matrix[2].b4 * deformVertex->boneWeight[2]
-					+ matrix[3].b4 * deformVertex->boneWeight[3];
-
-				outMatrix.c1 = matrix[0].c1 * deformVertex->boneWeight[0]
-					+ matrix[1].a1 * deformVertex->boneWeight[1]
-					+ matrix[2].a1 * deformVertex->boneWeight[2]
-					+ matrix[3].a1 * deformVertex->boneWeight[3];
-
-				outMatrix.c2 = matrix[0].c2 * deformVertex->boneWeight[0]
-					+ matrix[1].c2 * deformVertex->boneWeight[1]
-					+ matrix[2].c2 * deformVertex->boneWeight[2]
-					+ matrix[3].c2 * deformVertex->boneWeight[3];
-
-
-				outMatrix.c3 = matrix[0].c3 * deformVertex->boneWeight[0]
-					+ matrix[1].c3 * deformVertex->boneWeight[1]
-					+ matrix[2].c3 * deformVertex->boneWeight[2]
-					+ matrix[3].c3 * deformVertex->boneWeight[3];
-
-				outMatrix.c4 = matrix[0].c4 * deformVertex->boneWeight[0]
-					+ matrix[1].c4 * deformVertex->boneWeight[1]
-					+ matrix[2].c4 * deformVertex->boneWeight[2]
-					+ matrix[3].c4 * deformVertex->boneWeight[3];
-
-				outMatrix.d1 = matrix[0].d1 * deformVertex->boneWeight[0]
-					+ matrix[1].d1 * deformVertex->boneWeight[1]
-					+ matrix[2].d1 * deformVertex->boneWeight[2]
-					+ matrix[3].d1 * deformVertex->boneWeight[3];
-
-				outMatrix.d2 = matrix[0].d2 * deformVertex->boneWeight[0]
-					+ matrix[1].d2 * deformVertex->boneWeight[1]
-					+ matrix[2].d2 * deformVertex->boneWeight[2]
-					+ matrix[3].d2 * deformVertex->boneWeight[3];
-
-
-				outMatrix.d3 = matrix[0].d3 * deformVertex->boneWeight[0]
-					+ matrix[1].d3 * deformVertex->boneWeight[1]
-					+ matrix[2].d3 * deformVertex->boneWeight[2]
-					+ matrix[3].d3 * deformVertex->boneWeight[3];
-
-				outMatrix.d4 = matrix[0].d4 * deformVertex->boneWeight[0]
-					+ matrix[1].d4 * deformVertex->boneWeight[1]
-					+ matrix[2].d4 * deformVertex->boneWeight[2]
-					+ matrix[3].d4 * deformVertex->boneWeight[3];
-			}*/
 
 			outMatrix =	UpdateWeight(matrix, deformVertex);
 
@@ -526,6 +438,7 @@ void AnimationModel::UpdateBoneMatrix(aiNode * node, aiMatrix4x4 matrix)
 	aiMatrix4x4 worldMatrix;
 
 	worldMatrix = matrix;
+	worldMatrix *= node->mTransformation;
 	worldMatrix *= bone->animationMatrix;
 
 	bone->matrix = worldMatrix;
@@ -584,9 +497,9 @@ aiMatrix4x4  AnimationModel::UpdateWeight(aiMatrix4x4*  matrix4x4, DEFORM_VERTEX
 			+ matrix4x4[3].b4 * deformVertex->boneWeight[3];
 
 		outMatrix.c1 = matrix4x4[0].c1 * deformVertex->boneWeight[0]
-			+ matrix4x4[1].a1 * deformVertex->boneWeight[1]
-			+ matrix4x4[2].a1 * deformVertex->boneWeight[2]
-			+ matrix4x4[3].a1 * deformVertex->boneWeight[3];
+			+ matrix4x4[1].c1 * deformVertex->boneWeight[1]
+			+ matrix4x4[2].c1 * deformVertex->boneWeight[2]
+			+ matrix4x4[3].c1 * deformVertex->boneWeight[3];
 
 		outMatrix.c2 = matrix4x4[0].c2 * deformVertex->boneWeight[0]
 			+ matrix4x4[1].c2 * deformVertex->boneWeight[1]
