@@ -60,10 +60,10 @@ void PressSpaceKey::Init()
 		FILENAME,
 		NULL,
 		NULL,
-		&m_Texture,
+		&m_texture,
 		NULL
 		);
-	assert(m_Texture);
+	assert(m_texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
@@ -75,7 +75,7 @@ void PressSpaceKey::Init()
 void PressSpaceKey::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_Texture->Release();
+	m_texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -132,7 +132,7 @@ void PressSpaceKey::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

@@ -5,8 +5,8 @@ class Wood : public GameObject
 {
 private:
 
-	ID3D11Buffer*				m_Vertexbuffer = NULL;
-	ID3D11ShaderResourceView*	m_Texture = NULL;
+	ID3D11Buffer*				m_vertexBuffer = NULL;
+	ID3D11ShaderResourceView*	m_texture = NULL;
 
 
 	XMFLOAT2 m_textureOffset;	

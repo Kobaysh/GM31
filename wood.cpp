@@ -46,7 +46,7 @@ void Wood::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -55,10 +55,10 @@ void Wood::Init()
 		FILENAME,
 		NULL,
 		NULL,
-		&m_Texture,
+		&m_texture,
 		NULL
 	);
-	assert(m_Texture);
+	assert(m_texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
@@ -72,8 +72,8 @@ void Wood::Init()
 
 void Wood::Uninit()
 {
-	m_Vertexbuffer->Release();
-	m_Texture->Release();
+	m_vertexBuffer->Release();
+	m_texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -88,7 +88,7 @@ void Wood::Update()
 void Wood::Draw()
 {
 
-	Renderer::GetpDeviceContext()->Unmap(m_Vertexbuffer, 0);
+	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
 
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
@@ -121,7 +121,7 @@ void Wood::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
 
 	// マテリアル設定
@@ -133,7 +133,7 @@ void Wood::Draw()
 
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

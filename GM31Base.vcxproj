@@ -177,6 +177,7 @@
     <ClInclude Include="keylogger.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
+    <ClInclude Include="meshField.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="obb.h" />
     <ClInclude Include="player.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="keylogger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
+    <ClCompile Include="meshField.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="obb.cpp" />
     <ClCompile Include="player.cpp" />

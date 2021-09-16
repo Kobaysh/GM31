@@ -9,7 +9,7 @@ private:
 	static ID3D11PixelShader*		m_PixelShader;
 	static ID3D11InputLayout*		m_VertexLayout;
 
-	ID3D11Buffer*				m_Vertexbuffer = NULL;
+	ID3D11Buffer*				m_vertexBuffer = NULL;
 	ID3D11Buffer*				m_Indexbuffer = NULL;
 	ID3D11RasterizerState* m_pRasterrizerState = nullptr;
 

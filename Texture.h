@@ -9,7 +9,7 @@ private:
 	static std::list<Texture*> m_textureList;
 
 	std::string m_fileName;
-	ID3D11ShaderResourceView*	m_Texture = nullptr;
+	ID3D11ShaderResourceView*	m_texture = nullptr;
 	bool m_isLoaded = false;
 public:
 	static ID3D11ShaderResourceView*  GetTexture(int textureId);

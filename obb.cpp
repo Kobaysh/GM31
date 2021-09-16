@@ -279,7 +279,7 @@ void OBB::Init()
 
 	D3D11_SUBRESOURCE_DATA sd{};
 	sd.pSysMem = vertex;
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
 
 	UWORD index[36] = {
@@ -348,7 +348,7 @@ void OBB::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
 	// インデックスバッファ設定
 	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_Indexbuffer, DXGI_FORMAT_R16_UINT, 0);

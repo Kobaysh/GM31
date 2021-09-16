@@ -14,7 +14,7 @@ ID3D11ShaderResourceView * Texture::GetTexture(int textureId)
 		it++;
 	}
 	Texture* texture = *it;
-	return texture->m_Texture;
+	return texture->m_texture;
 }
 
 int Texture::SetTextureLoadFile(std::string pFileName)
@@ -67,10 +67,10 @@ void Texture::Load(int textureId)
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
-		&_texture->m_Texture,
+		&_texture->m_texture,
 		NULL
 	);
-	assert(_texture->m_Texture);
+	assert(_texture->m_texture);
 	_texture->m_isLoaded = true;
 }
 
@@ -87,10 +87,10 @@ void Texture::AllLoad()
 			"asset/texture/grass02.jpg",
 			NULL,
 			NULL,
-			&texture->m_Texture,
+			&texture->m_texture,
 			NULL
 		);
-		assert(texture->m_Texture);
+		assert(texture->m_texture);
 		texture->m_isLoaded = true;
 	}
 }
@@ -103,9 +103,9 @@ void Texture::Release(int textureId)
 		it++;
 	}
 	Texture* texture = *it;
-	if (texture->m_Texture) {
-		delete texture->m_Texture;
-		texture->m_Texture = nullptr;
+	if (texture->m_texture) {
+		delete texture->m_texture;
+		texture->m_texture = nullptr;
 	}
 	m_textureList.erase(std::next(m_textureList.begin(), textureId));
 }
@@ -115,9 +115,9 @@ void Texture::AllRelease()
 	auto it = m_textureList.begin();
 	for (unsigned int i = 0; i < m_textureList.size(); i++) {
 		Texture* texture = *it;
-		if (texture->m_Texture) {
-			delete texture->m_Texture;
-			texture->m_Texture = nullptr;
+		if (texture->m_texture) {
+			delete texture->m_texture;
+			texture->m_texture = nullptr;
 		}
 		it++;
 	}

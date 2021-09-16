@@ -38,8 +38,8 @@ void Wall::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -48,10 +48,10 @@ void Wall::Init()
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
-		&m_Texture,
+		&m_texture,
 		NULL
 	);
-	assert(m_Texture);
+	assert(m_texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
@@ -64,8 +64,8 @@ void Wall::Init()
 
 void Wall::Uninit()
 {
-	m_Vertexbuffer->Release();
-	m_Texture->Release();
+	m_vertexBuffer->Release();
+	m_texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -98,7 +98,7 @@ void Wall::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
 
 	// マテリアル設定
@@ -110,7 +110,7 @@ void Wall::Draw()
 
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

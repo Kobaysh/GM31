@@ -39,8 +39,8 @@ void Field::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_Vertexbuffer);
+	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -49,15 +49,15 @@ void Field::Init()
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
-		&m_Texture,
+		&m_texture,
 		NULL
 	);
-	assert(m_Texture);
+	assert(m_texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
-//	Renderer::GetpDeviceContext()->GenerateMips(m_Texture);
+//	Renderer::GetpDeviceContext()->GenerateMips(m_texture);
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
@@ -65,8 +65,8 @@ void Field::Init()
 
 void Field::Uninit()
 {
-	m_Vertexbuffer->Release();
-	m_Texture->Release();
+	m_vertexBuffer->Release();
+	m_texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -112,8 +112,8 @@ void Field::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	//Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_Vertexbuffer, &stride, &offset);
+	//Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
 	
 	// マテリアル設定
@@ -125,8 +125,8 @@ void Field::Draw()
 	
 
 	// テクスチャ設定
-	//Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	//Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
 
 	// プリミティブトポロジ設定
 	//Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
