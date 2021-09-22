@@ -298,7 +298,7 @@
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
     <FxCompile Include="unlitTexturePS.hlsl">
-      <Filter>ソース ファイル</Filter>
+      <Filter>シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

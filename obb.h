@@ -36,7 +36,7 @@ public:
 		m_normaDirect[0] = XMFLOAT3(1.0f, 0.0f, 0.0f);
 		m_normaDirect[1] = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		m_normaDirect[2] = XMFLOAT3(0.0f, 0.0f, 1.0f);
-		m_Position = pos;
+		m_position = pos;
 		m_fLength[0] = size.x;
 		m_fLength[1] = size.y;
 		m_fLength[2] = size.z;
@@ -49,7 +49,7 @@ public:
 
 	XMFLOAT3 GetDirect(OBB_Direction elem) { return m_normaDirect[elem]; }
 	float GetLen_W(OBB_Direction elem) { return m_fLength[elem]; }
-	XMFLOAT3 GetPos_W() { return m_Position; }
+	XMFLOAT3 GetPos_W() { return m_position; }
 
 	static bool ColOBBs(OBB &obb1, OBB &obb2);
 

@@ -24,12 +24,12 @@ void Rock::Init()
 	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
 //	Model::Load(m_modelId);
 	Model::AllLoad();
-	m_Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale		= XMFLOAT3(3.0f, 3.0f, 3.0f);
+	m_position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale		= XMFLOAT3(3.0f, 3.0f, 3.0f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 
-	m_obb = new OBB(m_Position, XMFLOAT3(3.0f, 3.0f, 3.0f));
+	m_obb = new OBB(m_position, XMFLOAT3(3.0f, 3.0f, 3.0f));
 
 	if (!m_VertexShader) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -44,12 +44,12 @@ void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
 	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
 	//	Model::Load(m_modelId);
 	Model::AllLoad();
-	m_Position = pos;
-	m_Rotation = rot;
-	m_Scale = scale;
+	m_position = pos;
+	m_rotation = rot;
+	m_scale = scale;
 	m_front = XMFLOAT3(0.0f, 0.0f, 1.0f);
 
-	m_obb = new OBB(m_Position, m_Scale);
+	m_obb = new OBB(m_position, m_scale);
 
 	if (!m_VertexShader) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -100,10 +100,10 @@ void Rock::Draw()
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 //	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX* rotX *transX;
 	Renderer::SetWorldMatrixX(&worldX);
 

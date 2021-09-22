@@ -1,9 +1,15 @@
 #include "main.h"
 #include "renderer.h"
 #include "meshField.h"
+#include "keylogger.h"
 
-void MeshField::Init(int horizonCnt, int verticalCnt, float horizonSize, float verticalSize)
+void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizonSize, float verticalSize)
 {
+	m_position = pos;
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+
+	m_isWireFrame = false;
 
 	int  HLength = horizonCnt * horizonSize;
 	int  VLength = verticalCnt * verticalSize;
@@ -28,96 +34,141 @@ void MeshField::Init(int horizonCnt, int verticalCnt, float horizonSize, float v
 	m_primitiveCount = high * low * 2 + (low - 1) * 4;
 
 	// 開始座標
-	float startX = -horizonCnt * horizonSize * 0.5f;
-	float startZ = verticalCnt * verticalSize * 0.5f;
+	float startX = m_position.x - horizonCnt * horizonSize * 0.5f;
+	float startZ = m_position.z + verticalCnt * verticalSize * 0.5f;
 
-	VERTEX_3DX* pVertex = new VERTEX_3DX[m_vertexCount];
+	VERTEX_3DX* m_pVertex = new VERTEX_3DX[m_vertexCount];
 	for (int z = 0, i = 0; z < rowVertex; z++) {
 		for (int x = 0; x < colVertex; x++, i++) {
-			pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, 0.0f, startZ - z * verticalCnt);
-			pVertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-			pVertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-			pVertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
+			m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, sinf(x) * cosf(z), startZ - z * verticalSize);
+			m_pVertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+			m_pVertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			m_pVertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
+		}
+	}
+	// 法線ベクトル算出
+	for (int x = 1; x <= horizonCnt; x++) {
+		for (int z = 1; z <= verticalCnt; z++) {
+			XMVECTOR vx, vz, vn;
+			vx = XMLoadFloat3(&m_pVertex[(x + 1) + z].Position) - XMLoadFloat3(&m_pVertex[(x - 1) + z].Position);
+			vz = XMLoadFloat3(&m_pVertex[x + z - 1].Position) - XMLoadFloat3(&m_pVertex[x + z + 1].Position);
+			vn = XMVector3Cross(vz, vx);
+		 	vn = XMVector3Normalize(vn);
+			XMStoreFloat3(&m_pVertex[x + z].Normal, vn);
 		}
 	}
 
-	// 頂点バッファ生成
-	D3D11_BUFFER_DESC bd{};
+	{
+		// 頂点バッファ生成
+		D3D11_BUFFER_DESC bd{};
+		ZeroMemory(&bd, sizeof(bd));
+		bd.Usage = D3D11_USAGE_DEFAULT;	
+		bd.ByteWidth = sizeof(VERTEX_3DX) * m_vertexCount;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
+		bd.CPUAccessFlags = 0;
 
-	bd.Usage = D3D11_USAGE_DEFAULT;	bd.ByteWidth = sizeof(VERTEX_3DX) * 4;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
-	bd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA sd{};
-	sd.pSysMem = pVertex;
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
-
-	delete[] pVertex;
-
-	// インデックスバッファ生成
-	WORD* pI = new WORD[m_indexCount];
-	if (high == horizonCnt) {	// 横に並べる場合
-		for (int ZCnt = 0, loopCnt = 0, HVCnt = 0; ZCnt < verticalCnt; ZCnt++) {
-			for (int XCnt = 0; XCnt < (horizonCnt + 1) * 2; XCnt++) {
-
-				if (loopCnt % 2 == 0) {
-					// 偶数の場合
-					pI[loopCnt] = (WORD)(horizonCnt + 1 + HVCnt);
-				}
-				else {
-					// 奇数の場合
-					pI[loopCnt] = (WORD)HVCnt;
-					HVCnt++;
-				}
-
-				loopCnt++;
-			}
-
-			//改行時に縮退ポリゴン用のインデックスを追加する
-			if (loopCnt < m_indexCount) {
-				//始点
-				pI[loopCnt] = pI[loopCnt - 1];
-				loopCnt++;
-				//終点
-				pI[loopCnt] = (WORD)(horizonCnt + 1 + HVCnt);
-				loopCnt++;
-			}
-		}
-	}
-	else if (high == verticalCnt) {	// 縦に並べる場合
-		for (int XCnt = 0, loopCnt = 0, VVCnt = 0; XCnt < horizonCnt; XCnt++, VVCnt = 0) {
-			for (int ZCnt = 0; ZCnt < (verticalCnt + 1) * 2; ZCnt++) {
-
-				if (loopCnt % 2 == 0) {
-					// 偶数の場合
-					pI[loopCnt] = (WORD)(colVertex * VVCnt + XCnt);
-				}
-				else {
-					// 奇数の場合
-					pI[loopCnt] = pI[loopCnt - 1] + 1;
-					VVCnt++;
-				}
-
-				loopCnt++;
-			}
-
-			//改行時に縮退ポリゴン用のインデックスを追加する
-			if (loopCnt < m_indexCount) {
-				//始点
-				pI[loopCnt] = pI[loopCnt - 1];
-				loopCnt++;
-
-				//終点
-				pI[loopCnt] = (WORD)(XCnt + 1);
-				loopCnt++;
-			}
-		}
+		D3D11_SUBRESOURCE_DATA sd{};
+		ZeroMemory(&sd, sizeof(sd));
+		sd.pSysMem = m_pVertex;
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 	}
 
+	{
+		// インデックスバッファ生成
+		unsigned int* pI = new unsigned int[m_indexCount];
+	/*	int i = 0;
+		for (int x = 0; x < colVertex; x++) {
+			for (int z = 0; z < rowVertex; z++, i++) {
+				pI[i] = x * colVertex + z;
+				i++;
 
+				pI[i] = (x + 1) * colVertex + z;
+				i++;
+			}
+			if (x == colVertex - 1) break;
 
+			pI[i] = (x + 1) * rowVertex + colVertex;
 
-	delete[] pI;
+			i++;
+
+			pI[i] = (x + 1)*rowVertex;
+			i++;
+		}*/
+		
+		if (high == horizonCnt) {	// 横に並べる場合
+			for (int ZCnt = 0, i = 0, HVCnt = 0; ZCnt < verticalCnt; ZCnt++) {
+				for (int XCnt = 0; XCnt < colVertex * 2; XCnt++) {
+
+					if (i % 2 == 0) {
+						// 偶数の場合
+						pI[i] = (unsigned int)(colVertex + HVCnt);
+					}
+					else {
+						// 奇数の場合
+						pI[i] = (unsigned int)HVCnt;
+						HVCnt++;
+					}
+
+					i++;
+				}
+
+				//改行時に縮退ポリゴン用のインデックスを追加する
+				if (i < m_indexCount) {
+					//始点
+					pI[i] = pI[i - 1];
+					i++;
+					//終点
+					pI[i] = (unsigned int)(colVertex + HVCnt);
+					i++;
+				}
+			}
+		}
+		else if (high == verticalCnt) {	// 縦に並べる場合
+			for (int XCnt = 0, i = 0, VVCnt = 0; XCnt < horizonCnt; XCnt++, VVCnt = 0) {
+				for (int ZCnt = 0; ZCnt < rowVertex * 2; ZCnt++) {
+
+					if (i % 2 == 0) {
+						// 偶数の場合
+						pI[i] = (unsigned int)(colVertex * VVCnt + XCnt);
+					}
+					else {
+						// 奇数の場合
+						pI[i] = pI[i - 1] + 1;
+						VVCnt++;
+					}
+
+					i++;
+				}
+
+				//改行時に縮退ポリゴン用のインデックスを追加する
+				if (i < m_indexCount) {
+					//始点
+					pI[i] = pI[i - 1];
+					i++;
+
+					//終点
+					pI[i] = (unsigned int)(XCnt + 1);
+					i++;
+				}
+			}
+		}
+		
+		D3D11_BUFFER_DESC bd;
+		ZeroMemory(&bd, sizeof(bd));
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(unsigned int)* m_indexCount;
+		bd.BindFlags = D3D10_BIND_INDEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA sd;
+		ZeroMemory(&sd, sizeof(sd));
+		sd.pSysMem = pI;
+
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_indexBuffer);
+
+		delete[] pI;
+	}
+
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -133,14 +184,16 @@ void MeshField::Init(int horizonCnt, int verticalCnt, float horizonSize, float v
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
-	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+
 }
 
 void MeshField::Uninit()
 {
+
+	delete[] m_pVertex;
+
 	m_vertexBuffer->Release();
+	m_indexBuffer->Release();
 	m_texture->Release();
 
 	m_VertexLayout->Release();
@@ -150,7 +203,9 @@ void MeshField::Uninit()
 
 void MeshField::Update()
 {
-
+	if (KeyLogger_Trigger(KL_WIRE)) {
+		m_isWireFrame = m_isWireFrame == true ? false : true;
+	}
 }
 
 void MeshField::Draw()
@@ -164,9 +219,9 @@ void MeshField::Draw()
 
 	// マトリクス
 
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x,m_Rotation.y,m_Rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 
@@ -177,6 +232,8 @@ void MeshField::Draw()
 	UINT offset = 0;
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
+	// インデックスバッファ設定
+	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	
 	// マテリアル設定
 	MATERIAL material;
@@ -192,6 +249,32 @@ void MeshField::Draw()
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
+	if (m_isWireFrame) {
+		//ID3D11RasterizerState* rs;
+		//D3D11_RASTERIZER_DESC rd;
+		//rd.FillMode = D3D11_FILL_WIREFRAME;
+		//rd.CullMode = D3D11_CULL_BACK;
+		//rd.FrontCounterClockwise = true;
+		//rd.MultisampleEnable = false;
+
+		//Renderer:: GetpDevice()->CreateRasterizerState(&rd, &rs);
+		//Renderer::GetpDeviceContext()->RSSetState(rs);
+		Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
+	}
+
 	// ポリゴン描画
-	Renderer::GetpDeviceContext()->Draw(4, 0);
+	Renderer::GetpDeviceContext()->DrawIndexed(m_indexCount, 0, 0);
+	if (m_isWireFrame) {
+		//ID3D11RasterizerState* rs;
+		//D3D11_RASTERIZER_DESC rd;
+		//rd.FillMode = D3D11_FILL_SOLID;
+		//rd.CullMode = D3D11_CULL_BACK;
+		//rd.FrontCounterClockwise = true;
+		//rd.MultisampleEnable = false;
+
+		//Renderer::GetpDevice()->CreateRasterizerState(&rd, &rs);
+		//Renderer::GetpDeviceContext()->RSSetState(rs);
+
+		Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
+	}
 }

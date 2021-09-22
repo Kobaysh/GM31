@@ -58,9 +58,9 @@ void Field::Init()
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 //	Renderer::GetpDeviceContext()->GenerateMips(m_texture);
-	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 }
 
 void Field::Uninit()
@@ -95,15 +95,15 @@ void Field::Draw()
 
 	// マトリクス設定
 	/*D3DXMATRIX world, scale, rot, trans;
-	D3DXMatrixScaling(&scale, m_Scale.x, m_Scale.y, m_Scale.z);
-	D3DXMatrixRotationYawPitchRoll(&rot, m_Rotation.y, m_Rotation.x, m_Rotation.z);
-	D3DXMatrixTranslation(&trans, m_Position.x, m_Position.y, m_Position.z);
+	D3DXMatrixScaling(&scale, m_scale.x, m_scale.y, m_scale.z);
+	D3DXMatrixRotationYawPitchRoll(&rot, m_rotation.y, m_rotation.x, m_rotation.z);
+	D3DXMatrixTranslation(&trans, m_position.x, m_position.y, m_position.z);
 	world = scale * rot*trans;
 	Renderer::SetWorldMatrix(&world);*/
 
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x,m_Rotation.y,m_Rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 

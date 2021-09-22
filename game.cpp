@@ -8,6 +8,7 @@
 #include "polygon2D.h"
 #include "camera.h"
 #include "field.h"
+#include "meshField.h"
 #include "model.h"
 #include "player.h"
 #include "enemy.h"
@@ -31,7 +32,12 @@ void Game::Init()
 
 	Bullet::Load();
 	AppendGameObject<Camera>(GameObject::GOT_CAMERA);
-	AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
+//	AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
+
+	MeshField* meshField = new MeshField();
+	meshField->Init(XMFLOAT3(0.0f, 0.0f, 0.0f), 10, 10, 5, 5);
+	AddGameObject(meshField , GameObject::GOT_OBJECT3D);
+
 	AppendGameObject<Sky>(GameObject::GOT_OBJECT3D);
 	AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
 //	AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);

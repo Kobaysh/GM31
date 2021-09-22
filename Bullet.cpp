@@ -21,22 +21,22 @@ ID3D11InputLayout*		Bullet::m_VertexLayout = nullptr;
 
 Bullet::Bullet()
 {
-	m_Position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
+	m_position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
-	m_obb = new OBB(m_Position, m_Scale);
+	m_obb = new OBB(m_position, m_scale);
 }
 
 Bullet::Bullet(XMFLOAT3 f3Position)
 {
-	m_Position = f3Position;
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
+	m_position = f3Position;
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
-	m_obb = new OBB(m_Position, m_Scale);
+	m_obb = new OBB(m_position, m_scale);
 }
 
 void Bullet::Init()
@@ -82,16 +82,16 @@ void Bullet::Update()
 {
 	Scene* scene = ManagerT::GetScene();
 
-	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vPosition = XMLoadFloat3(&m_position);
 	XMVECTOR vDirection = XMLoadFloat3(&m_direction);
 	vPosition += vDirection * m_speed;
-	XMStoreFloat3(&m_Position, vPosition);
+	XMStoreFloat3(&m_position, vPosition);
 
-	if (m_Position.z > BULLET_MAX_RECT || m_Position.z < -BULLET_MAX_RECT ||
-		m_Position.x > BULLET_MAX_RECT || m_Position.x < -BULLET_MAX_RECT) {
+	if (m_position.z > BULLET_MAX_RECT || m_position.z < -BULLET_MAX_RECT ||
+		m_position.x > BULLET_MAX_RECT || m_position.x < -BULLET_MAX_RECT) {
 		SetDead();
 		// 爆発エフェクト
-		scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
+		scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 		return;
 	}
 
@@ -102,12 +102,12 @@ void Bullet::Update()
 
 	for (Enemy* enemy : enemies) {
 		float distance = 0.0f;
-		XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_Position) - XMLoadFloat3(&enemy->GetPosition())));
+		XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
 		if (distance < 2.0f) {
 			enemy->SetDead();
 			SetDead();
 			// 爆発エフェクト
-			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
+			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 		}
 	}
 
@@ -118,7 +118,7 @@ void Bullet::Update()
 	for (Rock* rock : rocks) {
 		if (OBB::ColOBBs(*m_obb, rock->GetObb())){
 			SetDead();
-			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_Position);
+			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 		}
 	}
 }
@@ -133,9 +133,9 @@ void Bullet::Draw()
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 

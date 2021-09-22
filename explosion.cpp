@@ -67,9 +67,9 @@ void Explosion::Init()
 
 	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
 
-	m_Position = XMFLOAT3(0.0f, 3.0f, 10.0f);
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_position = XMFLOAT3(0.0f, 3.0f, 10.0f);
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 	m_textureOffset = XMFLOAT2(4.0f, 4.0f);
 	m_frame = -1;	// ++0‚©‚çŽn‚ß‚é
@@ -160,8 +160,8 @@ void Explosion::Draw()
 	mtxInvView = XMMatrixTranspose(view);
 //	mtxInvView = XMMatrixInverse(nullptr, view);
 	
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = mtxInvView * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 

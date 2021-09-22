@@ -57,14 +57,14 @@ void Player::Init()
 	m_animationName = "idle";
 
 
-	m_Position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
-	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
+	m_position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 
-	m_obb = new OBB(m_Position, XMFLOAT3(1.0f, 1.0f, 1.0f));
+	m_obb = new OBB(m_position, XMFLOAT3(1.0f, 1.0f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -109,12 +109,12 @@ void Player::Draw()
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX rotX = /*XMMatrixRotationY(180);*/XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
 	rotX *= XMMatrixRotationY(XMConvertToRadians(-90));
 	float a= -atan2f(m_front.z, m_front.x);
-	//rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	//rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 
@@ -128,7 +128,7 @@ void Player::Move()
 	if (pCamera->GetIsActive()) return;
 	//XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR vPositon;
-	vPositon = XMLoadFloat3(&m_Position);
+	vPositon = XMLoadFloat3(&m_position);
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVECTOR direction = vFront;
 
@@ -209,13 +209,13 @@ void Player::Move()
 			m_isjump = false;
 		}
 	}
-	if (vPositon.m128_f32[1] - m_Scale.y <= 0.0f) {
-		vPositon.m128_f32[1] = m_Scale.y + 0.0f;	// 接地面+サイズ
+	if (vPositon.m128_f32[1] - m_scale.y <= 0.0f) {
+		vPositon.m128_f32[1] = m_scale.y + 0.0f;	// 接地面+サイズ
 	}
 
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
-	XMStoreFloat3(&m_Position, vPositon);
-	m_obb->SetPosition(m_Position);
+	XMStoreFloat3(&m_position, vPositon);
+	m_obb->SetPosition(m_position);
 }
 
 void Player::Jump()
@@ -233,7 +233,7 @@ void Player::Shoot()
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetIsActive()) return;
 
 	if (KeyLogger_Trigger(KL_ATTACK)) {
-		Bullet::Create(m_Position, m_front, 0.3f);
+		Bullet::Create(m_position, m_front, 0.3f);
 //		m_animationName = "attack";
 		m_shotSE->Play(0.1f);
 	}

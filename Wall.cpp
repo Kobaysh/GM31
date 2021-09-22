@@ -57,9 +57,9 @@ void Wall::Init()
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 
-	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 }
 
 void Wall::Uninit()
@@ -85,9 +85,9 @@ void Wall::Draw()
 	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMFLOAT3 axisX = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	XMFLOAT3 axisY = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	XMMATRIX rotWall = XMMatrixRotationAxis(XMLoadFloat3(&axisX), XMConvertToRadians(90.0f));

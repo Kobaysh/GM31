@@ -16,7 +16,7 @@ static float g_MoveSpeed;
 
 void Camera::Init()
 {
-	m_Position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
+	m_position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
 	m_target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_front		 = XMFLOAT3(0.0f, -0.3f, 1.0f);
 	m_right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
@@ -42,7 +42,7 @@ void Camera::Update()
 	// 変数用意
 	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMStoreFloat3(&m_move, vDirection);
-	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vPosition = XMLoadFloat3(&m_position);
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVector3Normalize(vFront);
 	XMVECTOR vRight = XMLoadFloat3(&m_right);
@@ -186,7 +186,7 @@ void Camera::Update()
 
 	// 変数保存
 	XMStoreFloat3(&m_target, vAt);
-	XMStoreFloat3(&m_Position, vPosition);
+	XMStoreFloat3(&m_position, vPosition);
 	XMStoreFloat3(&m_front, vFront);
 	XMStoreFloat3(&m_right, vRight);
 	XMStoreFloat3(&m_up, vUp);
@@ -197,11 +197,11 @@ void Camera::Update()
 void Camera::Draw()
 {
 	// ビューマトリクス設定
-	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_Position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_up)));
+	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_up)));
 	Renderer::SetViewMatrixX(&XMLoadFloat4x4(&m_viewMatrix));
 	
 	//D3DXMATRIX viewMatrix;
-	//D3DXMatrixLookAtLH(&viewMatrix, &m_Position, &m_target, &D3DXVECTOR3(0.0f,1.0f,0.0f));
+	//D3DXMatrixLookAtLH(&viewMatrix, &m_position, &m_target, &D3DXVECTOR3(0.0f,1.0f,0.0f));
 	//Renderer::SetViewMatrix(&viewMatrix);
 
 	// プロジェクションマトリクス設定
@@ -224,7 +224,7 @@ float Camera::GetSpeed()
 
 void  Camera::ChangeDir(float angle, bool isRight) {
 
-	XMVECTOR vPositon = XMLoadFloat3(&m_Position);
+	XMVECTOR vPositon = XMLoadFloat3(&m_position);
 	
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVector3Normalize(vFront);
@@ -261,6 +261,6 @@ void  Camera::ChangeDir(float angle, bool isRight) {
 	XMStoreFloat3(&m_front, vFront);
 	XMStoreFloat3(&m_right, vRight);
 	XMStoreFloat3(&m_up, vUp);
-	XMStoreFloat3(&m_Position, vPositon);
+	XMStoreFloat3(&m_position, vPositon);
 }
 

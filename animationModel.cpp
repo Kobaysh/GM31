@@ -353,6 +353,9 @@ void AnimationModel::Update(int frame)
 
 void AnimationModel::Update(const char * animationName, int frame)
 {
+#if defined(_DEBUG) || defined(DEBUG)
+	return;
+#endif // ! (DEBUG | _DEBUG)
 	if (!m_animation[animationName]->HasAnimations()) return;
 
 	// アニメーションデータからボーンマトリクス算出
@@ -426,6 +429,101 @@ void AnimationModel::Update(const char * animationName, int frame)
 		}
 		Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer[m], 0);
 	}
+
+}
+
+void AnimationModel::Update(const char * animationName1, const char * animationName2, float blendRate, int frame)
+{
+#if defined(_DEBUG) || defined(DEBUG)
+	return;
+#endif // ! (DEBUG | _DEBUG)
+
+	if (!m_animation[animationName1]->HasAnimations()) return;
+	if (!m_animation[animationName2]->HasAnimations()) return;
+
+	// アニメーションデータからボーンマトリクス算出
+	aiAnimation* animation1 = m_animation[animationName1]->mAnimations[0];
+	aiAnimation* animation2 = m_animation[animationName2]->mAnimations[0];
+
+	for (unsigned int c = 0; c < animation1->mNumChannels; c++) {
+		aiNodeAnim* nodeAnim1 = animation1->mChannels[c];
+		aiNodeAnim* nodeAnim2 = animation2->mChannels[c];
+		BONE* bone = &m_bone[nodeAnim1->mNodeName.C_Str()];
+
+		int f;
+		f = frame % nodeAnim1->mNumRotationKeys;	// 簡易実装
+		aiQuaternion rot1 = nodeAnim1->mRotationKeys[f].mValue;
+
+		f = frame % nodeAnim2->mNumRotationKeys;	// 簡易実装
+		aiQuaternion rot2 = nodeAnim2->mRotationKeys[f].mValue;
+
+		//	f = frame % nodeAnim->mNumPositionKeys;
+		//	aiVector3D pos = nodeAnim->mPositionKeys[f].mValue;
+		aiVector3D pos1 = aiVector3D(0.0f, 0.0f, 0.0f);
+		aiVector3D pos2 = aiVector3D(0.0f, 0.0f, 0.0f);
+		aiVector3D pos = pos1 * (1.0f - blendRate) + pos2 * blendRate;
+		aiQuaternion rot;
+		aiQuaternion::Interpolate(rot, rot1, rot2, blendRate); // 球面線形補間
+
+
+
+
+		bone->animationMatrix = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), rot, pos);
+
+	}
+	// 再帰的にボーンマトリクスを更新
+	UpdateBoneMatrix(m_aiScene->mRootNode, aiMatrix4x4());
+
+	// 頂点変換
+	for (unsigned int m = 0; m < m_aiScene->mNumMeshes; m++) {
+		aiMesh* mesh = m_aiScene->mMeshes[m];
+
+		D3D11_MAPPED_SUBRESOURCE ms;
+		Renderer::GetpDeviceContext()->Map(m_vertexBuffer[m], 0,
+			D3D11_MAP_WRITE_DISCARD, 0, &ms);
+		VERTEX_3DX * vertex = (VERTEX_3DX*)ms.pData;
+		for (unsigned int v = 0; v < mesh->mNumVertices; v++) {
+			DEFORM_VERTEX* deformVertex = &m_deformVertex[m][v];
+
+			aiMatrix4x4 matrix[4];
+			aiMatrix4x4 outMatrix;
+
+			matrix[0] = m_bone[deformVertex->boneName[0]].matrix;
+			matrix[1] = m_bone[deformVertex->boneName[1]].matrix;
+			matrix[2] = m_bone[deformVertex->boneName[2]].matrix;
+			matrix[3] = m_bone[deformVertex->boneName[3]].matrix;
+
+			// ウェイトを考慮してマトリクス算出
+			outMatrix = UpdateWeight(matrix, deformVertex);
+
+			deformVertex->position = mesh->mVertices[v];
+			deformVertex->position *= outMatrix;
+
+			// 法線変換用に移動成分を削除
+			outMatrix.a4 = 0.0f;
+			outMatrix.b4 = 0.0f;
+			outMatrix.c4 = 0.0f;
+
+			deformVertex->normal = mesh->mNormals[v];
+			deformVertex->normal *= outMatrix;
+
+			// 頂点バッファへ書き込み
+			vertex[v].Position.x = deformVertex->position.x;
+			vertex[v].Position.y = deformVertex->position.y;
+			vertex[v].Position.z = deformVertex->position.z;
+
+			vertex[v].Normal.x = deformVertex->normal.x;
+			vertex[v].Normal.y = deformVertex->normal.y;
+			vertex[v].Normal.z = deformVertex->normal.z;
+
+			vertex[v].TexCoord.x = mesh->mTextureCoords[0][v].x;
+			vertex[v].TexCoord.y = mesh->mTextureCoords[0][v].y;
+
+			vertex[v].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+		Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer[m], 0);
+	}
+
 
 }
 

@@ -254,7 +254,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 void OBB::Init()
 {
-	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vPosition = XMLoadFloat3(&m_position);
 	XMVECTOR vSizeX = XMLoadFloat3(&XMFLOAT3(m_fLength[0] * 0.5f, 0.0f, 0.0f));
 	XMVECTOR vSizeY = XMLoadFloat3(&XMFLOAT3(0.0f, m_fLength[1] * 0.5f, 0.0f));
 	XMVECTOR vSizeZ = XMLoadFloat3(&XMFLOAT3(0.0f, 0.0f, m_fLength[2] * 0.5f));
@@ -337,9 +337,9 @@ void OBB::Draw()
 
 	// マトリクス設定
 
-	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	Renderer::SetWorldMatrixX(&worldX);
 

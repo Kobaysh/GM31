@@ -22,9 +22,9 @@ public:
 	};
 protected:
 //	bool m_Destroy = false;
-	XMFLOAT3 m_Position;
-	XMFLOAT3 m_Rotation;
-	XMFLOAT3 m_Scale;
+	XMFLOAT3 m_position;
+	XMFLOAT3 m_rotation;
+	XMFLOAT3 m_scale;
 	GameObject_State m_state = GOS_ACTIVE;
 
 	ID3D11VertexShader*		m_VertexShader = NULL;
@@ -39,10 +39,10 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
-	void SetPosition(XMFLOAT3 pos) { m_Position = pos; }
-	void SetRotation(XMFLOAT3 rot) { m_Rotation = rot; }
-	void SetScale(XMFLOAT3 scale) { m_Scale = scale; }
-	XMFLOAT3 GetPosition() { return m_Position; }
+	void SetPosition(XMFLOAT3 pos) { m_position = pos; }
+	void SetRotation(XMFLOAT3 rot) { m_rotation = rot; }
+	void SetScale(XMFLOAT3 scale) { m_scale = scale; }
+	XMFLOAT3 GetPosition() { return m_position; }
 //	void SetDestroy() { m_Destroy = true; }
 
 	void SetDead() { m_state = GOS_DEAD; }

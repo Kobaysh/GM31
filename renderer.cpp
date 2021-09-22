@@ -6,17 +6,17 @@
 
 D3D_FEATURE_LEVEL       Renderer::m_FeatureLevel = D3D_FEATURE_LEVEL_11_0;
 
-ID3D11Device*           Renderer::m_Device = NULL;
-ID3D11DeviceContext*    Renderer::m_DeviceContext = NULL;
+ID3D11Device*           Renderer::m_Device = nullptr;
+ID3D11DeviceContext*    Renderer::m_DeviceContext = nullptr;
 //IDXGISwapChain*         Renderer::m_SwapChain = NULL;
 //ID3D11RenderTargetView* Renderer::m_RenderTargetView = NULL;
 //ID3D11DepthStencilView* Renderer::m_DepthStencilView = NULL;
 
-ComPtr<ID3D11Device>			Renderer::m_pDevice = NULL;
-ComPtr<ID3D11DeviceContext>		Renderer::m_pDeviceContext = NULL;
-ComPtr<IDXGISwapChain>			Renderer::m_pSwapChain = NULL;
-ComPtr<ID3D11RenderTargetView>	Renderer::m_pRenderTargetView = NULL;
-ComPtr<ID3D11DepthStencilView>	Renderer::m_pDepthStencilView = NULL;
+ComPtr<ID3D11Device>			Renderer::m_pDevice = nullptr;
+ComPtr<ID3D11DeviceContext>		Renderer::m_pDeviceContext = nullptr;
+ComPtr<IDXGISwapChain>			Renderer::m_pSwapChain = nullptr;
+ComPtr<ID3D11RenderTargetView>	Renderer::m_pRenderTargetView = nullptr;
+ComPtr<ID3D11DepthStencilView>	Renderer::m_pDepthStencilView = nullptr;
 
 //ID3D11Buffer*			Renderer::m_WorldBuffer = NULL;
 //ID3D11Buffer*			Renderer::m_ViewBuffer = NULL;
@@ -24,19 +24,40 @@ ComPtr<ID3D11DepthStencilView>	Renderer::m_pDepthStencilView = NULL;
 //ID3D11Buffer*			Renderer::m_MaterialBuffer = NULL;
 //ID3D11Buffer*			Renderer::m_LightBuffer = NULL;
 
- ComPtr<ID3D11Buffer>	Renderer::m_pWorldBuffer = NULL;
- ComPtr<ID3D11Buffer>	Renderer::m_pViewBuffer = NULL;
- ComPtr<ID3D11Buffer>	Renderer::m_pProjectionBuffer = NULL;
- ComPtr<ID3D11Buffer>	Renderer::m_pMaterialBuffer = NULL;
- ComPtr<ID3D11Buffer>	Renderer::m_pLightBuffer = NULL;
+ ComPtr<ID3D11Buffer>	Renderer::m_pWorldBuffer = nullptr;
+ ComPtr<ID3D11Buffer>	Renderer::m_pViewBuffer = nullptr;
+ ComPtr<ID3D11Buffer>	Renderer::m_pProjectionBuffer = nullptr;
+ ComPtr<ID3D11Buffer>	Renderer::m_pMaterialBuffer = nullptr;
+ ComPtr<ID3D11Buffer>	Renderer::m_pLightBuffer = nullptr;
 
 
-ID3D11DepthStencilState* Renderer::m_DepthStateEnable = NULL;
-ID3D11DepthStencilState* Renderer::m_DepthStateDisable = NULL;
+ID3D11DepthStencilState* Renderer::m_DepthStateEnable = nullptr;
+ID3D11DepthStencilState* Renderer::m_DepthStateDisable = nullptr;
+
+ComPtr<ID3D11RasterizerState> Renderer::m_pRS_FillSolid = nullptr;
+ComPtr<ID3D11RasterizerState> Renderer::m_pRS_FillWireFrame = nullptr;
 
 
 
 
+void Renderer::CreateRasterizerState()
+{
+	D3D11_RASTERIZER_DESC rd;
+	rd.FillMode = D3D11_FILL_WIREFRAME;
+	rd.CullMode = D3D11_CULL_FRONT;
+	rd.FrontCounterClockwise = true;
+	rd.MultisampleEnable = true;
+	
+	GetpDevice()->CreateRasterizerState(&rd, &m_pRS_FillWireFrame);
+
+	rd.FillMode = D3D11_FILL_SOLID;
+	rd.CullMode = D3D11_CULL_BACK;
+	rd.FrontCounterClockwise = true;
+	rd.MultisampleEnable = false;
+
+	GetpDevice()->CreateRasterizerState(&rd, &m_pRS_FillSolid);
+
+}
 
 void Renderer::Init()
 {
@@ -147,19 +168,9 @@ void Renderer::Init()
 
 
 	// ラスタライザステート設定
-	D3D11_RASTERIZER_DESC rasterizerDesc{};
-	rasterizerDesc.FillMode = D3D11_FILL_SOLID; 
-	rasterizerDesc.CullMode = D3D11_CULL_BACK; 
-	rasterizerDesc.DepthClipEnable = TRUE; 
-	rasterizerDesc.MultisampleEnable = FALSE; 
+	CreateRasterizerState();
 
-	ID3D11RasterizerState *rs;
-	/*m_Device->CreateRasterizerState( &rasterizerDesc, &rs );
-
-	m_DeviceContext->RSSetState( rs );*/
-	m_pDevice->CreateRasterizerState(&rasterizerDesc, &rs);
-
-	m_pDeviceContext->RSSetState(rs);
+	m_pDeviceContext->RSSetState(m_pRS_FillSolid.Get());
 
 
 
