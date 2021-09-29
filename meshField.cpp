@@ -5,14 +5,16 @@
 
 void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizonSize, float verticalSize)
 {
+	m_horizonCnt = horizonCnt;
+	m_verticalCnt = verticalCnt;
+	m_horizonSize = horizonSize;
+	m_verticalSize = verticalSize;
 	m_position = pos;
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 	m_isWireFrame = false;
 
-	int  HLength = horizonCnt * horizonSize;
-	int  VLength = verticalCnt * verticalSize;
 	// 縦横の比率で並べ方を変える場合
 	int high, low;
 	if (horizonCnt > verticalCnt) {
@@ -37,7 +39,20 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizo
 	float startX = m_position.x - horizonCnt * horizonSize * 0.5f;
 	float startZ = m_position.z + verticalCnt * verticalSize * 0.5f;
 
-	VERTEX_3DX* m_pVertex = new VERTEX_3DX[m_vertexCount];
+	m_pVertex = new VERTEX_3DX[m_vertexCount];
+
+	//VERTEX_3DX** m_ppVertex = new VERTEX_3DX*[colVertex];
+	//for (int i = 0; i < colVertex; i++) {
+	//	m_ppVertex[i] = new VERTEX_3DX[rowVertex];
+	//}
+	//for (int z = 0; z < rowVertex; z++) {
+	//	for (int x = 0; x < colVertex; x++) {
+	//		m_ppVertex[x][z].Position = XMFLOAT3(startX + x * horizonSize, sinf(x) * cosf(z), startZ - z * verticalSize);
+	//		m_ppVertex[x][z].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	//		m_ppVertex[x][z].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	//		m_ppVertex[x][z].TexCoord = XMFLOAT2((float)x, (float)z);
+	//	}
+	//}
 	for (int z = 0, i = 0; z < rowVertex; z++) {
 		for (int x = 0; x < colVertex; x++, i++) {
 			m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, sinf(x) * cosf(z), startZ - z * verticalSize);
@@ -46,17 +61,28 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizo
 			m_pVertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
 		}
 	}
+
 	// 法線ベクトル算出
-	for (int x = 1; x <= horizonCnt; x++) {
-		for (int z = 1; z <= verticalCnt; z++) {
+	for (int x = 1; x < horizonCnt; x++) {
+		for (int z = 1; z < verticalCnt; z++) {
 			XMVECTOR vx, vz, vn;
-			vx = XMLoadFloat3(&m_pVertex[(x + 1) + z].Position) - XMLoadFloat3(&m_pVertex[(x - 1) + z].Position);
-			vz = XMLoadFloat3(&m_pVertex[x + z - 1].Position) - XMLoadFloat3(&m_pVertex[x + z + 1].Position);
+			vx = XMLoadFloat3(&m_pVertex[(x + 1) + z * (horizonCnt + 1)].Position) - XMLoadFloat3(&m_pVertex[(x - 1) + z * (horizonCnt + 1)].Position);
+			vz = XMLoadFloat3(&m_pVertex[x + (z - 1) *(horizonCnt + 1)].Position) - XMLoadFloat3(&m_pVertex[x + (z+ 1) * (horizonCnt + 1)].Position);
 			vn = XMVector3Cross(vz, vx);
 		 	vn = XMVector3Normalize(vn);
-			XMStoreFloat3(&m_pVertex[x + z].Normal, vn);
+			XMStoreFloat3(&m_pVertex[x + z * (horizonCnt + 1)].Normal, vn);
 		}
 	}
+	//for (int x = 1; x <= horizonCnt - 1; x++) {
+	//	for (int z = 1; z <= verticalCnt - 1; z++) {
+	//		XMVECTOR vx, vz, vn;
+	//		vx = DirectX::XMLoadFloat3(&m_ppVertex[x+1][z].Position) - DirectX::XMLoadFloat3(&m_ppVertex[x - 1][z].Position);
+	//		vz = DirectX::XMLoadFloat3(&m_ppVertex[x][z-1].Position) - DirectX::XMLoadFloat3(&m_ppVertex[x][z + 1].Position);
+	//		vn = XMVector3Cross(vz, vx);
+	//		vn = XMVector3Normalize(vn);
+	//		DirectX::XMStoreFloat3(&m_ppVertex[x][z].Normal, vn);
+	//	}
+	//}
 
 	{
 		// 頂点バッファ生成
@@ -70,6 +96,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizo
 		D3D11_SUBRESOURCE_DATA sd{};
 		ZeroMemory(&sd, sizeof(sd));
 		sd.pSysMem = m_pVertex;
+//		sd.pSysMem = m_ppVertex;
 		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 	}
 
@@ -189,8 +216,10 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizo
 
 void MeshField::Uninit()
 {
-
-	delete[] m_pVertex;
+	if (m_pVertex) {
+		delete[] m_pVertex;
+	}
+//	delete[] m_ppVertex;
 
 	m_vertexBuffer->Release();
 	m_indexBuffer->Release();
@@ -277,4 +306,51 @@ void MeshField::Draw()
 
 		Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
 	}
+}
+
+float MeshField::GetHeight(XMFLOAT3 position)
+{
+	int x, z;
+	x = position.x / (float)m_horizonSize * 1.0f + m_horizonCnt* 0.5f;
+	z = position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f;
+
+	XMFLOAT3 pos0, pos1, pos2, pos3,vecc;
+	pos0 = m_pVertex[(x + 0) + (z + 0) * (m_horizonCnt + 1)].Position;
+	pos1 = m_pVertex[(x + 1) + (z + 0) * (m_horizonCnt + 1)].Position;
+	pos2 = m_pVertex[(x + 0) + (z + 1) * (m_horizonCnt + 1)].Position;
+	pos3 = m_pVertex[(x + 1) + (z + 1) * (m_horizonCnt + 1)].Position;
+	//pos1 = m_vertex[x + 1][z].Position;
+	//pos2 = m_vertex[x][z + 1].Position;
+	//pos3 = m_vertex[x + 1][z + 1].Position;
+
+	XMVECTOR v12, v1p, c;
+	v12 = XMLoadFloat3(&pos2) - XMLoadFloat3(&pos1);
+	v1p = XMLoadFloat3(&position) - XMLoadFloat3(&pos1);
+
+	c = XMVector3Cross(v12, v1p);
+
+	XMStoreFloat3(&vecc, c);
+
+	float py;
+	XMVECTOR n;
+
+	if (vecc.y > 0.0f) {
+		XMVECTOR v10;
+		v10 = XMLoadFloat3(&pos0) - XMLoadFloat3(&pos1);
+		n = XMVector3Cross(v10, v12);
+	}
+	else
+	{
+		XMVECTOR v13;
+		v13 = XMLoadFloat3(&pos3) - XMLoadFloat3(&pos1);
+		n = XMVector3Cross(v12, v13);
+	}
+
+	XMFLOAT3 nn;
+	XMStoreFloat3(&nn, n);
+
+	py = -((position.x - pos1.x) * nn.x) / nn.y + pos1.y;
+
+
+	return py;
 }

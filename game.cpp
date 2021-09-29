@@ -25,6 +25,10 @@
 
 #include "game.h"
 
+
+#define FIELD_XZ (50)
+#define FIELD__SCALE_XZ (5)
+
 void Game::Init()
 {
 	m_isFading = false;
@@ -33,10 +37,12 @@ void Game::Init()
 	Bullet::Load();
 	AppendGameObject<Camera>(GameObject::GOT_CAMERA);
 //	AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
-
+	
 	MeshField* meshField = new MeshField();
-	meshField->Init(XMFLOAT3(0.0f, 0.0f, 0.0f), 10, 10, 5, 5);
+	meshField->Init(XMFLOAT3(0.0f, 0.0f, 0.0f), FIELD_XZ, FIELD_XZ, FIELD__SCALE_XZ, FIELD__SCALE_XZ);
 	AddGameObject(meshField , GameObject::GOT_OBJECT3D);
+
+//	AppendGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 
 	AppendGameObject<Sky>(GameObject::GOT_OBJECT3D);
 	AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));

@@ -10,6 +10,7 @@
 #include "enemy.h"
 #include "camera.h"
 #include "audio.h"
+#include "meshField.h"
 #include "playerState.h"
 #include "player.h"
 
@@ -196,7 +197,11 @@ void Player::Move()
 
 	vPositon += direction * m_speed;
 
-	if (m_isjump) {
+	MeshField* mf = ManagerT::GetScene()->GetGameObject<MeshField>(GOT_OBJECT3D);
+	XMFLOAT3 tempHeight;
+	XMStoreFloat3(&tempHeight, vPositon);
+
+	/*if (m_isjump) {
 		XMVECTOR tempDir = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		XMFLOAT3 temp = m_up;
 
@@ -204,14 +209,17 @@ void Player::Move()
 		tempDir = XMVector3Normalize(XMLoadFloat3(&temp));
 		vPositon += tempDir * m_jumpForce;
 		m_jumpForce -= GRAVITY;
-		if (vPositon.m128_f32[1] <= 0.0f) {
+		if (vPositon.m128_f32[1] <= mf->GetHeight(tempHeight)) {
 			m_animationName = "idle";
 			m_isjump = false;
 		}
-	}
-	if (vPositon.m128_f32[1] - m_scale.y <= 0.0f) {
-		vPositon.m128_f32[1] = m_scale.y + 0.0f;	// 接地面+サイズ
-	}
+	}*/
+
+
+//	if (vPositon.m128_f32[1] - m_scale.y <= mf->GetHeight(tempHeight)) {
+		vPositon.m128_f32[1] = 0.5f + mf->GetHeight(tempHeight);	// 接地面+サイズ
+//		vPositon.m128_f32[1] = mf->GetHeight(tempHeight);	// 接地面+サイズ
+//	}
 
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
 	XMStoreFloat3(&m_position, vPositon);
@@ -244,7 +252,7 @@ void Player::CollisionOther()
 	std::vector<Enemy*>  enemies = ManagerT::GetScene()->GetGameObjects<Enemy>(GOT_OBJECT3D);
 	for (Enemy* enemy : enemies) {
 		if (OBB::ColOBBs(enemy->GetObb(), GetObb())) {
-			enemy->SetDead();
+		//	enemy->SetDead();
 		}
 	}
 }
