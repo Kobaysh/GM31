@@ -190,12 +190,17 @@ void Camera::Update()
 	else {
 		// ƒJƒƒ‰‚ª“®‚©‚¹‚È‚¢ó‘Ô
 	}
+
+#if MOUSE_TRUE
+
+#else
+
 	// ˆÚ“®
-//	vPosition += vDirection * g_MoveSpeed;
+	vPosition += vDirection * g_MoveSpeed;
 	// ’‹“_ŒvZ
 
-//	vAt = vPosition + vFront * AT_LENGTH;
-
+	vAt = vPosition + vFront * AT_LENGTH;
+#endif
 	// •Ï”•Û‘¶
 	XMStoreFloat3(&m_target, vAt);
 	XMStoreFloat3(&m_position, vPosition);
