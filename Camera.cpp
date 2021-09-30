@@ -113,8 +113,15 @@ void Camera::Update()
 		Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 		/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
 		vFront = pFront;*/
-		XMVECTOR quateranion;
-		XMMATRIX matTransRot;
+
+		XMVECTOR vDiffCtoP, vLengthCtoP, vPlayerPositon;
+		vPlayerPositon = XMLoadFloat3(&player->GetPosition());
+		vDiffCtoP = vPlayerPositon - vPosition;
+		vLengthCtoP = XMVector3Length(vDiffCtoP);
+		float length;
+		XMStoreFloat(&length, vLengthCtoP);
+
+
 //		if (JudgeActiveWindow()) {
 		if (false) {
 		
@@ -124,9 +131,7 @@ void Camera::Update()
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vRight = XMVector3TransformNormal(vRight, mtxR);
 				vUp = XMVector3Cross(vFront, vRight);
-				quateranion = XMQuaternionRotationAxis(XMVectorSet(0.0f,1.0f,0.0f,0.0f), g_RoutationalSpeed);
-				matTransRot = XMMatrixRotationQuaternion(quateranion);
-				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+				vPosition = vPlayerPositon + (-vFront * length);
 			}
 			if (Input::GetMouseVelocity().x <= -1.0f)
 			{
@@ -134,27 +139,21 @@ void Camera::Update()
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vRight = XMVector3TransformNormal(vRight, mtxR);
 				vUp = XMVector3Cross(vFront, vRight);
-				quateranion = XMQuaternionRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), -g_RoutationalSpeed);
-				matTransRot = XMMatrixRotationQuaternion(quateranion);
-				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+				vPosition = vPlayerPositon + (-vFront * length);
 			}
 			if (Input::GetMouseVelocity().y >= 1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, g_RoutationalSpeed / 4);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
-				quateranion = XMQuaternionRotationAxis(vRight, g_RoutationalSpeed / 4);
-				matTransRot = XMMatrixRotationQuaternion(quateranion);
-				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+				vPosition = vPlayerPositon + (-vFront * length);
 			}
 			if (Input::GetMouseVelocity().y <= -1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -g_RoutationalSpeed / 4);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
-				quateranion = XMQuaternionRotationAxis(vRight, -g_RoutationalSpeed / 4);
-				matTransRot = XMMatrixRotationQuaternion(quateranion);
-				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+				vPosition = vPlayerPositon + (-vFront * length);
 			}
 			vAt = XMLoadFloat3(&player->GetPosition());
 	*/
