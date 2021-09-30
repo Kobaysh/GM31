@@ -6,13 +6,15 @@
 #include "scene.h"
 #include "obb.h"
 #include "player.h"
-//#include "input.h"
+#include "input.h"
 
 
 static float g_RoutationalSpeed;
 static float g_MoveSpeed;
 #define CAMERA_SPEED (0.2f)
 #define AT_LENGTH (1.0f)
+
+#define MOUSE_TRUE (false)
 
 void Camera::Init()
 {
@@ -21,7 +23,7 @@ void Camera::Init()
 	m_front		 = XMFLOAT3(0.0f, -0.3f, 1.0f);
 	m_right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	g_RoutationalSpeed = 0.02f;
+	g_RoutationalSpeed = 0.08f;
 	g_MoveSpeed = CAMERA_SPEED;
 	m_isActive = false;
 }
@@ -121,14 +123,17 @@ void Camera::Update()
 		float length;
 		XMStoreFloat(&length, vLengthCtoP);
 
-
-//		if (JudgeActiveWindow()) {
-		if (false) {
-		
-			/*if (Input::GetMouseVelocity().x >= 1.0f)
+#if MOUSE_TRUE
+		if (JudgeActiveWindow()) {
+//		if (false) {
+			
+			ShowCursor(false);
+			if (Input::GetMouseVelocity().x >= 1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationY(g_RoutationalSpeed);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vFront = XMVector3Normalize(vFront);
+				vRight = XMVector3Normalize(vRight);
 				vRight = XMVector3TransformNormal(vRight, mtxR);
 				vUp = XMVector3Cross(vFront, vRight);
 				vPosition = vPlayerPositon + (-vFront * length);
@@ -138,6 +143,8 @@ void Camera::Update()
 				XMMATRIX mtxR = XMMatrixRotationY(-g_RoutationalSpeed);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vRight = XMVector3TransformNormal(vRight, mtxR);
+				vFront = XMVector3Normalize(vFront);
+				vRight = XMVector3Normalize(vRight);
 				vUp = XMVector3Cross(vFront, vRight);
 				vPosition = vPlayerPositon + (-vFront * length);
 			}
@@ -145,6 +152,7 @@ void Camera::Update()
 			{
 				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, g_RoutationalSpeed / 4);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vFront = XMVector3Normalize(vFront);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
 				vPosition = vPlayerPositon + (-vFront * length);
 			}
@@ -152,13 +160,17 @@ void Camera::Update()
 			{
 				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -g_RoutationalSpeed / 4);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vFront = XMVector3Normalize(vFront);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
 				vPosition = vPlayerPositon + (-vFront * length);
 			}
 			vAt = XMLoadFloat3(&player->GetPosition());
-	*/
+	
 		}
-
+		else {
+			ShowCursor(true);
+		}
+#endif
 		vDirection += XMLoadFloat3(&player->GetMove());
 		// プレイヤーを追いかける
 		vPosition += vDirection;
@@ -182,7 +194,7 @@ void Camera::Update()
 //	vPosition += vDirection * g_MoveSpeed;
 	// 注視点計算
 
-	vAt = vPosition + vFront * AT_LENGTH;
+//	vAt = vPosition + vFront * AT_LENGTH;
 
 	// 変数保存
 	XMStoreFloat3(&m_target, vAt);

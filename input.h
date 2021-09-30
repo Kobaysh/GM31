@@ -1,6 +1,6 @@
 #pragma once
 #include <dinput.h>
-
+#pragma comment(lib, "dinput8.lib")
 class Input
 {
 private:
@@ -12,6 +12,7 @@ private:
 	static DIMOUSESTATE m_prevMouseState;		// マウスの前回の入力情報
 	static XMFLOAT2 m_MousePos;					// マウス座標
 
+	
 public:
 	static void Init();
 	static void Init(HINSTANCE hInstance);
