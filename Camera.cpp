@@ -115,7 +115,8 @@ void Camera::Update()
 		vFront = pFront;*/
 		XMVECTOR quateranion;
 		XMMATRIX matTransRot;
-		if (/*JudgeActiveWindow()*/false) {
+//		if (JudgeActiveWindow()) {
+		if (false) {
 		
 			/*if (Input::GetMouseVelocity().x >= 1.0f)
 			{
@@ -155,8 +156,8 @@ void Camera::Update()
 				matTransRot = XMMatrixRotationQuaternion(quateranion);
 				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
 			}
-			vAt = XMLoadFloat3(&player->GetPosition());*/
-	
+			vAt = XMLoadFloat3(&player->GetPosition());
+	*/
 		}
 
 		vDirection += XMLoadFloat3(&player->GetMove());
