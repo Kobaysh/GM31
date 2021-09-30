@@ -9,6 +9,8 @@
 #include "input.h"
 
 
+
+
 static float g_RoutationalSpeed;
 static float g_MoveSpeed;
 #define CAMERA_SPEED (0.2f)
@@ -115,17 +117,24 @@ void Camera::Update()
 		vFront = pFront;*/
 		XMVECTOR quateranion;
 		XMMATRIX matTransRot;
-		if (/*JudgeActiveWindow()*/false) {
+
+		XMVECTOR diffCtoP, length;
+		diffCtoP = XMLoadFloat3(&player->GetPosition()) - XMLoadFloat3(&m_Position);
+		float lengthCtoP;
+		length = XMVector3Length(diffCtoP);
+		XMStoreFloat(&lengthCtoP, length);
+
+		if (JudgeActiveWindow()) {
 		
 			if (Input::GetMouseVelocity().x >= 1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationY(g_RoutationalSpeed);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
+				vFront = XMVector3Normalize(vFront);
 				vRight = XMVector3TransformNormal(vRight, mtxR);
+				vRight = XMVector3Normalize(vRight);
 				vUp = XMVector3Cross(vFront, vRight);
-				quateranion = XMQuaternionRotationAxis(XMVectorSet(0.0f,1.0f,0.0f,0.0f), g_RoutationalSpeed);
-				matTransRot = XMMatrixRotationQuaternion(quateranion);
-				vPosition = XMVector3TransformCoord(vPosition, matTransRot);
+				vPosition = XMLoadFloat3(&player->GetPosition()) + (-vFront * lengthCtoP);
 			}
 			if (Input::GetMouseVelocity().x <= -1.0f)
 			{
@@ -182,7 +191,7 @@ void Camera::Update()
 //	vPosition += vDirection * g_MoveSpeed;
 	// ’Ž‹“_ŒvŽZ
 
-	vAt = vPosition + vFront * AT_LENGTH;
+//	vAt = vPosition + vFront * AT_LENGTH;
 
 	// •Ï”•Û‘¶
 	XMStoreFloat3(&m_target, vAt);
