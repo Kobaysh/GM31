@@ -5,6 +5,7 @@
 #include "model.h"
 #include "audio.h"
 #include "obb.h"
+#include "meshField.h"
 #include "enemyState.h"
 #include "enemy.h"
 
@@ -44,9 +45,16 @@ void Enemy::Uninit()
 
 void Enemy::Update()
 {
+	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 	m_state.Update();
 	m_rotation.y += 0.01f;
 	m_rotation.z += 0.01f;
+
+	m_position.x = cosf(m_rotation.y) * 10.0f;
+	m_position.z = sinf(m_rotation.z * 2.0f) * 10.0f;
+
+	m_position.y = mf->GetHeight(m_position) + 0.7f;
+
 	m_obb->SetPosition(m_position);
 }
 

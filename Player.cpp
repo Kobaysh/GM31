@@ -217,7 +217,7 @@ void Player::Move()
 
 
 //	if (vPositon.m128_f32[1] - m_scale.y <= mf->GetHeight(tempHeight)) {
-		vPositon.m128_f32[1] = 0.5f + mf->GetHeight(tempHeight);	// 接地面+サイズ
+		vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.02f;	// 接地面+サイズ
 //		vPositon.m128_f32[1] = mf->GetHeight(tempHeight);	// 接地面+サイズ
 //	}
 

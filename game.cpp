@@ -26,7 +26,7 @@
 #include "game.h"
 
 
-#define FIELD_XZ (50)
+#define FIELD_XZ (20)
 #define FIELD__SCALE_XZ (5)
 
 void Game::Init()

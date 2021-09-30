@@ -3,6 +3,31 @@
 #include "meshField.h"
 #include "keylogger.h"
 
+const static float testField[20][20] = {
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.5f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+2.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.5f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+2.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.5f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.5f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.5f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+};
+
+
+
 void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizonSize, float verticalSize)
 {
 	m_horizonCnt = horizonCnt;
@@ -55,7 +80,9 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizo
 	//}
 	for (int z = 0, i = 0; z < rowVertex; z++) {
 		for (int x = 0; x < colVertex; x++, i++) {
-			m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, sinf(x) * cosf(z), startZ - z * verticalSize);
+		//	m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize,x * 0.05f + z * 0.05f, startZ - z * verticalSize);
+		//	m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, cosf(x) * sinf(z) * 2.0f, startZ - z * verticalSize);
+			m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, testField[z][x], startZ - z * verticalSize);
 			m_pVertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			m_pVertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			m_pVertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
@@ -312,15 +339,20 @@ float MeshField::GetHeight(XMFLOAT3 position)
 {
 	int x, z;
 	x = position.x / (float)m_horizonSize * 1.0f + m_horizonCnt* 0.5f;
-	z = position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f;
+	z = m_verticalCnt - (position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f);
+
+	if (x > m_horizonCnt + 1 || z > m_verticalCnt + 1) {
+		return position.y - 0.5f;
+	}
 
 	XMFLOAT3 pos0, pos1, pos2, pos3,vecc;
 	pos0 = m_pVertex[(x + 0) + (z + 0) * (m_horizonCnt + 1)].Position;
 	pos1 = m_pVertex[(x + 1) + (z + 0) * (m_horizonCnt + 1)].Position;
 	pos2 = m_pVertex[(x + 0) + (z + 1) * (m_horizonCnt + 1)].Position;
 	pos3 = m_pVertex[(x + 1) + (z + 1) * (m_horizonCnt + 1)].Position;
-	//pos1 = m_vertex[x + 1][z].Position;
-	//pos2 = m_vertex[x][z + 1].Position;
+	//pos0 = m_vertex[x + 0][z + 0].Position;
+	//pos1 = m_vertex[x + 1][z + 0].Position;
+	//pos2 = m_vertex[x + 0][z + 1].Position;
 	//pos3 = m_vertex[x + 1][z + 1].Position;
 
 	XMVECTOR v12, v1p, c;
@@ -349,7 +381,7 @@ float MeshField::GetHeight(XMFLOAT3 position)
 	XMFLOAT3 nn;
 	XMStoreFloat3(&nn, n);
 
-	py = -((position.x - pos1.x) * nn.x) / nn.y + pos1.y;
+	py = -((position.x - pos1.x) * nn.x + (position.z - pos1.z) * nn.z) / nn.y + pos1.y;
 
 
 	return py;
