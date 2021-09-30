@@ -82,6 +82,8 @@ struct VS_IN
 struct PS_IN
 {
 	float4 Position : SV_POSITION;
+    float4 WorldPosition : POSITION0;
+    float4 Normal : NORMAL0;
 	float4 Diffuse : COLOR0;
 	float2 TexCoord : TEXCOORD0;
 };
@@ -101,3 +103,9 @@ struct PS_IN
 //		SetPixelShader(CompileShader(ps_4_0, PS()));
 //	}
 //}
+
+
+cbuffer CameraBuffer : register(b5)
+{
+    float4 CameraPosition;
+}
