@@ -164,6 +164,7 @@
     <ClInclude Include="billboard.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="debugLog.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyState.h" />
     <ClInclude Include="explosion.h" />
