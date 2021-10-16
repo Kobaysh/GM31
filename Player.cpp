@@ -243,7 +243,7 @@ void Player::Shoot()
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetIsActive()) return;
 
 	if (KeyLogger_Trigger(KL_ATTACK)) {
-		DebugLog::DebugPrintSaveFlie("playerLog.txt", "shoot");
+//		DebugLog::DebugPrintSaveFlie("playerLog.txt", "shoot");
 		Bullet::Create(m_position, m_front, 0.3f);
 //		m_animationName = "attack";
 		m_shotSE->Play(0.1f);
