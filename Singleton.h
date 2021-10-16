@@ -2,7 +2,6 @@
 #include <memory>
 #include <wrl/client.h>
 
-//template<class T>
 class Singleton
 {
 public:

@@ -4,16 +4,29 @@ class Camera : public GameObject
 {
 
 private:
-	XMFLOAT3 m_vTarget;
-	XMFLOAT3 m_vUp;
-	
-//	D3DXVECTOR3 m_Position;
-//	D3DXVECTOR3 m_Target;
+	XMFLOAT3 m_target;
+	XMFLOAT3 m_front;
+	XMFLOAT3 m_right;
+	XMFLOAT3 m_up;
+	bool m_isActive;
+	bool m_movable;
+	XMFLOAT4X4 m_viewMatrix;
+	XMFLOAT3 m_move;
 public:
+	Camera():m_movable(true){}
+	Camera(bool movable):m_movable(movable){}
 	void Init();
 	void Uninit();
 	void Update();
 	void Draw();
+	bool GetIsActive() { return m_isActive; }
+	XMFLOAT3* GetFront() { return &m_front; }
+	XMFLOAT3* GetRight() { return &m_right; }
+	XMFLOAT3* GetUp() { return &m_up; }
+	XMFLOAT4X4* GetView() { return &m_viewMatrix; }
+	XMFLOAT3* GetMove() { return &m_move; }
+	float GetSpeed();
 
+	void ChangeDir(float angle, bool isRight);
 };
 

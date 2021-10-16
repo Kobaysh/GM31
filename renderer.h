@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Singleton.h"
+#include "singleton.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -60,28 +60,36 @@ private:
 	static D3D_FEATURE_LEVEL       m_FeatureLevel;
 
 	static ID3D11Device*           m_Device;
-	static ComPtr<ID3D11Device>			m_pDevice;
 	static ID3D11DeviceContext*    m_DeviceContext;
-	static ComPtr<ID3D11DeviceContext>	m_pDeviceContext;
-	static IDXGISwapChain*         m_SwapChain;
-	static ComPtr<IDXGISwapChain>         m_pSwapChain;
+	/*static IDXGISwapChain*         m_SwapChain;
 	static ID3D11RenderTargetView* m_RenderTargetView;
-	static ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
-	static ID3D11DepthStencilView* m_DepthStencilView;
-	static ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
-
-	static ID3D11Buffer*			m_WorldBuffer;
+	static ID3D11DepthStencilView* m_DepthStencilView;*/
+	/*static ID3D11Buffer*			m_WorldBuffer;
 	static ID3D11Buffer*			m_ViewBuffer;
 	static ID3D11Buffer*			m_ProjectionBuffer;
 	static ID3D11Buffer*			m_MaterialBuffer;
-	static ID3D11Buffer*			m_LightBuffer;
+	static ID3D11Buffer*			m_LightBuffer;*/
 
+	static ComPtr<ID3D11Device>			m_pDevice;
+	static ComPtr<ID3D11DeviceContext>	m_pDeviceContext;
+	static ComPtr<IDXGISwapChain>         m_pSwapChain;
+	static ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
+	static ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
+
+	static ComPtr<ID3D11Buffer>		m_pWorldBuffer;
+	static ComPtr<ID3D11Buffer>		m_pViewBuffer;
+	static ComPtr<ID3D11Buffer>		m_pProjectionBuffer;
+	static ComPtr<ID3D11Buffer>		m_pMaterialBuffer;
+	static ComPtr<ID3D11Buffer>		m_pLightBuffer;
 
 	static ID3D11DepthStencilState* m_DepthStateEnable;
 	static ID3D11DepthStencilState* m_DepthStateDisable;
 
+	static ComPtr<ID3D11RasterizerState> m_pRS_FillSolid;
+	static ComPtr<ID3D11RasterizerState> m_pRS_FillWireFrame;
 
 
+	static void CreateRasterizerState();
 
 public:
 	static void Init();
@@ -98,10 +106,18 @@ public:
 	static void SetViewMatrixX(XMMATRIX* ViewMatrix);
 	static void SetProjectionMatrixX(XMMATRIX* ProjectionMatrix);
 	static void SetMaterial(MATERIAL Material);
+	static void SetMaterialX(MATERIALX Material);
 	static void SetLight(LIGHT Light);
 
 	static ID3D11Device* GetDevice( void ){ return m_Device; }
+	static ComPtr<ID3D11Device> GetpDevice( void ){ return m_pDevice; }
 	static ID3D11DeviceContext* GetDeviceContext( void ){ return m_DeviceContext; }
+	static ComPtr<ID3D11DeviceContext> GetpDeviceContext( void ){ return m_pDeviceContext; }
+
+	static ComPtr<ID3D11RasterizerState> GetpRS_FillSolid() { return m_pRS_FillSolid; }
+	static ComPtr<ID3D11RasterizerState> GetpRS_FillWireFrame() { return m_pRS_FillWireFrame; }
+
+	
 
 
 

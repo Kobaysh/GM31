@@ -1,53 +1,94 @@
 #pragma once
 #include <list>
+#include <vector>
+#include <typeinfo>
 #include "gameObject.h"
-#include "polygon2D.h"
-#include "Camera.h"
-#include "Field.h"
-#include "model.h"
-#include "Player.h"
 
 
 class Scene
 {
+protected:
+	std::list<GameObject*> m_GameObject[GameObject::GOT_MAX];	// STLのリスト構造
+	bool m_isFading;											// フェード中かどうか
 public:
 	Scene(){}
 	virtual ~Scene(){}
-protected:
-	std::list<GameObject*> m_GameObject;	// STLのリスト構造
-public:
-	virtual void Init() {
-		Camera* camera = new Camera();
-		camera->Init();
-		m_GameObject.push_back(camera);
 
-		Field* field = new Field();
-		field->Init();
-		m_GameObject.push_back(field);
-
-		Player* player = new Player();
-		player->Init();
-		m_GameObject.push_back(player);
-
-		Polygon2D* polygon2D = new Polygon2D();
-		polygon2D->Init();
-		m_GameObject.push_back(polygon2D);
+	template <typename TS>
+	TS* AppendGameObject(GameObject::GameObject_Type type) {
+		TS* gameObject = new TS();
+		gameObject->Init();
+		m_GameObject[type].push_back(gameObject);
+		return gameObject;
 	}
-	virtual void Uninit() {
-		for (GameObject* object : m_GameObject) {
-			object->Uninit();
-			delete object;
+	GameObject* AddGameObject(GameObject* pObj, GameObject::GameObject_Type type) {
+		if (pObj == nullptr)return nullptr;
+		pObj->Init();
+		m_GameObject[type].push_back(pObj);
+		return pObj;
+	}
+
+	template<typename TS>
+	TS* GetGameObject(GameObject::GameObject_Type type) {
+
+		for (GameObject*object : m_GameObject[type]) {
+			if (typeid(*object) == typeid(TS)) {	// 型を調べる(RTTI動的型情報)
+				return (TS*)object;
+			}
 		}
-		m_GameObject.clear();	// リストのクリア
+
+		return nullptr;
+	}
+
+	template<typename TS>
+	std::vector<TS*> GetGameObjects(GameObject::GameObject_Type type) {
+		std::vector<TS*> objects;
+			for (GameObject* object : m_GameObject[type]) {
+				if (typeid(*object) == typeid(TS)) {
+					objects.push_back((TS*)object);
+				}
+			}
+		return objects;
+	}
+
+	virtual void Init() = 0;
+
+	virtual void Uninit() {
+		for (int i = 0; i < GameObject::GOT_MAX; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->Uninit();
+				delete object;
+			}
+			m_GameObject[i].clear();	// リストのクリア
+		}
 	}
 	virtual void Update() {
-		for (GameObject* object : m_GameObject) {
-			object->Update();
+		for (int i = 0; i < GameObject::GOT_MAX; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->Update();
+			}
+			// forroopの外でないとダメ
+			m_GameObject[i].remove_if(
+				[](GameObject* object) {
+					return object->Destroy();
+				}
+			);
+			// ラムダ式	
 		}
 	}
 	virtual void Draw() {
-		for (GameObject* object : m_GameObject) {
-			object->Draw();
+		for (int i = 0; i < GameObject::GOT_MAX; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->Draw();
+			}
+		}
+	}
+
+	virtual void AllPSChange(const char* pFileName) {
+		for (int i = GameObject::GOT_OBJECT3D; i < GameObject::GOT_MAX; i++) {
+			for (GameObject* object : m_GameObject[i]) {
+				object->SetPShader(pFileName);
+			}
 		}
 	}
 };
