@@ -96,6 +96,10 @@ void Player::Update()
 	Jump();
 	Move();
 
+	XMFLOAT3 obbPos = m_position;
+	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
+	m_obb->SetPosition(obbPos);
+
 //	ChangeCameraDir();
 	Shoot();
 	CollisionOther();
@@ -123,6 +127,8 @@ void Player::Draw()
 
 
 	m_Model->Draw();
+	m_obb->SetisDraw(true);
+	m_obb->Draw();
 }
 
 void Player::Move()
@@ -225,7 +231,7 @@ void Player::Move()
 
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
 	XMStoreFloat3(&m_position, vPositon);
-	m_obb->SetPosition(m_position);
+
 }
 
 void Player::Jump()

@@ -13,6 +13,9 @@ private:
 	ID3D11Buffer*				m_Indexbuffer = NULL;
 	ID3D11RasterizerState* m_pRasterrizerState = nullptr;
 
+	bool m_isDraw = false;
+	bool m_isCollide = false;
+
 protected:
 //	XMFLOAT3 m_pos;				// 位置
 	XMFLOAT3 m_normaDirect[3];	// 方向ベクトル
@@ -40,11 +43,13 @@ public:
 		m_fLength[0] = size.x;
 		m_fLength[1] = size.y;
 		m_fLength[2] = size.z;
+		m_scale = size;
 	}
 	void SetSize(XMFLOAT3 size) {
 		m_fLength[0] = size.x;
 		m_fLength[1] = size.y;
 		m_fLength[2] = size.z;
+		m_scale = size;
 	}
 
 	XMFLOAT3 GetDirect(OBB_Direction elem) { return m_normaDirect[elem]; }
@@ -52,7 +57,8 @@ public:
 	XMFLOAT3 GetPos_W() { return m_position; }
 
 	static bool ColOBBs(OBB &obb1, OBB &obb2);
-
+	void SetisDraw(bool isDraw) { m_isDraw = isDraw; }
+	void SetisCollide(bool isCollide) { m_isCollide = isCollide; }
 
 	void Init()override;
 	void Uninit()override;

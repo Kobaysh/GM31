@@ -260,14 +260,25 @@ void OBB::Init()
 	XMVECTOR vSizeZ = XMLoadFloat3(&XMFLOAT3(0.0f, 0.0f, m_fLength[2] * 0.5f));
 
 	VERTEX_3DX vertex[8];
-	XMStoreFloat3(&vertex[0].Position, vPosition - vSizeX + vSizeY - vSizeZ);
-	XMStoreFloat3(&vertex[1].Position, vPosition + vSizeX + vSizeY - vSizeZ);
-	XMStoreFloat3(&vertex[2].Position, vPosition + vSizeX + vSizeY + vSizeZ);
-	XMStoreFloat3(&vertex[3].Position, vPosition - vSizeX + vSizeY + vSizeZ);
-	XMStoreFloat3(&vertex[4].Position, vPosition - vSizeX - vSizeY - vSizeZ);
-	XMStoreFloat3(&vertex[5].Position, vPosition + vSizeX - vSizeY - vSizeZ);
-	XMStoreFloat3(&vertex[6].Position, vPosition + vSizeX - vSizeY + vSizeZ);
-	XMStoreFloat3(&vertex[7].Position, vPosition - vSizeX - vSizeY + vSizeZ);
+
+	vertex[0].Position = XMFLOAT3(-0.5f, +0.5f, -0.5f);
+	vertex[1].Position = XMFLOAT3(+0.5f, +0.5f, -0.5f);
+	vertex[2].Position = XMFLOAT3(+0.5f, +0.5f, +0.5f);
+	vertex[3].Position = XMFLOAT3(-0.5f, +0.5f, +0.5f);
+	vertex[4].Position = XMFLOAT3(-0.5f, -0.5f, -0.5f);
+	vertex[5].Position = XMFLOAT3(+0.5f, -0.5f, -0.5f);
+	vertex[6].Position = XMFLOAT3(+0.5f, -0.5f, +0.5f);
+	vertex[7].Position = XMFLOAT3(-0.5f, -0.5f, +0.5f);
+
+
+	vertex[0].Diffuse = XMFLOAT4(0.0f,0.0f,1.0f,1.0f);
+	vertex[1].Diffuse = XMFLOAT4(0.0f,1.0f,0.0f,1.0f);
+	vertex[2].Diffuse = XMFLOAT4(0.0f,1.0f,1.0f,1.0f);
+	vertex[3].Diffuse = XMFLOAT4(1.0f,0.0f,0.0f,1.0f);
+	vertex[4].Diffuse = XMFLOAT4(1.0f,0.0f,1.0f,1.0f);
+	vertex[5].Diffuse = XMFLOAT4(1.0f,1.0f,0.0f,1.0f);
+	vertex[6].Diffuse = XMFLOAT4(1.0f,1.0f,1.0f,1.0f);
+	vertex[7].Diffuse = XMFLOAT4(0.0f,0.0f,1.0f,1.0f);
 
 	// 頂点バッファ生成
 	D3D11_BUFFER_DESC bd{};
@@ -281,20 +292,19 @@ void OBB::Init()
 	sd.pSysMem = vertex;
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
-
 	UWORD index[36] = {
-		0,1,4,
-		1,4,5,
-		1,2,5,
-		2,5,6,
-		2,3,6,
-		3,6,7,
-		3,0,7,
-		0,7,4,
-		3,2,0,
-		2,0,1,
-		4,5,7,
-		5,7,6
+		3,1,0,
+		2,1,3,
+		0,5,4,
+		1,5,0,
+		3,4,7,
+		0,4,3,
+		1,6,5,
+		2,6,1,
+		2,7,6,
+		3,7,2,
+		6,4,5,
+		7,4,6
 	};
 
 	// インデックスバッファ生成
@@ -317,6 +327,10 @@ void OBB::Init()
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+
+	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 }
 
 void OBB::Uninit()
@@ -329,6 +343,7 @@ void OBB::Update()
 
 void OBB::Draw()
 {
+	if (!m_isDraw) return;
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
