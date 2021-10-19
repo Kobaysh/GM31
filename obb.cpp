@@ -10,8 +10,17 @@ float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* 
 ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
 ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
 ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;
+ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
+ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 
+const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
+const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
 
+///// <summary>
+/////	コリジョン判定
+///// <param name = "obb1"> OBB1  </param>
+///// <returns> 当たったかどうか </returns>
+///// </summary>
 bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 {
 	// 各方向ベクトルの確保
@@ -384,8 +393,25 @@ void OBB::Init()
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
-
-	
+	// テクスチャ読み込み
+	D3DX11CreateShaderResourceViewFromFile(
+		Renderer::GetpDevice().Get(),
+		FILENAME_BLUE,
+		NULL,
+		NULL,
+		&m_textureBlue,
+		NULL
+	);
+	// テクスチャ読み込み
+	D3DX11CreateShaderResourceViewFromFile(
+		Renderer::GetpDevice().Get(),
+		FILENAME_RED,
+		NULL,
+		NULL,
+		&m_textureRed,
+		NULL
+	);
+	m_isDraw = false;
 }
 
 void OBB::Uninit()
@@ -394,37 +420,13 @@ void OBB::Uninit()
 
 void OBB::Update()
 {
+
 }
 
 void OBB::Draw()
 {
 	if (!m_isDraw) return;
-	if (m_isCollide) {
-		SetColor(XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-		// 頂点データを書き換え
-		D3D11_MAPPED_SUBRESOURCE msr;
-		Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
-		{
-			VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
-			vertex[0].Position = XMFLOAT3(-0.5f, +0.5f, -0.5f);
-			vertex[1].Position = XMFLOAT3(+0.5f, +0.5f, -0.5f);
-			vertex[2].Position = XMFLOAT3(+0.5f, +0.5f, +0.5f);
-			vertex[3].Position = XMFLOAT3(-0.5f, +0.5f, +0.5f);
-			vertex[4].Position = XMFLOAT3(-0.5f, -0.5f, -0.5f);
-			vertex[5].Position = XMFLOAT3(+0.5f, -0.5f, -0.5f);
-			vertex[6].Position = XMFLOAT3(+0.5f, -0.5f, +0.5f);
-			vertex[7].Position = XMFLOAT3(-0.5f, -0.5f, +0.5f);
-
-			for (int i = 0; i < 8; i++) {
-				vertex[i].Diffuse = m_color;
-			}
-		}
-		Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
-	}
-	else {
-		SetColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-	}
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
@@ -453,8 +455,9 @@ void OBB::Draw()
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
 	material.Diffuse = D3DXCOLOR(m_color.x, m_color.y, m_color.z, m_color.w);
+	material.Ambient = D3DXCOLOR(m_color.x, m_color.y, m_color.z, m_color.w) * 0.3f;
 //	material.Emission = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f);
-//	Renderer::SetMaterial(material);
+	Renderer::SetMaterial(material);
 
 	D3D11_RASTERIZER_DESC rdc{};
 	rdc.FillMode = D3D11_FILL_WIREFRAME;
@@ -466,8 +469,13 @@ void OBB::Draw()
 	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
 
 	// テクスチャ設定
+	if (m_isCollide) {
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
+	}
+	else {
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureBlue);
+	}
 
-//	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, nullptr);
 
 
 	// プリミティブトポロジ設定

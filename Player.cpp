@@ -128,7 +128,7 @@ void Player::Draw()
 
 //	m_Model->Draw();
 	m_obb->SetisDraw(true);
-//	m_obb->Draw();
+	m_obb->Draw();
 }
 
 void Player::Move()

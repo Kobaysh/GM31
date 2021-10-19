@@ -9,6 +9,12 @@ private:
 	static ID3D11PixelShader*		m_PixelShader;
 	static ID3D11InputLayout*		m_VertexLayout;
 
+	static ID3D11ShaderResourceView* m_textureBlue;
+	static ID3D11ShaderResourceView* m_textureRed;
+
+	static const char* FILENAME_BLUE;
+	static const char* FILENAME_RED;
+
 	ID3D11Buffer*				m_vertexBuffer = NULL;
 	ID3D11Buffer*				m_Indexbuffer = NULL;
 	ID3D11RasterizerState* m_pRasterrizerState = nullptr;
