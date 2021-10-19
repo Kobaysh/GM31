@@ -15,6 +15,9 @@ private:
 
 	bool m_isDraw = false;
 	bool m_isCollide = false;
+	XMFLOAT4 m_color;
+
+	void SetColor(XMFLOAT4 color) { m_color = color; }
 
 protected:
 //	XMFLOAT3 m_pos;				// ˆÊ’u

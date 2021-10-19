@@ -11,6 +11,7 @@ ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
 ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
 ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;
 
+
 bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 {
 	// 各方向ベクトルの確保
@@ -41,7 +42,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NAe1);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) return false;
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
+		return false;
+	}
 
 	// 分離軸Ae2
 	vLength = XMVector3Length(Ae2);
@@ -54,7 +59,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NAe2);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) return false;
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
+		return false;
+	}
 
 	
 	// 分離軸Ae3
@@ -68,7 +77,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NAe3);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) return false;
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
+		return false;
+	}
 
 
 	// 分離軸Be1
@@ -82,7 +95,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NBe1);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) return false;
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
+		return false;
+	}
 
 	// 分離軸Be2
 	vLength = XMVector3Length(Be2);
@@ -95,7 +112,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NBe2);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) return false;
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
+		return false;
+	}
 
 
 	// 分離軸Be3
@@ -109,7 +130,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NBe3);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) return false;
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
+		return false;
+	}
 
 
 	// 分離軸C11
@@ -125,8 +150,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C12
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -140,8 +168,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C13
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -155,8 +186,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C21
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -170,8 +204,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C22
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -185,8 +222,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C23
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -200,8 +240,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C31
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -215,8 +258,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C32
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -230,8 +276,11 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
+	}
 
 	// 分離軸 : C33
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -245,10 +294,13 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB)
+	if (L > rA + rB) {
+		obb1.m_isCollide = false;
+		obb2.m_isCollide = false;
 		return false;
-	
-
+	}
+	obb1.m_isCollide = true;
+	obb2.m_isCollide = true;
 	return true;
 }
 
@@ -270,23 +322,24 @@ void OBB::Init()
 	vertex[6].Position = XMFLOAT3(+0.5f, -0.5f, +0.5f);
 	vertex[7].Position = XMFLOAT3(-0.5f, -0.5f, +0.5f);
 
+	m_color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	vertex[0].Diffuse = XMFLOAT4(0.0f,0.0f,1.0f,1.0f);
-	vertex[1].Diffuse = XMFLOAT4(0.0f,1.0f,0.0f,1.0f);
-	vertex[2].Diffuse = XMFLOAT4(0.0f,1.0f,1.0f,1.0f);
-	vertex[3].Diffuse = XMFLOAT4(1.0f,0.0f,0.0f,1.0f);
-	vertex[4].Diffuse = XMFLOAT4(1.0f,0.0f,1.0f,1.0f);
-	vertex[5].Diffuse = XMFLOAT4(1.0f,1.0f,0.0f,1.0f);
-	vertex[6].Diffuse = XMFLOAT4(1.0f,1.0f,1.0f,1.0f);
-	vertex[7].Diffuse = XMFLOAT4(0.0f,0.0f,1.0f,1.0f);
+	vertex[0].Diffuse = m_color;
+	vertex[1].Diffuse = m_color;
+	vertex[2].Diffuse = m_color;
+	vertex[3].Diffuse = m_color;
+	vertex[4].Diffuse = m_color;
+	vertex[5].Diffuse = m_color;
+	vertex[6].Diffuse = m_color;
+	vertex[7].Diffuse = m_color;
 
 	// 頂点バッファ生成
 	D3D11_BUFFER_DESC bd{};
 
-	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.Usage = D3D11_USAGE_DYNAMIC;
 	bd.ByteWidth = sizeof(VERTEX_3DX) * 8;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
-	bd.CPUAccessFlags = 0;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	D3D11_SUBRESOURCE_DATA sd{};
 	sd.pSysMem = vertex;
@@ -331,6 +384,8 @@ void OBB::Init()
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+
+	
 }
 
 void OBB::Uninit()
@@ -344,6 +399,32 @@ void OBB::Update()
 void OBB::Draw()
 {
 	if (!m_isDraw) return;
+	if (m_isCollide) {
+		SetColor(XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+		// 頂点データを書き換え
+		D3D11_MAPPED_SUBRESOURCE msr;
+		Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		{
+			VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
+
+			vertex[0].Position = XMFLOAT3(-0.5f, +0.5f, -0.5f);
+			vertex[1].Position = XMFLOAT3(+0.5f, +0.5f, -0.5f);
+			vertex[2].Position = XMFLOAT3(+0.5f, +0.5f, +0.5f);
+			vertex[3].Position = XMFLOAT3(-0.5f, +0.5f, +0.5f);
+			vertex[4].Position = XMFLOAT3(-0.5f, -0.5f, -0.5f);
+			vertex[5].Position = XMFLOAT3(+0.5f, -0.5f, -0.5f);
+			vertex[6].Position = XMFLOAT3(+0.5f, -0.5f, +0.5f);
+			vertex[7].Position = XMFLOAT3(-0.5f, -0.5f, +0.5f);
+
+			for (int i = 0; i < 8; i++) {
+				vertex[i].Diffuse = m_color;
+			}
+		}
+		Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+	}
+	else {
+		SetColor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
@@ -371,9 +452,10 @@ void OBB::Draw()
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	material.Emission = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f);
-	Renderer::SetMaterial(material);
+	material.Diffuse = D3DXCOLOR(m_color.x, m_color.y, m_color.z, m_color.w);
+//	material.Emission = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f);
+//	Renderer::SetMaterial(material);
+
 	D3D11_RASTERIZER_DESC rdc{};
 	rdc.FillMode = D3D11_FILL_WIREFRAME;
 	rdc.CullMode = D3D11_CULL_NONE;
