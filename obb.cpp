@@ -18,13 +18,18 @@ const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
 // 描画するかどうか
 const bool OBB::m_sIsDraw = false;
 
-///// <summary>
-/////	コリジョン判定
-///// <param name = "obb1"> OBB1  </param>
-///// <returns> 当たったかどうか </returns>
-///// </summary>
+/// <summary>
+/// 当たり判定関数
+/// </summary>
+/// <param name="obb1">OBB1</param>
+/// <param name="obb2">OBB2</param>
+/// <returns>当たったどうか</returns>
 bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 {
+
+	obb1.m_isCollide = false;
+	obb2.m_isCollide = false;
+
 	// 各方向ベクトルの確保
 	XMVECTOR NAe1 = XMLoadFloat3(&obb1.GetDirect(OBB_DX)), Ae1 = NAe1 * obb1.GetLen_W(OBB_DX);
 	XMVECTOR NAe2 = XMLoadFloat3(&obb1.GetDirect(OBB_DY)), Ae2 = NAe2 * obb1.GetLen_W(OBB_DY);
@@ -53,11 +58,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NAe1);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 	// 分離軸Ae2
 	vLength = XMVector3Length(Ae2);
@@ -70,12 +72,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NAe2);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
-
 	
 	// 分離軸Ae3
 	vLength = XMVector3Length(Ae3);
@@ -88,11 +86,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NAe3);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 
 	// 分離軸Be1
@@ -106,11 +101,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NBe1);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 	// 分離軸Be2
 	vLength = XMVector3Length(Be2);
@@ -123,11 +115,9 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NBe2);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
+
 
 
 	// 分離軸Be3
@@ -141,11 +131,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, NBe3);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 
 	// 分離軸C11
@@ -161,11 +148,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 	// 分離軸 : C12
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -179,11 +163,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 	// 分離軸 : C13
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -197,11 +178,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB) 
 		return false;
-	}
 
 	// 分離軸 : C21
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -215,11 +193,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB) 
 		return false;
-	}
 
 	// 分離軸 : C22
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -233,11 +208,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 	// 分離軸 : C23
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -251,11 +223,9 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB) 
 		return false;
-	}
+
 
 	// 分離軸 : C31
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -269,11 +239,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 	// 分離軸 : C32
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -287,11 +254,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
 
 	// 分離軸 : C33
 	vCross = XMVector3Cross(NAe1, NBe1);
@@ -305,11 +269,9 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	vDot = XMVector3Dot(Interval, vCross);
 	XMStoreFloat(&L, vDot);
 	L = fabsf(L);
-	if (L > rA + rB) {
-		obb1.m_isCollide = false;
-		obb2.m_isCollide = false;
+	if (L > rA + rB)
 		return false;
-	}
+
 	obb1.m_isCollide = true;
 	obb2.m_isCollide = true;
 	return true;
