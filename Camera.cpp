@@ -14,7 +14,7 @@ static float g_MoveSpeed;
 #define CAMERA_SPEED (0.2f)
 #define AT_LENGTH (1.0f)
 
-#define MOUSE_TRUE (false)
+
 
 void Camera::Init()
 {
@@ -196,7 +196,7 @@ void Camera::Update()
 #else
 
 	// à⁄ìÆ
-	vPosition += vDirection * g_MoveSpeed;
+//	vPosition += vDirection * g_MoveSpeed;
 	// íçéãì_åvéZ
 
 	vAt = vPosition + vFront * AT_LENGTH;
