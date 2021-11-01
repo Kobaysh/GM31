@@ -65,14 +65,14 @@ void Player::Init()
 	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 
-	m_obb = new OBB(m_position, XMFLOAT3(1.0f, 1.0f, 1.0f));
+	m_obb = new OBB(m_position, XMFLOAT3(1.0f, 1.7f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 //	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
 
 //	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
-	Renderer::CreatePixelShader(&m_PixelShader, "pixelLightingRimPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "pixelLightingPS.cso");
 
 	m_shotSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	m_shotSE->Load("asset\\audio\\se\\shot.wav");
@@ -126,9 +126,9 @@ void Player::Draw()
 	Renderer::SetWorldMatrixX(&worldX);
 
 
-//	m_Model->Draw();
-	m_obb->SetisDraw(true);
-	m_obb->Draw();
+	m_Model->Draw();
+//	m_obb->SetisDraw(true);
+//	m_obb->Draw();
 }
 
 void Player::Move()

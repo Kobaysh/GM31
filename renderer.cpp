@@ -48,14 +48,14 @@ void Renderer::CreateRasterizerState()
 	rd.FrontCounterClockwise = true;
 	rd.MultisampleEnable = true;
 	
-	GetpDevice()->CreateRasterizerState(&rd, &m_pRS_FillWireFrame);
+	GetpDevice()->CreateRasterizerState(&rd, m_pRS_FillWireFrame.GetAddressOf());
 
 	rd.FillMode = D3D11_FILL_SOLID;
 	rd.CullMode = D3D11_CULL_BACK;
 	rd.FrontCounterClockwise = true;
 	rd.MultisampleEnable = false;
 
-	GetpDevice()->CreateRasterizerState(&rd, &m_pRS_FillSolid);
+	GetpDevice()->CreateRasterizerState(&rd, m_pRS_FillSolid.GetAddressOf());
 
 }
 

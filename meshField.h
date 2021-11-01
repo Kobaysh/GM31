@@ -8,7 +8,7 @@ private:
 	ID3D11Buffer*				m_vertexBuffer = nullptr;
 	ID3D11Buffer*				m_indexBuffer = nullptr;
 	ID3D11ShaderResourceView*	m_texture = nullptr;
-
+	ID3D11RasterizerState* m_pRasterrizerState = nullptr;
 
 	VERTEX_3DX* m_pVertex;
 //	VERTEX_3DX** m_ppVertex;

@@ -15,6 +15,8 @@ ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 
 const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
+// 描画するかどうか
+const bool OBB::m_sIsDraw = false;
 
 ///// <summary>
 /////	コリジョン判定
@@ -330,17 +332,10 @@ void OBB::Init()
 	vertex[5].Position = XMFLOAT3(+0.5f, -0.5f, -0.5f);
 	vertex[6].Position = XMFLOAT3(+0.5f, -0.5f, +0.5f);
 	vertex[7].Position = XMFLOAT3(-0.5f, -0.5f, +0.5f);
-
-	m_color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-
-	vertex[0].Diffuse = m_color;
-	vertex[1].Diffuse = m_color;
-	vertex[2].Diffuse = m_color;
-	vertex[3].Diffuse = m_color;
-	vertex[4].Diffuse = m_color;
-	vertex[5].Diffuse = m_color;
-	vertex[6].Diffuse = m_color;
-	vertex[7].Diffuse = m_color;
+	
+	for (int i = 0; i < 8; i++){
+		vertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	}
 
 	// 頂点バッファ生成
 	D3D11_BUFFER_DESC bd{};
@@ -420,12 +415,25 @@ void OBB::Uninit()
 
 void OBB::Update()
 {
-
+	D3D11_RASTERIZER_DESC rdc{};	rdc.FillMode = D3D11_FILL_SOLID;
+	rdc.CullMode = D3D11_CULL_NONE;
+	rdc.FrontCounterClockwise = true;
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	// ラスタライザ設定
+	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
 }
 
 void OBB::Draw()
 {
-	if (!m_isDraw) return;
+	if (!m_isDraw && !m_sIsDraw) {
+
+		return;
+	}
+	
+#if defined(_DEBUG) || defined(DEBUG)
+#else
+	return;
+#endif
 
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
@@ -454,9 +462,9 @@ void OBB::Draw()
 	// マテリアル設定
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
-	material.Diffuse = D3DXCOLOR(m_color.x, m_color.y, m_color.z, m_color.w);
-	material.Ambient = D3DXCOLOR(m_color.x, m_color.y, m_color.z, m_color.w) * 0.3f;
-//	material.Emission = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f);
+	material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	material.Ambient = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) * 0.3f;
+	material.Emission = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f);
 	Renderer::SetMaterial(material);
 
 	D3D11_RASTERIZER_DESC rdc{};
@@ -467,6 +475,7 @@ void OBB::Draw()
 
 	// ラスタライザ設定
 	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+//	Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
 
 	// テクスチャ設定
 	if (m_isCollide) {
@@ -491,6 +500,7 @@ void OBB::Draw()
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
 	// ラスタライザ設定
 	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+//	Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
 	
 }
 

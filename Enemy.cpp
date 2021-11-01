@@ -77,7 +77,7 @@ void Enemy::Draw()
 
 //	m_model->Draw();
 	Model::Draw(m_modelId);
-	m_obb->SetisDraw(true);
+//	m_obb->SetisDraw(true);
 //	m_obb->Draw();
 //	m_obb->SetisDraw(false);
 }

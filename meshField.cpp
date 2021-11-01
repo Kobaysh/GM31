@@ -307,32 +307,25 @@ void MeshField::Draw()
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	if (m_isWireFrame) {
-		//ID3D11RasterizerState* rs;
-		//D3D11_RASTERIZER_DESC rd;
-		//rd.FillMode = D3D11_FILL_WIREFRAME;
-		//rd.CullMode = D3D11_CULL_BACK;
-		//rd.FrontCounterClockwise = true;
-		//rd.MultisampleEnable = false;
-
-		//Renderer:: GetpDevice()->CreateRasterizerState(&rd, &rs);
-		//Renderer::GetpDeviceContext()->RSSetState(rs);
-		Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
+		D3D11_RASTERIZER_DESC rdc{};
+		rdc.FillMode = D3D11_FILL_WIREFRAME;
+		rdc.CullMode = D3D11_CULL_NONE;
+		rdc.FrontCounterClockwise = true;
+		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+		Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+		//Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
 	}
 
 	// ƒ|ƒŠƒSƒ“•`‰æ
 	Renderer::GetpDeviceContext()->DrawIndexed(m_indexCount, 0, 0);
 	if (m_isWireFrame) {
-		//ID3D11RasterizerState* rs;
-		//D3D11_RASTERIZER_DESC rd;
-		//rd.FillMode = D3D11_FILL_SOLID;
-		//rd.CullMode = D3D11_CULL_BACK;
-		//rd.FrontCounterClockwise = true;
-		//rd.MultisampleEnable = false;
-
-		//Renderer::GetpDevice()->CreateRasterizerState(&rd, &rs);
-		//Renderer::GetpDeviceContext()->RSSetState(rs);
-
-		Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
+		D3D11_RASTERIZER_DESC rdc{};
+		rdc.FillMode = D3D11_FILL_SOLID;
+		rdc.CullMode = D3D11_CULL_NONE;
+		rdc.FrontCounterClockwise = true;
+		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+		Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+		//Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
 	}
 }
 
