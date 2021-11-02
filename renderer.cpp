@@ -301,6 +301,14 @@ void Renderer::Init()
 	light.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	SetLight(light);
 
+	//LIGHTX lightx{};
+	//lightx.Enable = true;
+	//XMVECTOR vector = XMVectorSet(1.0f, -1.0f, 1.0f, 0.0f);
+	//vector =  XMVector3Normalize(vector);
+	//XMStoreFloat4(&lightx.Direction, vector);
+	//lightx.Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	//lightx.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+//	SetLightX(lightx);
 
 
 	// ƒ}ƒeƒŠƒAƒ‹‰Šú‰»
@@ -478,6 +486,11 @@ void Renderer::SetLight( LIGHT Light )
 {
 //	m_DeviceContext->UpdateSubresource(m_LightBuffer, 0, NULL, &Light, 0, 0);
 	m_pDeviceContext->UpdateSubresource(m_pLightBuffer.Get(), 0, NULL, &Light, 0, 0);
+}
+
+void Renderer::SetLightX(LIGHTX Light)
+{
+	m_pDeviceContext->UpdateSubresource(m_pLightBuffer.Get(), 0, nullptr, &Light, 0, 0);
 }
 
 

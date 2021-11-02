@@ -51,6 +51,15 @@ struct LIGHT
 	D3DXCOLOR	Ambient;
 };
 
+struct LIGHTX
+{
+	bool		Enable;
+	bool		Dummy[3];
+	XMFLOAT4	Direction;
+	XMFLOAT4	Diffuse;
+	XMFLOAT4	Ambient;
+};
+
 
 
 class Renderer : public SingletonT<Renderer>
@@ -108,6 +117,7 @@ public:
 	static void SetMaterial(MATERIAL Material);
 	static void SetMaterialX(MATERIALX Material);
 	static void SetLight(LIGHT Light);
+	static void SetLightX(LIGHTX Light);
 
 	static ID3D11Device* GetDevice( void ){ return m_Device; }
 	static ComPtr<ID3D11Device> GetpDevice( void ){ return m_pDevice; }
