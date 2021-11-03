@@ -6,6 +6,10 @@
 #include "renderer.h"
 #include "myImGui.h"
 
+static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+static int dragint = 0;
+bool MyImGui::checkbox = false;
+
 void MyImGui::Init(HWND hwnd)
 {
 	IMGUI_CHECKVERSION();
@@ -64,11 +68,13 @@ void MyImGui::SetSampleWindow()
 	//   */
 	ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Once);
 
-	bool show = true;
-	float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	bool show = false;
+	bool show_demo_window = false;
+
 	{
-	if (ImGui::Begin("MyImGui TitleBar Text", &show))
+
 	{
+		ImGui::Begin("MyImGui TitleBar Text", &show);
 		ImGui::Text(u8"今日は天気が良いです");
 
 		//区切り線
@@ -80,7 +86,7 @@ void MyImGui::SetSampleWindow()
 
 		ImGui::Separator();
 
-		ImGui::Checkbox(u8"チェックボックス", &show);
+		ImGui::Checkbox(u8"チェックボックス", &checkbox);
 
 		ImGui::Separator();
 
@@ -96,9 +102,14 @@ void MyImGui::SetSampleWindow()
 	{
 		ImGui::SetNextWindowSize(ImVec2(320, 100), ImGuiCond_Once);
 		ImGui::Begin("hoge", &show);
-		//	ImGui::Begin("aaaa");
+		
 		ImGui::Text("fugafuga");
+		ImGui::Separator();
+	
+		ImGui::DragInt("dragint", &dragint);
 		ImGui::End(); 
 	}
+
+	ImGui::ShowDemoWindow(&show_demo_window);
 }
 

@@ -18,5 +18,5 @@ private:
 	~MyImGui() {}
 
 	 bool show_gui = true;
-	 bool checkbox;
+	 static bool checkbox;
 };
