@@ -189,6 +189,7 @@
     <ClInclude Include="manager.h" />
     <ClInclude Include="meshField.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="myImGui.h" />
     <ClInclude Include="obb.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerState.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="meshField.cpp" />
     <ClCompile Include="model.cpp" />
+    <ClCompile Include="myImGui.cpp" />
     <ClCompile Include="obb.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerState.cpp" />

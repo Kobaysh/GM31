@@ -194,6 +194,9 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>imGui</Filter>
     </ClInclude>
+    <ClInclude Include="myImGui.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -336,6 +339,9 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_tables.cpp">
       <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="myImGui.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

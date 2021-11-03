@@ -5,7 +5,8 @@
 #include "keyboard.h"
 #include "manager.h"
 #include "input.h"
-#include <imgui_impl_dx11.h>
+#include <imgui.h>
+#include "myImGui.h"
 
 
 
@@ -69,15 +70,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//Manager::create();
 
 	//Manager::Init();
-
+	ShowWindow(g_Window, nCmdShow);
+	UpdateWindow(g_Window);
 //	ManagerT::singleton();
 	Keyboard_Initialize();
 	ManagerT::Init();
 	Input::Init(hInstance);
+	MyImGui::Init(GetWindow());
 
 
-	ShowWindow(g_Window, nCmdShow);
-	UpdateWindow(g_Window);
 
 
 
@@ -117,8 +118,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			//	Manager::Draw();
 				Input::Update();
 				ManagerT::Update();
-				
+				MyImGui::Update();
 				ManagerT::Draw();
+
 			}
 		}
 	}
@@ -127,6 +129,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
+	MyImGui::Uninit();
 	Input::Uninit();
 //	Manager::Uninit();
 	ManagerT::Uninit();
@@ -134,11 +137,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 }
 
 
+// Forward declare message handler from imgui_impl_win32.cpp
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		return true;
 	switch(uMsg)
 	{
 	case WM_DESTROY:
