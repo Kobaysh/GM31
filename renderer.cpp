@@ -3,7 +3,6 @@
 #include "renderer.h"
 #include <io.h>
 
-
 D3D_FEATURE_LEVEL       Renderer::m_FeatureLevel = D3D_FEATURE_LEVEL_11_0;
 
 ID3D11Device*           Renderer::m_Device = nullptr;
