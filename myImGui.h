@@ -12,10 +12,12 @@ public:
 
 	static void SetSampleWindow();
 
-//	static bool WndProcHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	static void SetIsShowAll(bool show) { m_bIsShowAll = show; }
+	static bool GetIsShowAll() { return m_bIsShowAll; }
 private:
 	MyImGui() {}
 	~MyImGui() {}
+	static  bool m_bIsShowAll;
 
 	 bool show_gui = true;
 	 static bool checkbox;

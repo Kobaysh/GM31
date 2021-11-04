@@ -4,11 +4,13 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
+#include "input.h"
 #include "myImGui.h"
 
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
 bool MyImGui::checkbox = false;
+bool MyImGui::m_bIsShowAll = true;
 
 void MyImGui::Init(HWND hwnd)
 {
@@ -18,7 +20,7 @@ void MyImGui::Init(HWND hwnd)
 	ImGui::StyleColorsLight();
 	ImGui_ImplDX11_Init(Renderer::GetpDevice().Get(), Renderer::GetpDeviceContext().Get());
 	ImGui_ImplWin32_Init(hwnd);
-	//ini‚ğ¶¬‚µ‚È‚¢‚æ‚¤‚É
+	//iniã‚’ç”Ÿæˆã—ãªã„ã‚ˆã†ã«
 	io.IniFilename = NULL;
 
 
@@ -39,10 +41,16 @@ void MyImGui::Uninit()
 
 void MyImGui::Update()
 {
-	// ƒtƒŒ[ƒ€ŠJn
+	// ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹
 	MyImGui::SetNewFrame();
+	
+	if (Input::GetKeyTrigger(VK_LSHIFT & VK_RSHIFT))
+	{
+		m_bIsShowAll = m_bIsShowAll ? false : true;
+	}
+	if (!m_bIsShowAll) return;
 
-	// ‚±‚±‚©‚çƒEƒBƒ“ƒhƒE‚ÌƒZƒbƒg
+	// ã“ã“ã‹ã‚‰ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚»ãƒƒãƒˆ
 	MyImGui::SetSampleWindow();
 }
 
@@ -61,11 +69,6 @@ void MyImGui::StartRender()
 
 void MyImGui::SetSampleWindow()
 {
-	///*
-	//   ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ğİ’è‚µ‚Ü‚·B
-	//   ImGuiCond_Once ‚É‚æ‚èA‰‰ñ‚Ì‚İİ’è‚³‚ê‚Ü‚·B
-	//   ImGuiCond_Always ‚ÅAí‚Éİ’è‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B
-	//   */
 	ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Once);
 
 	bool show = false;
@@ -75,24 +78,24 @@ void MyImGui::SetSampleWindow()
 
 	{
 		ImGui::Begin("MyImGui TitleBar Text", &show);
-		ImGui::Text(u8"¡“ú‚Í“V‹C‚ª—Ç‚¢‚Å‚·");
+		ImGui::Text(u8"ä»Šæ—¥ã¯å¤©æ°—ãŒè‰¯ã„ã§ã™");
 
-		//‹æØ‚èü
+		//åŒºåˆ‡ã‚Šç·š
 		ImGui::Separator();
 
-		ImGui::Text(u8"‚±‚Ì‚æ‚¤‚É");
+		ImGui::Text(u8"ã“ã®ã‚ˆã†ã«");
 		ImGui::SameLine();
-		ImGui::Text(u8"“¯‚¶s‚ÉƒRƒ“ƒeƒ“ƒc‚ğ’Ç‰Á‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·");
+		ImGui::Text(u8"åŒã˜è¡Œã«ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚’è¿½åŠ ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™");
 
 		ImGui::Separator();
 
-		ImGui::Checkbox(u8"ƒ`ƒFƒbƒNƒ{ƒbƒNƒX", &checkbox);
+		ImGui::Checkbox(u8"ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹", &checkbox);
 
 		ImGui::Separator();
 
-		ImGui::ColorPicker4(u8"ƒJƒ‰[ƒsƒbƒJ[", color_picker);
+		ImGui::ColorPicker4(u8"ã‚«ãƒ©ãƒ¼ãƒ”ãƒƒã‚«ãƒ¼", color_picker);
 
-		//ƒtƒŒ[ƒ€ƒŒ[ƒg‚ğ•\¦
+		//ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆã‚’è¡¨ç¤º
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 
