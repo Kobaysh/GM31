@@ -19,7 +19,7 @@ private:
 	ID3D11Buffer*				m_Indexbuffer = NULL;
 	ID3D11RasterizerState* m_pRasterrizerState = nullptr;
 
-	const static bool m_sIsDraw;
+
 	bool m_isDraw = false;
 	bool m_isCollide = false;
 protected:
@@ -41,12 +41,24 @@ public:
 		m_fLength[1] = 0.5f;
 		m_fLength[2] = 0.5f;
 	}
+
 	OBB(XMFLOAT3 pos, XMFLOAT3 size) {
 		m_normaDirect[0] = XMFLOAT3(1.0f, 0.0f, 0.0f);
 		m_normaDirect[1] = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		m_normaDirect[2] = XMFLOAT3(0.0f, 0.0f, 1.0f);
 		m_position = pos;
 		m_fLength[0] = size.x * 0.5f; 
+		m_fLength[1] = size.y * 0.5f;
+		m_fLength[2] = size.z * 0.5f;
+		m_scale = size;
+	}
+	OBB(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 size) {
+		m_normaDirect[0] = XMFLOAT3(1.0f, 0.0f, 0.0f);
+		m_normaDirect[1] = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		m_normaDirect[2] = XMFLOAT3(0.0f, 0.0f, 1.0f);
+		m_position = pos;
+		SetRotation(rot);
+		m_fLength[0] = size.x * 0.5f;
 		m_fLength[1] = size.y * 0.5f;
 		m_fLength[2] = size.z * 0.5f;
 		m_scale = size;
@@ -62,7 +74,11 @@ public:
 	float GetLen_W(OBB_Direction elem) { return m_fLength[elem]; }
 	XMFLOAT3 GetPos_W() { return m_position; }
 
+	void SetRotation(XMFLOAT3 rot)override;
+
 	static bool ColOBBs(OBB &obb1, OBB &obb2);
+	static bool GetIsColShow() { return m_bIsDraw; }
+	static void SetIsColShow(bool show) { m_bIsDraw = show; }
 	void SetisDraw(bool isDraw) { m_isDraw = isDraw; }
 	void SetisCollide(bool isCollide) { m_isCollide = isCollide; }
 
@@ -70,4 +86,6 @@ public:
 	void Uninit()override;
 	void Update()override;
 	void Draw()override;
+
+	static bool m_bIsDraw;
 };

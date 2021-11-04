@@ -11,6 +11,7 @@ public:
 	static void StartRender();
 
 	static void SetSampleWindow();
+	static void SetDebugCollisionWindow();
 
 	static void SetIsShowAll(bool show) { m_bIsShowAll = show; }
 	static bool GetIsShowAll() { return m_bIsShowAll; }

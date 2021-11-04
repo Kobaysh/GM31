@@ -5,12 +5,13 @@
 #include "manager.h"
 #include "renderer.h"
 #include "input.h"
+#include "obb.h"
 #include "myImGui.h"
 
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
 bool MyImGui::checkbox = false;
-bool MyImGui::m_bIsShowAll = true;
+bool MyImGui::m_bIsShowAll = false;
 
 void MyImGui::Init(HWND hwnd)
 {
@@ -20,7 +21,7 @@ void MyImGui::Init(HWND hwnd)
 	ImGui::StyleColorsLight();
 	ImGui_ImplDX11_Init(Renderer::GetpDevice().Get(), Renderer::GetpDeviceContext().Get());
 	ImGui_ImplWin32_Init(hwnd);
-	//iniã‚’ç”Ÿæˆã—ãªã„ã‚ˆã†ã«
+	//ini‚ğ¶¬‚µ‚È‚¢‚æ‚¤‚É
 	io.IniFilename = NULL;
 
 
@@ -41,17 +42,18 @@ void MyImGui::Uninit()
 
 void MyImGui::Update()
 {
-	// ãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹
+	// ƒtƒŒ[ƒ€ŠJn
 	MyImGui::SetNewFrame();
 	
-	if (Input::GetKeyTrigger(VK_LSHIFT & VK_RSHIFT))
+	if (Input::GetKeyPress(VK_LCONTROL) && Input::GetKeyTrigger(VK_RCONTROL))
 	{
 		m_bIsShowAll = m_bIsShowAll ? false : true;
 	}
 	if (!m_bIsShowAll) return;
 
-	// ã“ã“ã‹ã‚‰ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚»ãƒƒãƒˆ
+	// ‚±‚±‚©‚çƒEƒBƒ“ƒhƒE‚ÌƒZƒbƒg
 	MyImGui::SetSampleWindow();
+	SetDebugCollisionWindow();
 }
 
 void MyImGui::SetNewFrame()
@@ -74,45 +76,65 @@ void MyImGui::SetSampleWindow()
 	bool show = false;
 	bool show_demo_window = false;
 
-	{
+	//{
 
-	{
-		ImGui::Begin("MyImGui TitleBar Text", &show);
-		ImGui::Text(u8"ä»Šæ—¥ã¯å¤©æ°—ãŒè‰¯ã„ã§ã™");
+	//	{
+	//		ImGui::Begin("MyImGui TitleBar Text", &show);
+	//		ImGui::Text(u8"¡“ú‚Í“V‹C‚ª—Ç‚¢‚Å‚·");
 
-		//åŒºåˆ‡ã‚Šç·š
-		ImGui::Separator();
+	//		//‹æØ‚èü
+	//		ImGui::Separator();
 
-		ImGui::Text(u8"ã“ã®ã‚ˆã†ã«");
-		ImGui::SameLine();
-		ImGui::Text(u8"åŒã˜è¡Œã«ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚’è¿½åŠ ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™");
+	//		ImGui::Text(u8"‚±‚Ì‚æ‚¤‚É");
+	//		ImGui::SameLine();
+	//		ImGui::Text(u8"“¯‚¶s‚ÉƒRƒ“ƒeƒ“ƒc‚ğ’Ç‰Á‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·");
 
-		ImGui::Separator();
+	//		ImGui::Separator();
 
-		ImGui::Checkbox(u8"ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹", &checkbox);
+	//		ImGui::Checkbox(u8"ƒ`ƒFƒbƒNƒ{ƒbƒNƒX", &checkbox);
 
-		ImGui::Separator();
+	//		ImGui::Separator();
 
-		ImGui::ColorPicker4(u8"ã‚«ãƒ©ãƒ¼ãƒ”ãƒƒã‚«ãƒ¼", color_picker);
+	//		ImGui::ColorPicker4(u8"ƒJƒ‰[ƒsƒbƒJ[", color_picker);
 
-		//ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆã‚’è¡¨ç¤º
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	//		//ƒtƒŒ[ƒ€ƒŒ[ƒg‚ğ•\¦
+	//		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	//		ImGui::End();
 
+	//	}
 
-	}
-	ImGui::End();
-	}
-	{
-		ImGui::SetNextWindowSize(ImVec2(320, 100), ImGuiCond_Once);
-		ImGui::Begin("hoge", &show);
-		
-		ImGui::Text("fugafuga");
-		ImGui::Separator();
-	
-		ImGui::DragInt("dragint", &dragint);
-		ImGui::End(); 
-	}
+	//}
+	//{
+	//	ImGui::SetNextWindowSize(ImVec2(320, 100), ImGuiCond_Once);
+	//	ImGui::Begin("hoge", &show);
+	//	
+	//	ImGui::Text("fugafuga");
+	//	ImGui::Separator();
+	//
+	//	ImGui::DragInt("dragint", &dragint);
+	//	ImGui::End(); 
+	//}
 
 	ImGui::ShowDemoWindow(&show_demo_window);
+}
+
+void MyImGui::SetDebugCollisionWindow()
+{
+	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	ImGui::SetNextWindowBgAlpha(0.3f);
+	static bool* p_open = nullptr;
+	ImGuiWindowFlags window_flags = 0;
+	//	window_flags = ImGuiWindowFlags_NoBackground;
+
+
+	if (!ImGui::Begin("Debug Collision", p_open, window_flags)) {
+		ImGui::End();
+		return;
+	}
+
+	static bool debugShow = OBB::GetIsColShow();
+	ImGui::Checkbox("Collision Show", &debugShow);
+	OBB::SetIsColShow(debugShow);
+	ImGui::End();
 }
 

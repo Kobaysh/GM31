@@ -18,10 +18,11 @@ void Enemy::Init()
 	m_modelId = Model::SetModelLoadfile(FILENAME);
 	Model::Load(m_modelId);
 	m_position = XMFLOAT3(-20.0f, 1.0f, 1.0f);
+//	m_rotation = XMFLOAT3(XMConvertToRadians(45.0f), XMConvertToRadians(45.0f), XMConvertToRadians(45.0f));
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 
-	m_obb = new OBB(m_position, XMFLOAT3(1.0f, 1.0f, 1.0f));
+	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(1.2f, 1.2f, 1.2f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -50,12 +51,13 @@ void Enemy::Update()
 	m_rotation.y += 0.01f;
 	m_rotation.z += 0.01f;
 
-//	m_position.x = cosf(m_rotation.y) * 10.0f;
-//	m_position.z = sinf(m_rotation.z * 2.0f) * 10.0f;
+	m_position.x = cosf(m_rotation.y) * 10.0f;
+	m_position.z = sinf(m_rotation.z * 2.0f) * 10.0f;
 
 	m_position.y = mf->GetHeight(m_position) + 0.7f;
 
 	m_obb->SetPosition(m_position);
+	m_obb->SetRotation(m_rotation);
 }
 
 void Enemy::Draw()

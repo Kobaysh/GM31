@@ -16,7 +16,20 @@ ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
 // ï`âÊÇ∑ÇÈÇ©Ç«Ç§Ç©
-const bool OBB::m_sIsDraw = false;
+bool OBB::m_bIsDraw = false;
+
+void OBB::SetRotation(XMFLOAT3 rot)
+{
+	m_rotation = rot;
+	XMVECTOR nDX = XMLoadFloat3(&GetDirect(OBB_DX));
+	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DX));
+	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DX));
+
+	XMVECTOR quaternion = XMLoadFloat3(&m_rotation);
+	nDX = XMVector3Rotate(nDX, quaternion);
+	nDY = XMVector3Rotate(nDY, quaternion);
+	nDZ = XMVector3Rotate(nDZ, quaternion);
+}
 
 /// <summary>
 /// ìñÇΩÇËîªíËä÷êî
@@ -387,7 +400,7 @@ void OBB::Update()
 
 void OBB::Draw()
 {
-	if (!m_isDraw && !m_sIsDraw) {
+	if (!m_isDraw && !m_bIsDraw) {
 
 		return;
 	}
