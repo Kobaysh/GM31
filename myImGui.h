@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 class MyImGui
 {
 public:
@@ -22,4 +23,18 @@ private:
 
 	 bool show_gui = true;
 	 static bool checkbox;
+};
+
+class MyGuiWindow
+{
+private:
+	MyGuiWindow(){}
+	~MyGuiWindow(){}
+
+	const std::string m_name;
+
+public :
+	MyGuiWindow(const std::string& name):m_name(name){}
+
+	const char* GetWindowName() { return m_name.data(); }
 };
