@@ -20,15 +20,35 @@ bool OBB::m_bIsDraw = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
+
+	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
 	m_rotation = rot;
 	XMVECTOR nDX = XMLoadFloat3(&GetDirect(OBB_DX));
-	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DX));
-	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DX));
+	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DY));
+	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DZ));
 
 	XMVECTOR quaternion = XMLoadFloat3(&m_rotation);
-	nDX = XMVector3Rotate(nDX, quaternion);
-	nDY = XMVector3Rotate(nDY, quaternion);
-	nDZ = XMVector3Rotate(nDZ, quaternion);
+
+	XMMATRIX mtxRot;
+//	mtxRot = XMMatrixRotationQuaternion(quaternion);
+	mtxRot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+	
+//	nDX = XMVector3TransformNormal(nDX, mtxRot);
+	nDX = XMVector3TransformCoord(nDX, mtxRot);
+	nDY = XMVector3TransformCoord(nDY, mtxRot);
+	nDZ = XMVector3TransformCoord(nDZ, mtxRot);
+	nDX = XMVector3Normalize(nDX);
+	nDY = XMVector3Normalize(nDY);
+	nDZ = XMVector3Normalize(nDZ);
+
+	XMStoreFloat3(&m_normaDirect[OBB_DX], nDX);
+	XMStoreFloat3(&m_normaDirect[OBB_DY], nDY);
+	XMStoreFloat3(&m_normaDirect[OBB_DZ], nDZ);
+
+//	nDX = XMVector3Rotate(nDX, quaternion);
+//	nDY = XMVector3Rotate(nDY, quaternion);
+//	nDZ = XMVector3Rotate(nDZ, quaternion);
+
 }
 
 /// <summary>
@@ -39,9 +59,13 @@ void OBB::SetRotation(XMFLOAT3 rot)
 /// <returns>当たったどうか</returns>
 bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 {
+	bool preCol1 = obb1.m_wasCollide;
+	bool preCol2 = obb2.m_wasCollide;
 
 	obb1.m_isCollide = false;
 	obb2.m_isCollide = false;
+	obb1.m_wasCollide = false;
+	obb2.m_wasCollide = false;
 
 	// 各方向ベクトルの確保
 	XMVECTOR NAe1 = XMLoadFloat3(&obb1.GetDirect(OBB_DX)), Ae1 = NAe1 * obb1.GetLen_W(OBB_DX);
@@ -165,7 +189,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 	// 分離軸 : C12
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe1, NBe2);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae2);
 	XMStoreFloat3(&ee2, Ae3);
@@ -180,7 +204,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 	// 分離軸 : C13
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe1, NBe3);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae2);
 	XMStoreFloat3(&ee2, Ae3);
@@ -195,7 +219,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 	// 分離軸 : C21
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe2, NBe1);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
 	XMStoreFloat3(&ee2, Ae3);
@@ -210,7 +234,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 	// 分離軸 : C22
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe2, NBe2);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
 	XMStoreFloat3(&ee2, Ae3);
@@ -225,7 +249,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 	// 分離軸 : C23
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe2, NBe3);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
 	XMStoreFloat3(&ee2, Ae3);
@@ -241,7 +265,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 
 	// 分離軸 : C31
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe3, NBe1);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
 	XMStoreFloat3(&ee2, Ae2);
@@ -256,7 +280,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 	// 分離軸 : C32
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe3, NBe2);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
 	XMStoreFloat3(&ee2, Ae2);
@@ -271,7 +295,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 	// 分離軸 : C33
-	vCross = XMVector3Cross(NAe1, NBe1);
+	vCross = XMVector3Cross(NAe3, NBe3);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
 	XMStoreFloat3(&ee2, Ae2);
@@ -285,8 +309,16 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
+	obb1.m_wasCollide = true;
+	obb2.m_wasCollide = true;
+
+	if (!preCol1 || !preCol2)
+	{
+		return false;
+	}
 	obb1.m_isCollide = true;
 	obb2.m_isCollide = true;
+
 	return true;
 }
 
@@ -360,9 +392,9 @@ void OBB::Init()
 	rdc.FrontCounterClockwise = true;
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
 		Renderer::GetpDevice().Get(),
