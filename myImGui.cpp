@@ -6,6 +6,9 @@
 #include "renderer.h"
 #include "input.h"
 #include "obb.h"
+#include "camera.h"
+#include "Scene.h"
+#include "gameObject.h"
 #include "myImGui.h"
 
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -52,8 +55,8 @@ void MyImGui::Update()
 	if (!m_bIsShowAll) return;
 
 	// ここからウィンドウのセット
-	MyImGui::SetSampleWindow();
-	SetDebugCollisionWindow();
+
+	SetDebugWindow();
 }
 
 void MyImGui::SetNewFrame()
@@ -118,24 +121,55 @@ void MyImGui::SetSampleWindow()
 	ImGui::ShowDemoWindow(&show_demo_window);
 }
 
-void MyImGui::SetDebugCollisionWindow()
+void MyImGui::SetDebugWindow()
 {
 	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
 	ImGui::SetNextWindowBgAlpha(0.3f);
 	static bool* p_open = nullptr;
 	ImGuiWindowFlags window_flags = 0;
+	{
+		if (!ImGui::Begin("Debug Window", p_open, window_flags))
+		{
+			ImGui::End();
+			return;
+		}
+
+		if (ImGui::TreeNode("Camera"))
+		{
+			Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
+			static bool cameraMovable = camera->GetMovable();
+			ImGui::Checkbox("Camera Movable", &cameraMovable);
+			camera->SetMovale(cameraMovable);
+			ImGui::TreePop();
+		}
+		SetDebugCollisionWindow();
+		ImGui::End();
+	}
+
+}
+
+void MyImGui::SetDebugCollisionWindow()
+{
+	//ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	//ImGui::SetNextWindowBgAlpha(0.3f);
+	//static bool* p_open = nullptr;
+	//ImGuiWindowFlags window_flags = 0;
 	//	window_flags = ImGuiWindowFlags_NoBackground;
 
 
-	if (!ImGui::Begin("Debug Collision", p_open, window_flags)) {
-		ImGui::End();
-		return;
-	}
+	//if (!ImGui::Begin("Debug Collision", p_open, window_flags)) {
+	//	ImGui::End();
+	//	return;
+	//}
 
 //	bool debugShow = OBB::GetIsColShow();
 //	ImGui::Checkbox("Collision Show", debugShow);
-	ImGui::Checkbox("Collision Show", &OBB::m_bIsDraw);
+	if (ImGui::TreeNode("Collision"))
+	{
+		ImGui::Checkbox("Collision Show", &OBB::m_bIsDraw);
+		ImGui::TreePop();
+	}
 //	OBB::SetIsColShow(debugShow);
-	ImGui::End();
+//	ImGui::End();
 }
 

@@ -22,7 +22,7 @@
 #include "result.h"
 #include "fade.h"
 #include "pressSpaceKey.h"
-
+#include "myImGui.h"
 #include "game.h"
 
 
@@ -73,6 +73,9 @@ void Game::Init()
 
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
 	Fade::SetFade(Fade::FADE_IN);
+
+	MyImGui::Init(GetWindow());
+
 	Audio* bgm = AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	bgm->Load("asset\\audio\\bgm\\bgm.wav");
 	
@@ -82,6 +85,7 @@ void Game::Init()
 void Game::Uninit()
 {
 	Scene::Uninit();	// 継承元クラスのメソッド呼び出し(staticメソッドと書き方同じ)
+	MyImGui::Uninit();
 	Bullet::UnLoad();
 	Model::Uninit();
 }
@@ -107,7 +111,16 @@ void Game::Update()
 			if (Fade::GetFadeType() == Fade::FADE_NONE) {
 				ManagerT::SetScene<Result>();
 				m_isFading = false;
+				return;
 			}
 		}
 	}
+
+}
+
+void Game::Draw()
+{
+	MyImGui::Update();
+	Scene::Draw();
+	MyImGui::StartRender();
 }

@@ -13,13 +13,15 @@ private:
 	XMFLOAT4X4 m_viewMatrix;
 	XMFLOAT3 m_move;
 public:
-	Camera():m_movable(true){}
+	Camera():m_movable(false){}
 	Camera(bool movable):m_movable(movable){}
 	void Init();
 	void Uninit();
 	void Update();
 	void Draw();
 	bool GetIsActive() { return m_isActive; }
+	bool GetMovable() { return m_movable; }
+	void SetMovale(bool movable) { m_movable = movable; }
 	XMFLOAT3* GetFront() { return &m_front; }
 	XMFLOAT3* GetRight() { return &m_right; }
 	XMFLOAT3* GetUp() { return &m_up; }

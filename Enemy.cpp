@@ -37,7 +37,7 @@ void Enemy::Uninit()
 {
 	// m_model->Unload();
 	// delete m_model;
-
+	m_obb->SetDead();
 	m_explosionSE->Play(0.1f);
 	m_VertexLayout->Release();
 	m_VertexShader->Release();

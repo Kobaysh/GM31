@@ -54,7 +54,7 @@ void Sky::Update()
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
 	XMVECTOR vPos = XMLoadFloat3(&m_position);
 	// ƒJƒƒ‰ˆÚ“®‚É•¹‚¹‚ÄˆÚ“®
-	if (pCamera->GetIsActive()) {
+	if (pCamera->GetMovable()) {
 		XMVECTOR cameraFront = XMLoadFloat3(pCamera->GetMove());
 		cameraFront.m128_f32[1] = 0.0f;
 		vPos += cameraFront * pCamera->GetSpeed();
@@ -122,7 +122,7 @@ void Sky::Draw()
 void Sky::Move()
 {
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
-	if (pCamera->GetIsActive()) return;
+	if (pCamera->GetMovable()) return;
 	//XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_position);
@@ -188,7 +188,7 @@ void Sky::Move()
 
 void Sky::Shoot()
 {
-	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetIsActive()) return;
+	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
 	if (KeyLogger_Trigger(KL_JUMP)) {
 		Bullet::Create(m_position, m_front, 0.3f);
