@@ -132,9 +132,10 @@ void MyImGui::SetDebugCollisionWindow()
 		return;
 	}
 
-	static bool debugShow = OBB::GetIsColShow();
-	ImGui::Checkbox("Collision Show", &debugShow);
-	OBB::SetIsColShow(debugShow);
+//	bool debugShow = OBB::GetIsColShow();
+//	ImGui::Checkbox("Collision Show", debugShow);
+	ImGui::Checkbox("Collision Show", &OBB::m_bIsDraw);
+//	OBB::SetIsColShow(debugShow);
 	ImGui::End();
 }
 

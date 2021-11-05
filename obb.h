@@ -22,6 +22,7 @@ private:
 
 	bool m_isDraw = false;
 	bool m_isCollide = false;
+
 protected:
 //	XMFLOAT3 m_pos;				// 位置
 	XMFLOAT3 m_normaDirect[3];	// 方向ベクトル
