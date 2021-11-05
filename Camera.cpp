@@ -72,10 +72,10 @@ void Camera::Update()
 			vDirection += +vRight;
 		}
 		if (KeyLogger_Press(KL_RISE)) {
-			vDirection += +vUp;
+			vDirection += +XMVectorSet(0.0f,1.0f,0.0f,0.0f);
 		}
 		if (KeyLogger_Press(KL_FALL)) {
-			vDirection += -vUp;
+			vDirection += -XMVectorSet(0.0f,1.0f,0.0f,0.0f);
 		}
 
 		if (KeyLogger_Press(KL_TURN_LEFT)) {
