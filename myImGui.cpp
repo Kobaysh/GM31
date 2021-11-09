@@ -14,7 +14,6 @@
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
 bool MyImGui::checkbox = false;
-bool MyImGui::enemyFrustumCulling = false;
 bool MyImGui::m_bIsShowAll = false;
 
 void MyImGui::Init(HWND hwnd)
