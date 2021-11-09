@@ -258,7 +258,7 @@ bool Camera::CheckView(XMFLOAT3 pos)
 	for (int i = 0; i < 4;i++)
 	{
 		vVpos[i] = XMLoadFloat3(&vpos[i]);
-		vWpos[i] = XMVector2TransformCoord(vVpos[i], invvp);
+		vWpos[i] = XMVector3TransformCoord(vVpos[i], invvp);
 	}
 
 	XMVECTOR v, v1, v2, vn, vCameraPosition;
