@@ -127,7 +127,7 @@ void Camera::Update()
 		if (JudgeActiveWindow()) {
 //		if (false) {
 			
-			ShowCursor(false);
+		//	ShowCursor(false);
 			if (Input::GetMouseVelocity().x >= 1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationY(g_RoutationalSpeed);
@@ -237,7 +237,7 @@ void Camera::Draw()
 	Renderer::SetProjectionMatrix(&projectionMatrix);*/
 }
 
-bool Camera::CheckView(XMFLOAT3 pos)
+bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 {
 	// éãêéë‰ÉJÉäÉìÉO
 	XMMATRIX view = XMLoadFloat4x4(&m_viewMatrix);
@@ -249,6 +249,10 @@ bool Camera::CheckView(XMFLOAT3 pos)
 	XMVECTOR vVpos[4];
 	XMVECTOR vWpos[4];
 	float dot;
+	XMFLOAT3 fixPos, fixScale;
+//	fixScale = XMFLOAT3(scale.x * 0.5f, scale.y * 0.5f, scale.z * 0.5f);
+	fixScale = scale;
+	fixPos = pos;
 
 	vpos[0] = XMFLOAT3(-1.0f, +1.0f, 1.0f);
 	vpos[1] = XMFLOAT3(+1.0f, +1.0f, 1.0f);
@@ -263,9 +267,12 @@ bool Camera::CheckView(XMFLOAT3 pos)
 
 	XMVECTOR v, v1, v2, vn, vCameraPosition;
 	vCameraPosition = XMLoadFloat3(&m_position);
-	v = XMLoadFloat3(&pos) - vCameraPosition;
+	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 
 	// ç∂ñ 
+	fixPos = pos;
+	fixPos.x += fixScale.x;
+	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 	v1 = vWpos[0] - vCameraPosition;
 	v2 = vWpos[2] - vCameraPosition;
 	vn =  XMVector3Cross(v1, v2);
@@ -277,6 +284,9 @@ bool Camera::CheckView(XMFLOAT3 pos)
 	}
 
 	// âEñ 
+	fixPos = pos;
+	fixPos.x -= fixScale.x;
+	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 	v1 = vWpos[1] - vCameraPosition;
 	v2 = vWpos[3] - vCameraPosition;
 	vn =  XMVector3Cross(v1, v2);
@@ -287,6 +297,9 @@ bool Camera::CheckView(XMFLOAT3 pos)
 	}
 
 	// è„ñ 
+	fixPos = pos;
+	fixPos.y -= fixScale.x;
+	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 	v1 = vWpos[0] - vCameraPosition;
 	v2 = vWpos[1] - vCameraPosition;
 	vn =  XMVector3Cross(v1, v2);
@@ -297,6 +310,9 @@ bool Camera::CheckView(XMFLOAT3 pos)
 	}
 
 	// â∫ñ 
+	fixPos = pos;
+	fixPos.y += fixScale.x;
+	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 	v1 = vWpos[2] - vCameraPosition;
 	v2 = vWpos[3] - vCameraPosition;
 	vn =  XMVector3Cross(v1, v2);

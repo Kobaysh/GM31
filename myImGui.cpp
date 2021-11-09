@@ -149,16 +149,23 @@ void MyImGui::SetDebugWindow()
 			return;
 		}
 
-		if (ImGui::TreeNode("Camera"))
-		{
-			Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
-			static bool cameraMovable = camera->GetMovable();
-			ImGui::Checkbox("Camera Movable", &cameraMovable);
-			camera->SetMovale(cameraMovable);
-			ImGui::TreePop();
-		}
+		SetDebugCameraWindow();
 		SetDebugCollisionWindow();
 		ImGui::End();
+	}
+#endif
+}
+
+void MyImGui::SetDebugCameraWindow()
+{
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+	if (ImGui::TreeNode("Camera"))
+	{
+		Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
+		static bool cameraMovable = camera->GetMovable();
+		ImGui::Checkbox("Camera Movable", &cameraMovable);
+		camera->SetMovale(cameraMovable);
+		ImGui::TreePop();
 	}
 #endif
 }
