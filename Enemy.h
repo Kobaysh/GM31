@@ -8,7 +8,7 @@ protected:
 	int m_modelId;
 	class Audio* m_explosionSE;
 	class OBB* m_obb;
-	class EnemyState m_state;
+	class EnemyState* m_state;
 
 	float m_eyesight_rad;		// 視覚半径
 	float m_eyesight_angle;		// 視覚角度
@@ -16,11 +16,14 @@ protected:
 	int m_missed_time;			// プレイヤーを見失う時間
 	bool m_isDiscover;			// プレイヤーを発見状態
 
+	float m_moveSpeed;
+
 public:
-	void Init();
+	virtual void Init();
 	void Uninit();
 	void Update();
 	void Draw();
 	OBB& GetObb() { return *m_obb; }
+	float GetMoveSpeed() { return m_moveSpeed; }
 };
 

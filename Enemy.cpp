@@ -22,9 +22,15 @@ void Enemy::Init()
 	m_rotation = XMFLOAT3(XMConvertToRadians(45.0f), XMConvertToRadians(45.0f), XMConvertToRadians(45.0f));
 //	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	m_eyesight_rad = 5.0f;
+	m_moveSpeed = 0.05f;
+
 
 	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(1.1f, 1.1f, 1.1f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+
+	m_state = new EnemyState(this);
+	m_state->Init(m_eyesight_rad);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
@@ -48,7 +54,7 @@ void Enemy::Uninit()
 void Enemy::Update()
 {
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
-	m_state.Update();
+	m_state->Update();
 //	m_rotation.y += 0.01f;
 	m_rotation.z += 0.02f;
 

@@ -1,10 +1,17 @@
 #pragma once
 #include "state.h"
 
+class Enemy;
+
 class  EnemyState : public State
 {
 public:
-	EnemyState():m_nowState(IDLE_IDLE), m_nextState(IDLE_IDLE),m_isAiStaterunning(false){}
+	EnemyState() = delete;
+	EnemyState(Enemy* enemy):m_nowState(IDLE_IDLE), m_nextState(IDLE_IDLE),m_isAiStaterunning(false),m_enemy(enemy)
+	{
+		m_radiusDiscoverPlayer = 0.0f;
+		m_timer = 0.0f;
+	}
 	~EnemyState(){}
 	enum En_Enemy_State {
 		NONE = -1,
@@ -26,10 +33,19 @@ public:
 		MAX,
 	};
 private:
+
+	Enemy* m_enemy;
 	En_Enemy_State m_nowState;
 	En_Enemy_State m_nextState;
 
+	float m_radiusDiscoverPlayer;
+	float m_timer;
+
 	bool m_isAiStaterunning;
+
+	void UpdateAI();
+	void SetAI();
+	void AIMainRoutine();
 
 	void Idle_Idle();
 	void Idle_Walk();				// éUçÙ
@@ -46,9 +62,8 @@ private:
 	void Combat_Ninjaexecution();	// îEéE
 	void Combat_Dead();			// éÄñS
 public:
+	void Init(float radDiscPlayer);
 	void Update()override;
 	void ChangeState(En_Enemy_State newState);
-	void UpdateAI();
-	void SetAI();
-	void AIMainRoutine();
+
 };
