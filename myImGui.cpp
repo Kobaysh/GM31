@@ -18,6 +18,7 @@ bool MyImGui::m_bIsShowAll = false;
 
 void MyImGui::Init(HWND hwnd)
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -34,17 +35,23 @@ void MyImGui::Init(HWND hwnd)
 	ImFont* font =
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, &config, io.Fonts->GetGlyphRangesJapanese());
 	IM_ASSERT(font != nullptr);
+#else
+	UNREFERENCED_PARAMETER(hwnd);
+#endif
 }
 
 void MyImGui::Uninit()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+#endif
 }
 
 void MyImGui::Update()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	// フレーム開始
 	MyImGui::SetNewFrame();
 	
@@ -57,23 +64,29 @@ void MyImGui::Update()
 	// ここからウィンドウのセット
 
 	SetDebugWindow();
+#endif
 }
 
 void MyImGui::SetNewFrame()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+#endif
 }
 
 void MyImGui::StartRender()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#endif
 }
 
 void MyImGui::SetSampleWindow()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Once);
 
 	bool show = false;
@@ -119,10 +132,12 @@ void MyImGui::SetSampleWindow()
 	//}
 
 	ImGui::ShowDemoWindow(&show_demo_window);
+#endif
 }
 
 void MyImGui::SetDebugWindow()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
 	ImGui::SetNextWindowBgAlpha(0.3f);
 	static bool* p_open = nullptr;
@@ -145,11 +160,12 @@ void MyImGui::SetDebugWindow()
 		SetDebugCollisionWindow();
 		ImGui::End();
 	}
-
+#endif
 }
 
 void MyImGui::SetDebugCollisionWindow()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	//ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
 	//ImGui::SetNextWindowBgAlpha(0.3f);
 	//static bool* p_open = nullptr;
@@ -171,5 +187,6 @@ void MyImGui::SetDebugCollisionWindow()
 	}
 //	OBB::SetIsColShow(debugShow);
 //	ImGui::End();
+#endif
 }
 

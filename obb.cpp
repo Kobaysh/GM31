@@ -4,7 +4,7 @@
 
 #include "obb.h"
 
-float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* e3 = 0);
+float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* e3 = nullptr);
 
 
 ID3D11VertexShader*		OBB::m_VertexShader = nullptr;

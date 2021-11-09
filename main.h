@@ -28,6 +28,7 @@ using namespace DirectX;
 
 #define SCREEN_WIDTH	(960)
 #define SCREEN_HEIGHT	(540)
+#define RELEASE_ON_PLAY (true)
 
 static const char* CLASS_NAME = "AppClass";
 static const char* WINDOW_NAME = "DX11ÉQÅ[ÉÄ";
