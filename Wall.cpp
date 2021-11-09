@@ -92,7 +92,9 @@ void Wall::Draw()
 	XMFLOAT3 axisY = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	XMMATRIX rotWall = XMMatrixRotationAxis(XMLoadFloat3(&axisX), XMConvertToRadians(90.0f));
 	XMMATRIX worldX = scaleX * rotX * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 
 	// 頂点バッファ設定

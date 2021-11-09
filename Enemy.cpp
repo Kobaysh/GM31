@@ -6,6 +6,7 @@
 #include "audio.h"
 #include "obb.h"
 #include "meshField.h"
+#include "camera.h"
 #include "enemyState.h"
 #include "enemy.h"
 
@@ -22,7 +23,7 @@ void Enemy::Init()
 //	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 
-	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(3.2f, 1.2f, 1.2f));
+	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(1.1f, 1.1f, 1.1f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -62,6 +63,14 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
+	// 視錘台カリング
+	Scene* scene = ManagerT::GetScene();
+	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
+	if (!camera->CheckView(m_position))
+	{
+		return;
+	}
+
 	// 入力レイアウト設定
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
@@ -74,7 +83,9 @@ void Enemy::Draw()
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 
 //	m_model->Draw();

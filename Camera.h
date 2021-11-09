@@ -11,6 +11,7 @@ private:
 	bool m_isActive;
 	bool m_movable;
 	XMFLOAT4X4 m_viewMatrix;
+	XMFLOAT4X4 m_projectionMatrix;
 	XMFLOAT3 m_move;
 public:
 	Camera():m_movable(true){}
@@ -24,6 +25,7 @@ public:
 	XMFLOAT3* GetRight() { return &m_right; }
 	XMFLOAT3* GetUp() { return &m_up; }
 	XMFLOAT4X4* GetView() { return &m_viewMatrix; }
+	bool CheckView(XMFLOAT3 pos);
 	XMFLOAT3* GetMove() { return &m_move; }
 	float GetSpeed();
 

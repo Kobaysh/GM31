@@ -215,7 +215,7 @@ void Camera::Draw()
 {
 	// ビューマトリクス設定
 	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_up)));
-	Renderer::SetViewMatrixX(&XMLoadFloat4x4(&m_viewMatrix));
+	Renderer::SetViewMatrixX(&m_viewMatrix);
 	
 	//D3DXMATRIX viewMatrix;
 	//D3DXMatrixLookAtLH(&viewMatrix, &m_position, &m_target, &D3DXVECTOR3(0.0f,1.0f,0.0f));
@@ -227,11 +227,87 @@ void Camera::Draw()
 	float nearZ = 0.01f;
 	float farZ = 1000.0f;
 	XMMATRIX projMatrix = XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
-	Renderer::SetProjectionMatrixX(&projMatrix);
+	XMStoreFloat4x4(&m_projectionMatrix, projMatrix);
+	Renderer::SetProjectionMatrixX(&m_projectionMatrix);
+
+//	Renderer::SetCameraPosition(m_position);
 
 	/*D3DXMATRIX projectionMatrix;
 	D3DXMatrixPerspectiveFovLH(&projectionMatrix, 1.0f, (float)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0f, 1000.0f);
 	Renderer::SetProjectionMatrix(&projectionMatrix);*/
+}
+
+bool Camera::CheckView(XMFLOAT3 pos)
+{
+	// 視錘台カリング
+	XMMATRIX view = XMLoadFloat4x4(&m_viewMatrix);
+	
+	XMMATRIX vp, invvp;
+	vp = XMLoadFloat4x4(&m_viewMatrix) * XMLoadFloat4x4(&m_projectionMatrix);
+	invvp =	XMMatrixInverse(nullptr, vp);
+	XMFLOAT3 vpos[4];
+	XMVECTOR vVpos[4];
+	XMVECTOR vWpos[4];
+	float dot;
+
+	vpos[0] = XMFLOAT3(-1.0f, +1.0f, 1.0f);
+	vpos[1] = XMFLOAT3(+1.0f, +1.0f, 1.0f);
+	vpos[2] = XMFLOAT3(-1.0f, -1.0f, 1.0f);
+	vpos[3] = XMFLOAT3(+1.0f, -1.0f, 1.0f);
+
+	for (int i = 0; i < 4;i++)
+	{
+		vVpos[i] = XMLoadFloat3(&vpos[i]);
+		vWpos[i] = XMVector3TransformCoord(vVpos[i], invvp);
+	}
+
+	XMVECTOR v, v1, v2, vn, vCameraPosition;
+	vCameraPosition = XMLoadFloat3(&m_position);
+	v = XMLoadFloat3(&pos) - vCameraPosition;
+
+	// 左面
+	v1 = vWpos[0] - vCameraPosition;
+	v2 = vWpos[2] - vCameraPosition;
+	vn =  XMVector3Cross(v1, v2);
+
+	XMStoreFloat(&dot, XMVector3Dot(vn, v));
+	if (dot < 0.0f)
+	{
+		return false;
+	}
+
+	// 右面
+	v1 = vWpos[1] - vCameraPosition;
+	v2 = vWpos[3] - vCameraPosition;
+	vn =  XMVector3Cross(v1, v2);
+	XMStoreFloat(&dot, XMVector3Dot(vn, v));
+	if (dot > 0.0f)
+	{
+		return false;
+	}
+
+	// 上面
+	v1 = vWpos[0] - vCameraPosition;
+	v2 = vWpos[1] - vCameraPosition;
+	vn =  XMVector3Cross(v1, v2);
+	XMStoreFloat(&dot, XMVector3Dot(vn, v));
+	if (dot > 0.0f)
+	{
+		return false;
+	}
+
+	// 下面
+	v1 = vWpos[2] - vCameraPosition;
+	v2 = vWpos[3] - vCameraPosition;
+	vn =  XMVector3Cross(v1, v2);
+	XMStoreFloat(&dot, XMVector3Dot(vn, v));
+	if (dot < 0.0f)
+	{
+		return false;
+	}
+
+
+	return true;
 }
 
 float Camera::GetSpeed()

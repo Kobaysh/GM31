@@ -105,7 +105,9 @@ void Field::Draw()
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 
 
