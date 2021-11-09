@@ -28,6 +28,8 @@ ComPtr<ID3D11DepthStencilView>	Renderer::m_pDepthStencilView = nullptr;
  ComPtr<ID3D11Buffer>	Renderer::m_pProjectionBuffer = nullptr;
  ComPtr<ID3D11Buffer>	Renderer::m_pMaterialBuffer = nullptr;
  ComPtr<ID3D11Buffer>	Renderer::m_pLightBuffer = nullptr;
+ ComPtr<ID3D11Buffer>	Renderer::m_pCameraBuffer = nullptr;
+ ComPtr<ID3D11Buffer>	Renderer::m_pParameterBuffer = nullptr;
 
 
 ID3D11DepthStencilState* Renderer::m_DepthStateEnable = nullptr;
@@ -238,7 +240,8 @@ void Renderer::Init()
 
 	// 定数バッファ生成
 	D3D11_BUFFER_DESC bufferDesc{};
-	bufferDesc.ByteWidth = sizeof(D3DXMATRIX);
+//	bufferDesc.ByteWidth = sizeof(D3DXMATRIX);
+	bufferDesc.ByteWidth = sizeof(XMFLOAT4X4);
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
@@ -282,12 +285,22 @@ void Renderer::Init()
 	m_pDeviceContext->VSSetConstantBuffers(3, 1, m_pMaterialBuffer.GetAddressOf());
 
 
-	bufferDesc.ByteWidth = sizeof(LIGHT);
+//	bufferDesc.ByteWidth = sizeof(LIGHT);
+	bufferDesc.ByteWidth = sizeof(LIGHTX);
 
 	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pLightBuffer);
 	m_pDeviceContext->VSSetConstantBuffers(4, 1, m_pLightBuffer.GetAddressOf());
 	m_pDeviceContext->PSSetConstantBuffers(4, 1, m_pLightBuffer.GetAddressOf());
 
+
+	bufferDesc.ByteWidth = sizeof(XMFLOAT3);
+	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pCameraBuffer);
+	m_pDeviceContext->VSSetConstantBuffers(5, 1, m_pCameraBuffer.GetAddressOf());
+	m_pDeviceContext->PSSetConstantBuffers(5, 1, m_pCameraBuffer.GetAddressOf());
+
+	m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pParameterBuffer);
+	m_pDeviceContext->VSSetConstantBuffers(6, 1, m_pParameterBuffer.GetAddressOf());
+	m_pDeviceContext->PSSetConstantBuffers(6, 1, m_pParameterBuffer.GetAddressOf());
 
 
 
@@ -298,16 +311,16 @@ void Renderer::Init()
 	D3DXVec4Normalize(&light.Direction, &light.Direction);
 	light.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 	light.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	SetLight(light);
+//	SetLight(light);
 
-	//LIGHTX lightx{};
-	//lightx.Enable = true;
-	//XMVECTOR vector = XMVectorSet(1.0f, -1.0f, 1.0f, 0.0f);
-	//vector =  XMVector3Normalize(vector);
-	//XMStoreFloat4(&lightx.Direction, vector);
-	//lightx.Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	//lightx.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-//	SetLightX(lightx);
+	LIGHTX lightx{};
+	lightx.Enable = true;
+	XMVECTOR vector = XMVectorSet(1.0f, -1.0f, 1.0f, 0.0f);
+	vector =  XMVector3Normalize(vector);
+	XMStoreFloat4(&lightx.Direction, vector);
+	lightx.Ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	lightx.Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	SetLightX(lightx);
 
 
 	// マテリアル初期化
@@ -446,23 +459,23 @@ void Renderer::SetProjectionMatrix( D3DXMATRIX* ProjectionMatrix )
 	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, NULL, &projection, 0, 0);
 }
 
-void Renderer::SetWorldMatrixX(XMMATRIX * WorldMatrix)
+void Renderer::SetWorldMatrixX(XMFLOAT4X4 * WorldMatrix)
 {
-	XMMATRIX world = XMMatrixTranspose(*WorldMatrix);
+	XMMATRIX world = XMMatrixTranspose(XMLoadFloat4x4( WorldMatrix));
 	//m_DeviceContext->UpdateSubresource(m_WorldBuffer, 0, NULL, &world, 0, 0);
 	m_pDeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, NULL, &world, 0, 0);
 }
 
-void Renderer::SetViewMatrixX(XMMATRIX * ViewMatrix)
+void Renderer::SetViewMatrixX(XMFLOAT4X4 * ViewMatrix)
 {
-	XMMATRIX view= XMMatrixTranspose(*ViewMatrix);
+	XMMATRIX view= XMMatrixTranspose(XMLoadFloat4x4(ViewMatrix));
 	//m_DeviceContext->UpdateSubresource(m_ViewBuffer, 0, NULL, &view, 0, 0);
 	m_pDeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, NULL, &view, 0, 0);
 }
 
-void Renderer::SetProjectionMatrixX(XMMATRIX * ProjectionMatrix)
+void Renderer::SetProjectionMatrixX(XMFLOAT4X4 * ProjectionMatrix)
 {
-	XMMATRIX projection = XMMatrixTranspose(*ProjectionMatrix);
+	XMMATRIX projection = XMMatrixTranspose(XMLoadFloat4x4(ProjectionMatrix));
 	//m_DeviceContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &projection, 0, 0);
 	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, NULL, &projection, 0, 0);
 }
@@ -490,6 +503,16 @@ void Renderer::SetLight( LIGHT Light )
 void Renderer::SetLightX(LIGHTX Light)
 {
 	m_pDeviceContext->UpdateSubresource(m_pLightBuffer.Get(), 0, nullptr, &Light, 0, 0);
+}
+
+void Renderer::SetCameraPosition(XMFLOAT3 cameraPos)
+{
+	m_pDeviceContext->UpdateSubresource(m_pCameraBuffer.Get(), 0, nullptr, &cameraPos, 0, 0);
+}
+
+void Renderer::SetParameter(XMFLOAT3 parameter)
+{
+	m_pDeviceContext->UpdateSubresource(m_pParameterBuffer.Get(), 0, nullptr, &parameter, 0, 0);
 }
 
 
