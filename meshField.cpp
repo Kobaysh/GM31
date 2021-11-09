@@ -346,7 +346,7 @@ void MeshField::Draw()
 	if (m_isWireFrame) {
 		D3D11_RASTERIZER_DESC rdc{};
 		rdc.FillMode = D3D11_FILL_SOLID;
-		rdc.CullMode = D3D11_CULL_NONE;
+		rdc.CullMode = D3D11_CULL_FRONT;
 		rdc.FrontCounterClockwise = true;
 		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
 		Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);

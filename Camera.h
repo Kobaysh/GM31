@@ -27,7 +27,7 @@ public:
 	XMFLOAT3* GetRight() { return &m_right; }
 	XMFLOAT3* GetUp() { return &m_up; }
 	XMFLOAT4X4* GetView() { return &m_viewMatrix; }
-	bool CheckView(XMFLOAT3 pos);
+	bool CheckView(XMFLOAT3 pos, XMFLOAT3 scale = XMFLOAT3(1.0f,1.0f,1.0f));
 	XMFLOAT3* GetMove() { return &m_move; }
 	float GetSpeed();
 

@@ -7,6 +7,7 @@
 #include "obb.h"
 #include "meshField.h"
 #include "camera.h"
+#include "myImGui.h"
 #include "enemyState.h"
 #include "enemy.h"
 
@@ -64,10 +65,12 @@ void Enemy::Update()
 void Enemy::Draw()
 {
 	// Ž‹Ž‘äƒJƒŠƒ“ƒO
+	MyImGui::enemyFrustumCulling = true;
 	Scene* scene = ManagerT::GetScene();
 	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
 	if (!camera->CheckView(m_position))
 	{
+		MyImGui::enemyFrustumCulling = false;
 		return;
 	}
 

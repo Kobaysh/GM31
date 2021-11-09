@@ -4,7 +4,7 @@
 class MyImGui
 {
 public:
-
+	static bool enemyFrustumCulling;
 
 	static void Init(HWND hwnd);
 	static void Uninit();
@@ -14,6 +14,7 @@ public:
 
 	static void SetSampleWindow();
 	static void SetDebugWindow();
+	static void SetDebugCameraWindow();
 	static void SetDebugCollisionWindow();
 
 	static void SetIsShowAll(bool show) { m_bIsShowAll = show; }
@@ -22,9 +23,10 @@ private:
 	MyImGui() {}
 	~MyImGui() {}
 	static  bool m_bIsShowAll;
-	static std::unordered_map <std::string, MyGuiWindow*> m_myGuiWindows;
+	static std::unordered_map <std::string, class MyGuiWindow*> m_myGuiWindows;
 	 bool show_gui = true;
 	 static bool checkbox;
+
 };
 
 class MyGuiWindow

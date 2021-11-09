@@ -14,6 +14,7 @@
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
 bool MyImGui::checkbox = false;
+bool MyImGui::enemyFrustumCulling = false;
 bool MyImGui::m_bIsShowAll = false;
 
 void MyImGui::Init(HWND hwnd)
@@ -149,16 +150,37 @@ void MyImGui::SetDebugWindow()
 			return;
 		}
 
-		if (ImGui::TreeNode("Camera"))
+		if (ImGui::TreeNode("FrustumCulling"))
 		{
-			Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
-			static bool cameraMovable = camera->GetMovable();
-			ImGui::Checkbox("Camera Movable", &cameraMovable);
-			camera->SetMovale(cameraMovable);
+			if (enemyFrustumCulling)
+			{
+
+				ImGui::Text("Enemy Here");
+			}
+			else
+			{
+				ImGui::Text("Enemy missed");
+			}
 			ImGui::TreePop();
 		}
+
+		SetDebugCameraWindow();
 		SetDebugCollisionWindow();
 		ImGui::End();
+	}
+#endif
+}
+
+void MyImGui::SetDebugCameraWindow()
+{
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+	if (ImGui::TreeNode("Camera"))
+	{
+		Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
+		static bool cameraMovable = camera->GetMovable();
+		ImGui::Checkbox("Camera Movable", &cameraMovable);
+		camera->SetMovale(cameraMovable);
+		ImGui::TreePop();
 	}
 #endif
 }
