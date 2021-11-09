@@ -7,7 +7,6 @@
 #include "keylogger.h"
 #include "audio.h"
 #include "manager.h"
-#include "myImGui.h"
 
 Scene* ManagerT::m_Scene = nullptr;
 
@@ -53,7 +52,6 @@ void ManagerT::Draw()
 	if (m_Scene) {
 		m_Scene->Draw();
 	}
-	MyImGui::StartRender();
 	Renderer::End();
 }
 

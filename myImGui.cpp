@@ -6,6 +6,9 @@
 #include "renderer.h"
 #include "input.h"
 #include "obb.h"
+#include "camera.h"
+#include "Scene.h"
+#include "gameObject.h"
 #include "myImGui.h"
 
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -15,6 +18,7 @@ bool MyImGui::m_bIsShowAll = false;
 
 void MyImGui::Init(HWND hwnd)
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -31,17 +35,23 @@ void MyImGui::Init(HWND hwnd)
 	ImFont* font =
 	io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\meiryo.ttc", 18.0f, &config, io.Fonts->GetGlyphRangesJapanese());
 	IM_ASSERT(font != nullptr);
+#else
+	UNREFERENCED_PARAMETER(hwnd);
+#endif
 }
 
 void MyImGui::Uninit()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+#endif
 }
 
 void MyImGui::Update()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	// フレーム開始
 	MyImGui::SetNewFrame();
 	
@@ -52,25 +62,31 @@ void MyImGui::Update()
 	if (!m_bIsShowAll) return;
 
 	// ここからウィンドウのセット
-	MyImGui::SetSampleWindow();
-	SetDebugCollisionWindow();
+
+	SetDebugWindow();
+#endif
 }
 
 void MyImGui::SetNewFrame()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+#endif
 }
 
 void MyImGui::StartRender()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#endif
 }
 
 void MyImGui::SetSampleWindow()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Once);
 
 	bool show = false;
@@ -116,25 +132,61 @@ void MyImGui::SetSampleWindow()
 	//}
 
 	ImGui::ShowDemoWindow(&show_demo_window);
+#endif
 }
 
-void MyImGui::SetDebugCollisionWindow()
+void MyImGui::SetDebugWindow()
 {
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
 	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
 	ImGui::SetNextWindowBgAlpha(0.3f);
 	static bool* p_open = nullptr;
 	ImGuiWindowFlags window_flags = 0;
+	{
+		if (!ImGui::Begin("Debug Window", p_open, window_flags))
+		{
+			ImGui::End();
+			return;
+		}
+
+		if (ImGui::TreeNode("Camera"))
+		{
+			Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
+			static bool cameraMovable = camera->GetMovable();
+			ImGui::Checkbox("Camera Movable", &cameraMovable);
+			camera->SetMovale(cameraMovable);
+			ImGui::TreePop();
+		}
+		SetDebugCollisionWindow();
+		ImGui::End();
+	}
+#endif
+}
+
+void MyImGui::SetDebugCollisionWindow()
+{
+#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+	//ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	//ImGui::SetNextWindowBgAlpha(0.3f);
+	//static bool* p_open = nullptr;
+	//ImGuiWindowFlags window_flags = 0;
 	//	window_flags = ImGuiWindowFlags_NoBackground;
 
 
-	if (!ImGui::Begin("Debug Collision", p_open, window_flags)) {
-		ImGui::End();
-		return;
-	}
+	//if (!ImGui::Begin("Debug Collision", p_open, window_flags)) {
+	//	ImGui::End();
+	//	return;
+	//}
 
-	static bool debugShow = OBB::GetIsColShow();
-	ImGui::Checkbox("Collision Show", &debugShow);
-	OBB::SetIsColShow(debugShow);
-	ImGui::End();
+//	bool debugShow = OBB::GetIsColShow();
+//	ImGui::Checkbox("Collision Show", debugShow);
+	if (ImGui::TreeNode("Collision"))
+	{
+		ImGui::Checkbox("Collision Show", &OBB::m_bIsDraw);
+		ImGui::TreePop();
+	}
+//	OBB::SetIsColShow(debugShow);
+//	ImGui::End();
+#endif
 }
 

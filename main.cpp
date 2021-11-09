@@ -6,7 +6,7 @@
 #include "manager.h"
 #include "input.h"
 #include <imgui.h>
-#include "myImGui.h"
+
 
 
 
@@ -76,7 +76,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Keyboard_Initialize();
 	ManagerT::Init();
 	Input::Init(hInstance);
-	MyImGui::Init(GetWindow());
+
 
 
 
@@ -118,7 +118,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			//	Manager::Draw();
 				Input::Update();
 				ManagerT::Update();
-				MyImGui::Update();
+
 				ManagerT::Draw();
 
 			}
@@ -129,7 +129,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
-	MyImGui::Uninit();
+
 	Input::Uninit();
 //	Manager::Uninit();
 	ManagerT::Uninit();

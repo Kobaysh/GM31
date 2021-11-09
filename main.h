@@ -24,10 +24,11 @@ using namespace DirectX;
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "d3dx9.lib")
 #pragma comment (lib, "d3dx11.lib")
-//#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "dxguid.lib")
 
 #define SCREEN_WIDTH	(960)
 #define SCREEN_HEIGHT	(540)
+#define RELEASE_ON_PLAY (true)
 
 static const char* CLASS_NAME = "AppClass";
 static const char* WINDOW_NAME = "DX11ÉQÅ[ÉÄ";

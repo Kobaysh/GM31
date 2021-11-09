@@ -8,6 +8,7 @@ public:
 	void Init() override;
 	void Uninit()override;
 	void Update()override;
+	void Draw()override;
 
 private:
 	bool m_isGameClear;

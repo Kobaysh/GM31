@@ -136,7 +136,7 @@ void Player::Draw()
 void Player::Move()
 {
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
-	if (pCamera->GetIsActive()) return;
+	if (pCamera->GetMovable()) return;
 	//XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_position);
@@ -248,7 +248,7 @@ void Player::Jump()
 
 void Player::Shoot()
 {
-	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetIsActive()) return;
+	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 //		DebugLog::DebugPrintSaveFlie("playerLog.txt", "shoot");
@@ -271,7 +271,7 @@ void Player::CollisionOther()
 void Player::ChangeCameraDir()
 {
 	Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
-	if(!camera->GetIsActive()){
+	if(!camera->GetMovable()){
 	if (KeyLogger_Press(KL_TURN_LEFT)) {
 		camera->ChangeDir(-0.02f, false);
 	}
