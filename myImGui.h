@@ -4,7 +4,6 @@
 class MyImGui
 {
 public:
-	static bool enemyFrustumCulling;
 
 	static void Init(HWND hwnd);
 	static void Uninit();

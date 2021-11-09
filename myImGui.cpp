@@ -150,20 +150,6 @@ void MyImGui::SetDebugWindow()
 			return;
 		}
 
-		if (ImGui::TreeNode("FrustumCulling"))
-		{
-			if (enemyFrustumCulling)
-			{
-
-				ImGui::Text("Enemy Here");
-			}
-			else
-			{
-				ImGui::Text("Enemy missed");
-			}
-			ImGui::TreePop();
-		}
-
 		SetDebugCameraWindow();
 		SetDebugCollisionWindow();
 		ImGui::End();
