@@ -121,7 +121,7 @@ public:
 	static void SetLight(LIGHT Light);
 	static void SetLightX(LIGHTX Light);
 	static void SetCameraPosition(XMFLOAT3 cameraPos);
-	static void SetParameter(XMFLOAT3 parameter);
+	static void SetParameter(XMFLOAT4 parameter);
 
 	static ID3D11Device* GetDevice( void ){ return m_Device; }
 	static ComPtr<ID3D11Device> GetpDevice( void ){ return m_pDevice; }

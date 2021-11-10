@@ -19,6 +19,7 @@
 #define ROTATION_SPEED (0.01f)
 #define ROTATION_VALUE (0.22f)
 #define MOVE_SPEED (0.1f)
+#define PS_NAME ("pixelLightingPS.cso")
 
 
 bool GameObject::ms_IsVoidPS = false;
@@ -72,7 +73,7 @@ void Player::Init()
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
 
 //	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
-	Renderer::CreatePixelShader(&m_PixelShader, "pixelLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
 
 	m_shotSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	m_shotSE->Load("asset\\audio\\se\\shot.wav");

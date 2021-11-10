@@ -50,10 +50,10 @@ void Camera::Update()
 {
 
 	
-	if (KeyLogger_Trigger(KL_GUARD))
-	{
-		ChangeMovableWithPlayer(!m_movable);
-	}
+	//if (KeyLogger_Trigger(KL_GUARD))
+	//{
+	//	ChangeMovableWithPlayer(!m_movable);
+	//}
 
 	
 	// ïœêîópà”
@@ -246,7 +246,7 @@ void Camera::Draw()
 	XMStoreFloat4x4(&m_projectionMatrix, projMatrix);
 	Renderer::SetProjectionMatrixX(&m_projectionMatrix);
 
-//	Renderer::SetCameraPosition(m_position);
+	Renderer::SetCameraPosition(m_position);
 
 	/*D3DXMATRIX projectionMatrix;
 	D3DXMatrixPerspectiveFovLH(&projectionMatrix, 1.0f, (float)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0f, 1000.0f);

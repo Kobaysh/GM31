@@ -93,11 +93,11 @@ void Renderer::Init()
 										&m_Device,
 										&m_FeatureLevel,
 										&m_DeviceContext );*/
-	hr = D3D11CreateDeviceAndSwapChain( NULL,
+	hr = D3D11CreateDeviceAndSwapChain( nullptr,
 										D3D_DRIVER_TYPE_HARDWARE,
-										NULL,
+										nullptr,
 										0,
-										NULL,
+										nullptr,
 										0,
 										D3D11_SDK_VERSION,
 										&swapChainDesc,
@@ -112,18 +112,18 @@ void Renderer::Init()
 
 
 	// レンダーターゲットビュー作成
-	ID3D11Texture2D* renderTarget = NULL;
+	ID3D11Texture2D* renderTarget = nullptr;
 	/*m_SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), ( LPVOID* )&renderTarget );
 	m_Device->CreateRenderTargetView( renderTarget, NULL, &m_RenderTargetView );
 	*/
 	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&renderTarget);
-	m_pDevice->CreateRenderTargetView(renderTarget, NULL, &m_pRenderTargetView);
+	m_pDevice->CreateRenderTargetView(renderTarget, nullptr, &m_pRenderTargetView);
 
 	renderTarget->Release();
 
 
 	// デプスステンシルバッファ作成
-	ID3D11Texture2D* depthStencile = NULL;
+	ID3D11Texture2D* depthStencile = nullptr;
 	D3D11_TEXTURE2D_DESC textureDesc{};
 	textureDesc.Width = swapChainDesc.BufferDesc.Width;
 	textureDesc.Height = swapChainDesc.BufferDesc.Height;
@@ -136,7 +136,7 @@ void Renderer::Init()
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = 0;
 	//m_Device->CreateTexture2D(&textureDesc, NULL, &depthStencile);
-	m_pDevice->CreateTexture2D(&textureDesc, NULL, &depthStencile);
+	m_pDevice->CreateTexture2D(&textureDesc, nullptr, &depthStencile);
 
 	// デプスステンシルビュー作成
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc{};
@@ -190,7 +190,7 @@ void Renderer::Init()
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	float blendFactor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-	ID3D11BlendState* blendState = NULL;
+	ID3D11BlendState* blendState = nullptr;
 	/*m_Device->CreateBlendState( &blendDesc, &blendState );
 	m_DeviceContext->OMSetBlendState( blendState, blendFactor, 0xffffffff );*/
 	m_pDevice->CreateBlendState(&blendDesc, &blendState);
@@ -229,7 +229,7 @@ void Renderer::Init()
 	samplerDesc.MinLOD = 0;
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	ID3D11SamplerState* samplerState = NULL;
+	ID3D11SamplerState* samplerState = nullptr;
 //	m_Device->CreateSamplerState( &samplerDesc, &samplerState );
 	m_pDevice->CreateSamplerState( &samplerDesc, &samplerState );
 
@@ -266,35 +266,35 @@ void Renderer::Init()
 
 	bufferDesc.ByteWidth = sizeof(LIGHT);
 
-	m_Device->CreateBuffer( &bufferDesc, NULL, &m_LightBuffer );
+	m_Device->CreateBuffer( &bufferDesc, nullptr, &m_LightBuffer );
 	m_DeviceContext->VSSetConstantBuffers( 4, 1, &m_LightBuffer );
 	m_DeviceContext->PSSetConstantBuffers(4, 1, &m_LightBuffer);*/
-	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pWorldBuffer);
+	m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pWorldBuffer);
 	m_pDeviceContext->VSSetConstantBuffers(0, 1, m_pWorldBuffer.GetAddressOf());
 
-	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pViewBuffer);
+	m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pViewBuffer);
 	m_pDeviceContext->VSSetConstantBuffers(1, 1, m_pViewBuffer.GetAddressOf());
 
-	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pProjectionBuffer);
+	m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pProjectionBuffer);
 	m_pDeviceContext->VSSetConstantBuffers(2, 1, m_pProjectionBuffer.GetAddressOf());
 
 
 	bufferDesc.ByteWidth = sizeof(MATERIAL);
 
-	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pMaterialBuffer);
+	m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pMaterialBuffer);
 	m_pDeviceContext->VSSetConstantBuffers(3, 1, m_pMaterialBuffer.GetAddressOf());
 
 
 //	bufferDesc.ByteWidth = sizeof(LIGHT);
 	bufferDesc.ByteWidth = sizeof(LIGHTX);
 
-	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pLightBuffer);
+	m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pLightBuffer);
 	m_pDeviceContext->VSSetConstantBuffers(4, 1, m_pLightBuffer.GetAddressOf());
 	m_pDeviceContext->PSSetConstantBuffers(4, 1, m_pLightBuffer.GetAddressOf());
 
 
-	bufferDesc.ByteWidth = sizeof(XMFLOAT3);
-	m_pDevice->CreateBuffer(&bufferDesc, NULL, &m_pCameraBuffer);
+	bufferDesc.ByteWidth = sizeof(XMFLOAT4);
+	m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pCameraBuffer);
 	m_pDeviceContext->VSSetConstantBuffers(5, 1, m_pCameraBuffer.GetAddressOf());
 	m_pDeviceContext->PSSetConstantBuffers(5, 1, m_pCameraBuffer.GetAddressOf());
 
@@ -423,17 +423,17 @@ void Renderer::SetWorldViewProjection2D()
     world =	XMMatrixIdentity();
 	world = XMMatrixTranspose(world);
 
-	m_pDeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, NULL, &world, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, nullptr, &world, 0, 0);
 
 	XMMATRIX view;
 	view = XMMatrixIdentity();
 	view = XMMatrixTranspose(view);
-	m_pDeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, NULL, &view, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, nullptr, &view, 0, 0);
 
 	XMMATRIX projection;
 	projection = XMMatrixOrthographicOffCenterLH(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 0.0f, 1.0f);
  	projection = XMMatrixTranspose(projection);
-	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, NULL, &projection, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, nullptr, &projection, 0, 0);
 }
 
 
@@ -441,14 +441,14 @@ void Renderer::SetWorldMatrix( D3DXMATRIX* WorldMatrix )
 {
 	D3DXMATRIX world;
 	D3DXMatrixTranspose(&world, WorldMatrix);
-	m_DeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, NULL, &world, 0, 0);
+	m_DeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, nullptr, &world, 0, 0);
 }
 
 void Renderer::SetViewMatrix( D3DXMATRIX* ViewMatrix )
 {
 	D3DXMATRIX view;
 	D3DXMatrixTranspose(&view, ViewMatrix);
-	m_DeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, NULL, &view, 0, 0);
+	m_DeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, nullptr, &view, 0, 0);
 }
 
 void Renderer::SetProjectionMatrix( D3DXMATRIX* ProjectionMatrix )
@@ -456,28 +456,28 @@ void Renderer::SetProjectionMatrix( D3DXMATRIX* ProjectionMatrix )
 	D3DXMATRIX projection;
 	D3DXMatrixTranspose(&projection, ProjectionMatrix);
 	//m_DeviceContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &projection, 0, 0);
-	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, NULL, &projection, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, nullptr, &projection, 0, 0);
 }
 
 void Renderer::SetWorldMatrixX(XMFLOAT4X4 * WorldMatrix)
 {
 	XMMATRIX world = XMMatrixTranspose(XMLoadFloat4x4( WorldMatrix));
 	//m_DeviceContext->UpdateSubresource(m_WorldBuffer, 0, NULL, &world, 0, 0);
-	m_pDeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, NULL, &world, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, nullptr, &world, 0, 0);
 }
 
 void Renderer::SetViewMatrixX(XMFLOAT4X4 * ViewMatrix)
 {
 	XMMATRIX view= XMMatrixTranspose(XMLoadFloat4x4(ViewMatrix));
 	//m_DeviceContext->UpdateSubresource(m_ViewBuffer, 0, NULL, &view, 0, 0);
-	m_pDeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, NULL, &view, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, nullptr, &view, 0, 0);
 }
 
 void Renderer::SetProjectionMatrixX(XMFLOAT4X4 * ProjectionMatrix)
 {
 	XMMATRIX projection = XMMatrixTranspose(XMLoadFloat4x4(ProjectionMatrix));
 	//m_DeviceContext->UpdateSubresource(m_ProjectionBuffer, 0, NULL, &projection, 0, 0);
-	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, NULL, &projection, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, nullptr, &projection, 0, 0);
 }
 
 
@@ -485,19 +485,19 @@ void Renderer::SetProjectionMatrixX(XMFLOAT4X4 * ProjectionMatrix)
 void Renderer::SetMaterial( MATERIAL Material )
 {
 //	m_DeviceContext->UpdateSubresource( m_MaterialBuffer, 0, NULL, &Material, 0, 0 );
-	m_pDeviceContext->UpdateSubresource( m_pMaterialBuffer.Get(), 0, NULL, &Material, 0, 0 );
+	m_pDeviceContext->UpdateSubresource( m_pMaterialBuffer.Get(), 0, nullptr, &Material, 0, 0 );
 }
 
 void Renderer::SetMaterialX(MATERIALX Material)
 {
-	m_pDeviceContext->UpdateSubresource(m_pMaterialBuffer.Get(), 0, NULL, &Material, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pMaterialBuffer.Get(), 0, nullptr, &Material, 0, 0);
 
 }
 
 void Renderer::SetLight( LIGHT Light )
 {
 //	m_DeviceContext->UpdateSubresource(m_LightBuffer, 0, NULL, &Light, 0, 0);
-	m_pDeviceContext->UpdateSubresource(m_pLightBuffer.Get(), 0, NULL, &Light, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pLightBuffer.Get(), 0, nullptr, &Light, 0, 0);
 }
 
 void Renderer::SetLightX(LIGHTX Light)
@@ -507,10 +507,10 @@ void Renderer::SetLightX(LIGHTX Light)
 
 void Renderer::SetCameraPosition(XMFLOAT3 cameraPos)
 {
-	m_pDeviceContext->UpdateSubresource(m_pCameraBuffer.Get(), 0, nullptr, &cameraPos, 0, 0);
+	m_pDeviceContext->UpdateSubresource(m_pCameraBuffer.Get(), 0, nullptr, &XMFLOAT4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f), 0, 0);
 }
 
-void Renderer::SetParameter(XMFLOAT3 parameter)
+void Renderer::SetParameter(XMFLOAT4 parameter)
 {
 	m_pDeviceContext->UpdateSubresource(m_pParameterBuffer.Get(), 0, nullptr, &parameter, 0, 0);
 }
