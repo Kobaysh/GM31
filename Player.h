@@ -13,6 +13,8 @@ private:
 	class OBB* m_obb;
 	class AnimationModel*  m_Model;
 
+	bool m_isActive = true;
+	bool m_movable = true;
 	float m_speed;
 
 	XMFLOAT3 m_front;
@@ -56,5 +58,10 @@ public:
 	XMFLOAT3* GetFront() { return &m_front; }
 	float GetSpeed() { return m_speed; }
 	OBB& GetObb() { return *m_obb; }
+
+	bool GetIsActive() const { return m_isActive; }
+	bool GetMovable() const { return m_movable; }
+	void SetIsActive(bool active) { m_isActive = active; }
+	void SetMovable(bool movable) { m_movable = movable; }
 };
 

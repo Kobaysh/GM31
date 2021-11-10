@@ -164,6 +164,7 @@
     <ClInclude Include="billboard.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="debugCamera.h" />
     <ClInclude Include="debugLog.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyState.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="debugCamera.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyState.cpp" />
     <ClCompile Include="explosion.cpp" />

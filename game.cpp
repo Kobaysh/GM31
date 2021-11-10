@@ -7,6 +7,7 @@
 #include "obb.h"
 #include "polygon2D.h"
 #include "camera.h"
+#include "debugCamera.h"
 #include "field.h"
 #include "meshField.h"
 #include "model.h"
@@ -35,7 +36,13 @@ void Game::Init()
 	m_isGameClear = false;
 
 	Bullet::Load();
-	AppendGameObject<Camera>(GameObject::GOT_CAMERA);
+	//Camera* camera = new Camera();
+	//camera->Init(true, false);
+	//AddGameObject(camera, GameObject::GOT_CAMERA);
+	AppendGameObject<Camera>(GameObject::GOT_CAMERA)->Init(true, false);
+	AppendGameObject<DebugCamera>(GameObject::GOT_CAMERA)->Init(false, false);
+
+
 //	AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
 	
 	MeshField* meshField = new MeshField();

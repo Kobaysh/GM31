@@ -136,7 +136,7 @@ void Player::Draw()
 void Player::Move()
 {
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
-	if (pCamera->GetMovable()) return;
+	if (!m_movable) return;
 	//XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_position);

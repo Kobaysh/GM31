@@ -7,7 +7,8 @@
 #include "input.h"
 #include "obb.h"
 #include "camera.h"
-#include "Scene.h"
+#include "debugCamera.h"
+#include "scene.h"
 #include "gameObject.h"
 #include "myImGui.h"
 
@@ -166,9 +167,23 @@ void MyImGui::SetDebugCameraWindow()
 	if (ImGui::TreeNode("Camera"))
 	{
 		Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
-		static bool cameraMovable = camera->GetMovable();
-		ImGui::Checkbox("Camera Movable", &cameraMovable);
-		camera->SetMovale(cameraMovable);
+		if (ImGui::TreeNode("Debug Camera"))
+		{
+			DebugCamera* debugCamera = ManagerT::GetScene()->GetGameObject<DebugCamera>(GameObject::GOT_CAMERA);
+			bool debugCameraisActive = debugCamera->GetIsActive();
+			ImGui::Checkbox("Debug Camera Active", &debugCameraisActive);
+			debugCamera->SetIsActive(debugCameraisActive);
+			debugCamera->ChangeMovableWithPlayer(debugCameraisActive);
+			camera->SetIsActive(!debugCameraisActive);
+			ImGui::TreePop();
+		}
+
+		//static bool cameraMovable = camera->GetMovable();
+		//ImGui::Checkbox("Camera Movable", &cameraMovable);
+		//if (camera->GetIsActive())
+		//{
+		//	camera->ChangeMovableWithPlayer(cameraMovable);
+		//}
 		ImGui::TreePop();
 	}
 #endif

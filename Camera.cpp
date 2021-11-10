@@ -9,10 +9,11 @@
 #include "input.h"
 
 
-static float g_RoutationalSpeed;
-static float g_MoveSpeed;
-#define CAMERA_SPEED (0.2f)
-#define AT_LENGTH (1.0f)
+float Camera::m_routationalSpeed;
+
+const  float Camera::m_cameraSpeedFirst = 0.2f;
+const  float Camera::m_atLength = 1.0f;
+
 
 
 
@@ -23,9 +24,22 @@ void Camera::Init()
 	m_front		 = XMFLOAT3(0.0f, -0.3f, 1.0f);
 	m_right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	g_RoutationalSpeed = 0.08f;
-	g_MoveSpeed = CAMERA_SPEED;
+	m_routationalSpeed = 0.08f;
+	m_moveSpeed = m_cameraSpeedFirst;
 	m_isActive = true;
+}
+
+void Camera::Init(bool active, bool movable)
+{
+	m_position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
+	m_target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_front		 = XMFLOAT3(0.0f, -0.3f, 1.0f);
+	m_right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_routationalSpeed = 0.08f;
+	m_moveSpeed = m_cameraSpeedFirst;
+	m_isActive = active;
+	m_movable = movable;
 }
 
 void Camera::Uninit()
@@ -34,10 +48,11 @@ void Camera::Uninit()
 
 void Camera::Update()
 {
+
 	
-	if (KeyLogger_Trigger(KL_GUARD)) {
-		if (!m_movable) m_movable = true;
-		else m_movable = false;
+	if (KeyLogger_Trigger(KL_GUARD))
+	{
+		ChangeMovableWithPlayer(!m_movable);
 	}
 
 	
@@ -79,36 +94,36 @@ void Camera::Update()
 		}
 
 		if (KeyLogger_Press(KL_TURN_LEFT)) {
-			XMMATRIX mtxR = XMMatrixRotationY(-g_RoutationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed);
 			vFront = XMVector3TransformNormal(vFront, mtxR);
 			vRight = XMVector3TransformNormal(vRight, mtxR);
 			vUp = XMVector3Cross(vFront, vRight);
 		}
 		if (KeyLogger_Press(KL_TURN_RIGHT)) {
-			XMMATRIX mtxR = XMMatrixRotationY(g_RoutationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed);
 			vFront = XMVector3TransformNormal(vFront, mtxR);
 			vRight = XMVector3TransformNormal(vRight, mtxR);
 			vUp = XMVector3Cross(vFront, vRight);
 		}
 		if (KeyLogger_Press(KL_TURN_UP)) {
-			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight, g_RoutationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight, m_routationalSpeed);
 			vFront = XMVector3TransformNormal(vFront, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
 		if (KeyLogger_Press(KL_TURN_DOWN)) {
-			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, g_RoutationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed);
 			vFront = XMVector3TransformNormal(vFront, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
-		vPosition += vDirection * CAMERA_SPEED;
+		vPosition += vDirection * m_cameraSpeedFirst;
 		float len;  
 		XMStoreFloat(&len, XMVector3Length(vDirection));
 		if ( len == 0.0f) {
-			g_MoveSpeed = 0.0f;
+			m_moveSpeed = 0.0f;
 		}
 		else
 		{
-			g_MoveSpeed = CAMERA_SPEED;
+			m_moveSpeed = m_cameraSpeedFirst;
 		}
 	}
 	else if(m_isActive && !m_movable) {
@@ -130,7 +145,7 @@ void Camera::Update()
 		//	ShowCursor(false);
 			if (Input::GetMouseVelocity().x >= 1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationY(g_RoutationalSpeed);
+				XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vFront = XMVector3Normalize(vFront);
 				vRight = XMVector3Normalize(vRight);
@@ -140,7 +155,7 @@ void Camera::Update()
 			}
 			if (Input::GetMouseVelocity().x <= -1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationY(-g_RoutationalSpeed);
+				XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vRight = XMVector3TransformNormal(vRight, mtxR);
 				vFront = XMVector3Normalize(vFront);
@@ -150,7 +165,7 @@ void Camera::Update()
 			}
 			if (Input::GetMouseVelocity().y >= 1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, g_RoutationalSpeed / 4);
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed / 4);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vFront = XMVector3Normalize(vFront);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
@@ -158,7 +173,7 @@ void Camera::Update()
 			}
 			if (Input::GetMouseVelocity().y <= -1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -g_RoutationalSpeed / 4);
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -m_routationalSpeed / 4);
 				vFront = XMVector3TransformNormal(vFront, mtxR);
 				vFront = XMVector3Normalize(vFront);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
@@ -178,11 +193,11 @@ void Camera::Update()
 		float len;
 		XMStoreFloat(&len, XMVector3Length(vDirection));
 		if (len == 0.0f) {
-			g_MoveSpeed = 0.0f;
+			m_moveSpeed = 0.0f;
 		}
 		else
 		{
-			g_MoveSpeed = player->GetSpeed();
+			m_moveSpeed = player->GetSpeed();
 		}
 
 
@@ -196,10 +211,10 @@ void Camera::Update()
 #else
 
 	// 移動
-//	vPosition += vDirection * g_MoveSpeed;
+//	vPosition += vDirection * m_moveSpeed;
 	// 注視点計算
 
-	vAt = vPosition + vFront * AT_LENGTH;
+	vAt = vPosition + vFront * m_atLength;
 #endif
 	// 変数保存
 	XMStoreFloat3(&m_target, vAt);
@@ -213,6 +228,7 @@ void Camera::Update()
 
 void Camera::Draw()
 {
+	if (!m_isActive) return;
 	// ビューマトリクス設定
 	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_up)));
 	Renderer::SetViewMatrixX(&m_viewMatrix);
@@ -328,7 +344,29 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 
 float Camera::GetSpeed()
 {
-	return g_MoveSpeed;
+	return m_moveSpeed;
+}
+
+void Camera::ChangeMovableWithPlayer()
+{
+	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	if (!m_movable)
+	{
+		m_movable = true;
+		player->SetMovable(false);
+	}
+	else
+	{
+		m_movable = false;
+		player->SetMovable(true);
+	}
+}
+
+void Camera::ChangeMovableWithPlayer(bool movable)
+{
+	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	m_movable = movable;
+	player->SetMovable(!movable);
 }
 
 void  Camera::ChangeDir(float angle, bool isRight) {
@@ -342,7 +380,7 @@ void  Camera::ChangeDir(float angle, bool isRight) {
 	XMVECTOR vUp = XMLoadFloat3(&m_up);
 	XMVector3Normalize(vUp);	
 
-	XMVECTOR vAt = vPositon + vFront * AT_LENGTH;
+	XMVECTOR vAt = vPositon + vFront * m_atLength;
 
 
 	XMMATRIX mtxR = XMMatrixRotationY(angle);
@@ -350,7 +388,7 @@ void  Camera::ChangeDir(float angle, bool isRight) {
 	vRight = XMVector3TransformNormal(vRight, mtxR);
 	vUp = XMVector3Cross(vFront, vRight);
 	
-	vPositon = XMLoadFloat3(&m_target) - vFront * AT_LENGTH;
+	vPositon = XMLoadFloat3(&m_target) - vFront * m_atLength;
 
 	isRight = isRight;
 	// if(isRight){
