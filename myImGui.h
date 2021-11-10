@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+
+class MyGuiWindow;
+
 class MyImGui
 {
 public:
@@ -10,6 +13,8 @@ public:
 	static void Update();
 	static void SetNewFrame();
 	static void StartRender();
+
+	static void SetGuiWindow(const std::string& name, MyGuiWindow* window);
 
 	static void SetSampleWindow();
 	static void SetDebugWindow();

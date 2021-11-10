@@ -89,6 +89,11 @@ void MyImGui::StartRender()
 #endif
 }
 
+void MyImGui::SetGuiWindow(const std::string & name, MyGuiWindow* window)
+{
+	m_myGuiWindows[name] = window;
+}
+
 void MyImGui::SetSampleWindow()
 {
 #if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
@@ -215,4 +220,3 @@ void MyImGui::SetDebugCollisionWindow()
 //	ImGui::End();
 #endif
 }
-
