@@ -155,7 +155,7 @@ void MyImGui::SetDebugWindow()
 			if (enemyFrustumCulling)
 			{
 
-				ImGui::Text("Enemy Here");
+				ImGui::Text("Enemy appear");
 			}
 			else
 			{

@@ -27,7 +27,7 @@
 
 
 #define FIELD_XZ (20)
-#define FIELD__SCALE_XZ (2)
+#define FIELD__SCALE_XZ (20)
 
 void Game::Init()
 {

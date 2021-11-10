@@ -287,11 +287,11 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 	fixPos = pos;
 	fixPos.x -= fixScale.x;
 	v = XMLoadFloat3(&fixPos) - vCameraPosition;
-	v1 = vWpos[1] - vCameraPosition;
-	v2 = vWpos[3] - vCameraPosition;
+	v1 = vWpos[3] - vCameraPosition;
+	v2 = vWpos[1] - vCameraPosition;
 	vn =  XMVector3Cross(v1, v2);
 	XMStoreFloat(&dot, XMVector3Dot(vn, v));
-	if (dot > 0.0f)
+	if (dot < 0.0f)
 	{
 		return false;
 	}
@@ -300,11 +300,11 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 	fixPos = pos;
 	fixPos.y -= fixScale.x;
 	v = XMLoadFloat3(&fixPos) - vCameraPosition;
-	v1 = vWpos[0] - vCameraPosition;
-	v2 = vWpos[1] - vCameraPosition;
+	v1 = vWpos[1] - vCameraPosition;
+	v2 = vWpos[0] - vCameraPosition;
 	vn =  XMVector3Cross(v1, v2);
 	XMStoreFloat(&dot, XMVector3Dot(vn, v));
-	if (dot > 0.0f)
+	if (dot < 0.0f)
 	{
 		return false;
 	}
