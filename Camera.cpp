@@ -245,11 +245,13 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 	XMMATRIX vp, invvp;
 	vp = XMLoadFloat4x4(&m_viewMatrix) * XMLoadFloat4x4(&m_projectionMatrix);
 	invvp =	XMMatrixInverse(nullptr, vp);
+
 	XMFLOAT3 vpos[4];
 	XMVECTOR vVpos[4];
 	XMVECTOR vWpos[4];
 	float dot;
 	XMFLOAT3 fixPos, fixScale;
+
 //	fixScale = XMFLOAT3(scale.x * 0.5f, scale.y * 0.5f, scale.z * 0.5f);
 	fixScale = scale;
 	fixPos = pos;
@@ -266,6 +268,7 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 	}
 
 	XMVECTOR v, v1, v2, vn, vCameraPosition;
+
 	vCameraPosition = XMLoadFloat3(&m_position);
 	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 

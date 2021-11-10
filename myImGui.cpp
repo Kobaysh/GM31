@@ -15,7 +15,11 @@ static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
 bool MyImGui::checkbox = false;
 bool MyImGui::enemyFrustumCulling = false;
+#if defined (DEBUG) || defined (_DEBUG)
+bool MyImGui::m_bIsShowAll = true;
+#else
 bool MyImGui::m_bIsShowAll = false;
+#endif
 
 void MyImGui::Init(HWND hwnd)
 {
