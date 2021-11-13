@@ -343,11 +343,11 @@
     <ClCompile Include="imgui\imgui_tables.cpp">
       <Filter>imGui</Filter>
     </ClCompile>
-    <ClCompile Include="myImGui.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="debugCamera.cpp">
       <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="myImGui.cpp">
+      <Filter>imGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
