@@ -10,6 +10,7 @@ private:
 
 
 	XMFLOAT2 m_textureOffset;	
+	float m_offsetY;
 
 public:
 	void Init();

@@ -4,7 +4,7 @@
 #include "camera.h"
 #include "manager.h"
 #include "scene.h"
-
+#include "meshField.h"
 #define FILENAME ("asset/texture/wood.png")
 
 
@@ -67,7 +67,7 @@ void Wood::Init()
 	m_position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
-
+	m_offsetY = 4.5f * m_scale.y;
 }
 
 void Wood::Uninit()
@@ -82,11 +82,21 @@ void Wood::Uninit()
 
 void Wood::Update()
 {
-
+	Scene* scene = ManagerT::GetScene();
+	MeshField* meshField = scene->GetGameObject<MeshField>(GOT_OBJECT3D);
+	m_position.y = meshField->GetHeight(m_position);
+	m_position.y += m_offsetY;
 }
 
 void Wood::Draw()
 {
+	// 視錘台カリング
+	Scene* scene = ManagerT::GetScene();
+	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
+	if (!camera->CheckView(m_position))
+	{
+		return;
+	}
 
 	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
 
@@ -98,7 +108,7 @@ void Wood::Draw()
 
 	// マトリクス設定
 
-	Scene* scene = ManagerT::GetScene();
+
 	XMMATRIX mtxInvView;
 	XMMATRIX view =XMLoadFloat4x4(scene->GetGameObject<Camera>(GOT_CAMERA)->GetView());
 	XMFLOAT4X4 temp;

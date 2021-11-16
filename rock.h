@@ -7,7 +7,7 @@ private:
 
 //	Model* m_Model;
 	int m_modelId;
-	class OBB* m_obb;
+	class OBB* m_obb = nullptr;
 
 	XMFLOAT3 m_front;
 
