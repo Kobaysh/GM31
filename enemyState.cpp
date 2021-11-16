@@ -13,6 +13,11 @@ void EnemyState::Init(float radDiscPlayer)
 	m_radiusDiscoverPlayer = radDiscPlayer;
 }
 
+void EnemyState::Init(Enemy::EnemyStateData stateData)
+{
+	m_radiusDiscoverPlayer = stateData.m_combat_rad;
+}
+
 void EnemyState::Update()
 {
 	UpdateAI();
@@ -129,15 +134,25 @@ void EnemyState::Idle_Discover()
 	ChangeState(IDLE_MOVE_TO_PLAYER);
 }
 
+/// <summary>
+/// プレイヤーに向かってくる
+/// </summary>
 void EnemyState::Idle_MoveToPlayer()
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
-	XMVECTOR vPlayerPos, vEnemyPos, vToPlayer;
+	XMVECTOR vPlayerPos, vEnemyPos, vToPlayer, vLength;
+	float length;
 	vPlayerPos = XMLoadFloat3(&player->GetPosition());
 	vEnemyPos = XMLoadFloat3(&m_enemy->GetPosition());
 	vToPlayer = vPlayerPos - vEnemyPos;
+	vLength = XMVector3Length(vToPlayer);
+	XMStoreFloat(&length, vLength);
+	// 戦闘半径に近づいたら戦闘状態に移行
+	if (m_enemy->GetEnemyStateData().m_combat_rad <= length)
+	{
+		ChangeState(COMBAT_IDLE);
+	}
 	vToPlayer = XMVector3Normalize(vToPlayer);
-
 	vEnemyPos += vToPlayer * m_enemy->GetMoveSpeed();
 	XMFLOAT3 enemyPos;
 	XMStoreFloat3(&enemyPos, vEnemyPos);

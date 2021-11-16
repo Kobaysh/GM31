@@ -1,7 +1,6 @@
 #pragma once
 #include "state.h"
-
-class Enemy;
+#include "enemy.h"
 
 class  EnemyState : public State
 {
@@ -63,6 +62,7 @@ private:
 	void Combat_Dead();			// Ž€–S
 public:
 	void Init(float radDiscPlayer);
+	void Init(Enemy::EnemyStateData stateData);
 	void Update()override;
 	void ChangeState(En_Enemy_State newState);
 

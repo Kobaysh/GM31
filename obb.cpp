@@ -76,7 +76,10 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	XMVECTOR NBe3 = XMLoadFloat3(&obb2.GetDirect(OBB_DZ)), Be3 = NBe3 * obb2.GetLen_W(OBB_DZ);
 	XMVECTOR Interval = XMLoadFloat3(&obb1.GetPos_W()) - XMLoadFloat3(&obb2.GetPos_W());
 
-	
+	if (!isfinite(Interval.m128_f32[1]))
+	{
+		return false;
+	}
 
 	XMVECTOR vLength, vDot, vCross;
 

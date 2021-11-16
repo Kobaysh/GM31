@@ -22,7 +22,8 @@ void Enemy::Init()
 	m_rotation = XMFLOAT3(XMConvertToRadians(45.0f), XMConvertToRadians(45.0f), XMConvertToRadians(45.0f));
 //	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
-	m_eyesight_rad = 5.0f;
+	m_stateData.m_eyesight_rad = 7.0f;
+	m_stateData.m_combat_rad = 3.0f;
 	m_moveSpeed = 0.05f;
 
 
@@ -30,7 +31,7 @@ void Enemy::Init()
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 	m_state = new EnemyState(this);
-	m_state->Init(m_eyesight_rad);
+	m_state->Init(GetEnemyStateData());
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
@@ -69,7 +70,7 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
-	// ‹‘äƒJƒŠƒ“ƒO
+	// è¦–éŒ˜å°ã‚«ãƒªãƒ³ã‚°
 	Scene* scene = ManagerT::GetScene();
 	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
 	if (!camera->CheckView(m_position))
@@ -77,14 +78,14 @@ void Enemy::Draw()
 		return;
 	}
 
-	// “ü—ÍƒŒƒCƒAƒEƒgİ’è
+	// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®š
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ƒVƒF[ƒ_[İ’è
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¨­å®š
 	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ƒ}ƒgƒŠƒNƒXİ’è
+	// ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
