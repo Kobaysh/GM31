@@ -2,6 +2,8 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
+#include "enemy.h"
+#include "enemyState.h"
 #include "enemyGui.h"
 
 void EnemyGui::Init()
@@ -27,9 +29,14 @@ void EnemyGui::Update()
 			ImGui::End();
 			return;
 		}
+		{
+			if(ImGui::TreeNode("Enemy State"))
+			{
+				ImGui::Text(EnemyState::enumChar_Enemy_State[m_enemy->GetEnemyState()->GetNowState()]);
 
-
-
+				ImGui::TreePop();
+			}
+		}
 		ImGui::End();
 	}
 }

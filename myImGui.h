@@ -36,13 +36,14 @@ private:
 class MyGuiWindow
 {
 private:
-	MyGuiWindow(){}
-	~MyGuiWindow(){}
+
 
 protected:
 	std::string m_name;
 
 public :
+	MyGuiWindow(){}
+	~MyGuiWindow(){}
 	MyGuiWindow(const std::string& name):m_name(name){}
 
 	const char* GetWindowName() { return m_name.data(); }

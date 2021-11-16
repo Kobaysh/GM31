@@ -31,6 +31,23 @@ public:
 		COMBAT_DEAD,			// €–S
 		MAX,
 	};
+	static const char* enumChar_Enemy_State[En_Enemy_State::MAX]; 
+	//{
+	//	"IDLE_IDLE",
+	//	"IDLE_WALK",				// Uô
+	//	"IDLE_NINJAEXECUTION",	// ”EE
+	//	"IDLE_SURPRISE",			// ‹Á‚­
+	//	"IDLE_BEWARE",			// Œx‰ú‚·‚é
+	//	"IDLE_DISCOVER",			// ”­Œ©‚·‚é
+	//	"IDLE_MOVE_TO_PLAYER",	// ƒvƒŒƒCƒ„[‚Ì‚à‚Æ‚ÉˆÚ“®
+	//							// í“¬
+	//	"COMBAT_IDLE",			// ‘Ò‹@
+	//	"COMBAT_ATTACK",			// UŒ‚
+	//	"COMBAT_GUARD",			// ƒK[ƒh
+	//	"COMBAT_DAMAGED",			// ƒ_ƒ[ƒW‚ğó‚¯‚é
+	//	"COMBAT_NINJAEXECUTION",	// ”EE
+	//	"COMBAT_DEAD",			// €–S
+	//};
 private:
 
 	Enemy* m_enemy;
@@ -65,5 +82,5 @@ public:
 	void Init(Enemy::EnemyStateData stateData);
 	void Update()override;
 	void ChangeState(En_Enemy_State newState);
-
+	En_Enemy_State GetNowState() { return m_nowState; }
 };

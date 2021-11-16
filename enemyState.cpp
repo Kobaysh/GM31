@@ -7,6 +7,23 @@
 #include "player.h"
 #include "enemy.h"
 
+const char* EnemyState::enumChar_Enemy_State[EnemyState::MAX] = 
+{
+	"IDLE_IDLE",
+	"IDLE_WALK",				// 散策
+	"IDLE_NINJAEXECUTION",	// 忍殺
+	"IDLE_SURPRISE",			// 驚く
+	"IDLE_BEWARE",			// 警戒する
+	"IDLE_DISCOVER",			// 発見する
+	"IDLE_MOVE_TO_PLAYER",	// プレイヤーのもとに移動
+	// 戦闘
+	"COMBAT_IDLE",			// 待機
+	"COMBAT_ATTACK",			// 攻撃
+	"COMBAT_GUARD",			// ガード
+	"COMBAT_DAMAGED",			// ダメージを受ける
+	"COMBAT_NINJAEXECUTION",	// 忍殺
+	"COMBAT_DEAD",			// 死亡
+};
 
 void EnemyState::Init(float radDiscPlayer)
 {
@@ -15,7 +32,7 @@ void EnemyState::Init(float radDiscPlayer)
 
 void EnemyState::Init(Enemy::EnemyStateData stateData)
 {
-	m_radiusDiscoverPlayer = stateData.m_combat_rad;
+	m_radiusDiscoverPlayer = stateData.m_eyesight_rad;
 }
 
 void EnemyState::Update()
@@ -134,9 +151,6 @@ void EnemyState::Idle_Discover()
 	ChangeState(IDLE_MOVE_TO_PLAYER);
 }
 
-/// <summary>
-/// プレイヤーに向かってくる
-/// </summary>
 void EnemyState::Idle_MoveToPlayer()
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
@@ -147,8 +161,9 @@ void EnemyState::Idle_MoveToPlayer()
 	vToPlayer = vPlayerPos - vEnemyPos;
 	vLength = XMVector3Length(vToPlayer);
 	XMStoreFloat(&length, vLength);
+
 	// 戦闘半径に近づいたら戦闘状態に移行
-	if (m_enemy->GetEnemyStateData().m_combat_rad <= length)
+	if (m_enemy->GetEnemyStateData().m_combat_rad >= length)
 	{
 		ChangeState(COMBAT_IDLE);
 	}

@@ -20,7 +20,7 @@ protected:
 	class Audio* m_explosionSE;
 	class OBB* m_obb;
 	class EnemyState* m_state;
-
+	class EnemyGui* m_enemyGui;
 
 
 	EnemyStateData m_stateData;
@@ -35,5 +35,6 @@ public:
 	OBB& GetObb() { return *m_obb; }
 	float GetMoveSpeed() { return m_moveSpeed; }
 	const EnemyStateData& GetEnemyStateData() { return m_stateData; }
+	class EnemyState* GetEnemyState() { return m_state; }
 };
 

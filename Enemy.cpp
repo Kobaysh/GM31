@@ -8,6 +8,7 @@
 #include "meshField.h"
 #include "camera.h"
 #include "enemyState.h"
+#include "enemyGui.h"
 #include "enemy.h"
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
@@ -26,6 +27,8 @@ void Enemy::Init()
 	m_stateData.m_combat_rad = 3.0f;
 	m_moveSpeed = 0.05f;
 
+	m_enemyGui = new EnemyGui(this);
+	m_enemyGui->Init();
 
 	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(1.1f, 1.1f, 1.1f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);

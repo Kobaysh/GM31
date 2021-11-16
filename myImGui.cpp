@@ -49,6 +49,13 @@ void MyImGui::Init(HWND hwnd)
 void MyImGui::Uninit()
 {
 #if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+	for (auto pair : m_myGuiWindows)
+	{
+		pair.second->Uninit();
+		delete pair.second;
+	}
+	m_myGuiWindows.clear();
+
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
@@ -70,7 +77,10 @@ void MyImGui::Update()
 	// ここからウィンドウのセット
 
 	SetDebugWindow();
-
+	for (auto pair : m_myGuiWindows)
+	{
+		pair.second->Update();
+	}
 #endif
 }
 
@@ -93,6 +103,11 @@ void MyImGui::StartRender()
 
 void MyImGui::SetGuiWindow(const std::string & name, MyGuiWindow* window)
 {
+	auto it = m_myGuiWindows.find(name);
+	if (it != m_myGuiWindows.end())
+	{
+		return;
+	}
 	m_myGuiWindows[name] = window;
 }
 
