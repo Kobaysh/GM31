@@ -70,7 +70,7 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
-	// è¦–éŒ˜å°ã‚«ãƒªãƒ³ã‚°
+	// ‹‘äƒJƒŠƒ“ƒO
 	Scene* scene = ManagerT::GetScene();
 	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
 	if (!camera->CheckView(m_position))
@@ -78,14 +78,14 @@ void Enemy::Draw()
 		return;
 	}
 
-	// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®š
+	// “ü—ÍƒŒƒCƒAƒEƒgİ’è
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¨­å®š
+	// ƒVƒF[ƒ_[İ’è
 	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
+	// ƒ}ƒgƒŠƒNƒXİ’è
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);

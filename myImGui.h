@@ -40,13 +40,14 @@ private:
 	~MyGuiWindow(){}
 
 protected:
-	const std::string m_name;
+	std::string m_name;
 
 public :
 	MyGuiWindow(const std::string& name):m_name(name){}
 
 	const char* GetWindowName() { return m_name.data(); }
 	const std::string GetWindowString() { return m_name; }
-	virtual void Uninit();
-	virtual void Update();
+	virtual void Init() = 0;
+	virtual void Uninit() = 0;
+	virtual void Update() = 0;
 };

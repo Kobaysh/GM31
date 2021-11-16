@@ -30,6 +30,9 @@
     <Filter Include="imGui">
       <UniqueIdentifier>{851da4df-d380-4248-94e5-c2bd8d17769c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy">
+      <UniqueIdentifier>{94cd01af-ef07-4c5f-ad8f-b1d3c533fb0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -48,9 +51,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="field.h">
@@ -140,9 +140,6 @@
     <ClInclude Include="state.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="enemyState.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="weapon.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
@@ -200,15 +197,21 @@
     <ClInclude Include="debugCamera.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
+    <ClInclude Include="enemyState.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyGui.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="bullet.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="field.cpp">
@@ -295,9 +298,6 @@
     <ClCompile Include="katana.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="enemyState.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="weapon.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -348,6 +348,15 @@
     </ClCompile>
     <ClCompile Include="myImGui.cpp">
       <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyState.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyGui.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

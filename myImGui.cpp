@@ -70,6 +70,7 @@ void MyImGui::Update()
 	// ここからウィンドウのセット
 
 	SetDebugWindow();
+
 #endif
 }
 

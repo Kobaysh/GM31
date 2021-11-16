@@ -1,7 +1,7 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
-
+#include "myImGui.h"
 
 #include "gameObject.h"
 #include "obb.h"
@@ -23,7 +23,7 @@
 #include "result.h"
 #include "fade.h"
 #include "pressSpaceKey.h"
-#include "myImGui.h"
+
 #include "game.h"
 
 
