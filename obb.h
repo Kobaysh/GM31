@@ -64,7 +64,7 @@ public:
 		m_fLength[2] = size.z * 0.5f;
 		m_scale = size;
 	}
-	void SetSize(XMFLOAT3 size) {
+	void SetScale(XMFLOAT3 size)override {
 		m_fLength[0] = size.x * 0.5f;
 		m_fLength[1] = size.y * 0.5f;
 		m_fLength[2] = size.z * 0.5f;
