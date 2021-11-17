@@ -21,19 +21,14 @@ ID3D11InputLayout*		Bullet::m_VertexLayout = nullptr;
 
 Bullet::Bullet()
 {
-	m_position = XMFLOAT3(-1.0f, 1.0f, -1.0f);
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
-	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_speed = 0.0f;
-	m_obb = new OBB(m_position, m_scale);
+
 }
 
 Bullet::Bullet(XMFLOAT3 f3Position)
 {
 	m_position = f3Position;
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
+	m_scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
 	m_obb = new OBB(m_position, m_scale);
@@ -86,6 +81,7 @@ void Bullet::Update()
 	XMVECTOR vDirection = XMLoadFloat3(&m_direction);
 	vPosition += vDirection * m_speed;
 	XMStoreFloat3(&m_position, vPosition);
+	m_obb->SetPosition(m_position);
 
 	if (m_position.z > BULLET_MAX_RECT || m_position.z < -BULLET_MAX_RECT ||
 		m_position.x > BULLET_MAX_RECT || m_position.x < -BULLET_MAX_RECT) {
@@ -108,6 +104,7 @@ void Bullet::Update()
 			SetDead();
 			// 爆発エフェクト
 			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
+			return;
 		}
 	}
 
@@ -119,6 +116,7 @@ void Bullet::Update()
 		if (OBB::ColOBBs(*m_obb, rock->GetObb())){
 			SetDead();
 			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
+			return;
 		}
 	}
 }
@@ -174,7 +172,8 @@ Bullet * Bullet::Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed)
 {
 //	Bullet* pBullet = new Bullet();
 //	ManagerT::GetScene()->AddGameObject(pBullet, GameObject::GOT_OBJECT3D);
-	Bullet* pBullet =  ManagerT::GetScene()->AppendGameObject<Bullet>(GameObject::GOT_OBJECT3D);
+	Bullet* pBullet = new Bullet(f3Position);
+	pBullet =  ManagerT::GetScene()->AddGameObject<Bullet>(pBullet, GameObject::GOT_OBJECT3D);
 	pBullet->SetPosition(f3Position);
 	pBullet->m_direction = f3Direction;
 	pBullet->m_speed = fSpeed;

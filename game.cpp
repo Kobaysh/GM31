@@ -18,6 +18,7 @@
 #include "sky.h"
 #include "rock.h"
 #include "wood.h"
+#include "wall.h"
 #include "audio.h"
 #include "keylogger.h"
 #include "result.h"
@@ -81,6 +82,7 @@ void Game::Init()
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 2.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 5.0f));
 
+	AppendGameObject<Wall>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 5.0f));
 
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
 	Fade::SetFade(Fade::FADE_IN);
