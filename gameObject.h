@@ -41,7 +41,7 @@ public:
 
 	void SetPosition(XMFLOAT3 pos) { m_position = pos; }
 	virtual void SetRotation(XMFLOAT3 rot) { m_rotation = rot; }
-	void SetScale(XMFLOAT3 scale) { m_scale = scale; }
+	virtual void SetScale(XMFLOAT3 scale) { m_scale = scale; }
 	XMFLOAT3 GetPosition() { return m_position; }
 //	void SetDestroy() { m_Destroy = true; }
 
@@ -70,5 +70,29 @@ public:
 	void SetVShader(const char* pFileName) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, pFileName);
 	}
+
+	XMFLOAT3 GetObbX()
+	{
+		XMMATRIX rot, scale, world;
+		scale = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+		rot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+		world = scale * rot;
+		XMFLOAT4X4 worldx4;
+		XMStoreFloat4x4(&worldx4, world);
+		XMFLOAT3 vx = XMFLOAT3(worldx4._11 * 0.5f, worldx4._12 * 0.5f, worldx4._13 * 0.5f);
+		return vx;
+	}
+	XMFLOAT3 GetObbZ()
+	{
+		XMMATRIX rot, scale, world;
+		scale = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+		rot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+		world = scale * rot;
+		XMFLOAT4X4 worldx4;
+		XMStoreFloat4x4(&worldx4, world);
+		XMFLOAT3 vx = XMFLOAT3(worldx4._31 * 0.5f, worldx4._32 * 0.5f, worldx4._32 * 0.5f);
+		return vx;
+	}
+
 };
 

@@ -73,13 +73,16 @@ void Game::Init()
 	}
 	XMFLOAT3 pos = XMFLOAT3(-1.0f,0.0f,-1.0f);
 	XMFLOAT3 scl = XMFLOAT3(1.0f,1.0f,1.0f);
-	AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
+//	AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
 
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(15.0f, 1.0f, 10.0f));
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-15.0f, 1.0f, 7.0f));
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 2.0f));
-	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 5.0f));
+	Enemy* enemy0 = AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D);
+	enemy0->SetPosition(XMFLOAT3(0.0f, 2.0f, 5.0f));
+	enemy0->SetScale(XMFLOAT3(2.0f, 2.0f, 5.0f));
+	enemy0->GetObb().SetScale(XMFLOAT3(4.1f, 4.1f, 10.1f));
 
 
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);

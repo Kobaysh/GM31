@@ -26,7 +26,8 @@ Bullet::Bullet()
 	m_scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
-	m_obb = new OBB(m_position, m_scale);
+	m_obb = new OBB(m_position, XMFLOAT3(1.0f,0.5f,1.0f));
+	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 }
 
 Bullet::Bullet(XMFLOAT3 f3Position)
@@ -36,7 +37,8 @@ Bullet::Bullet(XMFLOAT3 f3Position)
 	m_scale = XMFLOAT3(0.1f, 0.1f, 0.1f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
-	m_obb = new OBB(m_position, m_scale);
+	m_obb = new OBB(m_position, XMFLOAT3(1.0f,0.5f,1.0f));
+	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 }
 
 void Bullet::Init()
@@ -73,8 +75,9 @@ void Bullet::Uninit()
 	// m_VertexShader->Release();
 	// m_PixelShader->Release();
 	if (m_obb) {
-		delete m_obb;
-		m_obb = nullptr;
+		m_obb->SetDead();
+		/*delete m_obb;
+		m_obb = nullptr;*/
 	}
 }
 
@@ -86,6 +89,7 @@ void Bullet::Update()
 	XMVECTOR vDirection = XMLoadFloat3(&m_direction);
 	vPosition += vDirection * m_speed;
 	XMStoreFloat3(&m_position, vPosition);
+	m_obb->SetPosition(m_position);
 
 	if (m_position.z > BULLET_MAX_RECT || m_position.z < -BULLET_MAX_RECT ||
 		m_position.x > BULLET_MAX_RECT || m_position.x < -BULLET_MAX_RECT) {
@@ -101,10 +105,17 @@ void Bullet::Update()
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
 
 	for (Enemy* enemy : enemies) {
-		float distance = 0.0f;
-		XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
-		if (distance < 2.0f) {
-			enemy->SetDead();
+		//float distance = 0.0f;
+		//XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
+		//if (distance < 2.0f) {
+		//	enemy->SetDead();
+		//	SetDead();
+		//	// 爆発エフェクト
+		//	scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
+		//}
+
+		if (OBB::ColOBBs(*m_obb, enemy->GetObb()))
+		{
 			SetDead();
 			// 爆発エフェクト
 			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);

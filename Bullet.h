@@ -16,6 +16,7 @@ public:
 
 	static Bullet* Create(XMFLOAT3 f3Position, XMFLOAT3 f3Direction, float fSpeed);
 	static void Destroy(Bullet* pBullet);
+	class OBB& GetOBB() { return *m_obb; }
 
 //	OBB& GetObb() { return *m_obb; }
 private:
