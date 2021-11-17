@@ -2,7 +2,7 @@
 #include <dinput.h>
 #pragma comment(lib, "dinput8.lib")
 
-#define MOUSE_TRUE (false)
+#define MOUSE_TRUE (true)
 
 class Input
 {
@@ -33,6 +33,7 @@ public:
 	static bool GetKeyPress( BYTE KeyCode );
 	static bool GetKeyTrigger( BYTE KeyCode );
 
+	static bool GetMouseTrigger(MouseButton button);
 	static bool GetMouseDown(MouseButton button);
 	static bool GetMouseUp(MouseButton button);
 

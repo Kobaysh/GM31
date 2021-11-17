@@ -2,6 +2,7 @@
 #include "renderer.h"
 #include "manager.h"
 #include "scene.h"
+#include "input.h"
 #include "keylogger.h"
 #include "obb.h"
 #include "model.h"
@@ -256,6 +257,11 @@ void Player::Shoot()
 		Bullet::Create(m_position, m_front, 0.3f);
 //		m_animationName = "attack";
 		m_shotSE->Play(0.1f);
+	}
+//	if (Input::GetMouseDown(Input::MouseButton::Left))
+	if (Input::GetMouseTrigger(Input::MouseButton::Left))
+	{
+		Bullet::Create(m_position, m_front, 0.3f);
 	}
 }
 
