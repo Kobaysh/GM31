@@ -41,7 +41,7 @@ public:
 
 	void SetPosition(XMFLOAT3 pos) { m_position = pos; }
 	virtual void SetRotation(XMFLOAT3 rot) { m_rotation = rot; }
-	void SetScale(XMFLOAT3 scale) { m_scale = scale; }
+	virtual void SetScale(XMFLOAT3 scale) { m_scale = scale; }
 	XMFLOAT3 GetPosition() { return m_position; }
 //	void SetDestroy() { m_Destroy = true; }
 

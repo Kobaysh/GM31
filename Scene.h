@@ -21,6 +21,13 @@ public:
 		m_GameObject[type].push_back(gameObject);
 		return gameObject;
 	}
+	template<typename T>
+	T* AddGameObject(T* pObj, GameObject::GameObject_Type type) {
+		if (pObj == nullptr)return nullptr;
+		pObj->Init();
+		m_GameObject[type].push_back(pObj);
+		return pObj;
+	}
 	GameObject* AddGameObject(GameObject* pObj, GameObject::GameObject_Type type) {
 		if (pObj == nullptr)return nullptr;
 		pObj->Init();
