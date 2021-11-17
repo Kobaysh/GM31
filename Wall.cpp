@@ -1,8 +1,12 @@
 #include "main.h"
+#include "manager.h"
+#include "renderer.h"
+#include "scene.h"
 #include "wall.h"
 #include "animationModel.h"
 #include "model.h"
-#include "renderer.h"
+#include "obb.h"
+
 
 #define FILENAME ("asset\\model\\wall\\wall_mapping.obj")
 
@@ -68,6 +72,9 @@ void Wall::Init()
 	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	XMFLOAT3 obbScale = XMFLOAT3(m_scale.x * 2.0f, m_scale.y * 2.0f, m_scale.z * 2.0f);
+	m_obb = new OBB(m_position, obbScale);
+	ManagerT::GetScene()->AddGameObject<OBB>(m_obb, GameObject::GOT_OBJECT3D);
 }
 
 void Wall::Uninit()
@@ -83,7 +90,7 @@ void Wall::Uninit()
 
 void Wall::Update()
 {
-
+	m_obb->SetPosition(m_position);
 }
 
 void Wall::Draw()
