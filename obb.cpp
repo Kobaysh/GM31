@@ -315,7 +315,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	obb1.m_wasCollide = true;
 	obb2.m_wasCollide = true;
 
-	if (!preCol1 || !preCol2)
+	if (!preCol1 && !preCol2)
 	{
 		return false;
 	}
