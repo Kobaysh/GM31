@@ -21,8 +21,8 @@ void Enemy::Init()
 	Model::Load(m_modelId);
 	m_position = XMFLOAT3(-20.0f, 1.0f, 1.0f);
 //	m_rotation = XMFLOAT3(XMConvertToRadians(45.0f), XMConvertToRadians(45.0f), XMConvertToRadians(45.0f));
-//	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_rotation = XMFLOAT3(0.0f, XMConvertToRadians(45.0f), 0.0f);
+	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+//	m_rotation = XMFLOAT3(0.0f, XMConvertToRadians(45.0f), 0.0f);
 //	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 	m_stateData.m_eyesight_rad = 7.0f;
@@ -61,7 +61,7 @@ void Enemy::Update()
 {
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 //	m_state->Update();
-//	m_rotation.y += 0.01f;
+//	m_rotation.y += 0.001f;
 //	m_rotation.z += 0.02f;
 
 //	m_position.x = cosf(m_rotation.y) * 10.0f;

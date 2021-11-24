@@ -120,6 +120,15 @@ void Bullet::Update()
 			// 爆発エフェクト
 			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 		}
+		//float distance = 0.0f;
+		//
+		//XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
+		//if (distance < 2.0f) {
+		////	enemy->SetDead();
+		//	SetDead();
+		//	// 爆発エフェクト
+		//	scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
+		//}
 	}
 
 	// rockとの当たり判定

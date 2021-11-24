@@ -80,10 +80,18 @@ void Game::Init()
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-15.0f, 1.0f, 7.0f));
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 2.0f));
 	Enemy* enemy0 = AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D);
-	enemy0->SetPosition(XMFLOAT3(0.0f, 2.0f, 5.0f));
+	enemy0->SetPosition(XMFLOAT3(7.0f, 2.0f, 5.0f));
+	enemy0->SetRotation(XMFLOAT3(0.0f, XMConvertToRadians(45.0f), 0.0f));
 	enemy0->SetScale(XMFLOAT3(2.0f, 2.0f, 5.0f));
 	enemy0->GetObb().SetScale(XMFLOAT3(4.1f, 4.1f, 10.1f));
-
+	enemy0->GetObb().SetRotation(XMFLOAT3(0.0f, XMConvertToRadians(45.0f), 0.0f));
+	
+	Enemy* enemy1 = AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D);
+	enemy1->SetPosition(XMFLOAT3(-7.0f, 2.0f, 5.0f));
+	enemy1->SetRotation(XMFLOAT3(0.0f, XMConvertToRadians(-45.0f), 0.0f));
+	enemy1->SetScale(XMFLOAT3(2.0f, 2.0f, 5.0f));
+	enemy1->GetObb().SetScale(XMFLOAT3(4.1f, 4.1f, 10.1f));
+	enemy1->GetObb().SetRotation(XMFLOAT3(0.0f, XMConvertToRadians(-45.0f), 0.0f));
 
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
 	Fade::SetFade(Fade::FADE_IN);
