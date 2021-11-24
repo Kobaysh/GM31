@@ -70,7 +70,7 @@ void Bullet::Uninit()
 	// m_VertexShader->Release();
 	// m_PixelShader->Release();
 	if (m_obb) {
-		m_obb->SetDead();
+//		m_obb->SetDead();
 //		delete m_obb;
 //		m_obb = nullptr;
 	}
@@ -88,7 +88,7 @@ void Bullet::Update()
 
 	if (m_position.z > BULLET_MAX_RECT || m_position.z < -BULLET_MAX_RECT ||
 		m_position.x > BULLET_MAX_RECT || m_position.x < -BULLET_MAX_RECT) {
-		SetDead();
+		Delete();
 		// 爆発エフェクト
 		scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 		return;
@@ -100,11 +100,12 @@ void Bullet::Update()
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
 
 	for (Enemy* enemy : enemies) {
-		float distance = 0.0f;
-		XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
-		if (distance < 2.0f) {
+		//float distance = 0.0f;
+		//XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
+		//if (distance < 2.0f) {
+		if (OBB::ColOBBs(*m_obb, enemy->GetObb())) {
 		//	enemy->SetDead();
-			SetDead();
+			Delete();
 			// 爆発エフェクト
 			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 			return;
@@ -117,8 +118,8 @@ void Bullet::Update()
 
 	for (Rock* rock : rocks) {
 		if (OBB::ColOBBs(*m_obb, rock->GetObb())){
-			SetDead();
-			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
+		//	Delete();
+		//	scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 			return;
 		}
 	}
@@ -195,4 +196,10 @@ void Bullet::Destroy(Bullet * pBullet)
 {
 	delete pBullet;
 	pBullet = NULL;
+}
+
+void Bullet::Delete()
+{
+	SetDead();
+	if (m_obb)m_obb->SetDead();
 }
