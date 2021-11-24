@@ -27,16 +27,16 @@ void OBB::SetRotation(XMFLOAT3 rot)
 	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DY));
 	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DZ));
 
-	XMVECTOR quaternion = XMLoadFloat3(&m_rotation);
+//	XMVECTOR quaternion = XMLoadFloat3(&m_rotation);
 
 	XMMATRIX mtxRot;
 //	mtxRot = XMMatrixRotationQuaternion(quaternion);
 	mtxRot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	
 //	nDX = XMVector3TransformNormal(nDX, mtxRot);
-	nDX = XMVector3TransformCoord(nDX, mtxRot);
-	nDY = XMVector3TransformCoord(nDY, mtxRot);
-	nDZ = XMVector3TransformCoord(nDZ, mtxRot);
+	nDX = XMVector3TransformNormal(nDX, mtxRot);
+	nDY = XMVector3TransformNormal(nDY, mtxRot);
+	nDZ = XMVector3TransformNormal(nDZ, mtxRot);
 	nDX = XMVector3Normalize(nDX);
 	nDY = XMVector3Normalize(nDY);
 	nDZ = XMVector3Normalize(nDZ);
@@ -505,6 +505,48 @@ void OBB::Draw()
 	// ポリゴン描画
 	Renderer::GetpDeviceContext()->DrawIndexed(36, 0, 0);
 
+
+
+	// 法線表示
+
+	VERTEX_3DX vertex[2];
+	for (int i = 0; i < 3; i++)
+	{
+		vertex[0].Position = m_position;
+		XMVECTOR desPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i];
+		XMStoreFloat3(&vertex[1].Position, desPos);
+
+		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		D3D11_BUFFER_DESC bd{};
+
+		bd.Usage = D3D11_USAGE_DYNAMIC;
+		bd.ByteWidth = sizeof(VERTEX_3DX) * 2;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+		D3D11_SUBRESOURCE_DATA sd{};
+		sd.pSysMem = vertex;
+		HRESULT hr;
+
+		ID3D11Buffer* vertexbuffer;
+		 hr =Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &vertexbuffer);
+
+		Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
+
+
+		if (!m_isCollide) {
+			Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
+		}
+		else {
+			Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureBlue);
+		}
+
+	//	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		Renderer::GetpDeviceContext()->Draw(2, 0);
+		vertexbuffer->Release();
+	}
 
 	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.CullMode = D3D11_CULL_NONE;
