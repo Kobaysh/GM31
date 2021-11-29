@@ -27,22 +27,27 @@ void OBB::SetRotation(XMFLOAT3 rot)
 	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DY));
 	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DZ));
 
-	XMVECTOR quaternion = XMLoadFloat3(&m_rotation);
+//	XMVECTOR quaternion = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotation));
+//	XMVECTOR quaternion = (XMLoadFloat3(&m_rotation));
+	//quaternion = XMQuaternionIdentity();
 
 	XMMATRIX mtxRot;
-	mtxRot = XMMatrixRotationQuaternion(quaternion);
-//	mtxRot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	
+	mtxRot = XMMatrixIdentity();
+//	mtxRot = XMMatrixRotationQuaternion(quaternion);
+	mtxRot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+//	quaternion = XMQuaternionRotationMatrix(mtxRot);
+
+
 //	nDX = XMVector3TransformNormal(nDX, mtxRot);
 	nDX = XMVector3TransformNormal(nDX, mtxRot);
 	nDY = XMVector3TransformNormal(nDY, mtxRot);
 	nDZ = XMVector3TransformNormal(nDZ, mtxRot);
-	nDX = XMVector3Rotate(nDX, quaternion);
-	nDY = XMVector3Rotate(nDY, quaternion);
-	nDZ = XMVector3Rotate(nDZ, quaternion);
-	nDX = XMVector3Normalize(nDX);
-	nDY = XMVector3Normalize(nDY);
-	nDZ = XMVector3Normalize(nDZ);
+	//nDX = XMVector3Rotate(nDX, quaternion);
+	//nDY = XMVector3Rotate(nDY, quaternion);
+	//nDZ = XMVector3Rotate(nDZ, quaternion);
+	//nDX = XMVector3Normalize(nDX);
+	//nDY = XMVector3Normalize(nDY);
+	//nDZ = XMVector3Normalize(nDZ);
 
 	XMStoreFloat3(&m_normaDirect[OBB_DX], nDX);
 	XMStoreFloat3(&m_normaDirect[OBB_DY], nDY);
@@ -318,7 +323,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 	if (!preCol1 && !preCol2)
 	{
-		return false;
+	//	return false;
 	}
 	obb1.m_isCollide = true;
 	obb2.m_isCollide = true;
@@ -528,12 +533,19 @@ void OBB::Draw()
 
 		D3D11_SUBRESOURCE_DATA sd{};
 		sd.pSysMem = vertex;
-		HRESULT hr;
 
 		ID3D11Buffer* vertexbuffer;
-		hr =Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &vertexbuffer);
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &vertexbuffer);
 
 		Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
+
+		//XMMATRIX scaleX = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+		//XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+		//XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+		//XMMATRIX worldX = scaleX * rotX * transX;
+		//XMFLOAT4X4 world4x4;
+		//XMStoreFloat4x4(&world4x4, worldX);
+		//Renderer::SetWorldMatrixX(&world4x4);
 
 
 		if (!m_isCollide) {
