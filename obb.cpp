@@ -513,7 +513,10 @@ void OBB::Draw()
 	for (int i = 0; i < 3; i++)
 	{
 		vertex[0].Position = m_position;
-		XMVECTOR desPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i];
+		vertex[0].Position.x /= 10000;
+		vertex[0].Position.y /= 10000;
+		vertex[0].Position.z /= 10000;
+		XMVECTOR desPos = XMLoadFloat3(&vertex[0].Position) + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i];
 		XMStoreFloat3(&vertex[1].Position, desPos);
 
 		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
