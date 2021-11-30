@@ -6,10 +6,11 @@
 #include "scene.h"
 #include "keylogger.h"
 
-#define FILENAME ("asset/texture/explosion.png")
+#define FILENAME ("asset/texture/explosion.dds")
 #define ANIMATION_MAG (6)
 
 int Explosion::m_animationMag = 3;
+ID3D11ShaderResourceView* Explosion::m_texture = nullptr;
 
 void Explosion::Init()
 {
@@ -51,18 +52,20 @@ void Explosion::Init()
 
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
-	// テクスチャ読み込み
-	D3DX11CreateShaderResourceViewFromFile(
-		//Renderer::GetDevice(),
-		Renderer::GetpDevice().Get(),
-		FILENAME,
-		NULL,
-		NULL,
-		&m_texture,
-		NULL
-	);
-	assert(m_texture);
-
+	if (m_texture == nullptr)
+	{
+		// テクスチャ読み込み
+		D3DX11CreateShaderResourceViewFromFile(
+			//Renderer::GetDevice(),
+			Renderer::GetpDevice().Get(),
+			FILENAME,
+			NULL,
+			NULL,
+			&m_texture,
+			NULL
+		);
+		assert(m_texture);
+	}
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
@@ -79,7 +82,7 @@ void Explosion::Init()
 void Explosion::Uninit()
 {
 	m_vertexBuffer->Release();
-	m_texture->Release();
+//	m_texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -191,4 +194,10 @@ void Explosion::Draw()
 
 	// ポリゴン描画
 	Renderer::GetpDeviceContext()->Draw(4, 0);
+}
+
+void Explosion::ReleaseTexture()
+{
+	m_texture->Release();
+	m_texture = nullptr;
 }

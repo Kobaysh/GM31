@@ -104,6 +104,7 @@ void Game::Uninit()
 	Scene::Uninit();	// 継承元クラスのメソッド呼び出し(staticメソッドと書き方同じ)
 	MyImGui::Uninit();
 	Bullet::UnLoad();
+	Explosion::ReleaseTexture();
 	Model::Uninit();
 }
 
