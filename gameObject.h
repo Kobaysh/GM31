@@ -25,6 +25,9 @@ protected:
 	XMFLOAT3 m_position;
 	XMFLOAT3 m_rotation;
 	XMFLOAT3 m_scale;
+	XMFLOAT3 m_front;
+	XMFLOAT3 m_right;
+	XMFLOAT3 m_up;
 	GameObject_State m_state = GOS_ACTIVE;
 
 	ID3D11VertexShader*		m_VertexShader = NULL;

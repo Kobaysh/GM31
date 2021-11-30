@@ -57,6 +57,25 @@ void OBB::SetRotation(XMFLOAT3 rot)
 
 }
 
+void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right)
+{
+	m_normaDirect[OBB_DX] = right;
+	m_normaDirect[OBB_DZ] = front;
+	//m_normaDirect[OBB_DZ] = right;
+	//m_normaDirect[OBB_DX] = front;
+	XMVECTOR vUp, vFront = XMLoadFloat3(&front), vRight =  XMLoadFloat3(&right);
+	vUp = XMVector3Cross(vFront, vRight);
+	XMStoreFloat3(&m_normaDirect[OBB_DY], vUp);
+	
+}
+
+void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right, XMFLOAT3 rot)
+{
+//	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
+	m_rotation = rot;
+	SetRotationFromFrontRightVector(front, right);
+}
+
 /// <summary>
 /// 当たり判定関数
 /// </summary>

@@ -77,6 +77,9 @@ public:
 
 	void SetRotation(XMFLOAT3 rot)override;
 
+	void SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right);
+	void SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right, XMFLOAT3 rot);
+
 	static bool ColOBBs(OBB &obb1, OBB &obb2);
 	static bool GetIsColShow() { return m_bIsDraw; }
 	static void SetIsColShow(bool show) { m_bIsDraw = show; }
