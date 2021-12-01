@@ -178,7 +178,8 @@ void Renderer::Init()
 
 	// ブレンドステート設定
 	D3D11_BLEND_DESC blendDesc{};
-	blendDesc.AlphaToCoverageEnable = FALSE;
+//	blendDesc.AlphaToCoverageEnable = FALSE;
+	blendDesc.AlphaToCoverageEnable = TRUE;
 	blendDesc.IndependentBlendEnable = FALSE;
 	blendDesc.RenderTarget[0].BlendEnable = TRUE;
 	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
