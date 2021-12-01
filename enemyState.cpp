@@ -167,6 +167,7 @@ void EnemyState::Idle_MoveToPlayer()
 	{
 		ChangeState(COMBAT_IDLE);
 	}
+
 	vToPlayer = XMVector3Normalize(vToPlayer);
 	vEnemyPos += vToPlayer * m_enemy->GetMoveSpeed();
 	XMFLOAT3 enemyPos;
