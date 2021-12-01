@@ -6,6 +6,7 @@
 #include "audio.h"
 #include "obb.h"
 #include "meshField.h"
+#include "input.h"
 #include "camera.h"
 #include "enemyState.h"
 #include "enemyGui.h"
@@ -21,9 +22,10 @@ void Enemy::Init()
 	Model::Load(m_modelId);
 	m_position = XMFLOAT3(-20.0f, 1.0f, 1.0f);
 //	m_rotation = XMFLOAT3(XMConvertToRadians(45.0f), XMConvertToRadians(45.0f), XMConvertToRadians(45.0f));
-//	m_rotation = XMFLOAT3(0.f, XMConvertToRadians(45.0f), 0.f);
+//	m_rotation = XMFLOAT3(0.f, XMConvertToRadians(60.0f), 0.f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	m_rotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
@@ -64,25 +66,11 @@ void Enemy::Update()
 {
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 	m_state->Update();
-	m_rotation.y += 0.01f;
-	XMVECTOR vFront = XMLoadFloat3(&m_front),vRight = XMLoadFloat3(&m_right),vUp;
-	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
-	vFront =  XMVector3TransformCoord(vFront, mtxRot);
-	vRight =  XMVector3TransformCoord(vRight, mtxRot);
-	vUp = XMVector3Cross(vFront, vRight);
-	XMStoreFloat3(&m_front, vFront);
-	XMStoreFloat3(&m_right, vRight);
-	XMStoreFloat3(&m_up, vUp);
-//	m_rotation.z += 0.02f;
-
-//	m_position.x = cosf(m_rotation.y) * 10.0f;
-//	m_position.z = sinf(m_rotation.z * 2.0f) * 10.0f;
 
 	m_position.y = mf->GetHeight(m_position) + m_scale.y;
 
 	m_obb->SetPosition(m_position);
-//	m_obb->SetRotation(m_rotation);
-	m_obb->SetRotationFromFrontRightVector(m_front, m_right);
+	this->UpdateRotation();
 }
 
 void Enemy::Draw()
@@ -117,4 +105,30 @@ void Enemy::Draw()
 //	m_obb->SetisDraw(true);
 //	m_obb->Draw();
 //	m_obb->SetisDraw(false);
+}
+
+void Enemy::UpdateRotation()
+{
+	XMVECTOR vRot = XMLoadFloat3(&m_rotation);
+	if (Input::GetKeyPress(VK_RIGHT))
+	{
+		m_rotationSpeed.y= 0.01f;
+	}
+	if (Input::GetKeyPress(VK_LEFT))
+	{
+		m_rotationSpeed.y = -0.01f;
+	}
+	vRot += XMLoadFloat3(&m_rotationSpeed);
+	XMStoreFloat3(&m_rotation, vRot);
+	XMVECTOR vFront = XMLoadFloat3(&m_front),vRight = XMLoadFloat3(&m_right),vUp;
+	//	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
+	XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
+	vFront =  XMVector3TransformNormal(vFront, mtxRot);
+	vRight =  XMVector3TransformNormal(vRight, mtxRot);
+	vUp = XMVector3Cross(vFront, vRight);
+	XMStoreFloat3(&m_front, vFront);
+	XMStoreFloat3(&m_right, vRight);
+	XMStoreFloat3(&m_up, vUp);
+	m_obb->SetRotation(m_rotation, m_rotationSpeed);
+	//m_obb->SetRotationFromFrontRightVector(m_front, m_right, m_rotation);
 }

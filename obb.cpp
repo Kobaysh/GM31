@@ -16,45 +16,33 @@ ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
 // 描画するかどうか
-bool OBB::m_bIsDraw = false;
+bool OBB::m_bIsDraw = true;
+bool OBB::m_bIsDrawFrontRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
-
 	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
 	m_rotation = rot;
+}
+
+void OBB::SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed)
+{
+	if (m_rotation.x == rotation.x && m_rotation.y == rotation.y && m_rotation.z == rotation.z) return;
+	m_rotation = rotation;
 	XMVECTOR nDX = XMLoadFloat3(&GetDirect(OBB_DX));
 	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DY));
 	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DZ));
 
-//	XMVECTOR quaternion = XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotation));
-//	XMVECTOR quaternion = (XMLoadFloat3(&m_rotation));
-	//quaternion = XMQuaternionIdentity();
-
 	XMMATRIX mtxRot;
-	mtxRot = XMMatrixIdentity();
-//	mtxRot = XMMatrixRotationQuaternion(quaternion);
-	mtxRot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-//	quaternion = XMQuaternionRotationMatrix(mtxRot);
+	mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&rotationSpeed));
 
-
-//	nDX = XMVector3TransformNormal(nDX, mtxRot);
 	nDX = XMVector3TransformNormal(nDX, mtxRot);
 	nDY = XMVector3TransformNormal(nDY, mtxRot);
 	nDZ = XMVector3TransformNormal(nDZ, mtxRot);
-	//nDX = XMVector3Rotate(nDX, quaternion);
-	//nDY = XMVector3Rotate(nDY, quaternion);
-	//nDZ = XMVector3Rotate(nDZ, quaternion);
-	//nDX = XMVector3Normalize(nDX);
-	//nDY = XMVector3Normalize(nDY);
-	//nDZ = XMVector3Normalize(nDZ);
 
 	XMStoreFloat3(&m_normaDirect[OBB_DX], nDX);
 	XMStoreFloat3(&m_normaDirect[OBB_DY], nDY);
 	XMStoreFloat3(&m_normaDirect[OBB_DZ], nDZ);
-
-
-
 }
 
 void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right)
@@ -71,7 +59,7 @@ void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right)
 
 void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right, XMFLOAT3 rot)
 {
-//	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
+	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
 	m_rotation = rot;
 	SetRotationFromFrontRightVector(front, right);
 }
@@ -101,7 +89,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	XMVECTOR NBe3 = XMLoadFloat3(&obb2.GetDirect(OBB_DZ)), Be3 = NBe3 * obb2.GetLen_W(OBB_DZ);
 	XMVECTOR Interval = XMLoadFloat3(&obb1.GetPos_W()) - XMLoadFloat3(&obb2.GetPos_W());
 
-	if (!isfinite(Interval.m128_f32[1]))
+
+	if (XMVector3IsInfinite(Interval) || XMVector3IsNaN(Interval))
 	{
 		return false;
 	}
@@ -530,54 +519,60 @@ void OBB::Draw()
 	// ポリゴン描画
 	Renderer::GetpDeviceContext()->DrawIndexed(36, 0, 0);
 
-	// 法線表示
-	VERTEX_3DX vertex[2];
-	for (int i = 0; i < 3; i++)
+
+	if (m_bIsDrawFrontRightUp)
 	{
-		vertex[0].Position = m_position;
-		vertex[0].Position.x /= 1000.f;
-		vertex[0].Position.y /= 1000.f;
-		vertex[0].Position.z /= 1000.f;
-		XMVECTOR desPos = XMLoadFloat3(&m_position) / 1000.f + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i] ;
-		XMStoreFloat3(&vertex[1].Position, desPos);
+		// 法線表示
+		VERTEX_3DX vertex[2];
+		for (int i = 0; i < 3; i++)
+		{
+			vertex[0].Position = m_position;
+			vertex[0].Position.x /= 1000.f;
+			vertex[0].Position.y /= 1000.f;
+			vertex[0].Position.z /= 1000.f;
+			XMVECTOR desPos = XMLoadFloat3(&vertex[0].Position) + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i];
+			XMStoreFloat3(&vertex[1].Position, desPos);
 
-		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-		vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-		D3D11_BUFFER_DESC bd{};
+			vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			D3D11_BUFFER_DESC bd{};
 
-		bd.Usage = D3D11_USAGE_DYNAMIC;
-		bd.ByteWidth = sizeof(VERTEX_3DX) * 2;
-		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			bd.Usage = D3D11_USAGE_DYNAMIC;
+			bd.ByteWidth = sizeof(VERTEX_3DX) * 2;
+			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-		D3D11_SUBRESOURCE_DATA sd{};
-		sd.pSysMem = vertex;
+			D3D11_SUBRESOURCE_DATA sd{};
+			sd.pSysMem = vertex;
 
-		ID3D11Buffer* vertexbuffer;
-		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &vertexbuffer);
+			ID3D11Buffer* vertexbuffer;
+			Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &vertexbuffer);
 
-		Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
+			Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
 
-		//XMMATRIX scaleX = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-		//XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-		//XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
-		//XMMATRIX worldX = scaleX * rotX * transX;
-		//XMFLOAT4X4 world4x4;
-		//XMStoreFloat4x4(&world4x4, worldX);
-		//Renderer::SetWorldMatrixX(&world4x4);
+			//XMMATRIX scaleX = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			//XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+			//XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+			//XMMATRIX worldX = scaleX * rotX * transX;
+			//XMFLOAT4X4 world4x4;
+			//XMStoreFloat4x4(&world4x4, worldX);
+			//Renderer::SetWorldMatrixX(&world4x4);
 
 
-		if (!m_isCollide) {
-			Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
+			if (!m_isCollide)
+			{
+				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
+			}
+			else
+			{
+				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureBlue);
+			}
+
+			//    Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+			Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+			Renderer::GetpDeviceContext()->Draw(2, 0);
+			vertexbuffer->Release();
 		}
-		else {
-			Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureBlue);
-		}
-
-		//    Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-		Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
-		Renderer::GetpDeviceContext()->Draw(2, 0);
-		vertexbuffer->Release();
 	}
 
 	rdc.FillMode = D3D11_FILL_SOLID;
