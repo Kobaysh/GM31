@@ -1,4 +1,4 @@
-#include "main.h"
+Ôªø#include "main.h"
 #include "manager.h"
 #include "renderer.h"
 
@@ -15,48 +15,61 @@ ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 
 const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
-// ï`âÊÇ∑ÇÈÇ©Ç«Ç§Ç©
-bool OBB::m_bIsDraw = false;
+// ÊèèÁîª„Åô„Çã„Åã„Å©„ÅÜ„Åã
+bool OBB::m_bIsDraw = true;
+bool OBB::m_bIsDrawFrontRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
-
 	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
 	m_rotation = rot;
+}
+
+void OBB::SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed)
+{
+	if (m_rotation.x == rotation.x && m_rotation.y == rotation.y && m_rotation.z == rotation.z) return;
+	m_rotation = rotation;
 	XMVECTOR nDX = XMLoadFloat3(&GetDirect(OBB_DX));
 	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DY));
 	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DZ));
 
-	XMVECTOR quaternion = XMLoadFloat3(&m_rotation);
-
 	XMMATRIX mtxRot;
-//	mtxRot = XMMatrixRotationQuaternion(quaternion);
-	mtxRot = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	
-//	nDX = XMVector3TransformNormal(nDX, mtxRot);
-	nDX = XMVector3TransformCoord(nDX, mtxRot);
-	nDY = XMVector3TransformCoord(nDY, mtxRot);
-	nDZ = XMVector3TransformCoord(nDZ, mtxRot);
-	nDX = XMVector3Normalize(nDX);
-	nDY = XMVector3Normalize(nDY);
-	nDZ = XMVector3Normalize(nDZ);
+	mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&rotationSpeed));
+
+	nDX = XMVector3TransformNormal(nDX, mtxRot);
+	nDY = XMVector3TransformNormal(nDY, mtxRot);
+	nDZ = XMVector3TransformNormal(nDZ, mtxRot);
 
 	XMStoreFloat3(&m_normaDirect[OBB_DX], nDX);
 	XMStoreFloat3(&m_normaDirect[OBB_DY], nDY);
 	XMStoreFloat3(&m_normaDirect[OBB_DZ], nDZ);
+}
 
-//	nDX = XMVector3Rotate(nDX, quaternion);
-//	nDY = XMVector3Rotate(nDY, quaternion);
-//	nDZ = XMVector3Rotate(nDZ, quaternion);
+void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right)
+{
+	m_normaDirect[OBB_DX] = right;
+	m_normaDirect[OBB_DZ] = front;
+	//m_normaDirect[OBB_DZ] = right;
+	//m_normaDirect[OBB_DX] = front;
+	XMVECTOR vUp, vFront = XMLoadFloat3(&front), vRight =  XMLoadFloat3(&right);
+	vUp = XMVector3Cross(vFront, vRight);
+	XMStoreFloat3(&m_normaDirect[OBB_DY], vUp);
+	
+}
 
+void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right, XMFLOAT3 rot)
+{
+	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
+	m_rotation = rot;
+	SetRotationFromFrontRightVector(front, right);
 }
 
 /// <summary>
-/// ìñÇΩÇËîªíËä÷êî
+/// ÂΩì„Åü„ÇäÂà§ÂÆöÈñ¢Êï∞
 /// </summary>
 /// <param name="obb1">OBB1</param>
 /// <param name="obb2">OBB2</param>
-/// <returns>ìñÇΩÇ¡ÇΩÇ«Ç§Ç©</returns>
+/// <returns>ÂΩì„Åü„Å£„Åü„Å©„ÅÜ„Åã</returns>
 bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 {
 	bool preCol1 = obb1.m_wasCollide;
@@ -67,7 +80,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	obb1.m_wasCollide = false;
 	obb2.m_wasCollide = false;
 
-	// äeï˚å¸ÉxÉNÉgÉãÇÃämï€
+	// ÂêÑÊñπÂêë„Éô„ÇØ„Éà„É´„ÅÆÁ¢∫‰øù
 	XMVECTOR NAe1 = XMLoadFloat3(&obb1.GetDirect(OBB_DX)), Ae1 = NAe1 * obb1.GetLen_W(OBB_DX);
 	XMVECTOR NAe2 = XMLoadFloat3(&obb1.GetDirect(OBB_DY)), Ae2 = NAe2 * obb1.GetLen_W(OBB_DY);
 	XMVECTOR NAe3 = XMLoadFloat3(&obb1.GetDirect(OBB_DZ)), Ae3 = NAe3 * obb1.GetLen_W(OBB_DZ);
@@ -76,7 +89,8 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	XMVECTOR NBe3 = XMLoadFloat3(&obb2.GetDirect(OBB_DZ)), Be3 = NBe3 * obb2.GetLen_W(OBB_DZ);
 	XMVECTOR Interval = XMLoadFloat3(&obb1.GetPos_W()) - XMLoadFloat3(&obb2.GetPos_W());
 
-	if (!isfinite(Interval.m128_f32[1]))
+
+	if (XMVector3IsInfinite(Interval) || XMVector3IsNaN(Interval))
 	{
 		return false;
 	}
@@ -87,7 +101,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 	XMFLOAT3 N, e1, e2, e3, fCross;
 
-	// ï™ó£é≤Ae1
+	// ÂàÜÈõ¢Ëª∏Ae1
 	vLength = XMVector3Length(Ae1);
 	XMStoreFloat(&rA, vLength);
 	XMStoreFloat3(&N, NAe1);
@@ -101,7 +115,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	// ï™ó£é≤Ae2
+	// ÂàÜÈõ¢Ëª∏Ae2
 	vLength = XMVector3Length(Ae2);
 	XMStoreFloat(&rA, vLength);
 	XMStoreFloat3(&N, NAe2);
@@ -115,7 +129,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 	
-	// ï™ó£é≤Ae3
+	// ÂàÜÈõ¢Ëª∏Ae3
 	vLength = XMVector3Length(Ae3);
 	XMStoreFloat(&rA, vLength);
 	XMStoreFloat3(&N, NAe3);
@@ -130,7 +144,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 
-	// ï™ó£é≤Be1
+	// ÂàÜÈõ¢Ëª∏Be1
 	vLength = XMVector3Length(Be1);
 	XMStoreFloat(&rB, vLength);
 	XMStoreFloat3(&N, NBe1);
@@ -144,7 +158,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	// ï™ó£é≤Be2
+	// ÂàÜÈõ¢Ëª∏Be2
 	vLength = XMVector3Length(Be2);
 	XMStoreFloat(&rB, vLength);
 	XMStoreFloat3(&N, NBe2);
@@ -160,7 +174,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 
 
-	// ï™ó£é≤Be3
+	// ÂàÜÈõ¢Ëª∏Be3
 	vLength = XMVector3Length(Be3);
 	XMStoreFloat(&rB, vLength);
 	XMStoreFloat3(&N, NBe3);
@@ -175,7 +189,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 
-	// ï™ó£é≤C11
+	// ÂàÜÈõ¢Ëª∏C11
 	XMFLOAT3 ee1, ee2, ee3, ee4;
 	vCross = XMVector3Cross(NAe1, NBe1);
 	XMStoreFloat3(&fCross, vCross);
@@ -191,7 +205,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	// ï™ó£é≤ : C12
+	// ÂàÜÈõ¢Ëª∏ : C12
 	vCross = XMVector3Cross(NAe1, NBe2);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae2);
@@ -206,7 +220,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	// ï™ó£é≤ : C13
+	// ÂàÜÈõ¢Ëª∏ : C13
 	vCross = XMVector3Cross(NAe1, NBe3);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae2);
@@ -221,7 +235,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB) 
 		return false;
 
-	// ï™ó£é≤ : C21
+	// ÂàÜÈõ¢Ëª∏ : C21
 	vCross = XMVector3Cross(NAe2, NBe1);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
@@ -236,7 +250,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB) 
 		return false;
 
-	// ï™ó£é≤ : C22
+	// ÂàÜÈõ¢Ëª∏ : C22
 	vCross = XMVector3Cross(NAe2, NBe2);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
@@ -251,7 +265,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	// ï™ó£é≤ : C23
+	// ÂàÜÈõ¢Ëª∏ : C23
 	vCross = XMVector3Cross(NAe2, NBe3);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
@@ -267,7 +281,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 		return false;
 
 
-	// ï™ó£é≤ : C31
+	// ÂàÜÈõ¢Ëª∏ : C31
 	vCross = XMVector3Cross(NAe3, NBe1);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
@@ -282,7 +296,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	// ï™ó£é≤ : C32
+	// ÂàÜÈõ¢Ëª∏ : C32
 	vCross = XMVector3Cross(NAe3, NBe2);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
@@ -297,7 +311,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	// ï™ó£é≤ : C33
+	// ÂàÜÈõ¢Ëª∏ : C33
 	vCross = XMVector3Cross(NAe3, NBe3);
 	XMStoreFloat3(&fCross, vCross);
 	XMStoreFloat3(&ee1, Ae1);
@@ -315,9 +329,9 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	obb1.m_wasCollide = true;
 	obb2.m_wasCollide = true;
 
-	if (!preCol1 || !preCol2)
+	if (!preCol1 && !preCol2)
 	{
-		return false;
+	//	return false;
 	}
 	obb1.m_isCollide = true;
 	obb2.m_isCollide = true;
@@ -347,12 +361,12 @@ void OBB::Init()
 		vertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
-	// í∏ì_ÉoÉbÉtÉ@ê∂ê¨
+	// È†ÇÁÇπ„Éê„ÉÉ„Éï„Ç°ÁîüÊàê
 	D3D11_BUFFER_DESC bd{};
 
 	bd.Usage = D3D11_USAGE_DYNAMIC;
 	bd.ByteWidth = sizeof(VERTEX_3DX) * 8;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// ÉoÉbÉtÉ@ÇÃéÌóﬁ
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// „Éê„ÉÉ„Éï„Ç°„ÅÆÁ®ÆÈ°û
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 	D3D11_SUBRESOURCE_DATA sd{};
@@ -374,7 +388,7 @@ void OBB::Init()
 		7,4,6
 	};
 
-	// ÉCÉìÉfÉbÉNÉXÉoÉbÉtÉ@ê∂ê¨
+	// „Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Éê„ÉÉ„Éï„Ç°ÁîüÊàê
 	D3D11_BUFFER_DESC ibd{};
 	ibd.ByteWidth = sizeof(UWORD) * 36;
 	ibd.Usage = D3D11_USAGE_DEFAULT;
@@ -398,7 +412,7 @@ void OBB::Init()
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
-	// ÉeÉNÉXÉ`ÉÉì«Ç›çûÇ›
+	// „ÉÜ„ÇØ„Çπ„ÉÅ„É£Ë™≠„ÅøËæº„Åø
 	D3DX11CreateShaderResourceViewFromFile(
 		Renderer::GetpDevice().Get(),
 		FILENAME_BLUE,
@@ -407,7 +421,7 @@ void OBB::Init()
 		&m_textureBlue,
 		NULL
 	);
-	// ÉeÉNÉXÉ`ÉÉì«Ç›çûÇ›
+	// „ÉÜ„ÇØ„Çπ„ÉÅ„É£Ë™≠„ÅøËæº„Åø
 	D3DX11CreateShaderResourceViewFromFile(
 		Renderer::GetpDevice().Get(),
 		FILENAME_RED,
@@ -429,7 +443,7 @@ void OBB::Update()
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
-	// ÉâÉXÉ^ÉâÉCÉUê›íË
+	// „É©„Çπ„Çø„É©„Ç§„Ç∂Ë®≠ÂÆö
 	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
 }
 
@@ -447,11 +461,11 @@ void OBB::Draw()
 
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
-	// ÉVÉFÅ[É_Å[ê›íË
+	// „Ç∑„Çß„Éº„ÉÄ„ÉºË®≠ÂÆö
 	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
 	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	// É}ÉgÉäÉNÉXê›íË
+	// „Éû„Éà„É™„ÇØ„ÇπË®≠ÂÆö
 
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
@@ -463,15 +477,15 @@ void OBB::Draw()
 
 
 
-	// í∏ì_ÉoÉbÉtÉ@ê›íË
+	// È†ÇÁÇπ„Éê„ÉÉ„Éï„Ç°Ë®≠ÂÆö
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
-	// ÉCÉìÉfÉbÉNÉXÉoÉbÉtÉ@ê›íË
+	// „Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Éê„ÉÉ„Éï„Ç°Ë®≠ÂÆö
 	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_Indexbuffer, DXGI_FORMAT_R16_UINT, 0);
 
-	// É}ÉeÉäÉAÉãê›íË
+	// „Éû„ÉÜ„É™„Ç¢„É´Ë®≠ÂÆö
 	MATERIAL material;
 	ZeroMemory(&material, sizeof(material));
 	material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -485,11 +499,11 @@ void OBB::Draw()
 	rdc.FrontCounterClockwise = true;
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
 
-	// ÉâÉXÉ^ÉâÉCÉUê›íË
+	// „É©„Çπ„Çø„É©„Ç§„Ç∂Ë®≠ÂÆö
 	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
 //	Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
 
-	// ÉeÉNÉXÉ`ÉÉê›íË
+	// „ÉÜ„ÇØ„Çπ„ÉÅ„É£Ë®≠ÂÆö
 	if (m_isCollide) {
 		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
 	}
@@ -499,18 +513,73 @@ void OBB::Draw()
 
 
 
-	// ÉvÉäÉ~ÉeÉBÉuÉgÉ|ÉçÉWê›íË
+	// „Éó„É™„Éü„ÉÜ„Ç£„Éñ„Éà„Éù„É≠„Ç∏Ë®≠ÂÆö
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// É|ÉäÉSÉìï`âÊ
+	// „Éù„É™„Ç¥„É≥ÊèèÁîª
 	Renderer::GetpDeviceContext()->DrawIndexed(36, 0, 0);
 
+
+	if (m_bIsDrawFrontRightUp)
+	{
+		// Ê≥ïÁ∑öË°®Á§∫
+		VERTEX_3DX vertex[2];
+		for (int i = 0; i < 3; i++)
+		{
+			vertex[0].Position = m_position;
+			vertex[0].Position.x /= 1000.f;
+			vertex[0].Position.y /= 1000.f;
+			vertex[0].Position.z /= 1000.f;
+			XMVECTOR desPos = XMLoadFloat3(&vertex[0].Position) + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i];
+			XMStoreFloat3(&vertex[1].Position, desPos);
+
+			vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			D3D11_BUFFER_DESC bd{};
+
+			bd.Usage = D3D11_USAGE_DYNAMIC;
+			bd.ByteWidth = sizeof(VERTEX_3DX) * 2;
+			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+			D3D11_SUBRESOURCE_DATA sd{};
+			sd.pSysMem = vertex;
+
+			ID3D11Buffer* vertexbuffer;
+			Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &vertexbuffer);
+
+			Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
+
+			//XMMATRIX scaleX = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			//XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
+			//XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+			//XMMATRIX worldX = scaleX * rotX * transX;
+			//XMFLOAT4X4 world4x4;
+			//XMStoreFloat4x4(&world4x4, worldX);
+			//Renderer::SetWorldMatrixX(&world4x4);
+
+
+			if (!m_isCollide)
+			{
+				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
+			}
+			else
+			{
+				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureBlue);
+			}
+
+			//    Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+			Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+			Renderer::GetpDeviceContext()->Draw(2, 0);
+			vertexbuffer->Release();
+		}
+	}
 
 	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
-	// ÉâÉXÉ^ÉâÉCÉUê›íË
+	// „É©„Çπ„Çø„É©„Ç§„Ç∂Ë®≠ÂÆö
 	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
 //	Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
 	

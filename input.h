@@ -2,7 +2,7 @@
 #include <dinput.h>
 #pragma comment(lib, "dinput8.lib")
 
-#define MOUSE_TRUE (true)
+#define MOUSE_TRUE (false)
 
 class Input
 {

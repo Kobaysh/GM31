@@ -4,6 +4,7 @@
 #include "manager.h"
 #include "model.h"
 #include "obb.h"
+#include "camera.h"
 #include "enemy.h"
 #include "bullet.h"
 #include "rock.h"
@@ -31,7 +32,8 @@ Bullet::Bullet(XMFLOAT3 f3Position)
 	m_scale = XMFLOAT3(0.3f, 0.3f, 0.3f);
 	m_direction = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_speed = 0.0f;
-	m_obb = new OBB(m_position, m_scale);
+	m_obb = new OBB(m_position, XMFLOAT3(1.0f,0.5f,1.0f));
+	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 }
 
 void Bullet::Init()
@@ -68,8 +70,9 @@ void Bullet::Uninit()
 	// m_VertexShader->Release();
 	// m_PixelShader->Release();
 	if (m_obb) {
-		delete m_obb;
-		m_obb = nullptr;
+//		m_obb->SetDead();
+//		delete m_obb;
+//		m_obb = nullptr;
 	}
 }
 
@@ -85,7 +88,7 @@ void Bullet::Update()
 
 	if (m_position.z > BULLET_MAX_RECT || m_position.z < -BULLET_MAX_RECT ||
 		m_position.x > BULLET_MAX_RECT || m_position.x < -BULLET_MAX_RECT) {
-		SetDead();
+		Delete();
 		// 爆発エフェクト
 		scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 		return;
@@ -97,11 +100,12 @@ void Bullet::Update()
 	std::vector<Enemy*> enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
 
 	for (Enemy* enemy : enemies) {
-		float distance = 0.0f;
-		XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
-		if (distance < 2.0f) {
-			enemy->SetDead();
-			SetDead();
+		//float distance = 0.0f;
+		//XMStoreFloat(&distance, XMVector3Length(XMLoadFloat3(&m_position) - XMLoadFloat3(&enemy->GetPosition())));
+		//if (distance < 2.0f) {
+		if (OBB::ColOBBs(*m_obb, enemy->GetObb())) {
+		//	enemy->SetDead();
+			Delete();
 			// 爆発エフェクト
 			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 			return;
@@ -114,8 +118,8 @@ void Bullet::Update()
 
 	for (Rock* rock : rocks) {
 		if (OBB::ColOBBs(*m_obb, rock->GetObb())){
-			SetDead();
-			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
+		//	Delete();
+		//	scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 			return;
 		}
 	}
@@ -123,6 +127,14 @@ void Bullet::Update()
 
 void Bullet::Draw()
 {
+	// 視錘台カリング
+	Scene* scene = ManagerT::GetScene();
+	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
+	if (!camera->CheckView(m_position))
+	{
+		return;
+	}
+
 	// 入力レイアウト設定
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
@@ -184,4 +196,10 @@ void Bullet::Destroy(Bullet * pBullet)
 {
 	delete pBullet;
 	pBullet = NULL;
+}
+
+void Bullet::Delete()
+{
+	SetDead();
+	if (m_obb)m_obb->SetDead();
 }

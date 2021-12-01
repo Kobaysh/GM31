@@ -75,7 +75,12 @@ public:
 	float GetLen_W(OBB_Direction elem) { return m_fLength[elem]; }
 	XMFLOAT3 GetPos_W() { return m_position; }
 
-	void SetRotation(XMFLOAT3 rot)override;
+	void SetRotation(XMFLOAT3 rotationSpeed)override;
+	void SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed);
+
+
+	void SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right);
+	void SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right, XMFLOAT3 rot);
 
 	static bool ColOBBs(OBB &obb1, OBB &obb2);
 	static bool GetIsColShow() { return m_bIsDraw; }
@@ -89,4 +94,5 @@ public:
 	void Draw()override;
 
 	static bool m_bIsDraw;
+	static bool m_bIsDrawFrontRightUp;
 };

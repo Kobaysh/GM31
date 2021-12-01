@@ -24,7 +24,7 @@ protected:
 
 
 	EnemyStateData m_stateData;
-
+	XMFLOAT3 m_rotationSpeed;
 	float m_moveSpeed;
 	
 public:
@@ -36,5 +36,7 @@ public:
 	float GetMoveSpeed() { return m_moveSpeed; }
 	const EnemyStateData& GetEnemyStateData() { return m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
+private:
+	void UpdateRotation();
 };
 

@@ -64,6 +64,7 @@ void Player::Init()
 	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 
@@ -101,7 +102,7 @@ void Player::Update()
 	XMFLOAT3 obbPos = m_position;
 	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
 	m_obb->SetPosition(obbPos);
-
+	m_obb->SetRotationFromFrontRightVector(m_front, m_right, m_rotation);
 //	ChangeCameraDir();
 	Shoot();
 //	CollisionOther();
@@ -184,9 +185,9 @@ void Player::Move()
 	XMVECTOR cross = XMVector3Cross(vFront, direction);
 	m_sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
 
-	XMVECTOR dot = XMVector3Dot(vFront, direction);
+	XMVECTOR vDot = XMVector3Dot(vFront, direction);
 	float fDot = 0.0f;
-	XMStoreFloat(&fDot, dot);
+	XMStoreFloat(&fDot, vDot);
 	float dir_difference = acosf(fDot);
 
 	float rot = ROTATION_VALUE * m_sign;
@@ -200,12 +201,18 @@ void Player::Move()
 	if (m_speed <= 0.0f) {
 		rot = 0.0f;
 	}
+
 	XMMATRIX mtxRot;
 	mtxRot = XMMatrixRotationY(rot);
 	vFront = XMVector3TransformNormal(vFront, mtxRot);
+	XMVECTOR vRight = XMLoadFloat3(&m_right);
+	vRight = XMVector3TransformNormal(vRight, mtxRot);
 	XMStoreFloat3(&m_front, vFront);
+	XMStoreFloat3(&m_right, vRight);
 
-	
+	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vFront);
+	XMStoreFloat(&fDot, vDot);
+	m_rotation.y  = acosf(fDot);	
 
 	vPositon += direction * m_speed;
 
@@ -259,9 +266,12 @@ void Player::Shoot()
 		m_shotSE->Play(0.1f);
 	}
 //	if (Input::GetMouseDown(Input::MouseButton::Left))
-	if (Input::GetMouseTrigger(Input::MouseButton::Left))
+	if (MOUSE_TRUE)
 	{
-		Bullet::Create(m_position, m_front, 0.3f);
+		if (Input::GetMouseTrigger(Input::MouseButton::Left))
+		{
+			Bullet::Create(m_position, m_front, 0.3f);
+		}
 	}
 }
 

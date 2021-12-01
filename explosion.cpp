@@ -7,10 +7,11 @@
 #include "scene.h"
 #include "keylogger.h"
 
-#define FILENAME ("asset/texture/explosion.png")
+#define FILENAME ("asset/texture/explosion.dds")
 #define ANIMATION_MAG (6)
 
 int Explosion::m_animationMag = 3;
+ID3D11ShaderResourceView* Explosion::m_texture = nullptr;
 
 void Explosion::Init()
 {
@@ -194,4 +195,10 @@ void Explosion::Draw()
 
 	// ƒ|ƒŠƒSƒ“•`‰æ
 	Renderer::GetpDeviceContext()->Draw(4, 0);
+}
+
+void Explosion::ReleaseTexture()
+{
+	m_texture->Release();
+	m_texture = nullptr;
 }

@@ -17,8 +17,9 @@ private:
 	bool m_movable = true;
 	float m_speed;
 
-	XMFLOAT3 m_front;
-	XMFLOAT3 m_up;
+	//XMFLOAT3 m_front;
+	//XMFLOAT3 m_right;
+	//XMFLOAT3 m_up;
 
 	XMFLOAT3 m_moveVector;
 	int m_sign;
