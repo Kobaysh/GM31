@@ -259,9 +259,12 @@ void Player::Shoot()
 		m_shotSE->Play(0.1f);
 	}
 //	if (Input::GetMouseDown(Input::MouseButton::Left))
-	if (Input::GetMouseTrigger(Input::MouseButton::Left))
+	if (MOUSE_TRUE)
 	{
-		Bullet::Create(m_position, m_front, 0.3f);
+		if (Input::GetMouseTrigger(Input::MouseButton::Left))
+		{
+			Bullet::Create(m_position, m_front, 0.3f);
+		}
 	}
 }
 
