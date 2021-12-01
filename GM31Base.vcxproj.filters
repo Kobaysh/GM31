@@ -356,7 +356,7 @@
       <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClCompile>
     <ClCompile Include="enemyGui.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

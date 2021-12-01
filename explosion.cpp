@@ -1,5 +1,6 @@
 #include "main.h"
 #include "renderer.h"
+#include "texture.h"
 #include "explosion.h"
 #include "camera.h"
 #include "manager.h"
@@ -52,20 +53,19 @@ void Explosion::Init()
 
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
-	if (m_texture == nullptr)
-	{
-		// テクスチャ読み込み
-		D3DX11CreateShaderResourceViewFromFile(
-			//Renderer::GetDevice(),
-			Renderer::GetpDevice().Get(),
-			FILENAME,
-			NULL,
-			NULL,
-			&m_texture,
-			NULL
-		);
-		assert(m_texture);
-	}
+	// テクスチャ読み込み
+	Texture::Load(FILENAME);
+	//D3DX11CreateShaderResourceViewFromFile(
+	//	//Renderer::GetDevice(),
+	//	Renderer::GetpDevice().Get(),
+	//	FILENAME,
+	//	NULL,
+	//	NULL,
+	//	&m_texture,
+	//	NULL
+	//);
+	//assert(m_texture);
+
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
@@ -187,7 +187,8 @@ void Explosion::Draw()
 
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
+	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

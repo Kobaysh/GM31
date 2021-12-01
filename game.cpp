@@ -4,6 +4,7 @@
 #include "myImGui.h"
 
 #include "gameObject.h"
+#include "texture.h"
 #include "obb.h"
 #include "polygon2D.h"
 #include "camera.h"
@@ -104,7 +105,7 @@ void Game::Uninit()
 	Scene::Uninit();	// 継承元クラスのメソッド呼び出し(staticメソッドと書き方同じ)
 	MyImGui::Uninit();
 	Bullet::UnLoad();
-	Explosion::ReleaseTexture();
+	Texture::AllRelease();
 	Model::Uninit();
 }
 

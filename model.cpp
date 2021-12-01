@@ -964,7 +964,8 @@ void Model::SLoadObj(std::string FileName, MODEL * Model)
 					Model->SubsetArray[sc].Material.Material = materialArray[i].Material;
 					strcpy(Model->SubsetArray[sc].Material.TextureName, materialArray[i].TextureName);
 					strcpy(Model->SubsetArray[sc].Material.Name, materialArray[i].Name);
-					Texture::SetTextureLoadFile(Model->SubsetArray[sc].Material.TextureName);
+					Texture::Load(Model->SubsetArray[sc].Material.TextureName);
+				//	Texture::SetTextureLoadFile(Model->SubsetArray[sc].Material.TextureName);
 					break;
 				}
 			}
@@ -1136,7 +1137,8 @@ void Model::SLoadMaterial(std::string FileName, MODEL_MATERIAL ** MaterialArray,
 			strcat(path, str);
 
 			strcat(materialArray[mc].TextureName, path);
-			Texture::SetTextureLoadFile(materialArray[mc].TextureName);
+			Texture::Load(materialArray[mc].TextureName);
+		//	Texture::SetTextureLoadFile(materialArray[mc].TextureName);
 		}
 	}
 
