@@ -17,7 +17,7 @@ const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
 // 描画するかどうか
 bool OBB::m_bIsDraw = true;
-bool OBB::m_bIsDrawFrontRightUp = false;
+bool OBB::m_bIsDrawForwardRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
@@ -45,23 +45,23 @@ void OBB::SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed)
 	XMStoreFloat3(&m_normaDirect[OBB_DZ], nDZ);
 }
 
-void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right)
+void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right)
 {
 	m_normaDirect[OBB_DX] = right;
-	m_normaDirect[OBB_DZ] = front;
+	m_normaDirect[OBB_DZ] = forward;
 	//m_normaDirect[OBB_DZ] = right;
-	//m_normaDirect[OBB_DX] = front;
-	XMVECTOR vUp, vFront = XMLoadFloat3(&front), vRight =  XMLoadFloat3(&right);
-	vUp = XMVector3Cross(vFront, vRight);
+	//m_normaDirect[OBB_DX] = forward;
+	XMVECTOR vUp, vForward = XMLoadFloat3(&forward), vRight =  XMLoadFloat3(&right);
+	vUp = XMVector3Cross(vForward, vRight);
 	XMStoreFloat3(&m_normaDirect[OBB_DY], vUp);
 	
 }
 
-void OBB::SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right, XMFLOAT3 rot)
+void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right, XMFLOAT3 rot)
 {
 	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
 	m_rotation = rot;
-	SetRotationFromFrontRightVector(front, right);
+	SetRotationFromForwardRightVector(forward, right);
 }
 
 /// <summary>
@@ -520,7 +520,7 @@ void OBB::Draw()
 	Renderer::GetpDeviceContext()->DrawIndexed(36, 0, 0);
 
 
-	if (m_bIsDrawFrontRightUp)
+	if (m_bIsDrawForwardRightUp)
 	{
 		// 法線表示
 		VERTEX_3DX vertex[2];

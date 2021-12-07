@@ -79,8 +79,8 @@ public:
 	void SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed);
 
 
-	void SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right);
-	void SetRotationFromFrontRightVector(XMFLOAT3 front, XMFLOAT3 right, XMFLOAT3 rot);
+	void SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right);
+	void SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right, XMFLOAT3 rot);
 
 	static bool ColOBBs(OBB &obb1, OBB &obb2);
 	static bool GetIsColShow() { return m_bIsDraw; }
@@ -94,5 +94,5 @@ public:
 	void Draw()override;
 
 	static bool m_bIsDraw;
-	static bool m_bIsDrawFrontRightUp;
+	static bool m_bIsDrawForwardRightUp;
 };

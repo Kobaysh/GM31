@@ -20,14 +20,21 @@ public:
 		GOT_OBJECT2D,
 		GOT_MAX,
 	};
+	struct GameObject_Direction
+	{
+		XMFLOAT3 m_forward;
+		XMFLOAT3 m_right;
+		XMFLOAT3 m_up;
+	};
 protected:
 //	bool m_Destroy = false;
 	XMFLOAT3 m_position;
 	XMFLOAT3 m_rotation;
 	XMFLOAT3 m_scale;
-	XMFLOAT3 m_front;
-	XMFLOAT3 m_right;
-	XMFLOAT3 m_up;
+	GameObject_Direction m_direction;
+	//XMFLOAT3 m_front;
+	//XMFLOAT3 m_right;
+	//XMFLOAT3 m_up;
 	GameObject_State m_state = GOS_ACTIVE;
 
 	ID3D11VertexShader*		m_VertexShader = NULL;
@@ -46,6 +53,7 @@ public:
 	virtual void SetRotation(XMFLOAT3 rot) { m_rotation = rot; }
 	virtual void SetScale(XMFLOAT3 scale) { m_scale = scale; }
 	XMFLOAT3 GetPosition() { return m_position; }
+	GameObject_Direction& GetDirection() { return m_direction; }
 //	void SetDestroy() { m_Destroy = true; }
 
 	void SetDead() { m_state = GOS_DEAD; }

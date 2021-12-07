@@ -27,26 +27,38 @@ void Enemy::Init()
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 	m_rotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
-	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
-	m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	// 各方向初期化
+	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_direction.m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_direction.m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	
+	// 状態変化に必要な変数初期化
 	m_stateData.m_eyesight_rad = 7.0f;
 	m_stateData.m_combat_rad = 3.0f;
-	m_moveSpeed = 0.05f;
-
-	m_enemyGui = new EnemyGui(this);
-	m_enemyGui->Init();
-
-	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(2.1f, 2.1f, 2.1f));
-	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 	m_state = new EnemyState(this);
 	m_state->Init(GetEnemyStateData());
+
+
+	m_moveSpeed = 0.05f;
+
+
+	// 敵用のGUI追加
+	m_enemyGui = new EnemyGui(this);
+	m_enemyGui->Init();
+
+	// 当たり判定用のOBB追加
+	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(2.1f, 2.1f, 2.1f));
+	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+
+
+	
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 	
+	// やられた時の爆発音
 	m_explosionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	m_explosionSE->Load("asset\\audio\\se\\small_explosion1.wav");
 }
@@ -132,15 +144,15 @@ void Enemy::UpdateRotation()
 	}
 	vRot += XMLoadFloat3(&m_rotationSpeed);
 	XMStoreFloat3(&m_rotation, vRot);
-	XMVECTOR vFront = XMLoadFloat3(&m_front),vRight = XMLoadFloat3(&m_right),vUp;
+	XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward),vRight = XMLoadFloat3(&m_direction.m_right),vUp;
 	//	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
 	XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
-	vFront =  XMVector3TransformNormal(vFront, mtxRot);
+	vForward =  XMVector3TransformNormal(vForward, mtxRot);
 	vRight =  XMVector3TransformNormal(vRight, mtxRot);
-	vUp = XMVector3Cross(vFront, vRight);
-	XMStoreFloat3(&m_front, vFront);
-	XMStoreFloat3(&m_right, vRight);
-	XMStoreFloat3(&m_up, vUp);
+	vUp = XMVector3Cross(vForward, vRight);
+	XMStoreFloat3(&m_direction.m_forward, vForward);
+	XMStoreFloat3(&m_direction.m_right, vRight);
+	XMStoreFloat3(&m_direction.m_up, vUp);
 	m_obb->SetRotation(m_rotation, m_rotationSpeed);
-	//m_obb->SetRotationFromFrontRightVector(m_front, m_right, m_rotation);
+	//m_obb->SetRotationFromForwardRightVector(m_direction.m_forward,m_direction.m_right, m_rotation);
 }

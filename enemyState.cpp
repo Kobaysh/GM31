@@ -167,6 +167,7 @@ void EnemyState::Idle_MoveToPlayer()
 	vToPlayer = vPlayerPos - vEnemyPos;
 	vLength = XMVector3Length(vToPlayer);
 	XMStoreFloat(&length, vLength);
+	
 
 	// í“¬”¼Œa‚É‹ß‚Ã‚¢‚½‚çí“¬ó‘Ô‚ÉˆÚs
 //	if (m_enemy->GetEnemyStateData().m_combat_rad >= length)
@@ -184,6 +185,7 @@ void EnemyState::Idle_MoveToPlayer()
 
 void EnemyState::Combat_Idle()
 {
+
 }
 
 void EnemyState::Combat_Attack()

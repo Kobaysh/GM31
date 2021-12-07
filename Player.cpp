@@ -64,9 +64,9 @@ void Player::Init()
 	m_position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
-	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
-	m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_direction.m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_direction.m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 
 	m_obb = new OBB(m_position, m_rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
@@ -119,9 +119,9 @@ void Player::Draw()
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = /*XMMatrixRotationY(180);*/XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
+	XMMATRIX rotX = /*XMMatrixRotationY(180);*/XMMatrixRotationY(-atan2f(m_direction.m_forward.z, m_direction.m_forward.x));
 	rotX *= XMMatrixRotationY(XMConvertToRadians(-90));
-	float a= -atan2f(m_front.z, m_front.x);
+	float a= -atan2f(m_direction.m_forward.z, m_direction.m_forward.x);
 	//rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
@@ -142,30 +142,30 @@ void Player::Move()
 	//XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_position);
-	XMVECTOR vFront = XMLoadFloat3(&m_front);
-	XMVECTOR direction = vFront;
+	XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward);
+	XMVECTOR direction = vForward;
 
 	
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
 //		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		if (KeyLogger_Press(KL_UP)) {
-			XMFLOAT3 temp = *pCamera->GetFront();
+			XMFLOAT3 temp = pCamera->GetDirection().m_forward;
 			temp.y = 0.0f;
 			direction += XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_DOWN)) {
-			XMFLOAT3 temp = *pCamera->GetFront();
+			XMFLOAT3 temp = pCamera->GetDirection().m_forward;
 			temp.y = 0.0f;
 			direction -= XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_RIGHT)) {
-			direction += XMLoadFloat3(pCamera->GetRight());
+			direction += XMLoadFloat3(&pCamera->GetDirection().m_right);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_LEFT)) {
-			direction -= XMLoadFloat3(pCamera->GetRight());
+			direction -= XMLoadFloat3(&pCamera->GetDirection().m_right);
 			m_speed = MOVE_SPEED;
 		}
 		if (m_animationName != "jump") {
@@ -181,10 +181,10 @@ void Player::Move()
 
 	direction = XMVector3Normalize(direction);	
 
-	XMVECTOR cross = XMVector3Cross(vFront, direction);
+	XMVECTOR cross = XMVector3Cross(vForward, direction);
 	m_sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
 
-	XMVECTOR vDot = XMVector3Dot(vFront, direction);
+	XMVECTOR vDot = XMVector3Dot(vForward, direction);
 	float fDot = 0.0f;
 	XMStoreFloat(&fDot, vDot);
 	float dir_difference = acosf(fDot);
@@ -203,13 +203,13 @@ void Player::Move()
 
 	XMMATRIX mtxRot;
 	mtxRot = XMMatrixRotationY(rot);
-	vFront = XMVector3TransformNormal(vFront, mtxRot);
-	XMVECTOR vRight = XMLoadFloat3(&m_right);
+	vForward = XMVector3TransformNormal(vForward, mtxRot);
+	XMVECTOR vRight = XMLoadFloat3(&m_direction.m_right);
 	vRight = XMVector3TransformNormal(vRight, mtxRot);
-	XMStoreFloat3(&m_front, vFront);
-	XMStoreFloat3(&m_right, vRight);
+	XMStoreFloat3(&m_direction.m_forward, vForward);
+	XMStoreFloat3(&m_direction.m_right, vRight);
 
-	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vFront);
+	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vForward);
 	XMStoreFloat(&fDot, vDot);
 	m_rotation.y  = acosf(fDot);	
 
@@ -260,7 +260,7 @@ void Player::Shoot()
 
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 //		DebugLog::DebugPrintSaveFlie("playerLog.txt", "shoot");
-		Bullet::Create(m_position, m_front, 0.3f);
+		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
 //		m_animationName = "attack";
 		m_shotSE->Play(0.1f);
 	}
@@ -269,7 +269,7 @@ void Player::Shoot()
 	{
 		if (Input::GetMouseTrigger(Input::MouseButton::Left))
 		{
-			Bullet::Create(m_position, m_front, 0.3f);
+			Bullet::Create(m_position, m_direction.m_forward, 0.3f);
 		}
 	}
 }
@@ -327,7 +327,7 @@ void Player::UpdateObb()
 	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
 	
 	m_obb->SetPosition(obbPos);
-	m_obb->SetRotationFromFrontRightVector(m_front, m_right, m_rotation);
+	m_obb->SetRotationFromForwardRightVector(m_direction.m_forward, m_direction.m_right, m_rotation);
 }
 
 void Player::MoveFromMoveVector()
