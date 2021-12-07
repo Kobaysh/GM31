@@ -84,8 +84,8 @@ void Game::Init()
 	Enemy* enemy =  AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D);
 	enemy->SetPosition(XMFLOAT3(0.0f, 1.0f, 5.0f));
 	enemy->GetObb().SetPosition(enemy->GetPosition());
-	enemy->SetScale(XMFLOAT3(5.0f, 1.0f, 3.0f));
-	enemy->GetObb().SetScale(XMFLOAT3(10.1f, 2.1f, 6.1f));
+	enemy->SetScale(XMFLOAT3(1.0f, 1.0f, 1.0f));
+	enemy->GetObb().SetScale(XMFLOAT3(1.1f, 1.1f, 1.1f));
 
 //	AppendGameObject<Wall>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 5.0f));
 	
