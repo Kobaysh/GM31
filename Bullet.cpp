@@ -118,8 +118,8 @@ void Bullet::Update()
 
 	for (Rock* rock : rocks) {
 		if (OBB::ColOBBs(*m_obb, rock->GetObb())){
-		//	Delete();
-		//	scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
+			Delete();
+			scene->AppendGameObject<Explosion>(GOT_OBJECT3D)->SetPosition(m_position);
 			return;
 		}
 	}
