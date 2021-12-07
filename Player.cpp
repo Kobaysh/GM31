@@ -21,7 +21,8 @@
 #define ROTATION_SPEED (0.01f)
 #define ROTATION_VALUE (0.22f)
 #define MOVE_SPEED (0.1f)
-#define PS_NAME ("pixelLightingPS.cso")
+//#define PS_NAME ("pixelLightingPS.cso")
+#define PS_NAME ("toonPS.cso")
 
 
 bool GameObject::ms_IsVoidPS = false;
@@ -73,7 +74,8 @@ void Player::Init()
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 //	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
+//	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "toonVS.cso");
 
 //	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
