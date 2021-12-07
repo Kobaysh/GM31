@@ -141,6 +141,20 @@ void Game::Update()
 void Game::Draw()
 {
 	MyImGui::Update();
+	// zƒ\[ƒg
+	 Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
+	 XMVECTOR vCameraPos = XMLoadFloat3(&camera->GetPosition());
+	m_GameObject[GameObject::GOT_OBJECT3D].sort([vCameraPos](GameObject* first, GameObject* second){
+		float firstLength, secondLengh;
+		XMVECTOR vPos = XMLoadFloat3(&first->GetPosition());
+		XMVECTOR vLength = XMVector3Length(vPos - vCameraPos);
+		XMStoreFloat(&firstLength, vLength);
+
+		vPos = XMLoadFloat3(&second->GetPosition());
+		vLength = XMVector3Length(vPos - vCameraPos);
+		XMStoreFloat(&secondLengh, vLength);
+		return (firstLength < secondLengh);
+		});
 	Scene::Draw();
 	MyImGui::StartRender();
 }
