@@ -9,6 +9,7 @@
 #include "animationModel.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "rock.h"
 #include "camera.h"
 #include "audio.h"
 #include "meshField.h"
@@ -98,15 +99,13 @@ void Player::Update()
 //	m_Model->Update(++m_frame);
 	Jump();
 	Move();
-
-	XMFLOAT3 obbPos = m_position;
-	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
-	m_obb->SetPosition(obbPos);
-	m_obb->SetRotationFromFrontRightVector(m_front, m_right, m_rotation);
+	UpdateObb();
 //	ChangeCameraDir();
 	Shoot();
-//	CollisionOther();
+	CollisionOther();
 //	VoidDimension();
+
+	MoveFromMoveVector();
 }
 
 void Player::Draw()
@@ -214,7 +213,7 @@ void Player::Move()
 	XMStoreFloat(&fDot, vDot);
 	m_rotation.y  = acosf(fDot);	
 
-	vPositon += direction * m_speed;
+//	vPositon += direction * m_speed;
 
 	MeshField* mf = ManagerT::GetScene()->GetGameObject<MeshField>(GOT_OBJECT3D);
 	XMFLOAT3 tempHeight;
@@ -277,11 +276,32 @@ void Player::Shoot()
 
 void Player::CollisionOther()
 {
-	std::vector<Enemy*>  enemies = ManagerT::GetScene()->GetGameObjects<Enemy>(GOT_OBJECT3D);
+	int isCollided = 0;
+	Scene* scene = ManagerT::GetScene();
+	// enemy
+	std::vector<Enemy*>  enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
 	for (Enemy* enemy : enemies) {
 		if (OBB::ColOBBs(enemy->GetObb(), GetObb())) {
 		//	enemy->SetDead();
+			isCollided++;
 		}
+	}
+
+	// rock
+	std::vector<Rock*> rocks = scene->GetGameObjects<Rock>(GOT_OBJECT3D);
+	for (Rock* rock : rocks)
+	{
+		if (OBB::ColOBBs(rock->GetObb(), *m_obb))
+		{
+			isCollided++;
+		}
+	}
+
+
+	// 何かに衝突していたら移動ベクトルを0に戻す
+	if (isCollided > 0)
+	{
+		m_moveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -296,6 +316,25 @@ void Player::ChangeCameraDir()
 		camera->ChangeDir(0.02f, true);
 	}
 	}
+}
+
+void Player::UpdateObb()
+{
+	// 移動後の座標で衝突判定
+	XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_moveVector);
+	XMFLOAT3 obbPos;
+	XMStoreFloat3(&obbPos, vObbPos);
+	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
+	
+	m_obb->SetPosition(obbPos);
+	m_obb->SetRotationFromFrontRightVector(m_front, m_right, m_rotation);
+}
+
+void Player::MoveFromMoveVector()
+{
+	XMVECTOR vPos = XMLoadFloat3(&m_position);
+	vPos += XMLoadFloat3(&m_moveVector);
+	XMStoreFloat3(&m_position, vPos);
 }
 
 void Player::VoidDimension()

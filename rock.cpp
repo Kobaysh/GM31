@@ -82,7 +82,7 @@ void Rock::Uninit()
 {
 	//m_Model->Unload();
 	//delete m_Model;
-
+	SetDead();
 
 	if (m_VertexLayout) {
 		m_VertexLayout->Release();
@@ -106,11 +106,11 @@ void Rock::Update()
 	Scene* scene = ManagerT::GetScene();
 	MeshField* meshField = scene->GetGameObject<MeshField>(GOT_OBJECT3D);
 	m_position.y = meshField->GetHeight(m_position) + m_scale.y / 2;
-	Player* player = scene->GetGameObject<Player>(GOT_OBJECT3D);
-	if (OBB::ColOBBs(GetObb(), player->GetObb()))
-	{
-		int a = 0;
-	}
+	//Player* player = scene->GetGameObject<Player>(GOT_OBJECT3D);
+	//if (OBB::ColOBBs(GetObb(), player->GetObb()))
+	//{
+	//	int a = 0;
+	//}
 }
 
 void Rock::Draw()

@@ -64,5 +64,9 @@ public:
 	bool GetMovable() const { return m_movable; }
 	void SetIsActive(bool active) { m_isActive = active; }
 	void SetMovable(bool movable) { m_movable = movable; }
+
+private:
+	void UpdateObb();
+	void MoveFromMoveVector();
 };
 
