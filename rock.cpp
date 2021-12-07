@@ -96,9 +96,9 @@ void Rock::Uninit()
 			m_PixelShader->Release();
 			m_PixelShader = nullptr;
 	}
-	if (m_obb) {
-		m_obb->SetDead();
-	}
+	//if (m_obb) {
+	//	m_obb->SetDead();
+	//}
 }
 
 void Rock::Update()
