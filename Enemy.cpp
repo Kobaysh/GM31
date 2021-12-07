@@ -37,7 +37,7 @@ void Enemy::Init()
 	m_enemyGui = new EnemyGui(this);
 	m_enemyGui->Init();
 
-	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(1.1f, 1.1f, 1.1f));
+	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(2.1f, 2.1f, 2.1f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 	m_state = new EnemyState(this);
@@ -49,6 +49,18 @@ void Enemy::Init()
 	
 	m_explosionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	m_explosionSE->Load("asset\\audio\\se\\small_explosion1.wav");
+}
+
+void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 scale)
+{
+	m_position = pos;
+	m_obb->SetPosition(pos);
+	m_scale = scale;
+	XMFLOAT3 fixScale = scale;
+	fixScale.x = fixScale.x * 2 + 0.1f;
+	fixScale.y = fixScale.y * 2 + 0.1f;
+	fixScale.z = fixScale.z * 2 + 0.1f;
+	m_obb->SetScale(fixScale);
 }
 
 void Enemy::Uninit()

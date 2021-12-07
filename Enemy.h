@@ -29,12 +29,13 @@ protected:
 	
 public:
 	virtual void Init();
+	virtual void Init(XMFLOAT3 pos, XMFLOAT3 scale);
 	void Uninit();
 	void Update();
 	void Draw();
 	OBB& GetObb() { return *m_obb; }
 	float GetMoveSpeed() { return m_moveSpeed; }
-	const EnemyStateData& GetEnemyStateData() { return m_stateData; }
+	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
 private:
 	void UpdateRotation();

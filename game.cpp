@@ -81,11 +81,12 @@ void Game::Init()
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-15.0f, 1.0f, 7.0f));
 	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 2.0f));
-	Enemy* enemy =  AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D);
-	enemy->SetPosition(XMFLOAT3(0.0f, 1.0f, 5.0f));
-	enemy->GetObb().SetPosition(enemy->GetPosition());
-	enemy->SetScale(XMFLOAT3(1.0f, 1.0f, 1.0f));
-	enemy->GetObb().SetScale(XMFLOAT3(1.1f, 1.1f, 1.1f));
+//	Enemy* enemy = 
+	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(0.0f,1.0f,5.0f), XMFLOAT3(1.0f,1.0f,1.0f));
+	//enemy->SetPosition(XMFLOAT3(0.0f, 1.0f, 5.0f));
+	//enemy->GetObb().SetPosition(enemy->GetPosition());
+	//enemy->SetScale(XMFLOAT3(1.0f, 1.0f, 1.0f));
+	//enemy->GetObb().SetScale(XMFLOAT3(2.1f, 2.1f, 2.1f));
 
 //	AppendGameObject<Wall>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 5.0f));
 	

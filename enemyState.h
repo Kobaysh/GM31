@@ -8,7 +8,7 @@ public:
 	EnemyState() = delete;
 	EnemyState(Enemy* enemy):m_nowState(IDLE_IDLE), m_nextState(IDLE_IDLE),m_isAiStaterunning(false),m_enemy(enemy)
 	{
-		m_radiusDiscoverPlayer = 0.0f;
+	//	m_radiusDiscoverPlayer = 0.0f;
 		m_timer = 0.0f;
 	}
 	~EnemyState(){}
@@ -54,7 +54,8 @@ private:
 	En_Enemy_State m_nowState;
 	En_Enemy_State m_nextState;
 
-	float m_radiusDiscoverPlayer;
+	Enemy::EnemyStateData* m_pStateData;
+//	float m_radiusDiscoverPlayer;
 	float m_timer;
 
 	bool m_isAiStaterunning;
@@ -78,8 +79,9 @@ private:
 	void Combat_Ninjaexecution();	// ”EŽE
 	void Combat_Dead();			// Ž€–S
 public:
-	void Init(float radDiscPlayer);
-	void Init(Enemy::EnemyStateData stateData);
+	//void Init(float radDiscPlayer);
+	//void Init(Enemy::EnemyStateData stateData);
+	void Init(Enemy::EnemyStateData* stateData);
 	void Update()override;
 	void ChangeState(En_Enemy_State newState);
 	En_Enemy_State GetNowState() { return m_nowState; }

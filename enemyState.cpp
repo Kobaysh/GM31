@@ -25,14 +25,19 @@ const char* EnemyState::enumChar_Enemy_State[EnemyState::MAX] =
 	"COMBAT_DEAD",			// Ž€–S
 };
 
-void EnemyState::Init(float radDiscPlayer)
-{
-	m_radiusDiscoverPlayer = radDiscPlayer;
-}
+//void EnemyState::Init(float radDiscPlayer)
+//{
+//	m_radiusDiscoverPlayer = radDiscPlayer;
+//}
+//
+//void EnemyState::Init(Enemy::EnemyStateData stateData)
+//{
+//	m_radiusDiscoverPlayer = stateData.m_eyesight_rad;
+//}
 
-void EnemyState::Init(Enemy::EnemyStateData stateData)
+void EnemyState::Init(Enemy::EnemyStateData * stateData)
 {
-	m_radiusDiscoverPlayer = stateData.m_eyesight_rad;
+	m_pStateData = stateData;
 }
 
 void EnemyState::Update()
@@ -124,7 +129,8 @@ void EnemyState::Idle_Surprize()
 
 void EnemyState::Idle_Beware()
 {
-	if (m_radiusDiscoverPlayer <= 0.0f)
+//	if (m_radiusDiscoverPlayer <= 0.0f)
+	if (m_pStateData->m_eyesight_rad <= 0.0f)
 	{
 		ChangeState(IDLE_IDLE);
 		return;
@@ -138,7 +144,7 @@ void EnemyState::Idle_Beware()
 	float lengthEToP;
 	XMStoreFloat(&lengthEToP, vLength);
 	lengthEToP = fabsf(lengthEToP);
-	if (lengthEToP <= m_radiusDiscoverPlayer)
+	if (lengthEToP <= m_pStateData->m_eyesight_rad)
 	{
 		// ƒvƒŒƒCƒ„[”­Œ©
 		ChangeState(IDLE_DISCOVER);
@@ -163,7 +169,8 @@ void EnemyState::Idle_MoveToPlayer()
 	XMStoreFloat(&length, vLength);
 
 	// í“¬”¼Œa‚É‹ß‚Ã‚¢‚½‚çí“¬ó‘Ô‚ÉˆÚs
-	if (m_enemy->GetEnemyStateData().m_combat_rad >= length)
+//	if (m_enemy->GetEnemyStateData().m_combat_rad >= length)
+	if (m_pStateData->m_combat_rad >= length)
 	{
 		ChangeState(COMBAT_IDLE);
 	}
