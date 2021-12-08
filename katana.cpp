@@ -2,6 +2,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "model.h"
+#include "obb.h"
 #include "katana.h"
 
 int Katana::m_modelId = Model::MODEL_INVALID_ID;
@@ -17,10 +18,10 @@ Katana::~Katana()
 
 void Katana::Init()
 {
-	if (m_modelId == Model::MODEL_INVALID_ID)
-	{
-		m_modelId = Model::SetModelLoadfile(m_modelFileName);
-	}
+	//if (m_modelId == Model::MODEL_INVALID_ID)
+	//{
+	//	m_modelId = Model::SetModelLoadfile(m_modelFileName);
+	//}
 }
 
 void Katana::Uninit()
@@ -29,18 +30,19 @@ void Katana::Uninit()
 
 void Katana::Update()
 {
+	// obbÇÃçXêV
 }
 
 void Katana::Draw()
 {
-	Model::Draw(m_modelId);
+	//Model::Draw(m_modelId);
 }
 void Katana::Load()
 {
-	Model::Load(m_modelId);
+	//Model::Load(m_modelId);
 }
 
 void Katana::UnLoad()
 {
-	Model::Release(m_modelId);
+	//Model::Release(m_modelId);
 }
