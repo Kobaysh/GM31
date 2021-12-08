@@ -21,7 +21,7 @@ protected:
 	class OBB* m_obb;
 	class EnemyState* m_state;
 	class EnemyGui* m_enemyGui;
-
+	XMFLOAT3 m_moveVector;
 
 	EnemyStateData m_stateData;
 	XMFLOAT3 m_rotationSpeed;
@@ -35,9 +35,13 @@ public:
 	void Draw();
 	OBB& GetObb() { return *m_obb; }
 	float GetMoveSpeed() { return m_moveSpeed; }
+	void SetMoveVector(XMFLOAT3 moveVector) { m_moveVector = moveVector; }
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
 private:
 	void UpdateRotation();
+	void UpdateOBB();
+	void MoveFromMoveVector();
+	void CollisionOther();
 };
 

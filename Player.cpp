@@ -151,23 +151,23 @@ void Player::Move()
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
 //		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		if (KeyLogger_Press(KL_UP)) {
-			XMFLOAT3 temp = pCamera->GetDirection().m_forward;
+			XMFLOAT3 temp = pCamera->GetDirection()->m_forward;
 			temp.y = 0.0f;
 			direction += XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_DOWN)) {
-			XMFLOAT3 temp = pCamera->GetDirection().m_forward;
+			XMFLOAT3 temp = pCamera->GetDirection()->m_forward;
 			temp.y = 0.0f;
 			direction -= XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_RIGHT)) {
-			direction += XMLoadFloat3(&pCamera->GetDirection().m_right);
+			direction += XMLoadFloat3(&pCamera->GetDirection()->m_right);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_LEFT)) {
-			direction -= XMLoadFloat3(&pCamera->GetDirection().m_right);
+			direction -= XMLoadFloat3(&pCamera->GetDirection()->m_right);
 			m_speed = MOVE_SPEED;
 		}
 		if (m_animationName != "jump") {

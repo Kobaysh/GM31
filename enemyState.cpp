@@ -7,6 +7,10 @@
 #include "player.h"
 #include "enemy.h"
 
+#define NEARLY_ZERO_VALUE 0.001f
+#define ROTATION_SPEED (0.01f)
+#define ROTATION_VALUE (0.012f)
+
 const char* EnemyState::enumChar_Enemy_State[EnemyState::MAX] = 
 {
 	"IDLE_IDLE",
@@ -168,24 +172,76 @@ void EnemyState::Idle_MoveToPlayer()
 	vLength = XMVector3Length(vToPlayer);
 	XMStoreFloat(&length, vLength);
 	
+	XMVECTOR vForward = XMLoadFloat3(&m_enemy->GetDirection()->m_forward);
+	XMVECTOR vEToPlayer = XMVector3Normalize(vToPlayer);
+	XMVECTOR vCross = XMVector3Cross(vForward, vToPlayer);
+	int sign;
+	sign = vCross.m128_f32[1] < 0.0f ? 1 : -1;
+
+	XMVECTOR vDot = XMVector3Dot(vForward, vEToPlayer);
+//	vDot = XMVector3Normalize(vDot);
+	float fDot = 0.0f;
+	XMStoreFloat(&fDot, vDot);
+	float dir_difference = acosf(fDot);
+
+	if (isfinite(dir_difference) || isnan(dir_difference))
+	{
+	//	dir_difference = XMConvertToRadians(180.0f);
+	}
+
+	float rot = ROTATION_VALUE * sign;
+	if (fabsf(dir_difference) <= NEARLY_ZERO_VALUE) {
+		dir_difference = 0.0f;
+		rot = 0.0f;
+	}
+	if (fabsf(rot) > fabsf(dir_difference)) {
+		rot = dir_difference;
+	}
+	
+	if (fabsf(m_enemy->GetMoveSpeed()) <= 0.0f) {
+		rot = 0.0f;
+	}
+
+	XMMATRIX mtxRot;
+	mtxRot = XMMatrixRotationY(rot);
+	vForward = XMVector3TransformNormal(vForward, mtxRot);
+	XMVECTOR vRight = XMLoadFloat3(&m_enemy->GetDirection()->m_right);
+	vRight = XMVector3TransformNormal(vRight, mtxRot);
+	XMStoreFloat3(&m_enemy->GetDirection()->m_forward, vForward);
+	XMStoreFloat3(&m_enemy->GetDirection()->m_right, vRight);
+
+	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vForward);
+	XMStoreFloat(&fDot, vDot);
+	XMFLOAT3 rotation = m_enemy->GetRotation();
+	rotation.y = dir_difference;
+	m_enemy->SetRotation(rotation);
 
 	// 戦闘半径に近づいたら戦闘状態に移行
 //	if (m_enemy->GetEnemyStateData().m_combat_rad >= length)
 	if (m_pStateData->m_combat_rad >= length)
 	{
+		m_enemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		ChangeState(COMBAT_IDLE);
+		return;
 	}
 
 	vToPlayer = XMVector3Normalize(vToPlayer);
-	vEnemyPos += vToPlayer * m_enemy->GetMoveSpeed();
-	XMFLOAT3 enemyPos;
-	XMStoreFloat3(&enemyPos, vEnemyPos);
-	m_enemy->SetPosition(enemyPos);
+	XMFLOAT3 moveVector;
+	XMStoreFloat3(&moveVector, vToPlayer);
+	m_enemy->SetMoveVector(moveVector);
+	//vEnemyPos += vToPlayer * m_enemy->GetMoveSpeed();
+	//XMFLOAT3 enemyPos;
+	//XMStoreFloat3(&enemyPos, vEnemyPos);
+	//m_enemy->SetPosition(enemyPos);
 }
 
 void EnemyState::Combat_Idle()
 {
+	// プレイヤーの方向を向きながら間合いを一定に少し回転
 
+	// 確率で攻撃
+	
+	// プレイヤーの攻撃に応じて確率で防御
 }
 
 void EnemyState::Combat_Attack()
@@ -202,6 +258,9 @@ void EnemyState::Combat_Damaged()
 
 void EnemyState::Combat_Ninjaexecution()
 {
+	// 忍殺されるアニメーション
+
+	// 死亡状態に移行
 }
 
 void EnemyState::Combat_Dead()
