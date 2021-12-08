@@ -1,5 +1,6 @@
 #pragma once
 #include "weapon.h"
+#include "gameObject.h"
 
 class Katana :public Weapon
 {
@@ -16,6 +17,6 @@ public:
 	static void UnLoad();
 
 private:
-	int m_modelId;
-
+	static int m_modelId;
+	static const char* m_modelFileName;
 };

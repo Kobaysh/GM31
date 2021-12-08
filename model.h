@@ -66,6 +66,7 @@ private:
 //	static std::vector<Model> m_ModelList;
 
 public:
+	static const int MODEL_INVALID_ID;
 	static void Init();
 	static void Uninit();
 	void Draw();

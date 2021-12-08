@@ -10,6 +10,7 @@
 #include "model.h"
 
 
+const int Model::MODEL_INVALID_ID = -1;
 std::list<Model*> Model::m_ModelList;
 //std::vector<Model> Model::m_ModelList;
 
