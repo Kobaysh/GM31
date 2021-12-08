@@ -54,7 +54,7 @@ public:
 	virtual void SetScale(XMFLOAT3 scale) { m_scale = scale; }
 	XMFLOAT3 GetPosition() { return m_position; }
 	XMFLOAT3 GetRotation() { return m_rotation; }
-	GameObject_Direction& GetDirection() { return m_direction; }
+	GameObject_Direction* GetDirection() { return &m_direction; }
 //	void SetDestroy() { m_Destroy = true; }
 
 	void SetDead() { m_state = GOS_DEAD; }

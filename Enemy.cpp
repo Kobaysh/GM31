@@ -8,6 +8,7 @@
 #include "meshField.h"
 #include "input.h"
 #include "camera.h"
+#include "rock.h"
 #include "enemyState.h"
 #include "enemyGui.h"
 #include "enemy.h"
@@ -31,6 +32,8 @@ void Enemy::Init()
 	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_direction.m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_direction.m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+
+	m_moveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	
 	// ó‘Ô•Ï‰»‚É•K—v‚È•Ï”‰Šú‰»
 	m_stateData.m_eyesight_rad = 7.0f;
@@ -91,10 +94,13 @@ void Enemy::Update()
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 	m_state->Update();
 
+	this->UpdateOBB();
+	this->CollisionOther();
+	this->MoveFromMoveVector();
 	m_position.y = mf->GetHeight(m_position) + m_scale.y;
 
-	m_obb->SetPosition(m_position);
-	this->UpdateRotation();
+//	m_obb->SetPosition(m_position);
+	
 }
 
 void Enemy::Draw()
@@ -155,4 +161,43 @@ void Enemy::UpdateRotation()
 	XMStoreFloat3(&m_direction.m_up, vUp);
 	m_obb->SetRotation(m_rotation, m_rotationSpeed);
 	//m_obb->SetRotationFromForwardRightVector(m_direction.m_forward,m_direction.m_right, m_rotation);
+}
+
+void Enemy::UpdateOBB()
+{
+	// ˆÚ“®Œã‚ÌÀ•W‚ÅÕ“Ë”»’è
+	XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_moveVector) * m_moveSpeed;
+	XMFLOAT3 obbPos;
+	XMStoreFloat3(&obbPos, vObbPos);
+//	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
+
+	m_obb->SetPosition(obbPos);
+	this->UpdateRotation();
+}
+
+void Enemy::MoveFromMoveVector()
+{
+	XMVECTOR vPos = XMLoadFloat3(&m_position);
+	vPos += XMLoadFloat3(&m_moveVector) * m_moveSpeed;
+	XMStoreFloat3(&m_position, vPos);
+}
+
+void Enemy::CollisionOther()
+{
+	Scene* scene = ManagerT::GetScene();
+	int isCollided = 0;
+	// rock
+	std::vector<Rock*> rocks = scene->GetGameObjects<Rock>(GOT_OBJECT3D);
+	for (Rock* rock : rocks)
+	{
+		if (OBB::ColOBBs(rock->GetObb(), *m_obb))
+		{
+			isCollided++;
+		}
+	}
+
+	if (isCollided > 0)
+	{
+		this->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	}
 }
