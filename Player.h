@@ -66,6 +66,7 @@ public:
 	void SetMovable(bool movable) { m_movable = movable; }
 
 private:
+	void ModelInit();
 	void UpdateObb();
 	void MoveFromMoveVector();
 };
