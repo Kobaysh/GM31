@@ -238,6 +238,10 @@ void EnemyState::Idle_MoveToPlayer()
 void EnemyState::Combat_Idle()
 {
 	// プレイヤーの方向を向きながら間合いを一定に少し回転
+
+	// 確率で攻撃
+	
+	// プレイヤーの攻撃に応じて確率で防御
 }
 
 void EnemyState::Combat_Attack()
@@ -254,6 +258,9 @@ void EnemyState::Combat_Damaged()
 
 void EnemyState::Combat_Ninjaexecution()
 {
+	// 忍殺されるアニメーション
+
+	// 死亡状態に移行
 }
 
 void EnemyState::Combat_Dead()
