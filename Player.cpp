@@ -67,7 +67,10 @@ void Player::Uninit()
 void Player::Update()
 {
 	m_playerState.Update();
-	m_Model->Update(m_animationName.data(), ++m_frame);
+	m_frame++;
+	int frame = (float)m_frame * 0.7f;
+	m_Model->Update(m_animationName.data(), ++frame);
+	//m_Model->Update(m_animationName.data(),++m_frame);
 //	m_Model->Update(++m_frame);
 	Jump();
 	Move();
