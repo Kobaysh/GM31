@@ -143,7 +143,7 @@ void Camera::Update()
 		if (JudgeActiveWindow()) {
 //		if (false) {
 			
-		//	ShowCursor(false);
+			ShowCursor(false);
 			if (Input::GetMouseVelocity().x >= 1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed);
@@ -181,7 +181,7 @@ void Camera::Update()
 				vPosition = vPlayerPositon + (-vForward * length);
 			}
 			vAt = XMLoadFloat3(&player->GetPosition());
-	
+			SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		}
 		else {
 			ShowCursor(true);
