@@ -138,11 +138,12 @@ void Camera::Update()
 		float length;
 		XMStoreFloat(&length, vLengthCtoP);
 
+
 #if MOUSE_TRUE
 		if (JudgeActiveWindow()) {
 //		if (false) {
 			
-		//	ShowCursor(false);
+			ShowCursor(false);
 			if (Input::GetMouseVelocity().x >= 1.0f)
 			{
 				XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed);
@@ -180,11 +181,50 @@ void Camera::Update()
 				vPosition = vPlayerPositon + (-vForward * length);
 			}
 			vAt = XMLoadFloat3(&player->GetPosition());
-	
+			SetCursorPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 		}
 		else {
 			ShowCursor(true);
 		}
+#else
+		if (KeyLogger_Press(KL_TURN_RIGHT))
+		{
+			XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed / 2);
+			vForward = XMVector3TransformNormal(vForward, mtxR);
+			vForward = XMVector3Normalize(vForward);
+			vRight = XMVector3Normalize(vRight);
+			vRight = XMVector3TransformNormal(vRight, mtxR);
+			vUp = XMVector3Cross(vForward, vRight);
+			vPosition = vPlayerPositon + (-vForward * length);
+		}
+		if (KeyLogger_Press(KL_TURN_LEFT))
+		{
+			XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed / 2);
+			vForward = XMVector3TransformNormal(vForward, mtxR);
+			vRight = XMVector3TransformNormal(vRight, mtxR);
+			vForward = XMVector3Normalize(vForward);
+			vRight = XMVector3Normalize(vRight);
+			vUp = XMVector3Cross(vForward, vRight);
+			vPosition = vPlayerPositon + (-vForward * length);
+		}
+		if (KeyLogger_Press(KL_TURN_UP))
+		{
+			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed / 4 / 2);
+			vForward = XMVector3TransformNormal(vForward, mtxR);
+			vForward = XMVector3Normalize(vForward);
+			vUp = XMVector3TransformNormal(vUp, mtxR);
+			vPosition = vPlayerPositon + (-vForward * length);
+		}
+		if (KeyLogger_Press(KL_TURN_DOWN))
+		{
+			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -m_routationalSpeed / 4 / 2);
+			vForward = XMVector3TransformNormal(vForward, mtxR);
+			vForward = XMVector3Normalize(vForward);
+			vUp = XMVector3TransformNormal(vUp, mtxR);
+			vPosition = vPlayerPositon + (-vForward * length);
+		}
+		vAt = XMLoadFloat3(&player->GetPosition());
+
 #endif
 		vDirection += XMLoadFloat3(&player->GetMove());
 		// ƒvƒŒƒCƒ„[‚ğ’Ç‚¢‚©‚¯‚é
