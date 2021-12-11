@@ -39,10 +39,11 @@ const char* EnemyState::enumChar_Enemy_State[EnemyState::MAX] =
 //	m_radiusDiscoverPlayer = stateData.m_eyesight_rad;
 //}
 
-void EnemyState::Init(Enemy::EnemyStateData * stateData)
-{
-	m_pStateData = stateData;
-}
+//void EnemyState::Init(void * stateData)
+////void EnemyState::Init(Enemy::EnemyStateData * stateData)
+//{
+//	m_pStateData = stateData;
+//}
 
 void EnemyState::Update()
 {
@@ -133,8 +134,9 @@ void EnemyState::Idle_Surprize()
 
 void EnemyState::Idle_Beware()
 {
+	Enemy::EnemyStateData* stateData =  m_enemy->GetEnemyStateData();
 //	if (m_radiusDiscoverPlayer <= 0.0f)
-	if (m_pStateData->m_eyesight_rad <= 0.0f)
+	if (stateData->m_eyesight_rad <= 0.0f)
 	{
 		ChangeState(IDLE_IDLE);
 		return;
@@ -148,7 +150,7 @@ void EnemyState::Idle_Beware()
 	float lengthEToP;
 	XMStoreFloat(&lengthEToP, vLength);
 	lengthEToP = fabsf(lengthEToP);
-	if (lengthEToP <= m_pStateData->m_eyesight_rad)
+	if (lengthEToP <= stateData->m_eyesight_rad)
 	{
 		// プレイヤー発見
 		ChangeState(IDLE_DISCOVER);
@@ -218,7 +220,7 @@ void EnemyState::Idle_MoveToPlayer()
 
 	// 戦闘半径に近づいたら戦闘状態に移行
 //	if (m_enemy->GetEnemyStateData().m_combat_rad >= length)
-	if (m_pStateData->m_combat_rad >= length)
+	if (m_enemy->GetEnemyStateData()->m_combat_rad >= length)
 	{
 		m_enemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		ChangeState(COMBAT_IDLE);

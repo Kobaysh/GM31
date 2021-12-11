@@ -1,6 +1,12 @@
 #pragma once
 #include "state.h"
-#include "enemy.h"
+//#include "enemy.h"
+
+class EnemyStatePattern : public State
+{
+protected:
+	class Enemy* m_enemy;
+};
 
 class  EnemyState : public State
 {
@@ -50,11 +56,12 @@ public:
 	//};
 private:
 
-	Enemy* m_enemy;
+	class Enemy* m_enemy;
 	En_Enemy_State m_nowState;
 	En_Enemy_State m_nextState;
 
-	Enemy::EnemyStateData* m_pStateData;
+//	void* m_pStateData;
+	//Enemy::EnemyStateData* m_pStateData;
 //	float m_radiusDiscoverPlayer;
 	float m_timer;
 
@@ -81,7 +88,9 @@ private:
 public:
 	//void Init(float radDiscPlayer);
 	//void Init(Enemy::EnemyStateData stateData);
-	void Init(Enemy::EnemyStateData* stateData);
+	//void Init(void* stateData);
+	//void Init(void* stateData);
+	//void Init(Enemy::EnemyStateData* stateData);
 	void Update()override;
 	void ChangeState(En_Enemy_State newState);
 	En_Enemy_State GetNowState() { return m_nowState; }

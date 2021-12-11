@@ -40,7 +40,7 @@ void Enemy::Init()
 	m_stateData.m_combat_rad = 3.0f;
 
 	m_state = new EnemyState(this);
-	m_state->Init(GetEnemyStateData());
+//	m_state->Init(GetEnemyStateData());
 
 
 	m_moveSpeed = 0.05f;
