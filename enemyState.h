@@ -2,11 +2,28 @@
 #include "state.h"
 //#include "enemy.h"
 
-class EnemyStatePattern : public State
+class Enemy;
+
+class EnemyStatePattern
 {
-protected:
-	class Enemy* m_enemy;
+public:
+	virtual ~EnemyStatePattern(){}
+	virtual void Update(class Enemy* pEnemy) = 0;
 };
+
+
+class EnemyState
+{
+public:
+	EnemyState();
+	~EnemyState();
+	void Update(Enemy* pEnemy);
+	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
+private:
+	EnemyStatePattern* m_pStatePattern;
+};
+
+/*
 
 class  EnemyState : public State
 {
@@ -95,3 +112,4 @@ public:
 	void ChangeState(En_Enemy_State newState);
 	En_Enemy_State GetNowState() { return m_nowState; }
 };
+*/

@@ -206,6 +206,18 @@
     <ClInclude Include="enemyGui.h">
       <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="enemyStateIdleIdle.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleBeware.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatIdle.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleDiscover.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -357,6 +369,18 @@
     </ClCompile>
     <ClCompile Include="enemyGui.cpp">
       <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleBeware.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleDiscover.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

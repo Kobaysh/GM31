@@ -169,6 +169,10 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyGui.h" />
     <ClInclude Include="enemyState.h" />
+    <ClInclude Include="enemyStateCombatIdle.h" />
+    <ClInclude Include="enemyStateIdleBeware.h" />
+    <ClInclude Include="enemyStateIdleDiscover.h" />
+    <ClInclude Include="enemyStateIdleIdle.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="fbxMesh.h" />
@@ -227,6 +231,10 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyGui.cpp" />
     <ClCompile Include="enemyState.cpp" />
+    <ClCompile Include="enemyStateCombatIdle.cpp" />
+    <ClCompile Include="enemyStateIdleBeware.cpp" />
+    <ClCompile Include="enemyStateIdleDiscover.cpp" />
+    <ClCompile Include="enemyStateIdleIdle.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fbxMesh.cpp" />

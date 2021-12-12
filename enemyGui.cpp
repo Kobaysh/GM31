@@ -32,7 +32,7 @@ void EnemyGui::Update()
 		{
 			if(ImGui::TreeNode("Enemy State"))
 			{
-				ImGui::Text(EnemyState::enumChar_Enemy_State[m_enemy->GetEnemyState()->GetNowState()]);
+				//ImGui::Text(EnemyState::enumChar_Enemy_State[m_enemy->GetEnemyState()->GetNowState()]);
 
 				ImGui::TreePop();
 			}

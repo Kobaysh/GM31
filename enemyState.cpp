@@ -1,16 +1,14 @@
 #include "enemyState.h"
-#include "main.h"
-#include "manager.h"
-#include "renderer.h"
-#include "scene.h"
-#include "gameObject.h"
-#include "player.h"
+//#include "main.h"
+//#include "manager.h"
+//#include "renderer.h"
+//#include "scene.h"
+//#include "gameObject.h"
+//#include "player.h"
 #include "enemy.h"
+#include "enemyStateIdleIdle.h"
 
-#define NEARLY_ZERO_VALUE 0.001f
-#define ROTATION_SPEED (0.01f)
-#define ROTATION_VALUE (0.012f)
-
+/*
 const char* EnemyState::enumChar_Enemy_State[EnemyState::MAX] = 
 {
 	"IDLE_IDLE",
@@ -267,4 +265,32 @@ void EnemyState::Combat_Ninjaexecution()
 
 void EnemyState::Combat_Dead()
 {
+}
+
+*/
+
+EnemyState::EnemyState():m_pStatePattern(new EnemyStateIdleIdle)
+{
+	
+}
+
+EnemyState::~EnemyState()
+{
+	if (m_pStatePattern)
+	{
+		delete m_pStatePattern;
+		m_pStatePattern = nullptr;
+	}
+}
+
+void EnemyState::Update(Enemy * pEnemy)
+{
+	m_pStatePattern->Update(pEnemy);
+}
+
+EnemyStatePattern * EnemyState::ChangeState(EnemyStatePattern * pStatePattern)
+{
+	EnemyStatePattern* temp = m_pStatePattern;
+	m_pStatePattern = pStatePattern;
+	return temp;
 }

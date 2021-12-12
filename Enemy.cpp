@@ -39,7 +39,8 @@ void Enemy::Init()
 	m_stateData.m_eyesight_rad = 7.0f;
 	m_stateData.m_combat_rad = 3.0f;
 
-	m_state = new EnemyState(this);
+	m_state = new EnemyState();
+//	m_state = new EnemyState(this);
 //	m_state->Init(GetEnemyStateData());
 
 
@@ -82,6 +83,7 @@ void Enemy::Uninit()
 {
 	// m_model->Unload();
 	// delete m_model;
+	delete m_state;
 	m_obb->SetDead();
 	m_explosionSE->Play(0.1f);
 	m_VertexLayout->Release();
@@ -92,7 +94,8 @@ void Enemy::Uninit()
 void Enemy::Update()
 {
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
-	m_state->Update();
+	m_state->Update(this);
+//	m_state->Update();
 
 	this->UpdateOBB();
 	this->CollisionOther();
