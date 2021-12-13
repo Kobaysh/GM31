@@ -217,6 +217,7 @@
     <ClInclude Include="title.h" />
     <ClInclude Include="titleLogo.h" />
     <ClInclude Include="trunk.h" />
+    <ClInclude Include="utility.h" />
     <ClInclude Include="wall.h" />
     <ClInclude Include="weapon.h" />
     <ClInclude Include="wood.h" />
