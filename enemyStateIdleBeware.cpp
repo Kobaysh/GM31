@@ -31,6 +31,7 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 		if (lengthEToP <= stateData->m_eyesight_rad)
 		{
 			// ƒvƒŒƒCƒ„[”­Œ©
+			pEnemy->GetEnemyStateData()->m_isDiscover = true;
 			EnemyStatePattern* pStatePattern =
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleDiscover);
 			delete pStatePattern;

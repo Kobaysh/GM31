@@ -221,6 +221,21 @@
     <ClInclude Include="enemyStateIdleIdle.h">
       <Filter>ソース ファイル\game_object\enemy\state</Filter>
     </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatAttack.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatGuard.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatDamaged.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatDead.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -383,6 +398,18 @@
       <Filter>ソース ファイル\game_object\enemy\state</Filter>
     </ClCompile>
     <ClCompile Include="enemyStateIdleIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatAttack.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatDamaged.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatDead.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatGuard.cpp">
       <Filter>ソース ファイル\game_object\enemy\state</Filter>
     </ClCompile>
   </ItemGroup>
