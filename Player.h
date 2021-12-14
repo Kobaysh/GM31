@@ -21,8 +21,11 @@ private:
 	XMFLOAT3 m_moveVector;
 	int m_sign;
 
+	bool m_isAttack = false;
 	bool m_isjump = false;
 	float m_jumpForce;
+
+	float m_timerAttack;
 
 	int m_nowHp;					// ヒットポイント
 	int m_maxHp;					// Maxヒットポイント

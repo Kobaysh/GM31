@@ -9,6 +9,7 @@
 #include "animationModel.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "enemyState.h"
 #include "rock.h"
 #include "camera.h"
 #include "audio.h"
@@ -31,7 +32,7 @@ void Player::Init()
 {
 	ModelInit();
 
-	m_position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
 	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
@@ -187,28 +188,34 @@ void Player::Move()
 	XMStoreFloat3(&tempHeight, vPositon);
 
 	XMVECTOR jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR vGravity = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f) * GRAVITY;
 	if (m_isjump) {
 		XMVECTOR temp = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 	
 		temp= XMVector3Normalize(XMLoadFloat3(&m_direction.m_up));
 		jumpVector = temp * m_jumpForce;
-		m_jumpForce -= GRAVITY;
+	//	m_jumpForce -= GRAVITY;
 		temp = vPositon + jumpVector;
-		if (temp.m128_f32[1] - 0.35f<= mf->GetHeight(tempHeight)) {
+		if (temp.m128_f32[1] - 0.1f<= mf->GetHeight(tempHeight)) {
 			m_animationName = "idle";
 			m_isjump = false;
-			vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.5f;	// 接地面+サイズ
+			vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.1f;	// 接地面+サイズ
 		//	jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		}
 	}
+	XMVECTOR temp = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	temp = vPositon + jumpVector + vGravity;
+	if (temp.m128_f32[1] - 0.1f <= mf->GetHeight(tempHeight)) {
+		vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.1f;	// 接地面+サイズ
+		vGravity = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	}
 
+	//if (vPositon.m128_f32[1] - 0.35f <= mf->GetHeight(tempHeight)) {
+	//	vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.5f;	// 接地面+サイズ
+	//}
 
-//	if (vPositon.m128_f32[1] - m_scale.y <= mf->GetHeight(tempHeight)) {
-//		vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.02f;	// 接地面+サイズ
-//	}
-
-	XMStoreFloat3(&m_moveVector, (direction * m_speed) + jumpVector);
+	XMStoreFloat3(&m_moveVector, (direction * m_speed) + jumpVector + vGravity);
 	XMStoreFloat3(&m_position, vPositon);
 }
 
@@ -226,11 +233,22 @@ void Player::Shoot()
 {
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
-	if (KeyLogger_Trigger(KL_ATTACK)) {
-//		DebugLog::DebugPrintSaveFlie("playerLog.txt", "shoot");
-		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
+	if (!m_isAttack && KeyLogger_Trigger(KL_ATTACK)) {
 		m_animationName = "attack";
+		m_isAttack = true;
+		m_timerAttack = 0.0f;
+
+		XMFLOAT3 obbPos;
+		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.m_forward) * 1;
+		XMStoreFloat3(&obbPos, vObbPos);
+		obbPos.y += 0.5f;
+		m_obbAttack = nullptr;
+		m_obbAttack = new OBB(obbPos, m_rotation, XMFLOAT3(1.0f, 0.5f,1.0f));
+		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
+		/*
+		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
 		m_shotSE->Play(0.1f);
+		*/
 	}
 //	if (Input::GetMouseDown(Input::MouseButton::Left))
 	if (MOUSE_TRUE)
@@ -239,6 +257,39 @@ void Player::Shoot()
 		{
 			Bullet::Create(m_position, m_direction.m_forward, 0.3f);
 		}
+	}
+
+	if (m_isAttack)
+	{
+		m_timerAttack += 0.1f;
+		// 座標更新
+		XMFLOAT3 obbPos;
+		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.m_forward) * 1;
+		XMStoreFloat3(&obbPos, vObbPos);
+		obbPos.y += 0.5f;
+		m_obbAttack->SetPosition(obbPos);
+
+		// 敵との衝突判定
+		std::vector<Enemy*> enemyList = ManagerT::GetScene()->GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
+		for (Enemy* enemy : enemyList)
+		{
+			if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb()))
+			{
+				// 攻撃が当たった
+				enemy->GetEnemyState()->SetIsCollided(true);
+				// ガード状態なら
+				if (enemy->GetEnemyState()->GetIsGuarding())
+				{
+
+				}
+			}
+		}
+
+	}
+	if (m_isAttack && m_timerAttack >= 10.0f)
+	{
+		m_isAttack = false;
+		m_obbAttack->SetDead();
 	}
 }
 
