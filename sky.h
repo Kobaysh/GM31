@@ -21,7 +21,7 @@ public:
 
 	void Move();
 	void Shoot();
-	void VoidDimension();
+//	void VoidDimension();
 	XMFLOAT3 GetMove()const { return m_moveVector; }
 	XMFLOAT3* GetFront() { return &m_front; }
 };

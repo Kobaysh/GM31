@@ -26,7 +26,7 @@ private:
 public:
 	MeshField():m_pVertex(nullptr){}
 	void Init(){}
-	void Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizonSize, float verticalSize);
+	void Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonSize, int verticalSize);
 	void Uninit();
 	void Update();
 	void Draw();

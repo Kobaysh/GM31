@@ -52,7 +52,7 @@ const static float testField[21][21] = {
 
 
 
-void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizonSize, float verticalSize)
+void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonSize, int verticalSize)
 {
 	m_horizonCnt = horizonCnt;
 	m_verticalCnt = verticalCnt;
@@ -283,9 +283,11 @@ void MeshField::Uninit()
 
 void MeshField::Update()
 {
+#if defined(DEBUG) || defined (_DEBUG)
 	if (KeyLogger_Trigger(KL_WIRE)) {
 		m_isWireFrame = m_isWireFrame == true ? false : true;
 	}
+#endif
 }
 
 void MeshField::Draw()
@@ -357,8 +359,8 @@ void MeshField::Draw()
 float MeshField::GetHeight(XMFLOAT3 position)
 {
 	int x, z;
-	x = position.x / (float)m_horizonSize * 1.0f + m_horizonCnt* 0.5f;
-	z = m_verticalCnt - (position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f);
+	x = (int)(position.x / (float)m_horizonSize * 1.0f + m_horizonCnt* 0.5f);
+	z = m_verticalCnt - (int)(position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f);
 
 	if (x > m_horizonCnt + 1 || z > m_verticalCnt + 1) {
 		return position.y - 0.5f;

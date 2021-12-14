@@ -17,10 +17,6 @@ private:
 	bool m_movable = true;
 	float m_speed;
 
-	//XMFLOAT3 m_front;
-	//XMFLOAT3 m_right;
-	//XMFLOAT3 m_up;
-
 	XMFLOAT3 m_moveVector;
 	int m_sign;
 
@@ -53,10 +49,9 @@ public:
 	void Jump();
 	void Shoot();
 	void CollisionOther();
-	void VoidDimension();
+	//void VoidDimension();
 	void ChangeCameraDir();
 	XMFLOAT3 GetMove()const { return m_moveVector; }
-	//XMFLOAT3* GetFront() { return &m_direction.m_forward; }
 	float GetSpeed() { return m_speed; }
 	OBB& GetObb() { return *m_obb; }
 

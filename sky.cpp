@@ -201,17 +201,17 @@ void Sky::Shoot()
 	}
 }
 
-void Sky::VoidDimension()
-{
-	if (KeyLogger_Trigger(KL_WIRE)) {
-		if (ms_IsVoidPS) {
-			ManagerT::GetScene()->AllPSChange("vertexLightingPS.cso");
-			ms_IsVoidPS = false;
-		}
-		else
-		{
-			ManagerT::GetScene()->AllPSChange("LightingVoidPS.cso");
-			ms_IsVoidPS = true;
-		}
-	}
-}
+//void Sky::VoidDimension()
+//{
+//	if (KeyLogger_Trigger(KL_WIRE)) {
+//		if (ms_IsVoidPS) {
+//			ManagerT::GetScene()->AllPSChange("vertexLightingPS.cso");
+//			ms_IsVoidPS = false;
+//		}
+//		else
+//		{
+//			ManagerT::GetScene()->AllPSChange("LightingVoidPS.cso");
+//			ms_IsVoidPS = true;
+//		}
+//	}
+//}

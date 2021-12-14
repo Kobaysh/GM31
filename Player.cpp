@@ -22,7 +22,6 @@
 #define ROTATION_VALUE (0.22f)
 #define MOVE_SPEED (0.1f)
 #define PS_NAME ("pixelLightingPS.cso")
-//#define PS_NAME ("toonPS.cso")
 
 
 bool GameObject::ms_IsVoidPS = false;
@@ -44,8 +43,8 @@ void Player::Init()
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 //	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
-//	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "toonVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
+//	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "toonVS.cso");
 
 //	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
@@ -68,8 +67,8 @@ void Player::Update()
 {
 	m_playerState.Update();
 	m_frame++;
-	int frame = (float)m_frame * 0.7f;
-	m_Model->Update(m_animationName.data(), ++frame);
+	float frame = static_cast<float>(m_frame) * 0.7f;
+	m_Model->Update(m_animationName.data(), static_cast<int>(frame));
 	//m_Model->Update(m_animationName.data(),++m_frame);
 //	m_Model->Update(++m_frame);
 	Jump();
@@ -78,7 +77,6 @@ void Player::Update()
 //	ChangeCameraDir();
 	Shoot();
 	CollisionOther();
-//	VoidDimension();
 
 	MoveFromMoveVector();
 }
@@ -295,23 +293,7 @@ void Player::ChangeCameraDir()
 
 void Player::ModelInit()
 {
-	//	m_Model = new Model();
-	//	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
-	//	m_Model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
-	//	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
-	//	m_Model->Load("asset\\model\\test\\woodcube.obj");	 // \\か//しか使えない
-
 	m_Model = new AnimationModel();
-
-
-	//	m_Model->Load("asset\\model\\player\\Akai_Idle.fbx");
-	//	m_Model->Load("asset\\model\\player\\Idle (3).fbx");
-	//	m_Model->Load("asset\\model\\AAP\\Ch24_nonPBR.fbx");
-	//	m_Model->Load("asset\\model\\PSS7.4\\Ch24_nonPBR.fbx");
-	//	m_Model->Load("asset\\model\\test\\woodcube.fbx");	 // \\か//しか使えない
-	//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield walk.fbx", "attack");
-	//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield idle.fbx", "idle");
-
 
 	//	m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
 	//m_Model->Load("asset\\model\\player\\Idle (6).fbx");	// 忍者
@@ -352,17 +334,17 @@ void Player::MoveFromMoveVector()
 	XMStoreFloat3(&m_position, vPos);
 }
 
-void Player::VoidDimension()
-{
-	if (KeyLogger_Trigger(KL_WIRE)) {
-		if (ms_IsVoidPS) {
-			ManagerT::GetScene()->AllPSChange("vertexLightingPS.cso");
-			ms_IsVoidPS = false;
-		}
-		else
-		{
-			ManagerT::GetScene()->AllPSChange("LightingVoidPS.cso");
-			ms_IsVoidPS = true;
-		}
-	}
-}
+//void Player::VoidDimension()
+//{
+//	if (KeyLogger_Trigger(KL_WIRE)) {
+//		if (ms_IsVoidPS) {
+//			ManagerT::GetScene()->AllPSChange("vertexLightingPS.cso");
+//			ms_IsVoidPS = false;
+//		}
+//		else
+//		{
+//			ManagerT::GetScene()->AllPSChange("LightingVoidPS.cso");
+//			ms_IsVoidPS = true;
+//		}
+//	}
+//}

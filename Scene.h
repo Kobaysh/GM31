@@ -91,12 +91,12 @@ public:
 		}
 	}
 
-	virtual void AllPSChange(const char* pFileName) {
+	/*virtual void AllPSChange(const char* pFileName) {
 		for (int i = GameObject::GOT_OBJECT3D; i < GameObject::GOT_MAX; i++) {
 			for (GameObject* object : m_GameObject[i]) {
 				object->SetPShader(pFileName);
 			}
 		}
-	}
+	}*/
 };
 
