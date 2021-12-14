@@ -11,6 +11,7 @@ private:
 //	class Model* m_Model;
 	class Audio* m_shotSE;
 	class OBB* m_obb;
+	class OBB* m_obbAttack;
 	class AnimationModel*  m_Model;
 
 	bool m_isActive = true;

@@ -41,12 +41,9 @@ void Player::Init()
 
 	m_obb = new OBB(m_position, m_rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
-
-//	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	m_obbAttack = nullptr;
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
-//	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "toonVS.cso");
 
-//	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
 
 	m_shotSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
@@ -71,13 +68,13 @@ void Player::Update()
 	m_Model->Update(m_animationName.data(), static_cast<int>(frame));
 	//m_Model->Update(m_animationName.data(),++m_frame);
 //	m_Model->Update(++m_frame);
-	Jump();
+//	Jump();
 	Move();
 	UpdateObb();
 //	ChangeCameraDir();
 	Shoot();
 	CollisionOther();
-
+	// 衝突判定の後移動
 	MoveFromMoveVector();
 }
 
@@ -92,9 +89,8 @@ void Player::Draw()
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = /*XMMatrixRotationY(180);*/XMMatrixRotationY(-atan2f(m_direction.m_forward.z, m_direction.m_forward.x));
+	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_direction.m_forward.z, m_direction.m_forward.x));
 	rotX *= XMMatrixRotationY(XMConvertToRadians(-90));
-	float a= -atan2f(m_direction.m_forward.z, m_direction.m_forward.x);
 	//rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
@@ -112,7 +108,6 @@ void Player::Move()
 {
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
 	if (!m_movable) return;
-	//XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_position);
 	XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward);
@@ -120,7 +115,6 @@ void Player::Move()
 
 	
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
-//		direction = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		if (KeyLogger_Press(KL_UP)) {
 			XMFLOAT3 temp = pCamera->GetDirection()->m_forward;
 			temp.y = 0.0f;
@@ -192,29 +186,30 @@ void Player::Move()
 	XMFLOAT3 tempHeight;
 	XMStoreFloat3(&tempHeight, vPositon);
 
-	/*if (m_isjump) {
-		XMVECTOR tempDir = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-		XMFLOAT3 temp = m_up;
+	XMVECTOR jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	if (m_isjump) {
+		XMVECTOR temp = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 	
-		tempDir = XMVector3Normalize(XMLoadFloat3(&temp));
-		vPositon += tempDir * m_jumpForce;
+		temp= XMVector3Normalize(XMLoadFloat3(&m_direction.m_up));
+		jumpVector = temp * m_jumpForce;
 		m_jumpForce -= GRAVITY;
-		if (vPositon.m128_f32[1] <= mf->GetHeight(tempHeight)) {
+		temp = vPositon + jumpVector;
+		if (temp.m128_f32[1] - 0.35f<= mf->GetHeight(tempHeight)) {
 			m_animationName = "idle";
 			m_isjump = false;
+			vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.5f;	// 接地面+サイズ
+		//	jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		}
-	}*/
+	}
 
 
 //	if (vPositon.m128_f32[1] - m_scale.y <= mf->GetHeight(tempHeight)) {
-		vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.02f;	// 接地面+サイズ
-//		vPositon.m128_f32[1] = mf->GetHeight(tempHeight);	// 接地面+サイズ
+//		vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.02f;	// 接地面+サイズ
 //	}
 
-	XMStoreFloat3(&m_moveVector, (direction * m_speed));
+	XMStoreFloat3(&m_moveVector, (direction * m_speed) + jumpVector);
 	XMStoreFloat3(&m_position, vPositon);
-
 }
 
 void Player::Jump()
