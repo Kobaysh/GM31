@@ -21,7 +21,7 @@ void main(in PS_IN In, out float4 outDiffuse : SV_Target)
 
     float specular = -dot(halfv, normal.xyz);
     specular = saturate(specular);
-    specular = pow(specular, 5);
+    specular = pow(specular, 10);
     outDiffuse.rgb += specular;
     
 }
