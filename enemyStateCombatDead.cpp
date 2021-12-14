@@ -2,4 +2,5 @@
 
 void EnemyStateCombatDead::Update(Enemy * pEnemy)
 {
+	// アニメーションが終わったら消す
 }

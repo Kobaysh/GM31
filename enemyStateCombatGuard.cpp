@@ -2,4 +2,5 @@
 
 void EnemyStateCombatGuard::Update(Enemy * pEnemy)
 {
+
 }

@@ -21,6 +21,7 @@ public:
 	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
 private:
 	EnemyStatePattern* m_pStatePattern;
+	bool m_isGuarding;
 };
 
 /*

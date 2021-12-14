@@ -30,6 +30,7 @@ protected:
 public:
 	virtual void Init();
 	virtual void Init(XMFLOAT3 pos, XMFLOAT3 scale);
+	virtual void Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale);
 	void Uninit();
 	void Update();
 	void Draw();

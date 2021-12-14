@@ -15,7 +15,7 @@ const float EnemyStateCombatIdle::m_attackInterval = 10.0f;
 void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 {
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
-//	m_timer += 0.1f;
+	m_timer += 0.1f;
 	if (KeyLogger_Trigger(KL_ATTACK))
 	{
 		// ämó¶Ç≈ñhå‰

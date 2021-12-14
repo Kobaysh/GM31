@@ -79,6 +79,20 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 scale)
 	m_obb->SetScale(fixScale);
 }
 
+void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
+{
+	m_position = pos;
+	m_obb->SetPosition(pos);
+	m_rotation = rotation;
+	m_obb->SetRotation(rotation, XMFLOAT3(0.0f,0.0f,0.0f));
+	m_scale = scale;
+	XMFLOAT3 fixScale = scale;
+	fixScale.x = fixScale.x * 2 + 0.1f;
+	fixScale.y = fixScale.y * 2 + 0.1f;
+	fixScale.z = fixScale.z * 2 + 0.1f;
+	m_obb->SetScale(fixScale);
+}
+
 void Enemy::Uninit()
 {
 	// m_model->Unload();
@@ -143,25 +157,25 @@ void Enemy::Draw()
 void Enemy::UpdateRotation()
 {
 	XMVECTOR vRot = XMLoadFloat3(&m_rotation);
-	if (Input::GetKeyPress(VK_RIGHT))
-	{
-		m_rotationSpeed.y= 0.01f;
-	}
-	if (Input::GetKeyPress(VK_LEFT))
-	{
-		m_rotationSpeed.y = -0.01f;
-	}
-	vRot += XMLoadFloat3(&m_rotationSpeed);
-	XMStoreFloat3(&m_rotation, vRot);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward),vRight = XMLoadFloat3(&m_direction.m_right),vUp;
-	//	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
-	XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
-	vForward =  XMVector3TransformNormal(vForward, mtxRot);
-	vRight =  XMVector3TransformNormal(vRight, mtxRot);
-	vUp = XMVector3Cross(vForward, vRight);
-	XMStoreFloat3(&m_direction.m_forward, vForward);
-	XMStoreFloat3(&m_direction.m_right, vRight);
-	XMStoreFloat3(&m_direction.m_up, vUp);
+	//if (Input::GetKeyPress(VK_RIGHT))
+	//{
+	//	m_rotationSpeed.y= 0.01f;
+	//}
+	//if (Input::GetKeyPress(VK_LEFT))
+	//{
+	//	m_rotationSpeed.y = -0.01f;
+	//}
+	//vRot += XMLoadFloat3(&m_rotationSpeed);
+	//XMStoreFloat3(&m_rotation, vRot);
+	//XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward),vRight = XMLoadFloat3(&m_direction.m_right),vUp;
+	////	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
+	//XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
+	//vForward =  XMVector3TransformNormal(vForward, mtxRot);
+	//vRight =  XMVector3TransformNormal(vRight, mtxRot);
+	//vUp = XMVector3Cross(vForward, vRight);
+	//XMStoreFloat3(&m_direction.m_forward, vForward);
+	//XMStoreFloat3(&m_direction.m_right, vRight);
+	//XMStoreFloat3(&m_direction.m_up, vUp);
 	m_obb->SetRotation(m_rotation, m_rotationSpeed);
 	//m_obb->SetRotationFromForwardRightVector(m_direction.m_forward,m_direction.m_right, m_rotation);
 }
