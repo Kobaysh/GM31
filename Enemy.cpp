@@ -15,6 +15,16 @@
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
 
+Enemy::Enemy():
+	m_maxHp(0),
+	m_hp(0),
+	m_moveSpeed (0.0f),
+	m_rotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f)),
+	m_stateData(0.0f, 0.0f,0.0f,0.0f,0.0f)
+{
+	m_position = (XMFLOAT3(0.0f, 0.0f, 0.0f));
+}
+
 void Enemy::Init()
 {
 	// m_model = new Model();

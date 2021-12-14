@@ -16,7 +16,7 @@ static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
 std::unordered_map <std::string, class MyGuiWindow*> MyImGui::m_myGuiWindows;
 bool MyImGui::checkbox = false;
-#if defined (DEBUG) || defined (_DEBUG)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 bool MyImGui::m_bIsShowAll = true;
 #else
 bool MyImGui::m_bIsShowAll = false;
@@ -24,7 +24,7 @@ bool MyImGui::m_bIsShowAll = false;
 
 void MyImGui::Init(HWND hwnd)
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -48,7 +48,7 @@ void MyImGui::Init(HWND hwnd)
 
 void MyImGui::Uninit()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	for (auto pair : m_myGuiWindows)
 	{
 		pair.second->Uninit();
@@ -64,7 +64,7 @@ void MyImGui::Uninit()
 
 void MyImGui::Update()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	// フレーム開始
 	MyImGui::SetNewFrame();
 	
@@ -86,7 +86,7 @@ void MyImGui::Update()
 
 void MyImGui::SetNewFrame()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
@@ -95,7 +95,7 @@ void MyImGui::SetNewFrame()
 
 void MyImGui::StartRender()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 #endif
@@ -113,7 +113,7 @@ void MyImGui::SetGuiWindow(const std::string & name, MyGuiWindow* window)
 
 void MyImGui::SetSampleWindow()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Once);
 
 	bool show = false;
@@ -164,7 +164,7 @@ void MyImGui::SetSampleWindow()
 
 void MyImGui::SetDebugWindow()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
 	ImGui::SetNextWindowBgAlpha(0.3f);
 	static bool* p_open = nullptr;
@@ -185,7 +185,7 @@ void MyImGui::SetDebugWindow()
 
 void MyImGui::SetDebugCameraWindow()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	if (ImGui::TreeNode("Camera"))
 	{
 		Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GameObject::GOT_CAMERA);
@@ -213,7 +213,7 @@ void MyImGui::SetDebugCameraWindow()
 
 void MyImGui::SetDebugCollisionWindow()
 {
-#if defined (DEBUG) || defined (_DEBUG) || defined(RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
 	//ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
 	//ImGui::SetNextWindowBgAlpha(0.3f);
 	//static bool* p_open = nullptr;

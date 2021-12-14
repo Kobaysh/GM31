@@ -20,13 +20,16 @@ public:
 	void Update(Enemy* pEnemy);
 	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
 	void SetIsGuarding(bool isGuarding) { m_isGuarding = isGuarding; }
-	bool GetIsGuarding() { return m_isGuarding; }
+	bool GetIsGuarding() const { return m_isGuarding; }
 	void SetIsDamaged(bool isDamaged) { m_isDamaged = isDamaged; }
-	bool GetIsDamaged() { return m_isDamaged; }
+	bool GetIsDamaged() const { return m_isDamaged; }
+	void SetIsCollided(bool isCollided) { m_isCollided = isCollided; }
+	bool GetIsCollided() const { return m_isCollided; }
 private:
 	EnemyStatePattern* m_pStatePattern;
 	bool m_isGuarding = false;
 	bool m_isDamaged = false;
+	bool m_isCollided = false;
 };
 
 /*
