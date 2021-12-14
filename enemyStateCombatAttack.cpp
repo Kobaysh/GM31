@@ -20,6 +20,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		XMVECTOR vObbPos = XMLoadFloat3(&pEnemy->GetPosition()) + XMLoadFloat3(&pEnemy->GetDirection()->m_forward) * 2;
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 1.0f;
+		m_obbAttack = nullptr;
 		m_obbAttack = new OBB(obbPos, pEnemy->GetRotation(), XMFLOAT3(1.0f, 2.0f,1.0f));
 		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
 		m_timer = 0.0f;
@@ -30,7 +31,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		if (OBB::ColOBBs(*m_obbAttack, pPlayer->GetObb()))
 		{
 			// 攻撃当たった
-			m_isAttacking = false;
+		//	m_isAttacking = false;
 			/*delete m_obbAttack;
 			m_obbAttack = nullptr;*/
 		//	m_obbAttack->SetDead();
@@ -44,7 +45,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 
 			}
 			*/
-			return;
+		//	return;
 		}
 		// 攻撃アニメーションが終わったらfalse
 		if (m_timer >= 10.0f)
