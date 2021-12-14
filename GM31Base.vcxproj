@@ -169,6 +169,14 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyGui.h" />
     <ClInclude Include="enemyState.h" />
+    <ClInclude Include="enemyStateCombatAttack.h" />
+    <ClInclude Include="enemyStateCombatDamaged.h" />
+    <ClInclude Include="enemyStateCombatDead.h" />
+    <ClInclude Include="enemyStateCombatGuard.h" />
+    <ClInclude Include="enemyStateCombatIdle.h" />
+    <ClInclude Include="enemyStateIdleBeware.h" />
+    <ClInclude Include="enemyStateIdleDiscover.h" />
+    <ClInclude Include="enemyStateIdleIdle.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="fbxMesh.h" />
@@ -213,6 +221,7 @@
     <ClInclude Include="title.h" />
     <ClInclude Include="titleLogo.h" />
     <ClInclude Include="trunk.h" />
+    <ClInclude Include="utility.h" />
     <ClInclude Include="wall.h" />
     <ClInclude Include="weapon.h" />
     <ClInclude Include="wood.h" />
@@ -227,6 +236,14 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyGui.cpp" />
     <ClCompile Include="enemyState.cpp" />
+    <ClCompile Include="enemyStateCombatAttack.cpp" />
+    <ClCompile Include="enemyStateCombatDamaged.cpp" />
+    <ClCompile Include="enemyStateCombatDead.cpp" />
+    <ClCompile Include="enemyStateCombatGuard.cpp" />
+    <ClCompile Include="enemyStateCombatIdle.cpp" />
+    <ClCompile Include="enemyStateIdleBeware.cpp" />
+    <ClCompile Include="enemyStateIdleDiscover.cpp" />
+    <ClCompile Include="enemyStateIdleIdle.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fbxMesh.cpp" />

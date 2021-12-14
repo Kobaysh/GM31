@@ -78,7 +78,7 @@ void Renderer::Init()
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.OutputWindow = GetWindow();
 //	swapChainDesc.SampleDesc.Count = 1;
-	swapChainDesc.SampleDesc.Count = 16;
+	swapChainDesc.SampleDesc.Count = 8;
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.Windowed = TRUE;
 

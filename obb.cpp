@@ -454,7 +454,7 @@ void OBB::Draw()
 		return;
 	}
 	
-#if defined(_DEBUG) || defined(DEBUG)
+#if defined(_DEBUG) || defined(DEBUG) || (RELEASE_ON_PLAY)
 #else
 	return;
 #endif

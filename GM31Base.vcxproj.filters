@@ -33,6 +33,9 @@
     <Filter Include="ソース ファイル\game_object\enemy">
       <UniqueIdentifier>{94cd01af-ef07-4c5f-ad8f-b1d3c533fb0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\state">
+      <UniqueIdentifier>{ccf96b3b-aea5-40cd-905d-06b0cbd63568}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -122,9 +125,6 @@
     <ClInclude Include="primitive.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
-    <ClInclude Include="obb.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
     <ClInclude Include="audio.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
@@ -197,14 +197,44 @@
     <ClInclude Include="debugCamera.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="enemyState.h">
-      <Filter>ソース ファイル\game_object\enemy</Filter>
-    </ClInclude>
     <ClInclude Include="enemy.h">
       <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClInclude>
     <ClInclude Include="enemyGui.h">
       <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyState.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatIdle.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleBeware.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleDiscover.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleIdle.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatAttack.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatGuard.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatDamaged.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatDead.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="obb.h">
+      <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -286,9 +316,6 @@
     <ClCompile Include="titleLogo.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="obb.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
     <ClCompile Include="audio.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
@@ -349,14 +376,41 @@
     <ClCompile Include="myImGui.cpp">
       <Filter>imGui</Filter>
     </ClCompile>
-    <ClCompile Include="enemyState.cpp">
-      <Filter>ソース ファイル\game_object\enemy</Filter>
-    </ClCompile>
     <ClCompile Include="enemy.cpp">
       <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClCompile>
     <ClCompile Include="enemyGui.cpp">
       <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleDiscover.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyState.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleBeware.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatAttack.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatDamaged.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatDead.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatGuard.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="obb.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

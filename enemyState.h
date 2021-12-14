@@ -1,6 +1,38 @@
 #pragma once
 #include "state.h"
-#include "enemy.h"
+//#include "enemy.h"
+
+class Enemy;
+
+class EnemyStatePattern
+{
+public:
+	virtual ~EnemyStatePattern(){}
+	virtual void Update(class Enemy* pEnemy) = 0;
+};
+
+
+class EnemyState
+{
+public:
+	EnemyState();
+	~EnemyState();
+	void Update(Enemy* pEnemy);
+	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
+	void SetIsGuarding(bool isGuarding) { m_isGuarding = isGuarding; }
+	bool GetIsGuarding() const { return m_isGuarding; }
+	void SetIsDamaged(bool isDamaged) { m_isDamaged = isDamaged; }
+	bool GetIsDamaged() const { return m_isDamaged; }
+	void SetIsCollided(bool isCollided) { m_isCollided = isCollided; }
+	bool GetIsCollided() const { return m_isCollided; }
+private:
+	EnemyStatePattern* m_pStatePattern;
+	bool m_isGuarding = false;
+	bool m_isDamaged = false;
+	bool m_isCollided = false;
+};
+
+/*
 
 class  EnemyState : public State
 {
@@ -50,11 +82,12 @@ public:
 	//};
 private:
 
-	Enemy* m_enemy;
+	class Enemy* m_enemy;
 	En_Enemy_State m_nowState;
 	En_Enemy_State m_nextState;
 
-	Enemy::EnemyStateData* m_pStateData;
+//	void* m_pStateData;
+	//Enemy::EnemyStateData* m_pStateData;
 //	float m_radiusDiscoverPlayer;
 	float m_timer;
 
@@ -81,8 +114,11 @@ private:
 public:
 	//void Init(float radDiscPlayer);
 	//void Init(Enemy::EnemyStateData stateData);
-	void Init(Enemy::EnemyStateData* stateData);
+	//void Init(void* stateData);
+	//void Init(void* stateData);
+	//void Init(Enemy::EnemyStateData* stateData);
 	void Update()override;
 	void ChangeState(En_Enemy_State newState);
 	En_Enemy_State GetNowState() { return m_nowState; }
 };
+*/

@@ -15,6 +15,16 @@
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
 
+Enemy::Enemy():
+	m_maxHp(0),
+	m_hp(0),
+	m_moveSpeed (0.0f),
+	m_rotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f)),
+	m_stateData(0.0f, 0.0f,0.0f,0.0f,0.0f)
+{
+	m_position = (XMFLOAT3(0.0f, 0.0f, 0.0f));
+}
+
 void Enemy::Init()
 {
 	// m_model = new Model();
@@ -39,8 +49,9 @@ void Enemy::Init()
 	m_stateData.m_eyesight_rad = 7.0f;
 	m_stateData.m_combat_rad = 3.0f;
 
-	m_state = new EnemyState(this);
-	m_state->Init(GetEnemyStateData());
+	m_state = new EnemyState();
+//	m_state = new EnemyState(this);
+//	m_state->Init(GetEnemyStateData());
 
 
 	m_moveSpeed = 0.05f;
@@ -78,10 +89,25 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 scale)
 	m_obb->SetScale(fixScale);
 }
 
+void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
+{
+	m_position = pos;
+	m_obb->SetPosition(pos);
+	m_rotation = rotation;
+	m_obb->SetRotation(rotation, XMFLOAT3(0.0f,0.0f,0.0f));
+	m_scale = scale;
+	XMFLOAT3 fixScale = scale;
+	fixScale.x = fixScale.x * 2 + 0.1f;
+	fixScale.y = fixScale.y * 2 + 0.1f;
+	fixScale.z = fixScale.z * 2 + 0.1f;
+	m_obb->SetScale(fixScale);
+}
+
 void Enemy::Uninit()
 {
 	// m_model->Unload();
 	// delete m_model;
+	delete m_state;
 	m_obb->SetDead();
 	m_explosionSE->Play(0.1f);
 	m_VertexLayout->Release();
@@ -92,7 +118,8 @@ void Enemy::Uninit()
 void Enemy::Update()
 {
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
-	m_state->Update();
+	m_state->Update(this);
+//	m_state->Update();
 
 	this->UpdateOBB();
 	this->CollisionOther();
@@ -140,25 +167,25 @@ void Enemy::Draw()
 void Enemy::UpdateRotation()
 {
 	XMVECTOR vRot = XMLoadFloat3(&m_rotation);
-	if (Input::GetKeyPress(VK_RIGHT))
-	{
-		m_rotationSpeed.y= 0.01f;
-	}
-	if (Input::GetKeyPress(VK_LEFT))
-	{
-		m_rotationSpeed.y = -0.01f;
-	}
-	vRot += XMLoadFloat3(&m_rotationSpeed);
-	XMStoreFloat3(&m_rotation, vRot);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward),vRight = XMLoadFloat3(&m_direction.m_right),vUp;
-	//	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
-	XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
-	vForward =  XMVector3TransformNormal(vForward, mtxRot);
-	vRight =  XMVector3TransformNormal(vRight, mtxRot);
-	vUp = XMVector3Cross(vForward, vRight);
-	XMStoreFloat3(&m_direction.m_forward, vForward);
-	XMStoreFloat3(&m_direction.m_right, vRight);
-	XMStoreFloat3(&m_direction.m_up, vUp);
+	//if (Input::GetKeyPress(VK_RIGHT))
+	//{
+	//	m_rotationSpeed.y= 0.01f;
+	//}
+	//if (Input::GetKeyPress(VK_LEFT))
+	//{
+	//	m_rotationSpeed.y = -0.01f;
+	//}
+	//vRot += XMLoadFloat3(&m_rotationSpeed);
+	//XMStoreFloat3(&m_rotation, vRot);
+	//XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward),vRight = XMLoadFloat3(&m_direction.m_right),vUp;
+	////	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
+	//XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
+	//vForward =  XMVector3TransformNormal(vForward, mtxRot);
+	//vRight =  XMVector3TransformNormal(vRight, mtxRot);
+	//vUp = XMVector3Cross(vForward, vRight);
+	//XMStoreFloat3(&m_direction.m_forward, vForward);
+	//XMStoreFloat3(&m_direction.m_right, vRight);
+	//XMStoreFloat3(&m_direction.m_up, vUp);
 	m_obb->SetRotation(m_rotation, m_rotationSpeed);
 	//m_obb->SetRotationFromForwardRightVector(m_direction.m_forward,m_direction.m_right, m_rotation);
 }

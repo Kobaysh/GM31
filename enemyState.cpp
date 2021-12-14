@@ -1,16 +1,14 @@
 #include "enemyState.h"
-#include "main.h"
-#include "manager.h"
-#include "renderer.h"
-#include "scene.h"
-#include "gameObject.h"
-#include "player.h"
+//#include "main.h"
+//#include "manager.h"
+//#include "renderer.h"
+//#include "scene.h"
+//#include "gameObject.h"
+//#include "player.h"
 #include "enemy.h"
+#include "enemyStateIdleIdle.h"
 
-#define NEARLY_ZERO_VALUE 0.001f
-#define ROTATION_SPEED (0.01f)
-#define ROTATION_VALUE (0.012f)
-
+/*
 const char* EnemyState::enumChar_Enemy_State[EnemyState::MAX] = 
 {
 	"IDLE_IDLE",
@@ -39,10 +37,11 @@ const char* EnemyState::enumChar_Enemy_State[EnemyState::MAX] =
 //	m_radiusDiscoverPlayer = stateData.m_eyesight_rad;
 //}
 
-void EnemyState::Init(Enemy::EnemyStateData * stateData)
-{
-	m_pStateData = stateData;
-}
+//void EnemyState::Init(void * stateData)
+////void EnemyState::Init(Enemy::EnemyStateData * stateData)
+//{
+//	m_pStateData = stateData;
+//}
 
 void EnemyState::Update()
 {
@@ -133,8 +132,9 @@ void EnemyState::Idle_Surprize()
 
 void EnemyState::Idle_Beware()
 {
+	Enemy::EnemyStateData* stateData =  m_enemy->GetEnemyStateData();
 //	if (m_radiusDiscoverPlayer <= 0.0f)
-	if (m_pStateData->m_eyesight_rad <= 0.0f)
+	if (stateData->m_eyesight_rad <= 0.0f)
 	{
 		ChangeState(IDLE_IDLE);
 		return;
@@ -148,7 +148,7 @@ void EnemyState::Idle_Beware()
 	float lengthEToP;
 	XMStoreFloat(&lengthEToP, vLength);
 	lengthEToP = fabsf(lengthEToP);
-	if (lengthEToP <= m_pStateData->m_eyesight_rad)
+	if (lengthEToP <= stateData->m_eyesight_rad)
 	{
 		// プレイヤー発見
 		ChangeState(IDLE_DISCOVER);
@@ -218,7 +218,7 @@ void EnemyState::Idle_MoveToPlayer()
 
 	// 戦闘半径に近づいたら戦闘状態に移行
 //	if (m_enemy->GetEnemyStateData().m_combat_rad >= length)
-	if (m_pStateData->m_combat_rad >= length)
+	if (m_enemy->GetEnemyStateData()->m_combat_rad >= length)
 	{
 		m_enemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		ChangeState(COMBAT_IDLE);
@@ -265,4 +265,32 @@ void EnemyState::Combat_Ninjaexecution()
 
 void EnemyState::Combat_Dead()
 {
+}
+
+*/
+
+EnemyState::EnemyState():m_pStatePattern(new EnemyStateIdleIdle)
+{
+	
+}
+
+EnemyState::~EnemyState()
+{
+	if (m_pStatePattern)
+	{
+		delete m_pStatePattern;
+		m_pStatePattern = nullptr;
+	}
+}
+
+void EnemyState::Update(Enemy * pEnemy)
+{
+	m_pStatePattern->Update(pEnemy);
+}
+
+EnemyStatePattern * EnemyState::ChangeState(EnemyStatePattern * pStatePattern)
+{
+	EnemyStatePattern* temp = m_pStatePattern;
+	m_pStatePattern = pStatePattern;
+	return temp;
 }
