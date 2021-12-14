@@ -51,7 +51,9 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		{
 			m_isAttacking = false;
 			m_obbAttack->SetDead();
+			EnemyStatePattern* pStatePattern = 
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle);
+			delete pStatePattern;
 			return;
 		}
 		//if(アニメーション終了？)

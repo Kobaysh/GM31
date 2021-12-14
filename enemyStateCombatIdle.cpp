@@ -5,6 +5,7 @@
 #include "enemyStateCombatIdle.h"
 #include "enemyStateCombatAttack.h"
 #include "enemyStateCombatGuard.h"
+#include "enemyStateCombatDamaged.h"
 #include "enemy.h"
 #include "input.h"
 #include "keylogger.h"
@@ -15,14 +16,16 @@ const float EnemyStateCombatIdle::m_attackInterval = 10.0f;
 void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 {
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	EnemyState* pState = pEnemy->GetEnemyState();
 	m_timer += 0.1f;
 	if (KeyLogger_Trigger(KL_ATTACK))
 	{
 		// Šm—¦‚Å–hŒä
 		if (Utility::Random(30))
 		{
+			pState->SetIsGuarding(true);
 			EnemyStatePattern* pStatePattern = 
-			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatGuard);
+				pState->ChangeState(new EnemyStateCombatGuard);
 			delete pStatePattern;
 			return;
 		}
@@ -32,7 +35,16 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 	{
 		// UŒ‚ŠJŽn
 		EnemyStatePattern* pStatePattern = 
-		pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatAttack);
+			pState->ChangeState(new EnemyStateCombatAttack);
+		delete pStatePattern;
+		return;
+	}
+
+	if (pState->GetIsDamaged())
+	{
+		// UŒ‚‚ð‚­‚ç‚Á‚½‚ç
+		EnemyStatePattern* pStatePattern = 
+			pState->ChangeState(new EnemyStateCombatDamaged);
 		delete pStatePattern;
 		return;
 	}

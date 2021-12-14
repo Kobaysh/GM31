@@ -19,9 +19,14 @@ public:
 	~EnemyState();
 	void Update(Enemy* pEnemy);
 	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
+	void SetIsGuarding(bool isGuarding) { m_isGuarding = isGuarding; }
+	bool GetIsGuarding() { return m_isGuarding; }
+	void SetIsDamaged(bool isDamaged) { m_isDamaged = isDamaged; }
+	bool GetIsDamaged() { return m_isDamaged; }
 private:
 	EnemyStatePattern* m_pStatePattern;
-	bool m_isGuarding;
+	bool m_isGuarding = false;
+	bool m_isDamaged = false;
 };
 
 /*
