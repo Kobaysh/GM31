@@ -21,8 +21,8 @@
 #define ROTATION_SPEED (0.01f)
 #define ROTATION_VALUE (0.22f)
 #define MOVE_SPEED (0.1f)
-//#define PS_NAME ("pixelLightingPS.cso")
-#define PS_NAME ("toonPS.cso")
+#define PS_NAME ("pixelLightingPS.cso")
+//#define PS_NAME ("toonPS.cso")
 
 
 bool GameObject::ms_IsVoidPS = false;
@@ -30,37 +30,7 @@ bool GameObject::ms_IsVoidPS = false;
 
 void Player::Init()
 {
-//	m_Model = new Model();
-//	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
-//	m_Model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
-//	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
-//	m_Model->Load("asset\\model\\test\\woodcube.obj");	 // \\か//しか使えない
-	
-	m_Model = new AnimationModel();
-
-
-//	m_Model->Load("asset\\model\\player\\Akai_Idle.fbx");
-//	m_Model->Load("asset\\model\\player\\Idle (3).fbx");
-//	m_Model->Load("asset\\model\\AAP\\Ch24_nonPBR.fbx");
-//	m_Model->Load("asset\\model\\PSS7.4\\Ch24_nonPBR.fbx");
-//	m_Model->Load("asset\\model\\test\\woodcube.fbx");	 // \\か//しか使えない
-//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield walk.fbx", "attack");
-//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield idle.fbx", "idle");
-
-
-//	m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
-	m_Model->Load("asset\\model\\player\\Idle (6).fbx");
-	m_animationName = "idle";
-	m_Model->LoadAnimaiton("asset\\model\\player\\Idle.fbx", m_animationName.data());
-//	m_animationName = "attack";
-//	m_Model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
-	m_animationName = "run";
-	m_Model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_animationName.data());
-	m_animationName = "jump";
-	m_Model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_animationName.data());
-	
-	m_animationName = "idle";
-
+	ModelInit();
 
 	m_position	= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -97,7 +67,10 @@ void Player::Uninit()
 void Player::Update()
 {
 	m_playerState.Update();
-	m_Model->Update(m_animationName.data(), ++m_frame);
+	m_frame++;
+	int frame = (float)m_frame * 0.7f;
+	m_Model->Update(m_animationName.data(), ++frame);
+	//m_Model->Update(m_animationName.data(),++m_frame);
 //	m_Model->Update(++m_frame);
 	Jump();
 	Move();
@@ -176,7 +149,7 @@ void Player::Move()
 	}
 	else{
 		m_speed = 0.0f;
-		if (m_animationName != "jump") {
+		if (m_animationName != "jump" && m_animationName != "attack") {
 			m_animationName = "idle";
 		}
 	}
@@ -263,7 +236,7 @@ void Player::Shoot()
 	if (KeyLogger_Trigger(KL_ATTACK)) {
 //		DebugLog::DebugPrintSaveFlie("playerLog.txt", "shoot");
 		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
-//		m_animationName = "attack";
+		m_animationName = "attack";
 		m_shotSE->Play(0.1f);
 	}
 //	if (Input::GetMouseDown(Input::MouseButton::Left))
@@ -318,6 +291,46 @@ void Player::ChangeCameraDir()
 		camera->ChangeDir(0.02f, true);
 	}
 	}
+}
+
+void Player::ModelInit()
+{
+	//	m_Model = new Model();
+	//	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
+	//	m_Model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
+	//	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
+	//	m_Model->Load("asset\\model\\test\\woodcube.obj");	 // \\か//しか使えない
+
+	m_Model = new AnimationModel();
+
+
+	//	m_Model->Load("asset\\model\\player\\Akai_Idle.fbx");
+	//	m_Model->Load("asset\\model\\player\\Idle (3).fbx");
+	//	m_Model->Load("asset\\model\\AAP\\Ch24_nonPBR.fbx");
+	//	m_Model->Load("asset\\model\\PSS7.4\\Ch24_nonPBR.fbx");
+	//	m_Model->Load("asset\\model\\test\\woodcube.fbx");	 // \\か//しか使えない
+	//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield walk.fbx", "attack");
+	//	m_Model->LoadAnimaiton("asset\\model\\Sword and Shield Pack\\sword and shield idle.fbx", "idle");
+
+
+	//	m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
+	//m_Model->Load("asset\\model\\player\\Idle (6).fbx");	// 忍者
+	m_Model->Load("asset\\model\\player\\paladin\\paladin_prop_j_nordstrom.fbx");	// 鎧
+	m_animationName = "idle";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\idle.fbx", m_animationName.data());
+	//m_Model->LoadAnimaiton("asset\\model\\player\\Idle.fbx", m_animationName.data());
+	m_animationName = "attack";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\slash.fbx", m_animationName.data());
+	//	m_Model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
+	m_animationName = "run";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\run.fbx", m_animationName.data());
+	//m_Model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_animationName.data());
+	m_animationName = "jump";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\jump.fbx", m_animationName.data());
+	//m_Model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_animationName.data());
+
+	m_animationName = "idle";
+
 }
 
 void Player::UpdateObb()
