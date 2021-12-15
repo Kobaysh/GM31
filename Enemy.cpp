@@ -28,13 +28,9 @@ Enemy::Enemy():
 
 void Enemy::Init()
 {
-	// m_model = new Model();
-	// m_model->Load(FILENAME);
 	m_modelId = Model::SetModelLoadfile(FILENAME);
 	Model::Load(m_modelId);
-	m_position = XMFLOAT3(-20.0f, 1.0f, 1.0f);
-//	m_rotation = XMFLOAT3(XMConvertToRadians(45.0f), XMConvertToRadians(45.0f), XMConvertToRadians(45.0f));
-//	m_rotation = XMFLOAT3(0.f, XMConvertToRadians(60.0f), 0.f);
+	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 	m_rotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -51,9 +47,6 @@ void Enemy::Init()
 	m_stateData.m_combat_rad = 3.0f;
 
 	m_state = new EnemyState();
-//	m_state = new EnemyState(this);
-//	m_state->Init(GetEnemyStateData());
-
 
 	m_moveSpeed = 0.05f;
 
@@ -112,8 +105,6 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 
 void Enemy::Uninit()
 {
-	// m_model->Unload();
-	// delete m_model;
 	delete m_state;
 	m_obb->SetDead();
 	m_hpBar->SetDead();
