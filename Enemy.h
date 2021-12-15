@@ -27,6 +27,7 @@ protected:
 	class OBB* m_obb;
 	class EnemyState* m_state;
 	class EnemyGui* m_enemyGui;
+	class HpBar* m_hpBar;
 	XMFLOAT3 m_moveVector;
 
 	EnemyStateData m_stateData;
