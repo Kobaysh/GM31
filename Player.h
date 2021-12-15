@@ -11,21 +11,21 @@ private:
 //	class Model* m_Model;
 	class Audio* m_shotSE;
 	class OBB* m_obb;
+	class OBB* m_obbAttack;
 	class AnimationModel*  m_Model;
 
 	bool m_isActive = true;
 	bool m_movable = true;
 	float m_speed;
 
-	//XMFLOAT3 m_front;
-	//XMFLOAT3 m_right;
-	//XMFLOAT3 m_up;
-
 	XMFLOAT3 m_moveVector;
 	int m_sign;
 
+	bool m_isAttack = false;
 	bool m_isjump = false;
 	float m_jumpForce;
+
+	float m_timerAttack;
 
 	int m_nowHp;					// ヒットポイント
 	int m_maxHp;					// Maxヒットポイント
@@ -53,10 +53,9 @@ public:
 	void Jump();
 	void Shoot();
 	void CollisionOther();
-	void VoidDimension();
+	//void VoidDimension();
 	void ChangeCameraDir();
 	XMFLOAT3 GetMove()const { return m_moveVector; }
-	//XMFLOAT3* GetFront() { return &m_direction.m_forward; }
 	float GetSpeed() { return m_speed; }
 	OBB& GetObb() { return *m_obb; }
 

@@ -183,6 +183,7 @@
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameObject.h" />
+    <ClInclude Include="hp.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="fbxMesh.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="hp.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />

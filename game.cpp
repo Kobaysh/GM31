@@ -54,7 +54,7 @@ void Game::Init()
 //	AppendGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 
 	AppendGameObject<Sky>(GameObject::GOT_OBJECT3D);
-	AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, -4.0f));
+	AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 0.1f, -4.0f));
 //	AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);
 	for (int i = 0; i < 20; i++) {
 		XMFLOAT3 pos;

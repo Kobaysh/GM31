@@ -11,29 +11,26 @@
 #include "rock.h"
 #include "enemyState.h"
 #include "enemyGui.h"
+#include "hp.h"
 #include "enemy.h"
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
 
 Enemy::Enemy():
-	m_maxHp(0),
-	m_hp(0),
+	m_maxHp(3),
 	m_moveSpeed (0.0f),
 	m_rotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f)),
 	m_stateData(0.0f, 0.0f,0.0f,0.0f,0.0f)
 {
+	m_hp = m_maxHp;
 	m_position = (XMFLOAT3(0.0f, 0.0f, 0.0f));
 }
 
 void Enemy::Init()
 {
-	// m_model = new Model();
-	// m_model->Load(FILENAME);
 	m_modelId = Model::SetModelLoadfile(FILENAME);
 	Model::Load(m_modelId);
-	m_position = XMFLOAT3(-20.0f, 1.0f, 1.0f);
-//	m_rotation = XMFLOAT3(XMConvertToRadians(45.0f), XMConvertToRadians(45.0f), XMConvertToRadians(45.0f));
-//	m_rotation = XMFLOAT3(0.f, XMConvertToRadians(60.0f), 0.f);
+	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 	m_rotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -50,9 +47,6 @@ void Enemy::Init()
 	m_stateData.m_combat_rad = 3.0f;
 
 	m_state = new EnemyState();
-//	m_state = new EnemyState(this);
-//	m_state->Init(GetEnemyStateData());
-
 
 	m_moveSpeed = 0.05f;
 
@@ -66,7 +60,9 @@ void Enemy::Init()
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 
 
-	
+	// HPƒo[
+	m_hpBar = new HpBar();
+	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(m_position, XMFLOAT3(1.0f, 0.3f, 1.0f), m_maxHp, m_maxHp);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
 
@@ -87,6 +83,8 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 scale)
 	fixScale.y = fixScale.y * 2 + 0.1f;
 	fixScale.z = fixScale.z * 2 + 0.1f;
 	m_obb->SetScale(fixScale);
+	m_hpBar->SetPosition(pos);
+	m_hpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
 }
 
 void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
@@ -101,14 +99,15 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 	fixScale.y = fixScale.y * 2 + 0.1f;
 	fixScale.z = fixScale.z * 2 + 0.1f;
 	m_obb->SetScale(fixScale);
+	m_hpBar->SetPosition(pos);
+	m_hpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
 }
 
 void Enemy::Uninit()
 {
-	// m_model->Unload();
-	// delete m_model;
 	delete m_state;
 	m_obb->SetDead();
+	m_hpBar->SetDead();
 	m_explosionSE->Play(0.1f);
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -164,6 +163,21 @@ void Enemy::Draw()
 //	m_obb->SetisDraw(false);
 }
 
+bool Enemy::Damage(int damage)
+{
+	if (damage < 0)return false;
+	m_hp -= damage;
+	m_hpBar->SetHP(m_hp, m_maxHp);
+	if (m_hp <= 0)
+	{
+		m_hp = 0;
+		m_hpBar->SetHP(m_hp, m_maxHp);
+		SetDead();
+		return true;
+	}
+	return false;
+}
+
 void Enemy::UpdateRotation()
 {
 	XMVECTOR vRot = XMLoadFloat3(&m_rotation);
@@ -207,6 +221,9 @@ void Enemy::MoveFromMoveVector()
 	XMVECTOR vPos = XMLoadFloat3(&m_position);
 	vPos += XMLoadFloat3(&m_moveVector) * m_moveSpeed;
 	XMStoreFloat3(&m_position, vPos);
+	XMFLOAT3 hpBarPos = m_position;
+	hpBarPos.y += 2.0f* m_scale.y;
+	m_hpBar->SetPosition(hpBarPos);
 }
 
 void Enemy::CollisionOther()
