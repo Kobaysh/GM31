@@ -70,13 +70,14 @@ void Player::Update()
 	//m_Model->Update(m_animationName.data(),++m_frame);
 //	m_Model->Update(++m_frame);
 //	Jump();
-	Move();
-	UpdateObb();
-//	ChangeCameraDir();
-	Shoot();
-	CollisionOther();
+	this->Move();
+	this->UpdateObb();
+//	this->ChangeCameraDir();
+	this->Slash();
+	this->Shoot();
+	this->CollisionOther();
 	// 衝突判定の後移動
-	MoveFromMoveVector();
+	this->MoveFromMoveVector();
 }
 
 void Player::Draw()
@@ -101,6 +102,7 @@ void Player::Draw()
 
 
 	m_Model->Draw();
+	// デバッグ用OBB表示
 //	m_obb->SetisDraw(true);
 //	m_obb->Draw();
 }
@@ -136,19 +138,27 @@ void Player::Move()
 			direction -= XMLoadFloat3(&pCamera->GetDirection()->m_right);
 			m_speed = MOVE_SPEED;
 		}
-		if (m_animationName != "jump") {
-			m_animationName = "run";
+		if (m_animationName != "jump")
+		{
+			if (m_animationName != "run")
+			{
+				this->ChangeAnimation("run");
+			}
 		}
 	}
 	else{
 		m_speed = 0.0f;
 		if (m_animationName != "jump" && m_animationName != "attack") {
-			m_animationName = "idle";
+			if (m_animationName != "idle")
+			{
+				this->ChangeAnimation("idle");
+			}
 		}
 	}
 
 	direction = XMVector3Normalize(direction);	
 
+	// 回転処理
 	XMVECTOR cross = XMVector3Cross(vForward, direction);
 	m_sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
 
@@ -183,6 +193,7 @@ void Player::Move()
 
 //	vPositon += direction * m_speed;
 
+	// ジャンプとフィールド上処理
 	MeshField* mf = ManagerT::GetScene()->GetGameObject<MeshField>(GOT_OBJECT3D);
 	XMFLOAT3 tempHeight;
 	XMStoreFloat3(&tempHeight, vPositon);
@@ -198,7 +209,10 @@ void Player::Move()
 	//	m_jumpForce -= GRAVITY;
 		temp = vPositon + jumpVector;
 		if (temp.m128_f32[1] - 0.1f<= mf->GetHeight(tempHeight)) {
-			m_animationName = "idle";
+			if(m_animationName != "idle"){
+			this->ChangeAnimation("idle");
+			//	m_animationName = "idle";
+			}
 			m_isjump = false;
 			vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.1f;	// 接地面+サイズ
 		//	jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
@@ -223,18 +237,19 @@ void Player::Jump()
 {
 	if(KeyLogger_Trigger(KL_JUMP)) {
 		if (m_isjump) return;
-		m_animationName = "jump";
+		this->ChangeAnimation("jump");
 		m_jumpForce = 0.4f;
 		m_isjump = true;
 	}
 }
 
-void Player::Shoot()
+void Player::Slash()
 {
+	// 攻撃
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
 	if (!m_isAttack && KeyLogger_Trigger(KL_ATTACK)) {
-		m_animationName = "attack";
+		this->ChangeAnimation("attack");
 		m_isAttack = true;
 		m_timerAttack = 0.0f;
 
@@ -250,7 +265,7 @@ void Player::Shoot()
 		m_shotSE->Play(0.1f);
 		*/
 	}
-//	if (Input::GetMouseDown(Input::MouseButton::Left))
+	//	if (Input::GetMouseDown(Input::MouseButton::Left))
 	if (MOUSE_TRUE)
 	{
 		if (Input::GetMouseTrigger(Input::MouseButton::Left))
@@ -293,7 +308,8 @@ void Player::Shoot()
 					}
 
 					m_isAttack = false;
-					m_animationName = "idle";
+					this->ChangeAnimation("idle");
+					//	m_animationName = "idle";
 					m_obbAttack->SetDead();
 				}
 			}
@@ -303,8 +319,22 @@ void Player::Shoot()
 	if (m_isAttack && m_timerAttack >= 10.0f)
 	{
 		m_isAttack = false;
-		m_animationName = "idle";
+		this->ChangeAnimation("idle");
+		//	m_animationName = "idle";
 		m_obbAttack->SetDead();
+	}
+}
+
+void Player::Shoot()
+{
+	// 弾を撃つ
+	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
+
+	if (KeyLogger_Trigger(KL_GUARD)) {
+		
+		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
+		m_shotSE->Play(0.1f);
+		
 	}
 }
 
@@ -393,6 +423,12 @@ void Player::MoveFromMoveVector()
 	XMVECTOR vPos = XMLoadFloat3(&m_position);
 	vPos += XMLoadFloat3(&m_moveVector);
 	XMStoreFloat3(&m_position, vPos);
+}
+
+void Player::ChangeAnimation(const char * animationName)
+{
+	m_animationName = animationName;
+	m_frame = 0;
 }
 
 //void Player::VoidDimension()

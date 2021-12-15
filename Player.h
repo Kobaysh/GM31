@@ -51,6 +51,7 @@ public:
 
 	void Move();
 	void Jump();
+	void Slash();
 	void Shoot();
 	void CollisionOther();
 	//void VoidDimension();
@@ -68,5 +69,6 @@ private:
 	void ModelInit();
 	void UpdateObb();
 	void MoveFromMoveVector();
+	void ChangeAnimation(const char* animationName);
 };
 
