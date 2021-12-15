@@ -119,7 +119,7 @@ void Enemy::Update()
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 	m_state->Update(this);
 //	m_state->Update();
-
+//	this->UpdateRotation();
 	this->UpdateOBB();
 	this->CollisionOther();
 	this->MoveFromMoveVector();
@@ -183,13 +183,13 @@ void Enemy::UpdateRotation()
 	XMVECTOR vRot = XMLoadFloat3(&m_rotation);
 	//if (Input::GetKeyPress(VK_RIGHT))
 	//{
-	//	m_rotationSpeed.y= 0.01f;
+		m_rotationSpeed.y= 0.01f;
 	//}
 	//if (Input::GetKeyPress(VK_LEFT))
 	//{
 	//	m_rotationSpeed.y = -0.01f;
 	//}
-	//vRot += XMLoadFloat3(&m_rotationSpeed);
+	// vRot += XMLoadFloat3(&m_rotationSpeed);
 	//XMStoreFloat3(&m_rotation, vRot);
 	//XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward),vRight = XMLoadFloat3(&m_direction.m_right),vUp;
 	////	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
@@ -201,6 +201,7 @@ void Enemy::UpdateRotation()
 	//XMStoreFloat3(&m_direction.m_right, vRight);
 	//XMStoreFloat3(&m_direction.m_up, vUp);
 	m_obb->SetRotation(m_rotation, m_rotationSpeed);
+	m_rotation.y += m_rotationSpeed.y;
 	//m_obb->SetRotationFromForwardRightVector(m_direction.m_forward,m_direction.m_right, m_rotation);
 }
 
