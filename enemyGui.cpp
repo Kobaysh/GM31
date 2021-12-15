@@ -9,7 +9,7 @@
 void EnemyGui::Init()
 {
 	m_name  = "Enemy Window";
-	MyImGui::SetGuiWindow(m_name, this);
+//	MyImGui::SetGuiWindow(m_name, this);
 }
 void EnemyGui::Uninit()
 {

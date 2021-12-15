@@ -118,7 +118,11 @@ void Rock::Draw()
 	// Ž‹Ž‘äƒJƒŠƒ“ƒO
 	Scene* scene = ManagerT::GetScene();
 	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
-	if (!camera->CheckView(m_position, m_scale))
+	XMFLOAT3 fixedScale = m_scale;
+	fixedScale.x *= 1.0f;
+	fixedScale.y *= 1.0f;
+	fixedScale.z *= 1.0f;
+	if (!camera->CheckView(m_position, fixedScale))
 	{
 		return;
 	}
