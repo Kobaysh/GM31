@@ -47,6 +47,7 @@ public:
 	void SetMoveVector(XMFLOAT3 moveVector) { m_moveVector = moveVector; }
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
+	bool Damage(int damage);
 private:
 	void UpdateRotation();
 	void UpdateOBB();

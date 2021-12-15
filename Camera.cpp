@@ -254,7 +254,7 @@ void Camera::Update()
 //	vPosition += vDirection * m_moveSpeed;
 	// ’‹“_ŒvZ
 
-	vAt = vPosition + vForward * m_atLength;
+	vAt = XMLoadFloat3(&ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D)->GetPosition());
 #endif
 	// •Ï”•Û‘¶
 	XMStoreFloat3(&m_target, vAt);

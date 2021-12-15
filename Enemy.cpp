@@ -16,8 +16,8 @@
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
 
 Enemy::Enemy():
-	m_maxHp(0),
-	m_hp(0),
+	m_maxHp(3),
+	m_hp(m_maxHp),
 	m_moveSpeed (0.0f),
 	m_rotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f)),
 	m_stateData(0.0f, 0.0f,0.0f,0.0f,0.0f)
@@ -162,6 +162,19 @@ void Enemy::Draw()
 //	m_obb->SetisDraw(true);
 //	m_obb->Draw();
 //	m_obb->SetisDraw(false);
+}
+
+bool Enemy::Damage(int damage)
+{
+	if (damage < 0)return false;
+	m_hp -= damage;
+	if (m_hp <= 0)
+	{
+		m_hp = 0;
+		SetDead();
+		return true;
+	}
+	return false;
 }
 
 void Enemy::UpdateRotation()

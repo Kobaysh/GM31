@@ -243,7 +243,7 @@ void Player::Shoot()
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 0.5f;
 		m_obbAttack = nullptr;
-		m_obbAttack = new OBB(obbPos, m_rotation, XMFLOAT3(1.0f, 0.5f,1.0f));
+		m_obbAttack = new OBB(obbPos, m_rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
 		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
 		/*
 		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
@@ -269,18 +269,32 @@ void Player::Shoot()
 		obbPos.y += 0.5f;
 		m_obbAttack->SetPosition(obbPos);
 
-		// 敵との衝突判定
-		std::vector<Enemy*> enemyList = ManagerT::GetScene()->GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
-		for (Enemy* enemy : enemyList)
+		if (m_timerAttack >= 4.0f)
 		{
-			if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb()))
+			// 敵との衝突判定
+			std::vector<Enemy*> enemyList = ManagerT::GetScene()->GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
+			for (Enemy* enemy : enemyList)
 			{
-				// 攻撃が当たった
-				enemy->GetEnemyState()->SetIsCollided(true);
-				// ガード状態なら
-				if (enemy->GetEnemyState()->GetIsGuarding())
+				if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb()))
 				{
+					// 攻撃が当たった
+					enemy->GetEnemyState()->SetIsCollided(true);
+					// ガード状態なら
+					if (enemy->GetEnemyState()->GetIsGuarding())
+					{
+						// 体幹にダメージ
+					}
+					else
+					{
+						if (enemy->Damage(1));
+						// 止めを刺す
+						else;
+						// 体幹にダメージ
+					}
 
+					m_isAttack = false;
+					m_animationName = "idle";
+					m_obbAttack->SetDead();
 				}
 			}
 		}
@@ -289,6 +303,7 @@ void Player::Shoot()
 	if (m_isAttack && m_timerAttack >= 10.0f)
 	{
 		m_isAttack = false;
+		m_animationName = "idle";
 		m_obbAttack->SetDead();
 	}
 }

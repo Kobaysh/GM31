@@ -28,6 +28,7 @@ void EnemyStateCombatGuard::Update(Enemy * pEnemy)
 	// ’e‚¢‚½‚çUŒ‚
 	if (isRepel)
 	{
+		pState->SetIsGuarding(false);
 		EnemyStatePattern* pStatePattern = 
 			pState->ChangeState(new EnemyStateCombatAttack);
 		delete pStatePattern;

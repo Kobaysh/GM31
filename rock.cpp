@@ -25,8 +25,8 @@ void Rock::Init()
 //	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\‚©//‚µ‚©Žg‚¦‚È‚¢
 //	m_Model->Load("asset\\model\\rock\\rock.obj");	 // \\‚©//‚µ‚©Žg‚¦‚È‚¢
 	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
-//	Model::Load(m_modelId);
-	Model::AllLoad();
+	Model::Load(m_modelId);
+//	Model::AllLoad();
 	m_position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale		= XMFLOAT3(3.0f, 3.0f, 3.0f);
@@ -48,8 +48,8 @@ void Rock::Init()
 void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
 {
 	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
-	//	Model::Load(m_modelId);
-	Model::AllLoad();
+		Model::Load(m_modelId);
+	//Model::AllLoad();
 	m_position = pos;
 	m_rotation = rot;
 	m_scale = scale;
@@ -88,11 +88,11 @@ void Rock::Uninit()
 		m_VertexLayout->Release();
 		m_VertexLayout = nullptr;
 	}
-	if (m_VertexLayout) {
+	if (m_VertexShader) {
 		m_VertexShader->Release();
 		m_VertexShader = nullptr;
 	}
-	if (m_VertexLayout) {
+	if (m_PixelShader) {
 			m_PixelShader->Release();
 			m_PixelShader = nullptr;
 	}
