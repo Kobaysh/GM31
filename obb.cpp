@@ -4,9 +4,11 @@
 
 #include "obb.h"
 
+//	プロトタイプ宣言
 float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* e3 = nullptr);
 
 
+// staticメンバ
 ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
 ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
 ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;
@@ -16,7 +18,11 @@ ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
 // 描画するかどうか
+#if defined (DEBUG) || defined (_DEBUG)
 bool OBB::m_bIsDraw = true;
+#else 
+bool OBB::m_bIsDraw = false;
+#endif
 bool OBB::m_bIsDrawForwardRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)

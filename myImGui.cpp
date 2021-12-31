@@ -16,7 +16,7 @@ static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
 std::unordered_map <std::string, class MyGuiWindow*> MyImGui::m_myGuiWindows;
 bool MyImGui::checkbox = false;
-#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
+#if defined (DEBUG) || defined (_DEBUG)
 bool MyImGui::m_bIsShowAll = true;
 #else
 bool MyImGui::m_bIsShowAll = false;

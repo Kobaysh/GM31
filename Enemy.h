@@ -46,6 +46,7 @@ public:
 	OBB& GetObb() { return *m_obb; }
 	float GetMoveSpeed() { return m_moveSpeed; }
 	void SetMoveVector(XMFLOAT3 moveVector) { m_moveVector = moveVector; }
+	void SetRotationSpeed(XMFLOAT3 rotationSpeed) { m_rotationSpeed = rotationSpeed; }
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
 	bool Damage(int damage);
