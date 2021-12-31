@@ -1,6 +1,7 @@
 ﻿#include "main.h"
 #include "manager.h"
 #include "renderer.h"
+#include "texture.h"
 
 #include "obb.h"
 
@@ -11,9 +12,8 @@ float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* 
 // staticメンバ
 ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
 ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
-ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;
-ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
-ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
+ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
+//ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 
 const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
@@ -419,28 +419,15 @@ void OBB::Init()
 
 	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
 	// テクスチャ読み込み
-	D3DX11CreateShaderResourceViewFromFile(
-		Renderer::GetpDevice().Get(),
-		FILENAME_BLUE,
-		NULL,
-		NULL,
-		&m_textureBlue,
-		NULL
-	);
-	// テクスチャ読み込み
-	D3DX11CreateShaderResourceViewFromFile(
-		Renderer::GetpDevice().Get(),
-		FILENAME_RED,
-		NULL,
-		NULL,
-		&m_textureRed,
-		NULL
-	);
+	Texture::Load(FILENAME_BLUE);
+	Texture::Load(FILENAME_RED);
+
 	m_isDraw = false;
 }
 
 void OBB::Uninit()
 {
+
 }
 
 void OBB::Update()
@@ -511,10 +498,10 @@ void OBB::Draw()
 
 	// テクスチャ設定
 	if (m_isCollide) {
-		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_RED));
 	}
 	else {
-		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureBlue);
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_BLUE));
 	}
 
 
@@ -556,22 +543,14 @@ void OBB::Draw()
 
 			Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
 
-			//XMMATRIX scaleX = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-			//XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-			//XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
-			//XMMATRIX worldX = scaleX * rotX * transX;
-			//XMFLOAT4X4 world4x4;
-			//XMStoreFloat4x4(&world4x4, worldX);
-			//Renderer::SetWorldMatrixX(&world4x4);
-
 
 			if (!m_isCollide)
 			{
-				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureRed);
+				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_RED));
 			}
 			else
 			{
-				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureBlue);
+				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_BLUE));
 			}
 
 			//    Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
@@ -587,7 +566,6 @@ void OBB::Draw()
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
 	// ラスタライザ設定
 	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
-//	Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
 	
 }
 

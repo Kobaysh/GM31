@@ -380,6 +380,7 @@ void Model::AllRelease()
 {
 	for (Model* model : m_ModelList) {
 		model->Unload();
+		delete model;
 	}
 	m_ModelList.clear();
 }

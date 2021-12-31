@@ -216,7 +216,6 @@
     <ClInclude Include="shaderManager.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="sky.h" />
-    <ClInclude Include="sprite.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />

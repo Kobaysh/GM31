@@ -74,9 +74,6 @@
     <ClInclude Include="singleton.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
-    <ClInclude Include="sprite.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="texture.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>

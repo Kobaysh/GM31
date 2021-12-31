@@ -1,6 +1,7 @@
 #include "main.h"
 #include "renderer.h"
 #include "fade.h"
+#include "texture.h"
 
 #define FILENAME ("asset/texture/fade.png")
 
@@ -50,15 +51,16 @@ void Fade::Init()
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	// テクスチャ読み込み
-	D3DX11CreateShaderResourceViewFromFile(
-		Renderer::GetpDevice().Get(),
-		FILENAME,
-		NULL,
-		NULL,
-		&m_texture,
-		NULL
-		);
-	assert(m_texture);
+	Texture::GetTexture(FILENAME);
+	//D3DX11CreateShaderResourceViewFromFile(
+	//	Renderer::GetpDevice().Get(),
+	//	FILENAME,
+	//	NULL,
+	//	NULL,
+	//	&m_texture,
+	//	NULL
+	//	);
+	//assert(m_texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
 
@@ -72,7 +74,8 @@ void Fade::Init()
 void Fade::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_texture->Release();
+	//m_texture->Release();
+	Texture::Release(FILENAME);
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -164,7 +167,7 @@ void Fade::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

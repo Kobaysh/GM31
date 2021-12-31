@@ -82,6 +82,7 @@ void Wall::Uninit()
 //	m_vertexBuffer->Release();
 //	m_texture->Release();
 //	Model::Release(m_modelId);
+	m_obb->SetDead();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();

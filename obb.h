@@ -9,9 +9,6 @@ private:
 	static ID3D11PixelShader*		m_PixelShader;
 	static ID3D11InputLayout*		m_VertexLayout;
 
-	static ID3D11ShaderResourceView* m_textureBlue;
-	static ID3D11ShaderResourceView* m_textureRed;
-
 	static const char* FILENAME_BLUE;
 	static const char* FILENAME_RED;
 
