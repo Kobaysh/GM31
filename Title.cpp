@@ -8,6 +8,7 @@
 #include "titleLogo.h"
 #include "fade.h"
 #include "pressSpaceKey.h"
+#include "enemy.h"
 #include "texture.h"
 #include "title.h"
 #include "game.h"

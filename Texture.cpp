@@ -155,7 +155,7 @@ bool Texture::Load(std::string fileName)
 			&texture,
 			NULL
 		);
-		assert(texture);
+		if (!texture) return false;
 		m_textureList[fileName] = texture;
 		return true;
 }
@@ -177,7 +177,7 @@ void Texture::AllRelease()
 	for (auto pair : m_textureList)
 	{
 		pair.second->Release();
-		pair.second = nullptr;
+	//	pair.second = nullptr;
 	}
 	m_textureList.clear();
 }

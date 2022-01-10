@@ -6,7 +6,7 @@
 #include "texture.h"
 #include "hp.h"
 
-#define FILENAME ("asset/texture/fade.png")
+#define FILENAME ("asset\\texture\\fade.png")
 
 void HpBar::Init()
 {

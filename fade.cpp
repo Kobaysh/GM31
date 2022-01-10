@@ -3,7 +3,7 @@
 #include "fade.h"
 #include "texture.h"
 
-#define FILENAME ("asset/texture/fade.png")
+#define FILENAME ("asset\\texture\\fade.png")
 
 // Ã“I•Ï”
 float Fade::m_fadeAlpha;

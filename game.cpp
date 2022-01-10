@@ -25,6 +25,7 @@
 #include "result.h"
 #include "fade.h"
 #include "pressSpaceKey.h"
+#include "titleLogo.h"
 
 #include "game.h"
 

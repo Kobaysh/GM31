@@ -15,8 +15,8 @@ ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
 ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
 //ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 
-const char* OBB::FILENAME_BLUE = ("asset/texture/tinyblue.png");
-const char* OBB::FILENAME_RED = ("asset/texture/tinyred.png");
+const char* OBB::FILENAME_BLUE = ("asset\\texture\\tinyblue.png");
+const char* OBB::FILENAME_RED = ("asset\\texture\\tinyred.png");
 // 描画するかどうか
 #if defined (DEBUG) || defined (_DEBUG)
 bool OBB::m_bIsDraw = true;

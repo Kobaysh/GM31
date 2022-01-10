@@ -2,7 +2,7 @@
 #include "renderer.h"
 #include "titleLogo.h"
 
-#define FILE_NAME ("asset/texture/kusodekatitle.png")
+#define FILE_NAME ("asset\\texture\\kusodekatitle.png")
 
 void TitleLogo::Init()
 {

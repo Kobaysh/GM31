@@ -53,6 +53,7 @@ void Player::Init()
 
 void Player::Uninit()
 {
+	m_obb->SetDead();
 	if (m_Model)
 	{
 		m_Model->Unload();

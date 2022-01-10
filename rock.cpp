@@ -85,6 +85,7 @@ void Rock::Uninit()
 	if (m_obb)
 	{
 		m_obb->SetDead();
+		m_obb = nullptr;
 	}
 	if (m_VertexLayout) {
 		m_VertexLayout->Release();
