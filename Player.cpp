@@ -58,6 +58,7 @@ void Player::Uninit()
 	{
 		m_Model->Unload();
 		delete m_Model;
+		m_Model = nullptr;
 	}
 	m_VertexLayout->Release();
 	m_VertexShader->Release();

@@ -16,10 +16,10 @@
 
 void Title::Init()
 {
+	m_isFading = false;
 	AppendGameObject<TitleLogo>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
-	m_isFading = false;
 	Fade::SetFade(Fade::FADE_IN);
 }
 
