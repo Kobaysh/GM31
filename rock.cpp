@@ -35,7 +35,7 @@ void Rock::Init()
 	if (!m_obb)
 	{
 		m_obb = new OBB(m_position, XMFLOAT3(3.0f, 3.0f, 3.0f));
-		ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+	//	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 	}
 	if (!m_VertexShader) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
@@ -62,7 +62,7 @@ void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
 	if (!m_obb)
 	{
 		m_obb = new OBB(m_position, m_rotation, fixedScale);
-		ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+	//	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 	}
 	else
 	{
@@ -84,7 +84,8 @@ void Rock::Uninit()
 	//delete m_Model;
 	if (m_obb)
 	{
-		m_obb->SetDead();
+	//	m_obb->SetDead();
+		delete m_obb;
 		m_obb = nullptr;
 	}
 	if (m_VertexLayout) {
