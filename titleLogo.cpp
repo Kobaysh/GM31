@@ -2,30 +2,30 @@
 #include "renderer.h"
 #include "titleLogo.h"
 
-#define FILENAME ("asset/texture/kusodekatitle.png")
+#define FILE_NAME ("asset/texture/kusodekatitle.png")
 
 void TitleLogo::Init()
 {
-	/*VERTEX_3D vertex[4];
-	vertex[0].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	vertex[0].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	vertex[0].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[0].TexCoord	= D3DXVECTOR2(0.0f, 0.0f);
-	
-	vertex[1].Position	= D3DXVECTOR3(200.0f, 0.0f, 0.0f);
-	vertex[1].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	vertex[1].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[1].TexCoord	= D3DXVECTOR2(1.0f, 0.0f);
+	//VERTEX_3D vertexx[4];
+	//vertexx[0].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//vertexx[0].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//vertexx[0].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
+	//vertexx[0].TexCoord	= D3DXVECTOR2(0.0f, 0.0f);
+	//
+	//vertexx[1].Position	= D3DXVECTOR3(200.0f, 0.0f, 0.0f);
+	//vertexx[1].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//vertexx[1].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
+	//vertexx[1].TexCoord	= D3DXVECTOR2(1.0f, 0.0f);
 
-	vertex[2].Position	= D3DXVECTOR3(0.0f, 200.0f, 0.0f);
-	vertex[2].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	vertex[2].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[2].TexCoord	= D3DXVECTOR2(0.0f, 1.0f);
+	//vertexx[2].Position	= D3DXVECTOR3(0.0f, 200.0f, 0.0f);
+	//vertexx[2].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//vertexx[2].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
+	//vertexx[2].TexCoord	= D3DXVECTOR2(0.0f, 1.0f);
 
-	vertex[3].Position	= D3DXVECTOR3(200.0f, 200.0f, 0.0f);
-	vertex[3].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	vertex[3].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
-	vertex[3].TexCoord	= D3DXVECTOR2(1.0f, 1.0f);*/
+	//vertexx[3].Position	= D3DXVECTOR3(200.0f, 200.0f, 0.0f);
+	//vertexx[3].Normal	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//vertexx[3].Diffuse	= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
+	//vertexx[3].TexCoord	= D3DXVECTOR2(1.0f, 1.0f);
 
 	VERTEX_3DX vertexx[4];
 	vertexx[0].Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -69,7 +69,7 @@ void TitleLogo::Init()
 	D3DX11CreateShaderResourceViewFromFile(
 	//	Renderer::GetDevice(),
 		Renderer::GetpDevice().Get(),
-		FILENAME,
+		FILE_NAME,
 		NULL,
 		NULL,
 		&m_texture,
@@ -101,17 +101,11 @@ void TitleLogo::Update()
 void TitleLogo::Draw()
 {
 	// 入力レイアウト設定
-	//Renderer::GetDeviceContext()->IASetInputLayout(m_pVertexLayout);
-
-	//// シェーダー設定
-	//Renderer::GetDeviceContext()->VSSetShader(m_pVertexShader, NULL, 0);
-	//Renderer::GetDeviceContext()->PSSetShader(m_pPixelShader, NULL, 0);
-
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, nullptr, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, nullptr, 0);
 
 	// マトリクス設定
 	Renderer::SetWorldViewProjection2D();

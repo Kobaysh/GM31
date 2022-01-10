@@ -51,7 +51,7 @@ void Fade::Init()
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	// テクスチャ読み込み
-	Texture::GetTexture(FILENAME);
+	Texture::Load(FILENAME);
 	//D3DX11CreateShaderResourceViewFromFile(
 	//	Renderer::GetpDevice().Get(),
 	//	FILENAME,
@@ -75,7 +75,7 @@ void Fade::Uninit()
 {
 	m_VertexBuffer->Release();
 	//m_texture->Release();
-	Texture::Release(FILENAME);
+	//Texture::Release(FILENAME);
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
