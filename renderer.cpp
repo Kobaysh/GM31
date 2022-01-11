@@ -171,10 +171,17 @@ void Renderer::Init()
 
 
 	// ラスタライザステート設定
-	CreateRasterizerState();
+	//CreateRasterizerState();
 
-	m_pDeviceContext->RSSetState(m_pRS_FillSolid.Get());
+	//m_pDeviceContext->RSSetState(m_pRS_FillSolid.Get());
 
+	D3D11_RASTERIZER_DESC rd;
+	rd.FillMode = D3D11_FILL_SOLID;
+	rd.CullMode = D3D11_CULL_BACK;
+	rd.FrontCounterClockwise = true;
+	rd.MultisampleEnable = false;
+
+	GetpDevice()->CreateRasterizerState(&rd, m_pRS_FillSolid.GetAddressOf());
 
 
 

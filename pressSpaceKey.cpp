@@ -2,7 +2,7 @@
 #include "renderer.h"
 #include "pressSpaceKey.h"
 
-#define FILENAME ("asset/texture/PressSpaceKey.png")
+#define FILENAME ("asset\\texture\\PressSpaceKey.png")
 
 #define OFFSET_X (240.0f)
 #define OFFSET_Y (420.0f)
