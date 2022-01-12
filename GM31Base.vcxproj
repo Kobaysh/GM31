@@ -159,8 +159,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="actionBase.h" />
     <ClInclude Include="animationModel.h" />
     <ClInclude Include="audio.h" />
+    <ClInclude Include="behaviorTree.h" />
     <ClInclude Include="billboard.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
@@ -177,6 +179,7 @@
     <ClInclude Include="enemyStateIdleBeware.h" />
     <ClInclude Include="enemyStateIdleDiscover.h" />
     <ClInclude Include="enemyStateIdleIdle.h" />
+    <ClInclude Include="execJudgmentBase.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="fbxMesh.h" />
@@ -201,6 +204,7 @@
     <ClInclude Include="meshField.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="myImGui.h" />
+    <ClInclude Include="nodeBase.h" />
     <ClInclude Include="obb.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerState.h" />
@@ -268,6 +272,7 @@
     <ClCompile Include="meshField.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="myImGui.cpp" />
+    <ClCompile Include="nodeBase.cpp" />
     <ClCompile Include="obb.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerState.cpp" />
