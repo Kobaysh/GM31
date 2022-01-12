@@ -219,7 +219,9 @@
     <ClInclude Include="state.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="title.h" />
+    <ClInclude Include="titleBG.h" />
     <ClInclude Include="titleLogo.h" />
+    <ClInclude Include="titleParticle.h" />
     <ClInclude Include="trunk.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="wall.h" />
@@ -282,7 +284,9 @@
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="title.cpp" />
+    <ClCompile Include="titleBG.cpp" />
     <ClCompile Include="titleLogo.cpp" />
+    <ClCompile Include="titleParticle.cpp" />
     <ClCompile Include="wall.cpp" />
     <ClCompile Include="weapon.cpp" />
     <ClCompile Include="wood.cpp" />

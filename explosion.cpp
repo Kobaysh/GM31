@@ -7,7 +7,7 @@
 #include "scene.h"
 #include "keylogger.h"
 
-#define FILENAME ("asset/texture/explosion.dds")
+#define FILENAME ("asset\\texture\\explosion.dds")
 #define ANIMATION_MAG (6)
 
 int Explosion::m_animationMag = 3;

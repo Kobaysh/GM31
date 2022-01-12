@@ -25,6 +25,7 @@
 #include "result.h"
 #include "fade.h"
 #include "pressSpaceKey.h"
+#include "titleLogo.h"
 
 #include "game.h"
 
@@ -84,7 +85,7 @@ void Game::Init()
 //	Enemy* enemy = 
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(0.0f,1.0f,5.0f), XMFLOAT3(0.0f, XMConvertToRadians(180.0f), 0.0f), XMFLOAT3(1.0f,1.0f,1.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(10.0f,1.0f,15.0f), XMFLOAT3(0.0f, XMConvertToRadians(180.0f), 0.0f), XMFLOAT3(3.0f,1.0f,1.0f));
-	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(-0.0f,1.0f,-20.0f), XMFLOAT3(0.0f, XMConvertToRadians(0.0f), 0.0f), XMFLOAT3(1.0f,1.0f,1.0f));
+//	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(-0.0f,1.0f,-20.0f), XMFLOAT3(0.0f, XMConvertToRadians(0.0f), 0.0f), XMFLOAT3(1.0f,1.0f,1.0f));
 	//enemy->SetPosition(XMFLOAT3(0.0f, 1.0f, 5.0f));
 	//enemy->GetObb().SetPosition(enemy->GetPosition());
 	//enemy->SetScale(XMFLOAT3(1.0f, 1.0f, 1.0f));

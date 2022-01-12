@@ -31,7 +31,7 @@ using namespace DirectX;
 #define RELEASE_ON_PLAY (true)
 
 static const char* CLASS_NAME = "AppClass";
-static const char* WINDOW_NAME = "DX11ÉQÅ[ÉÄ";
+static const char* WINDOW_NAME = "Darkirouls";
 
 HWND GetWindow();
 bool JudgeActiveWindow();

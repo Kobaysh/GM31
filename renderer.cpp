@@ -171,10 +171,17 @@ void Renderer::Init()
 
 
 	// ラスタライザステート設定
-	CreateRasterizerState();
+	//CreateRasterizerState();
 
-	m_pDeviceContext->RSSetState(m_pRS_FillSolid.Get());
+	//m_pDeviceContext->RSSetState(m_pRS_FillSolid.Get());
 
+	D3D11_RASTERIZER_DESC rd;
+	rd.FillMode = D3D11_FILL_SOLID;
+	rd.CullMode = D3D11_CULL_BACK;
+	rd.FrontCounterClockwise = true;
+	rd.MultisampleEnable = false;
+
+	GetpDevice()->CreateRasterizerState(&rd, m_pRS_FillSolid.GetAddressOf());
 
 
 
@@ -438,6 +445,25 @@ void Renderer::SetWorldViewProjection2D()
 	XMMATRIX projection;
 	projection = XMMatrixOrthographicOffCenterLH(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 0.0f, 1.0f);
  	projection = XMMatrixTranspose(projection);
+	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, nullptr, &projection, 0, 0);
+}
+
+void Renderer::SetWorldViewProjection2D(XMMATRIX * worldMatrix)
+{
+	XMMATRIX world;
+	world =	*worldMatrix;
+	world = XMMatrixTranspose(world);
+
+	m_pDeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, nullptr, &world, 0, 0);
+
+	XMMATRIX view;
+	view = XMMatrixIdentity();
+	view = XMMatrixTranspose(view);
+	m_pDeviceContext->UpdateSubresource(m_pViewBuffer.Get(), 0, nullptr, &view, 0, 0);
+
+	XMMATRIX projection;
+	projection = XMMatrixOrthographicOffCenterLH(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 0.0f, 1.0f);
+	projection = XMMatrixTranspose(projection);
 	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, nullptr, &projection, 0, 0);
 }
 

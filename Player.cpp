@@ -53,9 +53,13 @@ void Player::Init()
 
 void Player::Uninit()
 {
-	m_Model->Unload();
-	delete m_Model;
-	
+	m_obb->SetDead();
+	if (m_Model)
+	{
+		m_Model->Unload();
+		delete m_Model;
+		m_Model = nullptr;
+	}
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
