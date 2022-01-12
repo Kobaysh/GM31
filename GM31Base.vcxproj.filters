@@ -236,6 +236,12 @@
     <ClInclude Include="hp.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="titleBG.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="titleParticle.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -414,6 +420,12 @@
     </ClCompile>
     <ClCompile Include="hp.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="titleBG.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="titleParticle.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

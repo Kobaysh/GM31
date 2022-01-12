@@ -110,6 +110,7 @@ public:
 
 	static void SetDepthEnable(bool Enable);
 	static void SetWorldViewProjection2D();
+	static void SetWorldViewProjection2D(XMMATRIX* worldMatrix);
 	static void SetWorldMatrix(D3DXMATRIX* WorldMatrix);
 	static void SetViewMatrix(D3DXMATRIX* ViewMatrix);
 	static void SetProjectionMatrix(D3DXMATRIX* ProjectionMatrix);
