@@ -65,11 +65,11 @@ void TitleParticle::Init()
 	}
 	if (!m_sVertexLayout && !m_sVertexShader)
 	{
-		Renderer::CreateVertexShader(&m_sVertexShader, &m_sVertexLayout, "unlitTextureVS.cso");
+		Renderer::CreateVertexShader(&m_sVertexShader, &m_sVertexLayout, "asset/shader/unlitTextureVS.cso");
 	}
 	if (!m_sPixelShader)
 	{
-		Renderer::CreatePixelShader(&m_sPixelShader, "unlitTexturePS.cso");
+		Renderer::CreatePixelShader(&m_sPixelShader, "asset/shader/unlitTexturePS.cso");
 	}
 
 	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);

@@ -50,8 +50,8 @@ void HpBar::Init()
 
 		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 	}
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
-	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 }
 
 void HpBar::Init(XMFLOAT3 pos, XMFLOAT3 scale, int nowHP, int maxHP)

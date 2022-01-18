@@ -38,10 +38,10 @@ void Rock::Init()
 	//	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 	}
 	if (!m_VertexShader) {
-		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 	}
 	if (!m_PixelShader) {
-		Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+		Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
 	}
 }
 
@@ -71,10 +71,10 @@ void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
 		m_obb->SetScale(fixedScale);
 	}
 	if (!m_VertexShader) {
-		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 	}
 	if (!m_PixelShader) {
-		Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+		Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
 	}
 }
 
