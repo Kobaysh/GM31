@@ -111,6 +111,16 @@ void MyImGui::SetGuiWindow(const std::string & name, MyGuiWindow* window)
 	m_myGuiWindows[name] = window;
 }
 
+void MyImGui::DeleteGuiWindow(const std::string & name)
+{
+	auto it = m_myGuiWindows.find(name);
+	if (it != m_myGuiWindows.end())
+	{
+		delete m_myGuiWindows[name];
+		m_myGuiWindows.erase(name);
+	}
+}
+
 void MyImGui::SetSampleWindow()
 {
 #if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)

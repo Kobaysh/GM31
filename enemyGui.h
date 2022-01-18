@@ -7,13 +7,13 @@ class EnemyGui : public MyGuiWindow
 {
 private:
 //	const std::string m_windowName = "Enemy Window";
-	Enemy* m_enemy;
+//	Enemy* m_enemy;
 public:
-//	EnemyGui(){}
-	EnemyGui(Enemy* enemy) :m_enemy(enemy){}
+	EnemyGui(){}
+//	EnemyGui(Enemy* enemy) :m_enemy(enemy){}
 	~EnemyGui() = delete;
 	void Init()override;
 	void Uninit()override;
 	void Update()override;
-
+	void Delete();
 };

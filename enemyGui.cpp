@@ -2,6 +2,7 @@
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
+#include "scene.h"
 #include "enemy.h"
 #include "enemyState.h"
 #include "enemyGui.h"
@@ -9,7 +10,7 @@
 void EnemyGui::Init()
 {
 	m_name  = "Enemy Window";
-//	MyImGui::SetGuiWindow(m_name, this);
+	MyImGui::SetGuiWindow(m_name, this);
 }
 void EnemyGui::Uninit()
 {
@@ -23,6 +24,7 @@ void EnemyGui::Update()
 	ImGui::SetNextWindowBgAlpha(0.3f);
 	static bool* p_open = nullptr;
 	ImGuiWindowFlags window_flags = 0;
+	std::vector<Enemy*> enemyList = ManagerT::GetScene()->GetGameObjects<Enemy>(GameObject::GameObject_Type::GOT_OBJECT3D);
 	{
 		if (!ImGui::Begin(m_name.data() , p_open, window_flags))
 		{
@@ -30,13 +32,31 @@ void EnemyGui::Update()
 			return;
 		}
 		{
-			if(ImGui::TreeNode("Enemy State"))
+			for (int i = 0; i < enemyList.size(); i++)
 			{
-				//ImGui::Text(EnemyState::enumChar_Enemy_State[m_enemy->GetEnemyState()->GetNowState()]);
+				if (ImGui::TreeNode("enmey:%d","Enemy:%d", i + 1))
+				{
 
-				ImGui::TreePop();
+					if (ImGui::TreeNode("Enemy State"))
+					{
+						ImGui::Text(enemyList[i]->GetEnemyState()->GetStateName().c_str());
+						ImGui::TreePop();
+					}
+					ImGui::TreePop();
+				}
 			}
+			//if (ImGui::TreeNode("Enemy State"))
+			//{
+			//	ImGui::Text(m_enemy->GetEnemyState()->GetStateName().c_str());
+
+			//	ImGui::TreePop();
+			//}
 		}
 		ImGui::End();
 	}
+}
+
+void EnemyGui::Delete()
+{
+	MyImGui::DeleteGuiWindow(m_name);
 }
