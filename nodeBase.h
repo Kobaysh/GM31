@@ -6,6 +6,7 @@
 #include "actionBase.h"
 
 class ExecJudgmentBase;
+class BehaviorData;
 
 class NodeBase
 {
@@ -92,15 +93,15 @@ public:
 	// ランダム選択
 	NodeBase* SelectRandom(std::vector<NodeBase*> *list);
 	// オン・オフ選択
-//	NodeBase *SelectOnOff(std::vector<NodeBase*> *list, BehaviorData *data);
+	NodeBase *SelectOnOff(std::vector<NodeBase*> *list, BehaviorData *data);
 	// シーケンス選択
-//	NodeBase *SelectSequence(std::vector<NodeBase*> *list, BehaviorData *data);
+	NodeBase *SelectSequence(std::vector<NodeBase*> *list, BehaviorData *data);
 
 	// ノード検索
 	NodeBase* SearchNode(std::string searchName);
 	
 	// ノード推論
-//	NodeBase *Inference(Enemy *enemy, BehaviorData *data);
+	NodeBase *Inference(Enemy* pEnemy, BehaviorData *data);
 
 	// ノード名表示
 //	void PrintName();

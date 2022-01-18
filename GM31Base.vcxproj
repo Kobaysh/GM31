@@ -162,6 +162,7 @@
     <ClInclude Include="actionBase.h" />
     <ClInclude Include="animationModel.h" />
     <ClInclude Include="audio.h" />
+    <ClInclude Include="behaviorData.h" />
     <ClInclude Include="behaviorTree.h" />
     <ClInclude Include="billboard.h" />
     <ClInclude Include="bullet.h" />
@@ -235,6 +236,7 @@
   <ItemGroup>
     <ClCompile Include="animationModel.cpp" />
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="behaviorData.cpp" />
     <ClCompile Include="behaviorTree.cpp" />
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="bullet.cpp" />

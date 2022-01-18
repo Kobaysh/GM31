@@ -257,6 +257,9 @@
     <ClInclude Include="execJudgmentBase.h">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
     </ClInclude>
+    <ClInclude Include="behaviorData.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -442,10 +445,13 @@
     <ClCompile Include="titleParticle.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="nodeBase.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="behaviorTree.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="behaviorData.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="nodeBase.cpp">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
     </ClCompile>
   </ItemGroup>
