@@ -235,6 +235,7 @@
   <ItemGroup>
     <ClCompile Include="animationModel.cpp" />
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="behaviorTree.cpp" />
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />

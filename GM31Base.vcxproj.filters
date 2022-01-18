@@ -445,6 +445,9 @@
     <ClCompile Include="nodeBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="behaviorTree.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="common.hlsl">

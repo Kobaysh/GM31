@@ -31,7 +31,7 @@ public:
 //	NodeBase *SequenceBack(NodeBase *sequence_node, Enemy *enemy, BehaviorData *data);
 
 	// ノード追加
-	void AddNode(std::string searchName, std::string entryName, int priority, SELECT_RULE selectRule, ExecJudgmentBase *judgment, ActionBase *action);
+	void AddNode(std::string searchName, std::string entryName, int priority, SELECT_RULE selectRule, ExecJudgmentBase* judgment, ActionBase* action);
 
 	// ツリー構造を表示
 //	void PrintTree();
