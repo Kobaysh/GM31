@@ -44,15 +44,15 @@ void Bullet::Init()
 	Model::AllLoad();*/
 	if (!m_VertexShader) {
 
-		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 	}
 	if (!m_PixelShader) {
 		if (ms_IsVoidPS) {
-			Renderer::CreatePixelShader(&m_PixelShader, "LightingVoidPS.cso");
+			Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/LightingVoidPS.cso");
 		}
 		else
 		{
-			Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+			Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
 		}
 	}
 //	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");

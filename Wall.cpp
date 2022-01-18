@@ -65,9 +65,9 @@ void Wall::Init()
 	m_modelId = Model::SetModelLoadfile(FILENAME);
 	Model::Load(m_modelId);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "pixelLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/pixelLightingPS.cso");
 
 	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);

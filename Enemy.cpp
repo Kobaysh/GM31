@@ -68,9 +68,9 @@ void Enemy::Init()
 	m_hpBar = new HpBar();
 	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(m_position, XMFLOAT3(1.0f, 0.3f, 1.0f), m_maxHp, m_maxHp);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
 	
 	// ‚â‚ç‚ê‚½Žž‚Ì”š”­‰¹
 	m_explosionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);

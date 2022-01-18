@@ -22,7 +22,7 @@
 #define ROTATION_SPEED (0.01f)
 #define ROTATION_VALUE (0.22f)
 #define MOVE_SPEED (0.1f)
-#define PS_NAME ("pixelLightingPS.cso")
+#define PS_NAME ("asset/shader/pixelLightingPS.cso")
 
 
 bool GameObject::ms_IsVoidPS = false;
@@ -43,7 +43,7 @@ void Player::Init()
 	m_obb = new OBB(m_position, m_rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 	m_obbAttack = nullptr;
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "pixelLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
 
