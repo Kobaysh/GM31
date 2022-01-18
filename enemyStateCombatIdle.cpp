@@ -32,7 +32,8 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 	{
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		EnemyStatePattern* pStatePattern = 
-			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleDiscover);
+			pState->ChangeState(new EnemyStateIdleDiscover);
+		pState->SetStateName("EnemyStateIdleDiscover");
 		delete pStatePattern;
 		return;
 	}
@@ -46,6 +47,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 			pState->SetIsGuarding(true);
 			EnemyStatePattern* pStatePattern =
 				pState->ChangeState(new EnemyStateCombatGuard);
+			pState->SetStateName("EnemyStateCombatGuard");
 			delete pStatePattern;
 			return;
 		}
@@ -56,6 +58,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 		// UŒ‚ŠJŽn
 		EnemyStatePattern* pStatePattern =
 			pState->ChangeState(new EnemyStateCombatAttack);
+		pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatAttack");
 		delete pStatePattern;
 		return;
 	}
@@ -65,6 +68,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 		// UŒ‚‚ð‚­‚ç‚Á‚½‚ç
 		EnemyStatePattern* pStatePattern =
 			pState->ChangeState(new EnemyStateCombatDamaged);
+		pState->SetStateName("EnemyStateCombatDamaged");
 		delete pStatePattern;
 		return;
 	}

@@ -15,6 +15,7 @@ void EnemyStateCombatGuard::Update(Enemy * pEnemy)
 		pState->SetIsGuarding(false);
 		EnemyStatePattern* pStatePattern = 
 			pState->ChangeState(new EnemyStateCombatIdle);
+		pState->SetStateName("EnemyStateCombatIdle");
 		delete pStatePattern;
 		return;
 	}
@@ -31,6 +32,7 @@ void EnemyStateCombatGuard::Update(Enemy * pEnemy)
 		pState->SetIsGuarding(false);
 		EnemyStatePattern* pStatePattern = 
 			pState->ChangeState(new EnemyStateCombatAttack);
+		pState->SetStateName("EnemyStateCombatAttack");
 		delete pStatePattern;
 		return;
 	}

@@ -15,6 +15,7 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 	{
 		EnemyStatePattern* pStatePattern =
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleIdle);
+		pEnemy->GetEnemyState()->SetStateName("EnemyStateIdleIdle");
 		delete pStatePattern;
 		return;
 	}
@@ -34,6 +35,7 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 		pEnemy->SetRotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f));
 		EnemyStatePattern* pStatePattern =
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleDiscover);
+		pEnemy->GetEnemyState()->SetStateName("EnemyStateIdleDiscover");
 		delete pStatePattern;
 		return;
 	}

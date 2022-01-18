@@ -52,8 +52,10 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		{
 			m_isAttacking = false;
 			m_obbAttack->SetDead();
+			m_obbAttack = nullptr;
 			EnemyStatePattern* pStatePattern = 
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle);
+			pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
 			delete pStatePattern;
 			return;
 		}

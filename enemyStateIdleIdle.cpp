@@ -6,5 +6,6 @@ void EnemyStateIdleIdle::Update(Enemy * pEnemy)
 {
 	EnemyStatePattern* pStatePattern = 
 	pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleBeware);
+	pEnemy->GetEnemyState()->SetStateName("EnemyStateIdleBeware");
 	delete pStatePattern;
 }

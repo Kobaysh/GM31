@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "state.h"
 //#include "enemy.h"
 
@@ -25,11 +26,14 @@ public:
 	bool GetIsDamaged() const { return m_isDamaged; }
 	void SetIsCollided(bool isCollided) { m_isCollided = isCollided; }
 	bool GetIsCollided() const { return m_isCollided; }
+	void SetStateName(std::string name) { m_stateName = name; }
+	std::string& GetStateName() { return m_stateName; }
 private:
 	EnemyStatePattern* m_pStatePattern;
 	bool m_isGuarding = false;
 	bool m_isDamaged = false;
 	bool m_isCollided = false;
+	std::string m_stateName;
 };
 
 /*

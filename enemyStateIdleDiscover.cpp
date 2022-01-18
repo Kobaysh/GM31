@@ -75,6 +75,7 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		EnemyStatePattern* pStatePattern = 
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle);
+		pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
 		delete pStatePattern;
 		return;
 	}

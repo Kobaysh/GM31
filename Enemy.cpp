@@ -16,6 +16,8 @@
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
 
+EnemyGui* Enemy::m_enemyGui = nullptr;
+
 Enemy::Enemy():
 	m_maxHp(3),
 	m_moveSpeed (0.0f),
@@ -52,9 +54,11 @@ void Enemy::Init()
 
 
 	// “G—p‚ÌGUI’Ç‰Á
-	m_enemyGui = new EnemyGui(this);
-	m_enemyGui->Init();
-
+	if (!m_enemyGui)
+	{
+		m_enemyGui = new EnemyGui();
+		m_enemyGui->Init();
+	}
 	// “–‚½‚è”»’è—p‚ÌOBB’Ç‰Á
 	m_obb = new OBB(m_position, m_rotation, XMFLOAT3(2.1f, 2.1f, 2.1f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);

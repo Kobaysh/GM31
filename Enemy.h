@@ -26,7 +26,7 @@ protected:
 	class Audio* m_explosionSE;
 	class OBB* m_obb;
 	class EnemyState* m_state;
-	class EnemyGui* m_enemyGui;
+	static class EnemyGui* m_enemyGui;
 	class HpBar* m_hpBar;
 	XMFLOAT3 m_moveVector;
 

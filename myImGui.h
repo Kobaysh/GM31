@@ -15,6 +15,7 @@ public:
 	static void StartRender();
 
 	static void SetGuiWindow(const std::string& name, MyGuiWindow* window);
+	static void DeleteGuiWindow(const std::string& name);
 
 	static void SetSampleWindow();
 	static void SetDebugWindow();
