@@ -36,6 +36,9 @@
     <Filter Include="ソース ファイル\game_object\enemy\state">
       <UniqueIdentifier>{ccf96b3b-aea5-40cd-905d-06b0cbd63568}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\behavior">
+      <UniqueIdentifier>{d485d12f-ce79-45e4-ad7b-ea957d88afeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -242,6 +245,21 @@
     <ClInclude Include="titleParticle.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
+    <ClInclude Include="nodeBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="behaviorTree.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="actionBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="execJudgmentBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="behaviorData.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -426,6 +444,15 @@
     </ClCompile>
     <ClCompile Include="titleParticle.cpp">
       <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="behaviorTree.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="behaviorData.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="nodeBase.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

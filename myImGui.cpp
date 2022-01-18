@@ -68,7 +68,7 @@ void MyImGui::Update()
 	// フレーム開始
 	MyImGui::SetNewFrame();
 	
-	if (Input::GetKeyPress(VK_LCONTROL) && Input::GetKeyTrigger(VK_RCONTROL))
+	if (Input::GetKeyTrigger(VK_F3))
 	{
 		m_bIsShowAll = m_bIsShowAll ? false : true;
 	}
