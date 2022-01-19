@@ -2,6 +2,7 @@
 #include "gameObject.h"
 #include "playerState.h"
 
+
 class Player : public GameObject
 {
 private:
@@ -34,6 +35,8 @@ private:
 	int m_soundVolume;				// プレイヤーの出す音
 	int m_nowWepon;					// 現在装備中の忍び義手の種類(番号)
 	
+ 	class Trunk* m_trunk;
+
 	int m_frame;
 	std::string m_animationName;
 

@@ -33,7 +33,7 @@ public:
 	NodeBase* GetParent() { return m_parent; }
 
 	//	子ノードゲッター(選択)
-	NodeBase* GetChiled(int index)
+	NodeBase* GetChiled(unsigned int index)
 	{
 		if (m_child.size() >= index)
 		{

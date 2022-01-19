@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "audio.h"
 #include "meshField.h"
+#include "trunk.h"
 #include "playerState.h"
 #include "player.h"
 
@@ -43,6 +44,9 @@ void Player::Init()
 	m_obb = new OBB(m_position, m_rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 	m_obbAttack = nullptr;
+
+	m_trunk = new Trunk(100);
+
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
@@ -53,6 +57,7 @@ void Player::Init()
 
 void Player::Uninit()
 {
+	delete m_trunk;
 	m_obb->SetDead();
 	if (m_Model)
 	{
@@ -252,7 +257,26 @@ void Player::Slash()
 	// UŒ‚
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
-	if (!m_isAttack && KeyLogger_Trigger(KL_ATTACK)) {
+	if (MOUSE_TRUE)
+	{
+		/*if (Input::GetMouseTrigger(Input::MouseButton::Left))
+		{
+		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
+		}*/
+
+		if (!m_isAttack &&Input::GetMouseTrigger(Input::MouseButton::Left))
+		{
+			XMFLOAT3 obbPos;
+			XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.m_forward) * 1;
+			XMStoreFloat3(&obbPos, vObbPos);
+			obbPos.y += 0.5f;
+			m_obbAttack = nullptr;
+			m_obbAttack = new OBB(obbPos, m_rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
+			ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
+		}
+	}
+	else if (!m_isAttack && KeyLogger_Trigger(KL_ATTACK)) 
+	{
 		this->ChangeAnimation("attack");
 		m_isAttack = true;
 		m_timerAttack = 0.0f;
@@ -270,13 +294,7 @@ void Player::Slash()
 		*/
 	}
 	//	if (Input::GetMouseDown(Input::MouseButton::Left))
-	if (MOUSE_TRUE)
-	{
-		if (Input::GetMouseTrigger(Input::MouseButton::Left))
-		{
-			Bullet::Create(m_position, m_direction.m_forward, 0.3f);
-		}
-	}
+
 
 	if (m_isAttack)
 	{
@@ -296,25 +314,42 @@ void Player::Slash()
 			{
 				if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb()))
 				{
-					// UŒ‚‚ª“–‚½‚Á‚½
-					enemy->GetEnemyState()->SetIsCollided(true);
-					// ƒK[ƒhó‘Ô‚È‚ç
-					if (enemy->GetEnemyState()->GetIsGuarding())
+					if (enemy->GetIsUsingState())
 					{
-						// ‘ÌŠ²‚Éƒ_ƒ[ƒW
-					}
-					else
-					{
-						if (enemy->Damage(1));
-						// Ž~‚ß‚ðŽh‚·
-						else;
-						// ‘ÌŠ²‚Éƒ_ƒ[ƒW
-					}
+						// UŒ‚‚ª“–‚½‚Á‚½
+						enemy->GetEnemyState()->SetIsCollided(true);
+						if (enemy->GetTrunk()->GetIsCollapsed())
+						{
+							// ‘ÌŠ²‚ª•ö‚ê‚Ä‚¢‚é‚È‚ç‘¦Ž€
+							enemy->Damage(99999999);
+						}
+						else
+						{
+							// ƒK[ƒhó‘Ô‚È‚ç
+							if (enemy->GetEnemyState()->GetIsGuarding())
+							{
+								// ‘ÌŠ²‚Éƒ_ƒ[ƒW
+								enemy->GetTrunk()->ChangeNowTrunk(10);
+							}
+							else
+							{
+								if (enemy->Damage(1))
+								{
+									// Ž~‚ß‚ðŽh‚·
+								}
+								else
+								{
+									// ‘ÌŠ²‚Éƒ_ƒ[ƒW
+									enemy->GetTrunk()->ChangeNowTrunk(10);
+								}
+							}
+						}
 
-					m_isAttack = false;
-					this->ChangeAnimation("idle");
-					//	m_animationName = "idle";
-					m_obbAttack->SetDead();
+						m_isAttack = false;
+						this->ChangeAnimation("idle");
+						//	m_animationName = "idle";
+						m_obbAttack->SetDead();
+					}
 				}
 			}
 		}

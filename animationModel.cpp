@@ -609,11 +609,11 @@ void AnimationModel::Draw()
 	for (unsigned int m = 0; m < m_aiScene->mNumMeshes; m++) {
 		aiMesh* mesh = m_aiScene->mMeshes[m];
 
-		aiMaterial* material = m_aiScene->mMaterials[mesh->mMaterialIndex];
+		aiMaterial* aiMaterial = m_aiScene->mMaterials[mesh->mMaterialIndex];
 		
 		// テクスチャ設定
 		aiString path;
-		material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture[path.data]);
 
 
