@@ -40,6 +40,9 @@ void Player::Init()
 	m_direction.m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_direction.m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
+	m_timerAttack = 0.0f;
+	m_timerGuard = 0.0f;
+	m_maxHp = m_nowHp = 10;
 
 	m_obb = new OBB(m_position, m_rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
@@ -83,7 +86,8 @@ void Player::Update()
 	this->UpdateObb();
 //	this->ChangeCameraDir();
 	this->Slash();
-	this->Shoot();
+	this->Guard();
+//	this->Shoot();
 	this->CollisionOther();
 	// Õ“Ë”»’è‚ÌŒãˆÚ“®
 	this->MoveFromMoveVector();
@@ -257,7 +261,7 @@ void Player::Slash()
 	// UŒ‚
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
-	if (MOUSE_TRUE)
+	if (MOUSE_ACTIVE)
 	{
 		/*if (Input::GetMouseTrigger(Input::MouseButton::Left))
 		{
@@ -367,13 +371,52 @@ void Player::Slash()
 void Player::Shoot()
 {
 	// ’e‚ðŒ‚‚Â
+	//if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
+
+	//if (KeyLogger_Trigger(KL_GUARD)) {
+	//	
+	//	Bullet::Create(m_position, m_direction.m_forward, 0.3f);
+	//	m_shotSE->Play(0.1f);
+	//	
+	//}
+}
+
+void Player::Guard()
+{
+	// –hŒä
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
-	if (KeyLogger_Trigger(KL_GUARD)) {
-		
-		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
-		m_shotSE->Play(0.1f);
-		
+	if (MOUSE_ACTIVE)
+	{
+		if (!m_isAttack && !m_isGuard && Input::GetMouseTrigger(Input::MouseButton::Right))
+		{
+			m_isGuard = true;
+			m_timerGuard = 0.0f;
+		}
+		else if (m_isGuard && Input::GetKeyPress(Input::MouseButton::Right))
+		{
+			m_timerGuard += 0.1f;
+		}
+		else if (m_isGuard && Input::GetMouseUp(Input::MouseButton::Right))
+		{
+			m_isGuard = false;
+		}
+	}
+	else
+	{
+		if (!m_isAttack && !m_isGuard && KeyLogger_Trigger(KL_GUARD))
+		{
+			m_isGuard = true;
+			m_timerGuard = 0.0f;
+		}
+		else if (m_isGuard && KeyLogger_Press(KL_GUARD))
+		{
+			m_timerGuard += 0.1f;
+		}
+		else if (m_isGuard && KeyLogger_Release(KL_GUARD))
+		{
+			m_isGuard = false;
+		}
 	}
 }
 
@@ -419,6 +462,21 @@ void Player::ChangeCameraDir()
 		camera->ChangeDir(0.02f, true);
 	}
 	}
+}
+
+bool Player::Damage(int damage)
+{
+	if (damage < 0)return false;
+	m_nowHp -= damage;
+//	m_hpBar->SetHP(m_hp, m_maxHp);
+	if (m_nowHp <= 0)
+	{
+		m_nowHp = 0;
+//		m_hpBar->SetHP(m_hp, m_maxHp);
+	//	SetDead();
+		return true;
+	}
+	return false;
 }
 
 void Player::ModelInit()

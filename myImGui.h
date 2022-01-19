@@ -21,6 +21,7 @@ public:
 	static void SetDebugWindow();
 	static void SetDebugCameraWindow();
 	static void SetDebugCollisionWindow();
+	static void SetDebugPlayerWindow();
 
 	static void SetIsShowAll(bool show) { m_bIsShowAll = show; }
 	static bool GetIsShowAll() { return m_bIsShowAll; }

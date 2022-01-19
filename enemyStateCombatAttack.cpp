@@ -6,6 +6,7 @@
 #include "obb.h"
 #include "enemyStateCombatAttack.h"
 #include "enemyStateCombatIdle.h"
+#include "trunk.h"
 
 
 void EnemyStateCombatAttack::Update(Enemy * pEnemy)
@@ -31,21 +32,36 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		if (OBB::ColOBBs(*m_obbAttack, pPlayer->GetObb()))
 		{
 			// 攻撃当たった
-		//	m_isAttacking = false;
-			/*delete m_obbAttack;
-			m_obbAttack = nullptr;*/
-		//	m_obbAttack->SetDead();
-			/*
-			if(ガードされた？)
+			m_isAttacking = false;
+			m_obbAttack->SetDead();
+			m_obbAttack = nullptr;
+			
+			if(pPlayer->GetIsGuarding())
 			{
+				// プレイヤーがガード中なら
+				
+				// プレイヤーのガードが指定フレーム以下なら弾かれる
+				if (pPlayer->GetTimerGuard() <= 0.5f)
+				{
+					pEnemy->GetTrunk()->ChangeNowTrunk(10);
 
+				}
+				else
+				{
+					pPlayer->GetTrunk()->ChangeNowTrunk(10);
+				}
 			}
 			else
 			{
-
+				pPlayer->GetTrunk()->ChangeNowTrunk(10);
+				pPlayer->Damage(1);
 			}
-			*/
-		//	return;
+			
+			EnemyStatePattern* pStatePattern = 
+			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle);
+			pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
+			delete pStatePattern;
+			return;
 		}
 		// 攻撃アニメーションが終わったらfalse
 		if (m_timer >= 10.0f)

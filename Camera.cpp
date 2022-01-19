@@ -139,7 +139,7 @@ void Camera::Update()
 		XMStoreFloat(&length, vLengthCtoP);
 
 
-#if MOUSE_TRUE
+#if MOUSE_ACTIVE
 		if (JudgeActiveWindow()) {
 //		if (false) {
 			
@@ -246,7 +246,7 @@ void Camera::Update()
 		// ƒJƒƒ‰‚ª“®‚©‚¹‚È‚¢ó‘Ô
 	}
 
-#if MOUSE_TRUE
+#if MOUSE_ACTIVE
 
 #else
 

@@ -11,6 +11,8 @@
 #include "scene.h"
 #include "gameObject.h"
 #include "myImGui.h"
+#include "player.h"
+#include "trunk.h"
 
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
@@ -188,6 +190,7 @@ void MyImGui::SetDebugWindow()
 
 		SetDebugCameraWindow();
 		SetDebugCollisionWindow();
+		SetDebugPlayerWindow();
 		ImGui::End();
 	}
 #endif
@@ -245,5 +248,19 @@ void MyImGui::SetDebugCollisionWindow()
 	}
 //	OBB::SetIsColShow(debugShow);
 //	ImGui::End();
+#endif
+}
+
+void MyImGui::SetDebugPlayerWindow()
+{
+#if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
+	if(ImGui::TreeNode("Player"))
+	{
+		Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GameObject_Type::GOT_OBJECT3D);
+		ImGui::Text("HP:%d/%d", pPlayer->GetNowHp(), pPlayer->GetMaxHp());
+		ImGui::Text("Trunk:%d/%d", pPlayer->GetTrunk()->GetNowTrunk(), pPlayer->GetTrunk()->GetMaxTrunk());
+		ImGui::Text("timerGuard:%.2f", pPlayer->GetTimerGuard());
+		ImGui::TreePop();
+	}
 #endif
 }
