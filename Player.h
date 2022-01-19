@@ -23,10 +23,12 @@ private:
 	int m_sign;
 
 	bool m_isAttack = false;
+	bool m_isGuard = false;
 	bool m_isjump = false;
 	float m_jumpForce;
 
 	float m_timerAttack;
+	float m_timerGuard;
 
 	int m_nowHp;					// ヒットポイント
 	int m_maxHp;					// Maxヒットポイント
@@ -56,6 +58,7 @@ public:
 	void Jump();
 	void Slash();
 	void Shoot();
+	void Guard();
 	void CollisionOther();
 	//void VoidDimension();
 	void ChangeCameraDir();
@@ -67,7 +70,13 @@ public:
 	bool GetMovable() const { return m_movable; }
 	void SetIsActive(bool active) { m_isActive = active; }
 	void SetMovable(bool movable) { m_movable = movable; }
+	bool GetIsGuarding() { return m_isGuard; }
+	float GetTimerGuard() { return m_timerGuard; }
+	Trunk* GetTrunk() { return m_trunk; }
 
+	bool Damage(int damage);
+	int GetNowHp() { return m_nowHp; }
+	int GetMaxHp() { return m_maxHp; }
 private:
 	void ModelInit();
 	void UpdateObb();
