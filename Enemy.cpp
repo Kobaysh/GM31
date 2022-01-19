@@ -13,6 +13,7 @@
 #include "enemyState.h"
 #include "enemyGui.h"
 #include "hp.h"
+#include "trunk.h"
 #include "enemy.h"
 
 #define FILENAME ("asset\\model\\enemy\\brickcube.obj")
@@ -50,6 +51,7 @@ void Enemy::Init()
 	m_stateData.m_combat_rad = 3.0f;
 
 	m_state = new EnemyState();
+	m_isUsingState = true;
 
 	m_moveSpeed = 0.05f;
 
@@ -68,6 +70,10 @@ void Enemy::Init()
 	// HPバー
 	m_hpBar = new HpBar();
 	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(m_position, XMFLOAT3(1.0f, 0.3f, 1.0f), m_maxHp, m_maxHp);
+
+	// 体幹セット
+	m_trunk = new Trunk(30);
+
 
 	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, "asset/shader/vertexLightingVS.cso");
 	ShaderManager::Load(ShaderManager::Shader_Type::ST_PS, "asset/shader/vertexLightingPS.cso");
@@ -113,6 +119,7 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 
 void Enemy::Uninit()
 {
+	delete m_trunk;
 	delete m_state;
 	m_obb->SetDead();
 	m_hpBar->SetDead();

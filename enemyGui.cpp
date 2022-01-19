@@ -6,6 +6,7 @@
 #include "enemy.h"
 #include "enemyState.h"
 #include "enemyGui.h"
+#include "trunk.h"
 
 void EnemyGui::Init()
 {
@@ -40,6 +41,17 @@ void EnemyGui::Update()
 					if (ImGui::TreeNode("Enemy State"))
 					{
 						ImGui::Text(enemyList[i]->GetEnemyState()->GetStateName().c_str());
+						ImGui::TreePop();
+					}
+
+					if (ImGui::TreeNode("Enemy HP"))
+					{
+						ImGui::Text("%d/%d",enemyList[i]->GetNowHp(), enemyList[i]->GetMaxHp());
+						ImGui::TreePop();
+					}
+					if (ImGui::TreeNode("Enemy Trunk"))
+					{
+						ImGui::Text("%d/%d",enemyList[i]->GetTrunk()->GetNowTrunk(), enemyList[i]->GetTrunk()->GetMaxTrunk());
 						ImGui::TreePop();
 					}
 					ImGui::TreePop();

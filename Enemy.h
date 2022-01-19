@@ -28,6 +28,7 @@ protected:
 	class EnemyState* m_state;
 	static class EnemyGui* m_enemyGui;
 	class HpBar* m_hpBar;
+	class Trunk* m_trunk;	// 体幹
 	XMFLOAT3 m_moveVector;
 
 	EnemyStateData m_stateData;
@@ -35,6 +36,7 @@ protected:
 	float m_moveSpeed;
 	int m_hp;
 	int m_maxHp;
+	bool m_isUsingState;	// ステートマシーンでAIを操作しているか
 public:
 	Enemy();
 	virtual void Init();
@@ -49,7 +51,15 @@ public:
 	void SetRotationSpeed(XMFLOAT3 rotationSpeed) { m_rotationSpeed = rotationSpeed; }
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
+	
+	//	ダメージを与え、HPが0になったらtrueを返す
 	bool Damage(int damage);
+	Trunk* GetTrunk() { return m_trunk; }
+
+	bool GetIsUsingState() { return m_isUsingState; }
+
+	int GetNowHp() { return m_hp; }
+	int GetMaxHp() { return m_maxHp; }
 private:
 	void UpdateRotation();
 	void UpdateOBB();
