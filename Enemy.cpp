@@ -9,6 +9,7 @@
 #include "input.h"
 #include "camera.h"
 #include "rock.h"
+#include "shaderManager.h"
 #include "enemyState.h"
 #include "enemyGui.h"
 #include "hp.h"
@@ -68,9 +69,12 @@ void Enemy::Init()
 	m_hpBar = new HpBar();
 	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(m_position, XMFLOAT3(1.0f, 0.3f, 1.0f), m_maxHp, m_maxHp);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
+	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, "asset/shader/vertexLightingVS.cso");
+	ShaderManager::Load(ShaderManager::Shader_Type::ST_PS, "asset/shader/vertexLightingPS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
+	/*Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
+
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");*/
 	
 	// やられた時の爆発音
 	m_explosionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
@@ -113,9 +117,9 @@ void Enemy::Uninit()
 	m_obb->SetDead();
 	m_hpBar->SetDead();
 	m_explosionSE->Play(0.1f);
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	//m_VertexLayout->Release();
+	//m_VertexShader->Release();
+	//m_PixelShader->Release();
 }
 
 void Enemy::Update()
@@ -143,11 +147,17 @@ void Enemy::Draw()
 	}
 
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
-
+	VertexShaderLayout* vertexInfo = ShaderManager::GetVertexShader("asset/shader/vertexLightingVS.cso");
+	Renderer::GetpDeviceContext()->IASetInputLayout(vertexInfo->m_vertexLayout);
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(vertexInfo->m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(ShaderManager::GetPixelShader("asset/shader/vertexLightingPS.cso"), NULL, 0);
+
+	//Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+
+	//// シェーダー設定
+	//Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	//Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
