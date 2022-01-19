@@ -2,6 +2,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "myImGui.h"
+#include "shaderManager.h"
 
 #include "gameObject.h"
 #include "texture.h"
@@ -111,6 +112,7 @@ void Game::Uninit()
 	Bullet::UnLoad();
 	Texture::AllRelease();
 	Model::Uninit();
+	ShaderManager::AllRelease();
 }
 
 void Game::Update()
