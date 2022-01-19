@@ -31,6 +31,7 @@
 
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
+#pragma warning(disable : 4005) 
 
 // DirectX
 #include <stdio.h>

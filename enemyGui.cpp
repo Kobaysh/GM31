@@ -32,7 +32,7 @@ void EnemyGui::Update()
 			return;
 		}
 		{
-			for (int i = 0; i < enemyList.size(); i++)
+			for (unsigned int i = 0; i < enemyList.size(); i++)
 			{
 				if (ImGui::TreeNode("enmey:%d","Enemy:%d", i + 1))
 				{
