@@ -24,7 +24,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 	}
 
 
-	if (!m_isAttacking && m_timer >= 8.0f)
+	if (!m_isAttacking && m_timer >= 10.0f)
 	{
 		m_isAttacking = true;
 		XMFLOAT3 obbPos;
@@ -51,7 +51,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 				// プレイヤーがガード中なら
 				
 				// プレイヤーのガードが指定フレーム以下なら弾かれる
-				if (pPlayer->GetTimerGuard() <= 0.5f)
+				if (pPlayer->GetTimerGuard() <= 1.5f)
 				{
 					pEnemy->GetTrunk()->ChangeNowTrunk(10);
 

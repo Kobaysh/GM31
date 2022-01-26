@@ -10,6 +10,11 @@
 #define ROTATION_SPEED (0.01f)
 #define ROTATION_VALUE (0.012f)
 
+EnemyStateIdleDiscover::EnemyStateIdleDiscover(Enemy * pEnemy)
+{
+	pEnemy->SetAnimationName("run");
+}
+
 void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
@@ -74,7 +79,7 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 	{
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		EnemyStatePattern* pStatePattern = 
-			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle);
+			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle(pEnemy));
 		pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
 		delete pStatePattern;
 		return;
