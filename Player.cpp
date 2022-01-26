@@ -161,7 +161,7 @@ void Player::Move()
 	}
 	else{
 		m_speed = 0.0f;
-		if (m_animationName != "jump" && m_animationName != "attack") {
+		if (m_animationName != "jump" && m_animationName != "attack" && !m_isGuard) {
 			if (m_animationName != "idle")
 			{
 				this->ChangeAnimation("idle");
@@ -392,9 +392,15 @@ void Player::Guard()
 		{
 			m_isGuard = true;
 			m_timerGuard = 0.0f;
+			this->ChangeAnimation("guard_start");
 		}
 		else if (m_isGuard && Input::GetKeyPress(Input::MouseButton::Right))
 		{
+			if (m_timerGuard >= 1.0f)
+			{
+				if(m_animationName != "guard_idle")
+					this->ChangeAnimation("guard_idle");
+			}
 			m_timerGuard += 0.1f;
 		}
 		else if (m_isGuard && Input::GetMouseUp(Input::MouseButton::Right))
@@ -408,11 +414,16 @@ void Player::Guard()
 		{
 			m_isGuard = true;
 			m_timerGuard = 0.0f;
+			this->ChangeAnimation("guard_start");
 		}
 		else if (m_isGuard && KeyLogger_Press(KL_GUARD))
 		{
-			m_timerGuard += 0.1f;
-		}
+			if (m_timerGuard >= 1.0f)
+			{
+				if(m_animationName != "guard_idle")
+				this->ChangeAnimation("guard_idle");
+			}
+			m_timerGuard += 0.1f;		}
 		else if (m_isGuard && KeyLogger_Release(KL_GUARD))
 		{
 			m_isGuard = false;
@@ -498,6 +509,10 @@ void Player::ModelInit()
 	m_animationName = "jump";
 	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\jump.fbx", m_animationName.data());
 	//m_Model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_animationName.data());
+	m_animationName = "guard_start";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_start.fbx", m_animationName.data());
+	m_animationName = "guard_idle";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_idle.fbx", m_animationName.data());
 
 	m_animationName = "idle";
 

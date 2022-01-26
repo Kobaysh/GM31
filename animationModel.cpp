@@ -361,11 +361,9 @@ void AnimationModel::Update(const char * animationName, int frame)
 
 	// アニメーションデータからボーンマトリクス算出
 	aiAnimation* animation = m_animation[animationName]->mAnimations[0];
-
 	for (unsigned int c = 0; c < animation->mNumChannels; c++) {
 		aiNodeAnim* nodeAnim = animation->mChannels[c];
 		BONE* bone = &m_bone[nodeAnim->mNodeName.C_Str()];
-
 		int f;
 		f = frame % nodeAnim->mNumRotationKeys;	// 簡易実装
 		aiQuaternion rot = nodeAnim->mRotationKeys[f].mValue;
