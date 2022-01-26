@@ -34,7 +34,7 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 		pEnemy->GetEnemyStateData()->m_isDiscover = true;
 		pEnemy->SetRotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f));
 		EnemyStatePattern* pStatePattern =
-			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleDiscover);
+			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleDiscover(pEnemy));
 		pEnemy->GetEnemyState()->SetStateName("EnemyStateIdleDiscover");
 		delete pStatePattern;
 		return;

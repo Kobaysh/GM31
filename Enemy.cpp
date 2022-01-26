@@ -11,6 +11,7 @@
 #include "rock.h"
 #include "shaderManager.h"
 #include "enemyState.h"
+#include "enemyStateCombatDamaged.h"
 #include "enemyGui.h"
 #include "hp.h"
 #include "trunk.h"
@@ -196,11 +197,16 @@ bool Enemy::Damage(int damage)
 	if (damage < 0)return false;
 	m_hp -= damage;
 	m_hpBar->SetHP(m_hp, m_maxHp);
+	EnemyStatePattern* pStatePattern =
+	m_state->ChangeState(new EnemyStateCombatDamaged(this));
+	m_state->SetStateName("EnemyStateCombatDamaged");
+	delete pStatePattern;
+
 	if (m_hp <= 0)
 	{
 		m_hp = 0;
 		m_hpBar->SetHP(m_hp, m_maxHp);
-		SetDead();
+	//	SetDead();
 		return true;
 	}
 	return false;
@@ -289,6 +295,11 @@ void Enemy::ModelInit()
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\quick_kick.fbx", m_animationName.data());
 	m_animationName = "back_kick";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\back_kick.fbx", m_animationName.data());
+
+	m_animationName = "hit_reaction";
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Hit_Reaction.fbx", m_animationName.data());
+	m_animationName = "dying";
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Dying.fbx", m_animationName.data());
 
 	m_animationName = "idle";
 }
