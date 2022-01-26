@@ -17,7 +17,8 @@
 #include "trunk.h"
 #include "enemy.h"
 
-#define FILENAME ("asset\\model\\enemy\\brickcube.obj")
+const std::string Enemy::VS_FILE_NAME = "asset/shader/toonVS.cso";
+const std::string Enemy::PS_FILE_NAME = "asset/shader/toonPS.cso";
 
 EnemyGui* Enemy::m_enemyGui = nullptr;
 
@@ -80,8 +81,8 @@ void Enemy::Init()
 
 
 
-	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, "asset/shader/vertexLightingVS.cso");
-	ShaderManager::Load(ShaderManager::Shader_Type::ST_PS, "asset/shader/vertexLightingPS.cso");
+	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, VS_FILE_NAME);
+	ShaderManager::Load(ShaderManager::Shader_Type::ST_PS, PS_FILE_NAME);
 
 	/*Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 
@@ -162,11 +163,11 @@ void Enemy::Draw()
 	}
 
 	// 入力レイアウト設定
-	VertexShaderLayout* vertexInfo = ShaderManager::GetVertexShader("asset/shader/vertexLightingVS.cso");
+	VertexShaderLayout* vertexInfo = ShaderManager::GetVertexShader(VS_FILE_NAME);
 	Renderer::GetpDeviceContext()->IASetInputLayout(vertexInfo->m_vertexLayout);
 	// シェーダー設定
 	Renderer::GetpDeviceContext()->VSSetShader(vertexInfo->m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(ShaderManager::GetPixelShader("asset/shader/vertexLightingPS.cso"), NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(ShaderManager::GetPixelShader(PS_FILE_NAME), NULL, 0);
 
 	//Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 

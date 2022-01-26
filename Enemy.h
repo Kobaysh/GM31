@@ -41,6 +41,10 @@ protected:
 
 	int m_frame;
 	std::string m_animationName;
+
+private:
+	static const std::string VS_FILE_NAME;
+	static const std::string PS_FILE_NAME;
 public:
 	Enemy();
 	virtual void Init();
