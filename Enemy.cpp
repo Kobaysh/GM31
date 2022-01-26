@@ -2,7 +2,7 @@
 #include "renderer.h"
 #include "manager.h"
 #include "Scene.h"
-#include "model.h"
+#include "animationModel.h"
 #include "audio.h"
 #include "obb.h"
 #include "meshField.h"
@@ -32,8 +32,7 @@ Enemy::Enemy():
 
 void Enemy::Init()
 {
-	m_modelId = Model::SetModelLoadfile(FILENAME);
-	Model::Load(m_modelId);
+
 	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
@@ -55,6 +54,10 @@ void Enemy::Init()
 
 	m_moveSpeed = 0.05f;
 
+	// モデル読み込み
+	ModelInit();
+
+	m_frame = 0;
 
 	// 敵用のGUI追加
 	if (!m_enemyGui)
@@ -73,6 +76,7 @@ void Enemy::Init()
 
 	// 体幹セット
 	m_trunk = new Trunk(30);
+
 
 
 	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, "asset/shader/vertexLightingVS.cso");
@@ -132,6 +136,9 @@ void Enemy::Uninit()
 void Enemy::Update()
 {
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
+	m_frame++;
+	float frame = static_cast<float>(m_frame) * 1.0f;
+	m_model->Update(m_animationName.data(), m_frame);
 	m_state->Update(this);
 //	m_state->Update();
 	this->UpdateOBB();
@@ -168,16 +175,17 @@ void Enemy::Draw()
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX scaleFix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
-	XMMATRIX worldX = scaleX * rotX * transX;
+	XMMATRIX worldX = scaleX * scaleFix * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
 	Renderer::SetWorldMatrixX(&world4x4);
 
 
-//	m_model->Draw();
-	Model::Draw(m_modelId);
+	m_model->Draw();
+//	Model::Draw(m_modelId);
 //	m_obb->SetisDraw(true);
 //	m_obb->Draw();
 //	m_obb->SetisDraw(false);
@@ -265,4 +273,14 @@ void Enemy::CollisionOther()
 	{
 		this->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 	}
+}
+
+void Enemy::ModelInit()
+{
+	m_model = new AnimationModel();
+	m_model->Load("asset\\model\\enemy\\ninja\\Ch24_nonPBR.fbx");
+
+	m_animationName = "idle";
+	m_model->LoadAnimaiton("asset\\model\\pnemy\\ninja\\Ninja Idle.fbx", m_animationName.data());
+
 }
