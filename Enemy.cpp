@@ -285,5 +285,10 @@ void Enemy::ModelInit()
 	
 	m_animationName = "run";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Run.fbx", m_animationName.data());
+	m_animationName = "kick";
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\quick_kick.fbx", m_animationName.data());
+	m_animationName = "back_kick";
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\back_kick.fbx", m_animationName.data());
+
 	m_animationName = "idle";
 }

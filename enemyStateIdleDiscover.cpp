@@ -66,7 +66,7 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vForward);
 	XMStoreFloat(&fDot, vDot);
 	XMFLOAT3 rotation = pEnemy->GetRotation();
-	rotation.y = acosf(fDot);
+//	rotation.y = acosf(fDot);
 	pEnemy->SetRotation(rotation);
 
 	// í“¬”¼Œa‚É‹ß‚Ã‚¢‚½‚çí“¬ó‘Ô‚ÉˆÚs

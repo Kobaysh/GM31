@@ -66,7 +66,10 @@ public:
 	int GetMaxHp() { return m_maxHp; }
 
 	const std::string& GetAnimationName() const { return m_animationName; }
-	void SetAnimationName(const std::string& name) { m_animationName = name; }
+	void SetAnimationName(const std::string& name) {
+		m_animationName = name;
+		ResetAnimationFrame(); }
+	void ResetAnimationFrame() { m_frame = 0; }
 private:
 	void UpdateRotation();
 	void UpdateOBB();

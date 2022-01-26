@@ -14,7 +14,17 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 	m_timer += 0.1f;
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 
-	if (!m_isAttacking && m_timer >= 10.0f)
+	if (!m_isAttacking && m_timer >= 6.0f)
+	{
+		if (pEnemy->GetAnimationName() != "kick")
+		{
+			pEnemy->SetAnimationName("kick");
+			pEnemy->ResetAnimationFrame();
+		}
+	}
+
+
+	if (!m_isAttacking && m_timer >= 8.0f)
 	{
 		m_isAttacking = true;
 		XMFLOAT3 obbPos;
@@ -58,19 +68,19 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 			}
 			
 			EnemyStatePattern* pStatePattern = 
-			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle);
+			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle(pEnemy));
 			pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
 			delete pStatePattern;
 			return;
 		}
 		// 攻撃アニメーションが終わったらfalse
-		if (m_timer >= 10.0f)
+		if (m_timer >= 12.0f)
 		{
 			m_isAttacking = false;
 			m_obbAttack->SetDead();
 			m_obbAttack = nullptr;
 			EnemyStatePattern* pStatePattern = 
-			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle);
+			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle(pEnemy));
 			pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
 			delete pStatePattern;
 			return;
