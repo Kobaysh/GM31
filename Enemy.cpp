@@ -177,7 +177,7 @@ void Enemy::Draw()
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX scaleFix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y - m_scale.y, m_position.z);
 	XMMATRIX worldX = scaleX * scaleFix * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -278,9 +278,12 @@ void Enemy::CollisionOther()
 void Enemy::ModelInit()
 {
 	m_model = new AnimationModel();
-	m_model->Load("asset\\model\\enemy\\ninja\\Ch24_nonPBR.fbx");
+	m_model->Load("asset\\model\\enemy\\ninja\\Ninja.fbx");
 
 	m_animationName = "idle";
-	m_model->LoadAnimaiton("asset\\model\\pnemy\\ninja\\Ninja Idle.fbx", m_animationName.data());
-
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Ninja_Idle.fbx", m_animationName.data());
+	
+	m_animationName = "run";
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Run.fbx", m_animationName.data());
+	m_animationName = "idle";
 }

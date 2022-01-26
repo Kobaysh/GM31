@@ -356,6 +356,7 @@ void AnimationModel::Update(const char * animationName, int frame)
 #if defined(_DEBUG) || defined(DEBUG)
 	return;
 #endif // ! (DEBUG | _DEBUG)
+	if (m_animation.count(animationName) <= 0) return;
 	if (!m_animation[animationName]->HasAnimations()) return;
 
 	// アニメーションデータからボーンマトリクス算出

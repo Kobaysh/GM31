@@ -64,6 +64,9 @@ public:
 
 	int GetNowHp() { return m_hp; }
 	int GetMaxHp() { return m_maxHp; }
+
+	const std::string& GetAnimationName() const { return m_animationName; }
+	void SetAnimationName(const std::string& name) { m_animationName = name; }
 private:
 	void UpdateRotation();
 	void UpdateOBB();

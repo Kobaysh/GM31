@@ -483,7 +483,7 @@ void Player::ModelInit()
 {
 	m_Model = new AnimationModel();
 
-	//	m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
+	//m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
 	//m_Model->Load("asset\\model\\player\\Idle (6).fbx");	// ”EŽÒ
 	m_Model->Load("asset\\model\\player\\paladin\\paladin_prop_j_nordstrom.fbx");	// ŠZ
 	m_animationName = "idle";
