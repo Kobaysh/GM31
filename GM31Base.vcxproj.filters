@@ -152,9 +152,6 @@
     <ClInclude Include="pressSpaceKey.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="animationModel.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="fbxMesh.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
@@ -263,6 +260,9 @@
     <ClInclude Include="titleLogo.h">
       <Filter>ソース ファイル\game_object\title</Filter>
     </ClInclude>
+    <ClInclude Include="animationModel.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -361,9 +361,6 @@
     <ClCompile Include="pressSpaceKey.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="animationModel.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="fbxMesh.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -456,6 +453,9 @@
     </ClCompile>
     <ClCompile Include="titleParticle.cpp">
       <Filter>ソース ファイル\game_object\title</Filter>
+    </ClCompile>
+    <ClCompile Include="animationModel.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

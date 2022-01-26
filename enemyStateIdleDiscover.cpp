@@ -57,10 +57,12 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 		rot = 0.0f;
 	}
 	vForward = vEToPlayer;
+	vForward.m128_f32[1] = 0;
+	vForward = XMVector3Normalize(vForward);
 	float rot90 = XMConvertToRadians(90.0f);
 	XMMATRIX mtxRot;
 	mtxRot = XMMatrixRotationY(rot90);
-//	mtxRot = XMMatrixRotationY(rot);
+	mtxRot = XMMatrixRotationY(rot);
 //	vForward = XMVector3TransformNormal(vForward, mtxRot);
 	XMVECTOR vRight = XMLoadFloat3(&pEnemy->GetDirection()->m_right);
 	vRight = XMVector3TransformNormal(vForward, mtxRot);
@@ -68,10 +70,16 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 	XMStoreFloat3(&pEnemy->GetDirection()->m_forward, vForward);
 	XMStoreFloat3(&pEnemy->GetDirection()->m_right, vRight);
 
-	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vForward);
+
+	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f), vForward);
+	if (vForward.m128_f32[0] > 0.0f)
+	{
+		vDot = XMVector3Dot(vForward, XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f));
+	}
 	XMStoreFloat(&fDot, vDot);
+
 	XMFLOAT3 rotation = pEnemy->GetRotation();
-//	rotation.y = acosf(fDot);
+	rotation.y = acosf(fDot);
 	pEnemy->SetRotation(rotation);
 
 	// í“¬”¼Œa‚É‹ß‚Ã‚¢‚½‚çí“¬ó‘Ô‚ÉˆÚs

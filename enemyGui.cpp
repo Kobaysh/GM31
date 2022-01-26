@@ -37,7 +37,9 @@ void EnemyGui::Update()
 			{
 				if (ImGui::TreeNode("enmey:%d","Enemy:%d", i + 1))
 				{
-
+					ImGui::Text("Position x:%.2fy:%.2fz:%.2f", enemyList[i]->GetPosition().x, enemyList[i]->GetPosition().y, enemyList[i]->GetPosition().z);
+					ImGui::Text("Rotation x:%.2fy:%.2fz:%.2f", enemyList[i]->GetRotation().x, enemyList[i]->GetRotation().y, enemyList[i]->GetRotation().z);
+					ImGui::Text("Forward x:%.2fy:%.2fz:%.2f", enemyList[i]->GetDirection()->m_forward.x, enemyList[i]->GetDirection()->m_forward.y, enemyList[i]->GetDirection()->m_forward.z);
 					if (ImGui::TreeNode("Enemy State"))
 					{
 						ImGui::Text(enemyList[i]->GetEnemyState()->GetStateName().c_str());

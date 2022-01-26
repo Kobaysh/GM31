@@ -41,7 +41,7 @@ void Enemy::Init()
 	m_rotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// Še•ûŒü‰Šú‰»
-	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, -1.0f);
 	m_direction.m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_direction.m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 
@@ -112,12 +112,20 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 	m_position = pos;
 	m_obb->SetPosition(pos);
 	m_rotation = rotation;
+	XMMATRIX rot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
+	XMVECTOR vF, vR, vU;
+	vF = XMLoadFloat3(&m_direction.m_forward);
+	vR = XMLoadFloat3(&m_direction.m_right);
+	vF = XMVector3TransformNormal(vF, rot);
+	vR = XMVector3TransformNormal(vR, rot);
+	vU = XMVector3Cross(vF, vR);
+	XMStoreFloat3(&m_direction.m_forward, vF);
+	XMStoreFloat3(&m_direction.m_right, vR);
+	XMStoreFloat3(&m_direction.m_up, vU);
 	m_obb->SetRotation(rotation, XMFLOAT3(0.0f,0.0f,0.0f));
 	m_scale = scale;
 	XMFLOAT3 fixScale = scale;
-	fixScale.x = fixScale.x * 2 + 0.1f;
-	fixScale.y = fixScale.y * 2 + 0.1f;
-	fixScale.z = fixScale.z * 2 + 0.1f;
+	fixScale.y = fixScale.y * 1.7f + 0.1f;
 	m_obb->SetScale(fixScale);
 	m_hpBar->SetPosition(pos);
 	m_hpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
