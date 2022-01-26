@@ -41,7 +41,9 @@ bool JudgeActiveWindow()
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	
+
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
 	WNDCLASSEX wcex =
 	{
 		sizeof(WNDCLASSEX),
@@ -164,7 +166,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch(wParam)
 		{
 		case VK_ESCAPE:
-			DestroyWindow(hWnd);
+			SendMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		}
 		//break;
@@ -175,6 +177,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Keyboard_ProcessMessage(uMsg, wParam, lParam);
 
 		break;
+	case WM_CLOSE:	//	ウィンドウを閉じるメッセージ
+		if (MessageBox(hWnd, "本当に終了してよろしいですか？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
+			DestroyWindow(hWnd);	//	指定のウィンドウにWM_DESTROYメッセージを送る
+
+		}
+		return 0;
 	default:
 		break;
 	}
