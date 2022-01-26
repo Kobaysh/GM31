@@ -39,6 +39,9 @@
     <Filter Include="ソース ファイル\game_object\enemy\behavior">
       <UniqueIdentifier>{d485d12f-ce79-45e4-ad7b-ea957d88afeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game_object\title">
+      <UniqueIdentifier>{54d37afd-8b02-4b97-8d8d-a9121b5809de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -118,9 +121,6 @@
     </ClInclude>
     <ClInclude Include="title.h">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
-    </ClInclude>
-    <ClInclude Include="titleLogo.h">
-      <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="primitive.h">
       <Filter>ソース ファイル\system</Filter>
@@ -239,12 +239,6 @@
     <ClInclude Include="hp.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="titleBG.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="titleParticle.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="nodeBase.h">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
     </ClInclude>
@@ -259,6 +253,15 @@
     </ClInclude>
     <ClInclude Include="behaviorData.h">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="titleParticle.h">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClInclude>
+    <ClInclude Include="titleBG.h">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClInclude>
+    <ClInclude Include="titleLogo.h">
+      <Filter>ソース ファイル\game_object\title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -336,9 +339,6 @@
     </ClCompile>
     <ClCompile Include="title.cpp">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
-    </ClCompile>
-    <ClCompile Include="titleLogo.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="audio.cpp">
       <Filter>ソース ファイル\system</Filter>
@@ -439,12 +439,6 @@
     <ClCompile Include="hp.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="titleBG.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="titleParticle.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="behaviorTree.cpp">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
     </ClCompile>
@@ -453,6 +447,15 @@
     </ClCompile>
     <ClCompile Include="nodeBase.cpp">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="titleBG.cpp">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClCompile>
+    <ClCompile Include="titleLogo.cpp">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClCompile>
+    <ClCompile Include="titleParticle.cpp">
+      <Filter>ソース ファイル\game_object\title</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
