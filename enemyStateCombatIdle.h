@@ -9,4 +9,6 @@ private:
 //	bool m_isMissed = false;
 public :
 	void Update(class Enemy* pEnemy)override;
+	EnemyStateCombatIdle(class Enemy* pEnemy);
+	EnemyStateCombatIdle(){}
 };

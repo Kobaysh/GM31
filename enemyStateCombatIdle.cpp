@@ -74,3 +74,8 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 	}
 
 }
+
+EnemyStateCombatIdle::EnemyStateCombatIdle(Enemy* pEnemy)
+{
+	pEnemy->SetAnimationName("idle");
+}

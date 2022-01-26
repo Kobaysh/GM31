@@ -41,7 +41,7 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 	}
 	XMFLOAT3 rot = pEnemy->GetRotation();
 	XMFLOAT3 rotSpeed = XMFLOAT3(0.0f, 0.01f, 0.0f);
-	rot.y += rotSpeed.y;
-	pEnemy->SetRotation(rot);
-	pEnemy->SetRotationSpeed(rotSpeed);
+	//rot.y += rotSpeed.y;
+	//pEnemy->SetRotation(rot);
+	//pEnemy->SetRotationSpeed(rotSpeed);
 }

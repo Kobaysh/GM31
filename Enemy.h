@@ -22,7 +22,8 @@ public:
 	};
 protected:
 //	Model* m_model;
-	int m_modelId;
+//	int m_modelId;
+	class AnimationModel* m_model;
 	class Audio* m_explosionSE;
 	class OBB* m_obb;
 	class EnemyState* m_state;
@@ -37,6 +38,9 @@ protected:
 	int m_hp;
 	int m_maxHp;
 	bool m_isUsingState;	// ステートマシーンでAIを操作しているか
+
+	int m_frame;
+	std::string m_animationName;
 public:
 	Enemy();
 	virtual void Init();
@@ -60,10 +64,17 @@ public:
 
 	int GetNowHp() { return m_hp; }
 	int GetMaxHp() { return m_maxHp; }
+
+	const std::string& GetAnimationName() const { return m_animationName; }
+	void SetAnimationName(const std::string& name) {
+		m_animationName = name;
+		ResetAnimationFrame(); }
+	void ResetAnimationFrame() { m_frame = 0; }
 private:
 	void UpdateRotation();
 	void UpdateOBB();
 	void MoveFromMoveVector();
 	void CollisionOther();
+	void ModelInit();
 };
 
