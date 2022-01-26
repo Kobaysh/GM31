@@ -5,6 +5,11 @@
 #include "utility.h"
 
 
+EnemyStateCombatGuard::EnemyStateCombatGuard(Enemy * pEnemy)
+{
+	pEnemy->SetAnimationName("guard");
+}
+
 void EnemyStateCombatGuard::Update(Enemy * pEnemy)
 {
 	EnemyState* pState = pEnemy->GetEnemyState();
@@ -14,7 +19,7 @@ void EnemyStateCombatGuard::Update(Enemy * pEnemy)
 		// ƒK[ƒh‰ðœ
 		pState->SetIsGuarding(false);
 		EnemyStatePattern* pStatePattern = 
-			pState->ChangeState(new EnemyStateCombatIdle);
+			pState->ChangeState(new EnemyStateCombatIdle(pEnemy));
 		pState->SetStateName("EnemyStateCombatIdle");
 		delete pStatePattern;
 		return;

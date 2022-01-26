@@ -286,20 +286,27 @@ void Enemy::ModelInit()
 	m_model = new AnimationModel();
 	m_model->Load("asset\\model\\enemy\\ninja\\Ninja.fbx");
 
-	m_animationName = "idle";
+	m_animationName = "idle_idle";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Ninja_Idle.fbx", m_animationName.data());
 	
 	m_animationName = "run";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Run.fbx", m_animationName.data());
+
+	m_animationName = "combat_idle";
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Combat_Idle.fbx", m_animationName.data());
+
 	m_animationName = "kick";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\quick_kick.fbx", m_animationName.data());
 	m_animationName = "back_kick";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\back_kick.fbx", m_animationName.data());
+
+	m_animationName = "guard";
+	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\guard.fbx", m_animationName.data());
 
 	m_animationName = "hit_reaction";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Hit_Reaction.fbx", m_animationName.data());
 	m_animationName = "dying";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Dying.fbx", m_animationName.data());
 
-	m_animationName = "idle";
+	m_animationName = "idle_idle";
 }
