@@ -27,7 +27,7 @@ void Sky::Init()
 	m_Model->Load("asset\\model\\sky\\skydome.obj");	 // \\‚©//‚µ‚©Žg‚¦‚È‚¢
 	
 
-	m_position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_position	= XMFLOAT3(0.0f, -20.0f, 0.0f);
 	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale		= XMFLOAT3(100.0f, 100.0f, 100.0f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);

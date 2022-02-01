@@ -30,7 +30,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		XMFLOAT3 obbPos;
 		XMVECTOR vObbPos = XMLoadFloat3(&pEnemy->GetPosition()) + XMLoadFloat3(&pEnemy->GetDirection()->m_forward) * 2;
 		XMStoreFloat3(&obbPos, vObbPos);
-		obbPos.y += 1.0f;
+		//obbPos.y += 1.0f;
 		m_obbAttack = nullptr;
 		m_obbAttack = new OBB(obbPos, pEnemy->GetRotation(), XMFLOAT3(1.0f, 2.0f,1.0f));
 		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);

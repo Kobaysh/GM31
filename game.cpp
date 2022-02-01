@@ -32,7 +32,7 @@
 
 
 #define FIELD_XZ (20)
-#define FIELD__SCALE_XZ (20)
+#define FIELD__SCALE_XZ (8)
 
 void Game::Init()
 {
@@ -67,12 +67,12 @@ void Game::Init()
 		pos.y = 0.0f + scl.y / 2;
 		AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
 
-		Wood* wood = AppendGameObject<Wood>(GameObject::GOT_OBJECT2D);
+		/*Wood* wood = AppendGameObject<Wood>(GameObject::GOT_OBJECT2D);
 		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
 		pos.z = (float)rand() / RAND_MAX * 100.f - 50.f;
 		pos.y = 0.0f + 2.5f;
 		wood->SetPosition(pos);
-		wood->SetScale(XMFLOAT3(5.0f, 5.0f, 1.0f));
+		wood->SetScale(XMFLOAT3(5.0f, 5.0f, 1.0f));*/
 		
 	}
 	XMFLOAT3 pos = XMFLOAT3(-1.0f,0.0f,-1.0f);

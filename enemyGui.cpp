@@ -21,7 +21,7 @@ void EnemyGui::Uninit()
 void EnemyGui::Update()
 {
 	ImGui::SetNextWindowPos(ImVec2(720, 200), ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(400, 200), ImGuiCond_Once);
 	ImGui::SetNextWindowBgAlpha(0.3f);
 	static bool* p_open = nullptr;
 	ImGuiWindowFlags window_flags = 0;
