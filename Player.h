@@ -11,7 +11,7 @@ private:
 	class PlayerState  m_playerState;
 	class HpPlayer* m_hpBar = nullptr;
 //	class Model* m_Model;
-	class Audio* m_shotSE= nullptr;
+	class Audio* m_slashSE= nullptr;
 	class OBB* m_obb= nullptr;
 	class OBB* m_obbAttack= nullptr;
 	class AnimationModel*  m_Model= nullptr;

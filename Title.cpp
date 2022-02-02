@@ -10,6 +10,7 @@
 #include "fade.h"
 #include "pressSpaceKey.h"
 #include "titleParticle.h"
+#include "audio.h"
 #include "texture.h"
 #include "title.h"
 #include "game.h"
@@ -25,6 +26,13 @@ void Title::Init()
 	AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
 	TitleParticle::Create(0.0f);
+	Audio* bgm = AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	bgm->Load("asset\\audio\\bgm\\title.wav");
+
+	bgm->Play(0.3f , true);
+
+	m_decisionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	m_decisionSE->Load("asset\\audio\\se\\decision.wav");
 	Fade::SetFade(Fade::FADE_IN);
 }
 
@@ -45,6 +53,7 @@ void Title::Update()
 		{
 			Fade::SetFade(Fade::FADE_OUT);
 			m_isFading = true;
+			m_decisionSE->Play();
 		}
 	}
 	if (m_isFading) {

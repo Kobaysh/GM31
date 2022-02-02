@@ -165,7 +165,7 @@ void AnimationModel::Unload()
 
 	aiReleaseImport(m_aiScene);
 
-	for (std::pair<const std::string, const aiScene*>pair : m_animation) {
+	for (auto pair : m_animation) {
 		aiReleaseImport(pair.second);
 	}
 }
