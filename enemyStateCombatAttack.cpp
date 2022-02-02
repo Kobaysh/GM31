@@ -4,10 +4,33 @@
 #include "player.h"
 #include "enemy.h"
 #include "obb.h"
+#include "audio.h"
 #include "enemyStateCombatAttack.h"
 #include "enemyStateCombatIdle.h"
 #include "trunk.h"
 
+Audio* EnemyStateCombatAttack::m_attackSE = nullptr;
+Audio* EnemyStateCombatAttack::m_guardSE = nullptr;
+Audio* EnemyStateCombatAttack::m_repelSE = nullptr;
+
+void EnemyStateCombatAttack::Init()
+{
+	if (!m_attackSE)
+	{
+		m_attackSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_attackSE->Load("asset\\audio\\se\\punch.wav");
+	}
+	if (!m_guardSE)
+	{
+		m_guardSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_guardSE->Load("asset\\audio\\se\\guard.wav");
+	}
+	if (!m_repelSE)
+	{
+		m_repelSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_repelSE->Load("asset\\audio\\se\\repel.wav");
+	}
+}
 
 void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 {
@@ -54,16 +77,18 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 				// プレイヤーのガードが指定フレーム以下なら弾かれる
 				if (pPlayer->GetTimerGuard() <= 1.5f)
 				{
+					m_repelSE->Play();
 					pEnemy->GetTrunk()->ChangeNowTrunk(10);
-
 				}
 				else
 				{
+					m_guardSE->Play();
 					pPlayer->GetTrunk()->ChangeNowTrunk(10);
 				}
 			}
 			else
 			{
+				m_attackSE->Play();
 				pPlayer->GetTrunk()->ChangeNowTrunk(10);
 				pPlayer->Damage(1);
 			}

@@ -61,7 +61,7 @@ void Game::Init()
 		XMFLOAT3 scl;
 		scl.x = scl.y = scl.z = (float)rand() / RAND_MAX * 3.0f + 2.0f;
 		pos.x = (float)rand() / RAND_MAX * 100.f - 40.f;
-		pos.z = (float)rand() / RAND_MAX * 100.f - 100.f;
+		pos.z = (float)rand() / RAND_MAX * 100.f /*- 100.f*/;
 		pos.y = 0.0f + scl.y / 2;
 		AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
 
@@ -98,9 +98,9 @@ void Game::Init()
 	MyImGui::Init(GetWindow());
 
 	Audio* bgm = AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-	bgm->Load("asset\\audio\\bgm\\bgm.wav");
+	bgm->Load("asset\\audio\\bgm\\game.wav");
 	
-	bgm->Play(0.0f , true);
+	bgm->Play(0.3f , true);
 }
 
 void Game::Uninit()

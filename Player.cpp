@@ -60,8 +60,8 @@ void Player::Init()
 
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
 
-	m_shotSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-	m_shotSE->Load("asset\\audio\\se\\shot.wav");
+	m_slashSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	m_slashSE->Load("asset\\audio\\se\\slash.wav");
 }
 
 void Player::Uninit()
@@ -325,6 +325,7 @@ void Player::Slash()
 				if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb())){
 					if (enemy->GetIsUsingState()){
 						// UŒ‚‚ª“–‚½‚Á‚½
+						m_slashSE->Play();
 						enemy->GetEnemyState()->SetIsCollided(true);
 						if (enemy->GetTrunk()->GetIsCollapsed()){
 							// ‘ÌŠ²‚ª•ö‚ê‚Ä‚¢‚é‚È‚ç‘¦Ž€
@@ -374,7 +375,7 @@ void Player::Shoot()
 	//if (KeyLogger_Trigger(KL_GUARD)) {
 	//	
 	//	Bullet::Create(m_position, m_direction.m_forward, 0.3f);
-	//	m_shotSE->Play(0.1f);
+	//	m_slashSE->Play(0.1f);
 	//	
 	//}
 }
