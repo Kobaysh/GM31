@@ -15,7 +15,6 @@
 #include "model.h"
 #include "player.h"
 #include "enemy.h"
-#include "bullet.h"
 #include "explosion.h"
 #include "sky.h"
 #include "rock.h"
@@ -39,7 +38,6 @@ void Game::Init()
 	m_isFading = false;
 	m_isGameClear = false;
 
-	Bullet::Load();
 	//Camera* camera = new Camera();
 	//camera->Init(true, false);
 	//AddGameObject(camera, GameObject::GOT_CAMERA);
@@ -109,7 +107,6 @@ void Game::Uninit()
 {
 	Scene::Uninit();	// 継承元クラスのメソッド呼び出し(staticメソッドと書き方同じ)
 	MyImGui::Uninit();
-	Bullet::UnLoad();
 	Texture::AllRelease();
 	Model::Uninit();
 	ShaderManager::AllRelease();

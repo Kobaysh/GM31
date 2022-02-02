@@ -7,7 +7,6 @@
 #include "obb.h"
 #include "model.h"
 #include "animationModel.h"
-#include "bullet.h"
 #include "enemy.h"
 #include "enemyState.h"
 #include "rock.h"
@@ -263,10 +262,6 @@ void Player::Slash()
 
 	if (MOUSE_ACTIVE)
 	{
-		/*if (Input::GetMouseTrigger(Input::MouseButton::Left))
-		{
-		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
-		}*/
 
 		if (!m_isAttack &&Input::GetMouseTrigger(Input::MouseButton::Left))
 		{
@@ -292,10 +287,6 @@ void Player::Slash()
 		m_obbAttack = nullptr;
 		m_obbAttack = new OBB(obbPos, m_rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
 		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
-		/*
-		Bullet::Create(m_position, m_direction.m_forward, 0.3f);
-		m_shotSE->Play(0.1f);
-		*/
 	}
 	//	if (Input::GetMouseDown(Input::MouseButton::Left))
 
