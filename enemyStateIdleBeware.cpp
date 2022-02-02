@@ -20,7 +20,7 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 		return;
 	}
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
-
+	if (!player) return;
 	XMVECTOR vPlayerPos, vEnemyPos, vLength;
 	vPlayerPos = XMLoadFloat3(&player->GetPosition());
 	vEnemyPos = XMLoadFloat3(&pEnemy->GetPosition());

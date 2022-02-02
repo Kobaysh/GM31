@@ -257,9 +257,12 @@ void MyImGui::SetDebugPlayerWindow()
 	if(ImGui::TreeNode("Player"))
 	{
 		Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GameObject_Type::GOT_OBJECT3D);
-		ImGui::Text("HP:%d/%d", pPlayer->GetNowHp(), pPlayer->GetMaxHp());
-		ImGui::Text("Trunk:%d/%d", pPlayer->GetTrunk()->GetNowTrunk(), pPlayer->GetTrunk()->GetMaxTrunk());
-		ImGui::Text("timerGuard:%.2f", pPlayer->GetTimerGuard());
+		if (pPlayer)
+		{
+			ImGui::Text("HP:%d/%d", pPlayer->GetNowHp(), pPlayer->GetMaxHp());
+			ImGui::Text("Trunk:%d/%d", pPlayer->GetTrunk()->GetNowTrunk(), pPlayer->GetTrunk()->GetMaxTrunk());
+			ImGui::Text("timerGuard:%.2f", pPlayer->GetTimerGuard());
+		}
 		ImGui::TreePop();
 	}
 #endif

@@ -53,9 +53,6 @@
     <ClInclude Include="gameObject.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="bullet.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
@@ -79,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="singleton.h">
       <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="keyboard.h">
       <Filter>ソース ファイル\system</Filter>
@@ -137,12 +131,6 @@
     <ClInclude Include="katana.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="state.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="wood.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
@@ -151,9 +139,6 @@
     </ClInclude>
     <ClInclude Include="pressSpaceKey.h">
       <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="fbxMesh.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="meshField.h">
       <Filter>ソース ファイル\game_object</Filter>
@@ -215,9 +200,6 @@
     <ClInclude Include="enemyStateIdleIdle.h">
       <Filter>ソース ファイル\game_object\enemy\state</Filter>
     </ClInclude>
-    <ClInclude Include="utility.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="enemyStateCombatAttack.h">
       <Filter>ソース ファイル\game_object\enemy\state</Filter>
     </ClInclude>
@@ -232,9 +214,6 @@
     </ClInclude>
     <ClInclude Include="obb.h">
       <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="hp.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="nodeBase.h">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
@@ -260,14 +239,35 @@
     <ClInclude Include="titleLogo.h">
       <Filter>ソース ファイル\game_object\title</Filter>
     </ClInclude>
+    <ClInclude Include="player_hp.h">
+      <Filter>ソース ファイル\game_object\player</Filter>
+    </ClInclude>
+    <ClInclude Include="hp.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
     <ClInclude Include="animationModel.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="fbxMesh.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="state.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>ソース ファイル\system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="bullet.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -291,9 +291,6 @@
     </ClCompile>
     <ClCompile Include="singleton.cpp">
       <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\game_object</Filter>
@@ -349,9 +346,6 @@
     <ClCompile Include="katana.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="weapon.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="wood.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -360,9 +354,6 @@
     </ClCompile>
     <ClCompile Include="pressSpaceKey.cpp">
       <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="fbxMesh.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="meshField.cpp">
       <Filter>ソース ファイル\game_object</Filter>
@@ -433,9 +424,6 @@
     <ClCompile Include="obb.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="hp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="behaviorTree.cpp">
       <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
     </ClCompile>
@@ -454,8 +442,26 @@
     <ClCompile Include="titleParticle.cpp">
       <Filter>ソース ファイル\game_object\title</Filter>
     </ClCompile>
+    <ClCompile Include="player_hp.cpp">
+      <Filter>ソース ファイル\game_object\player</Filter>
+    </ClCompile>
+    <ClCompile Include="hp.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="weapon.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
     <ClCompile Include="animationModel.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="fbxMesh.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル\system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

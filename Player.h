@@ -9,6 +9,7 @@ private:
 
 
 	class PlayerState  m_playerState;
+	class HpPlayer* m_hpBar = nullptr;
 //	class Model* m_Model;
 	class Audio* m_shotSE;
 	class OBB* m_obb;

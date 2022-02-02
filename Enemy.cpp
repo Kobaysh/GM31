@@ -74,7 +74,7 @@ void Enemy::Init()
 
 	// HPバー
 	m_hpBar = new HpBar();
-	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(m_position, XMFLOAT3(1.0f, 0.3f, 1.0f), m_maxHp, m_maxHp);
+	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT3D)->Init(m_position, XMFLOAT3(1.0f, 0.3f, 1.0f), m_maxHp, m_maxHp);
 
 	// 体幹セット
 	m_trunk = new Trunk(30);
@@ -154,8 +154,10 @@ void Enemy::Update()
 	this->UpdateOBB();
 	this->CollisionOther();
 	this->MoveFromMoveVector();
-	m_position.y = mf->GetHeight(m_position) + m_scale.y;
-
+	if (mf)
+	{
+		m_position.y = mf->GetHeight(m_position) + m_scale.y;
+	}
 //	m_obb->SetPosition(m_position);
 	
 }

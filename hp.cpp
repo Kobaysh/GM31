@@ -127,7 +127,7 @@ void HpBar::Draw_Bar(XMFLOAT4 color, float perHP)
 		vertex[2].Position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
 		vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[2].Diffuse = color;
-		vertex[2].TexCoord = XMFLOAT2(0.0f, !.0f);
+		vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
 		vertex[3].Position = XMFLOAT3(1.0f - (1.0f - 1.0f * perHP) * 2, -1.0f, 0.0f);
 		vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
