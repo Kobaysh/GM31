@@ -448,10 +448,10 @@ void Renderer::SetWorldViewProjection2D()
 	m_pDeviceContext->UpdateSubresource(m_pProjectionBuffer.Get(), 0, nullptr, &projection, 0, 0);
 }
 
-void Renderer::SetWorldViewProjection2D(XMMATRIX * worldMatrix)
+void Renderer::SetWorldViewProjection2D(XMFLOAT4X4 * worldMatrix)
 {
 	XMMATRIX world;
-	world =	*worldMatrix;
+	world =	XMLoadFloat4x4(worldMatrix);
 	world = XMMatrixTranspose(world);
 
 	m_pDeviceContext->UpdateSubresource(m_pWorldBuffer.Get(), 0, nullptr, &world, 0, 0);

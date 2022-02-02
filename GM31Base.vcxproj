@@ -200,6 +200,7 @@
     <ClInclude Include="katana.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="keylogger.h" />
+    <ClInclude Include="lockOnCircle.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="meshField.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="katana.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="keylogger.cpp" />
+    <ClCompile Include="lockOnCircle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="meshField.cpp" />

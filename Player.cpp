@@ -13,6 +13,7 @@
 #include "camera.h"
 #include "audio.h"
 #include "meshField.h"
+#include "lockOnCircle.h"
 #include "trunk.h"
 #include "playerState.h"
 #include "player_hp.h"
@@ -53,6 +54,7 @@ void Player::Init()
 	m_hpBar = new HpPlayer();
 	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(XMFLOAT3(20.0f, SCREEN_HEIGHT * 0.97f, 1.0f), XMFLOAT3(50.0f, 10.0f, 1.0f), m_nowHp, m_maxHp);
 
+	m_lockOnRad = 10.0f;
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
@@ -95,6 +97,7 @@ void Player::Update()
 //	this->ChangeCameraDir();
 	this->Slash();
 	this->Guard();
+	this->LockOn();
 //	this->Shoot();
 	this->CollisionOther();
 	// Õ“Ë”»’è‚ÌŒãˆÚ“®
@@ -274,6 +277,9 @@ void Player::Slash()
 
 		if (!m_isAttack &&Input::GetMouseTrigger(Input::MouseButton::Left))
 		{
+			this->ChangeAnimation("attack");
+			m_isAttack = true;
+			m_timerAttack = 0.0f;
 			XMFLOAT3 obbPos;
 			XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.m_forward) * 1;
 			XMStoreFloat3(&obbPos, vObbPos);
@@ -420,6 +426,59 @@ void Player::Guard()
 		{
 			m_isGuard = false;
 		}
+	}
+}
+
+void Player::LockOn()
+{	
+	bool on = false;
+	if (MOUSE_ACTIVE)
+	{
+		on = Input::GetMouseTrigger(Input::MouseButton::Center);
+	}
+	if (KeyLogger_Trigger(KL_LOCKON) || on)
+	{
+		Scene* scene = ManagerT::GetScene();
+		Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
+		if (camera->GetIsLock())
+		{
+			camera->SetIsLock(false);
+			if (m_lockOnCircle)
+			{
+				m_lockOnCircle->SetDead();
+				m_lockOnCircle = nullptr;
+			}
+			return;
+		}
+		std::vector<Enemy*>  enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
+		std::sort(enemies.begin(), enemies.end(), [this](Enemy* e1, Enemy* e2) {
+			XMVECTOR vPPos, vEPos1, vEPos2;
+			vPPos = XMLoadFloat3(&GetPosition());
+			vEPos1 = XMLoadFloat3(&e1->GetPosition());
+			vEPos2 = XMLoadFloat3(&e2->GetPosition());
+			float distance1, distance2;
+			XMStoreFloat(&distance1, XMVector3Length(vPPos - vEPos1));
+			XMStoreFloat(&distance2, XMVector3Length(vPPos - vEPos2));
+
+			return (distance1 > distance2);
+			});
+		for (auto enemy : enemies)
+		{
+			XMVECTOR vPPos, vEPos;
+			vPPos = XMLoadFloat3(&GetPosition());
+			vEPos = XMLoadFloat3(&enemy->GetPosition());
+			float distance;
+			XMStoreFloat(&distance, XMVector3Length(vPPos - vEPos));
+			if (distance <= m_lockOnRad)
+			{
+				camera->SetIsLock(true);
+				camera->SetLockTarget(enemy->GetpPosition());
+				m_lockOnCircle = new LockOnCircle(enemy);
+				scene->AddGameObject(m_lockOnCircle, GOT_OBJECT2D);
+				break;
+			}
+		}
+		
 	}
 }
 

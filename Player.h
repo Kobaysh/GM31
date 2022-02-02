@@ -11,10 +11,11 @@ private:
 	class PlayerState  m_playerState;
 	class HpPlayer* m_hpBar = nullptr;
 //	class Model* m_Model;
-	class Audio* m_shotSE;
-	class OBB* m_obb;
-	class OBB* m_obbAttack;
-	class AnimationModel*  m_Model;
+	class Audio* m_shotSE= nullptr;
+	class OBB* m_obb= nullptr;
+	class OBB* m_obbAttack= nullptr;
+	class AnimationModel*  m_Model= nullptr;
+	class LockOnCircle* m_lockOnCircle = nullptr;
 
 	bool m_isActive = true;
 	bool m_movable = true;
@@ -43,6 +44,8 @@ private:
 	int m_frame;
 	std::string m_animationName;
 
+	float m_lockOnRad;				// ロックオン距離
+
 	// 所持品
 	// 装備中のアイテム
 	// 技
@@ -55,12 +58,7 @@ public:
 	void Update();
 	void Draw();
 
-	void Move();
-	void Jump();
-	void Slash();
-	void Shoot();
-	void Guard();
-	void CollisionOther();
+
 	//void VoidDimension();
 	void ChangeCameraDir();
 	XMFLOAT3 GetMove()const { return m_moveVector; }
@@ -83,5 +81,12 @@ private:
 	void UpdateObb();
 	void MoveFromMoveVector();
 	void ChangeAnimation(const char* animationName);
+	void Move();
+	void Jump();
+	void Slash();
+	void Shoot();
+	void Guard();
+	void LockOn();
+	void CollisionOther();
 };
 

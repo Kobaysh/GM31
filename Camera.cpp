@@ -12,7 +12,7 @@
 float Camera::m_routationalSpeed;
 
 const  float Camera::m_cameraSpeedFirst = 0.2f;
-const  float Camera::m_atLength = 1.0f;
+const  float Camera::m_atLength = 3.0f;
 
 
 
@@ -27,6 +27,7 @@ void Camera::Init()
 	m_routationalSpeed = 0.08f;
 	m_moveSpeed = m_cameraSpeedFirst;
 	m_isActive = true;
+	m_isLock = false;
 }
 
 void Camera::Init(bool active, bool movable)
@@ -143,10 +144,11 @@ void Camera::Update()
 		if (JudgeActiveWindow()) {
 //		if (false) {
 			
+			float mouseRot = m_routationalSpeed * 0.5f;
 			ShowCursor(false);
 			if (Input::GetMouseVelocity().x >= 1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed);
+				XMMATRIX mtxR = XMMatrixRotationY(mouseRot);
 				vForward = XMVector3TransformNormal(vForward, mtxR);
 				vForward = XMVector3Normalize(vForward);
 				vRight = XMVector3Normalize(vRight);
@@ -156,7 +158,7 @@ void Camera::Update()
 			}
 			if (Input::GetMouseVelocity().x <= -1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed);
+				XMMATRIX mtxR = XMMatrixRotationY(-mouseRot);
 				vForward = XMVector3TransformNormal(vForward, mtxR);
 				vRight = XMVector3TransformNormal(vRight, mtxR);
 				vForward = XMVector3Normalize(vForward);
@@ -166,7 +168,7 @@ void Camera::Update()
 			}
 			if (Input::GetMouseVelocity().y >= 1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed / 4);
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, mouseRot / 4);
 				vForward = XMVector3TransformNormal(vForward, mtxR);
 				vForward = XMVector3Normalize(vForward);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
@@ -174,7 +176,7 @@ void Camera::Update()
 			}
 			if (Input::GetMouseVelocity().y <= -1.0f)
 			{
-				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -m_routationalSpeed / 4);
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -mouseRot / 4);
 				vForward = XMVector3TransformNormal(vForward, mtxR);
 				vForward = XMVector3Normalize(vForward);
 				vUp = XMVector3TransformNormal(vUp, mtxR);
@@ -187,44 +189,46 @@ void Camera::Update()
 			ShowCursor(true);
 		}
 #else
-		if (KeyLogger_Press(KL_TURN_RIGHT))
+		if (!m_isLock)
 		{
-			XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed / 2);
-			vForward = XMVector3TransformNormal(vForward, mtxR);
-			vForward = XMVector3Normalize(vForward);
-			vRight = XMVector3Normalize(vRight);
-			vRight = XMVector3TransformNormal(vRight, mtxR);
-			vUp = XMVector3Cross(vForward, vRight);
-			vPosition = vPlayerPositon + (-vForward * length);
+			if (KeyLogger_Press(KL_TURN_RIGHT))
+			{
+				XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed / 2);
+				vForward = XMVector3TransformNormal(vForward, mtxR);
+				vForward = XMVector3Normalize(vForward);
+				vRight = XMVector3Normalize(vRight);
+				vRight = XMVector3TransformNormal(vRight, mtxR);
+				vUp = XMVector3Cross(vForward, vRight);
+				vPosition = vPlayerPositon + (-vForward * length);
+			}
+			if (KeyLogger_Press(KL_TURN_LEFT))
+			{
+				XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed / 2);
+				vForward = XMVector3TransformNormal(vForward, mtxR);
+				vRight = XMVector3TransformNormal(vRight, mtxR);
+				vForward = XMVector3Normalize(vForward);
+				vRight = XMVector3Normalize(vRight);
+				vUp = XMVector3Cross(vForward, vRight);
+				vPosition = vPlayerPositon + (-vForward * length);
+			}
+			if (KeyLogger_Press(KL_TURN_UP))
+			{
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed / 4 / 2);
+				vForward = XMVector3TransformNormal(vForward, mtxR);
+				vForward = XMVector3Normalize(vForward);
+				vUp = XMVector3TransformNormal(vUp, mtxR);
+				vPosition = vPlayerPositon + (-vForward * length);
+			}
+			if (KeyLogger_Press(KL_TURN_DOWN))
+			{
+				XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -m_routationalSpeed / 4 / 2);
+				vForward = XMVector3TransformNormal(vForward, mtxR);
+				vForward = XMVector3Normalize(vForward);
+				vUp = XMVector3TransformNormal(vUp, mtxR);
+				vPosition = vPlayerPositon + (-vForward * length);
+			}
+			vAt = XMLoadFloat3(&player->GetPosition());
 		}
-		if (KeyLogger_Press(KL_TURN_LEFT))
-		{
-			XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed / 2);
-			vForward = XMVector3TransformNormal(vForward, mtxR);
-			vRight = XMVector3TransformNormal(vRight, mtxR);
-			vForward = XMVector3Normalize(vForward);
-			vRight = XMVector3Normalize(vRight);
-			vUp = XMVector3Cross(vForward, vRight);
-			vPosition = vPlayerPositon + (-vForward * length);
-		}
-		if (KeyLogger_Press(KL_TURN_UP))
-		{
-			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed / 4 / 2);
-			vForward = XMVector3TransformNormal(vForward, mtxR);
-			vForward = XMVector3Normalize(vForward);
-			vUp = XMVector3TransformNormal(vUp, mtxR);
-			vPosition = vPlayerPositon + (-vForward * length);
-		}
-		if (KeyLogger_Press(KL_TURN_DOWN))
-		{
-			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -m_routationalSpeed / 4 / 2);
-			vForward = XMVector3TransformNormal(vForward, mtxR);
-			vForward = XMVector3Normalize(vForward);
-			vUp = XMVector3TransformNormal(vUp, mtxR);
-			vPosition = vPlayerPositon + (-vForward * length);
-		}
-		vAt = XMLoadFloat3(&player->GetPosition());
-
 #endif
 		vDirection += XMLoadFloat3(&player->GetMove());
 		// プレイヤーを追いかける
@@ -246,17 +250,35 @@ void Camera::Update()
 		// カメラが動かせない状態
 	}
 
-#if MOUSE_ACTIVE
-
-#else
 
 	// 移動
 //	vPosition += vDirection * m_moveSpeed;
 	// 注視点計算
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 	if (!player) return;
-	vAt = XMLoadFloat3(&player->GetPosition());
-#endif
+	if (m_isLock) {
+		vAt = XMLoadFloat3(m_lockTargetPos);
+		XMVECTOR vPlayerPos = XMLoadFloat3(&player->GetPosition());
+		XMVECTOR diffPos =  vPlayerPos - XMLoadFloat3(m_lockTargetPos);
+		diffPos = XMVector3Normalize(diffPos);
+		diffPos.m128_f32[1] = 0.0f;
+		vPosition = vPlayerPos + diffPos * 5.0f;
+		vPosition.m128_f32[1] += 3.0f;
+
+		vForward = - diffPos;
+	//	vForward.m128_f32[1] = 0.0f;
+		vUp = XMLoadFloat3(&m_direction.m_up);
+		vRight = XMVector3Cross(vUp, vForward);
+		XMStoreFloat3(&m_direction.m_forward, vForward);
+		XMStoreFloat3(&m_direction.m_right, vRight);
+		XMStoreFloat3(&m_direction.m_up, vUp);
+		
+	}
+	else
+	{
+		vAt = XMLoadFloat3(&player->GetPosition());
+	}
+
 	// 変数保存
 	XMStoreFloat3(&m_target, vAt);
 	XMStoreFloat3(&m_position, vPosition);

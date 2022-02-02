@@ -10,9 +10,11 @@ protected:
 	//XMFLOAT3 m_up;
 	bool m_isActive;
 	bool m_movable;
+	bool m_isLock;
 	XMFLOAT4X4 m_viewMatrix;
 	XMFLOAT4X4 m_projectionMatrix;
 	XMFLOAT3 m_move;
+	XMFLOAT3* m_lockTargetPos;
 
 	static float m_routationalSpeed;
 	float m_moveSpeed;
@@ -43,5 +45,9 @@ public:
 	virtual void ChangeMovableWithPlayer(bool movable);
 
 	virtual void ChangeDir(float angle, bool isRight);
+
+	void SetLockTarget(XMFLOAT3* pos) { m_lockTargetPos = pos; }
+	void SetIsLock(bool lock) { m_isLock = lock; }
+	bool GetIsLock(){return m_isLock;}
 };
 
