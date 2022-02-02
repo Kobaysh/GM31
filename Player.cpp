@@ -15,6 +15,7 @@
 #include "meshField.h"
 #include "trunk.h"
 #include "playerState.h"
+#include "player_hp.h"
 #include "player.h"
 
 
@@ -49,6 +50,10 @@ void Player::Init()
 
 	m_trunk = new Trunk(100);
 
+//	m_hpBar = new HpPlayer();
+//	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT3(10.0f, 10.0f, 1.0f), m_nowHp, m_maxHp);
+
+
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
@@ -61,6 +66,7 @@ void Player::Uninit()
 {
 	delete m_trunk;
 	m_obb->SetDead();
+//	m_hpBar->SetDead();
 	if (m_Model)
 	{
 		m_Model->Unload();
@@ -470,12 +476,12 @@ bool Player::Damage(int damage)
 {
 	if (damage < 0)return false;
 	m_nowHp -= damage;
-//	m_hpBar->SetHP(m_hp, m_maxHp);
+	m_hpBar->SetHP(m_nowHp, m_maxHp);
 	if (m_nowHp <= 0)
 	{
 		m_nowHp = 0;
-//		m_hpBar->SetHP(m_hp, m_maxHp);
-	//	SetDead();
+		m_hpBar->SetHP(m_nowHp, m_maxHp);
+		SetDead();
 		return true;
 	}
 	return false;

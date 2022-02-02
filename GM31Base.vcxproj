@@ -209,6 +209,7 @@
     <ClInclude Include="obb.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerState.h" />
+    <ClInclude Include="player_hp.h" />
     <ClInclude Include="polygon2D.h" />
     <ClInclude Include="pressSpaceKey.h" />
     <ClInclude Include="primitive.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="obb.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerState.cpp" />
+    <ClCompile Include="player_hp.cpp" />
     <ClCompile Include="polygon2D.cpp" />
     <ClCompile Include="pressSpaceKey.cpp" />
     <ClCompile Include="renderer.cpp" />

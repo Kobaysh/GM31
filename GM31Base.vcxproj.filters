@@ -263,6 +263,9 @@
     <ClInclude Include="animationModel.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="player_hp.h">
+      <Filter>ソース ファイル\game_object\player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="model.cpp">
@@ -456,6 +459,9 @@
     </ClCompile>
     <ClCompile Include="animationModel.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="player_hp.cpp">
+      <Filter>ソース ファイル\game_object\player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

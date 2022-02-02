@@ -4,11 +4,11 @@
 #include "scene.h"
 #include "camera.h"
 #include "texture.h"
-#include "hp.h"
+#include "player_hp.h"
 
 #define FILENAME ("asset\\texture\\fade.png")
 
-void HpBar::Init()
+void HpPlayer::Init()
 {
 	Texture::Load(FILENAME);
 	if (!m_vertexBuffer)
@@ -54,7 +54,7 @@ void HpBar::Init()
 	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 }
 
-void HpBar::Init(XMFLOAT3 pos, XMFLOAT3 scale, int nowHP, int maxHP)
+void HpPlayer::Init(XMFLOAT3 pos, XMFLOAT3 scale, int nowHP, int maxHP)
 {
 	m_position = pos;
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -62,7 +62,7 @@ void HpBar::Init(XMFLOAT3 pos, XMFLOAT3 scale, int nowHP, int maxHP)
 	SetHP(nowHP, maxHP);
 }
 
-void HpBar::Uninit()
+void HpPlayer::Uninit()
 {
 	m_vertexBuffer->Release();
 	m_VertexLayout->Release();
@@ -70,7 +70,7 @@ void HpBar::Uninit()
 	m_PixelShader->Release();
 }
 
-void HpBar::Draw()
+void HpPlayer::Draw()
 {
 	// 最大HPと現在のHPから割合を取得
 	float per = (float)m_nowHP / m_maxHP;
@@ -82,31 +82,13 @@ void HpBar::Draw()
 	// 黒い部分の表示
 	Draw_Bar(color, 1.0f);
 
-	// ３０％以下で赤色表示
-	if (per > 0.0f && per <= 0.3f)
-	{
-		color = XMFLOAT4(1.0f, 0, 0, 1.0f);
-	}
-	// ６０％以下で黄色表示
-	else if (per > 0.3f && per <= 0.6f)
-	{
-		color = XMFLOAT4(1.0f, 1.0f, 0, 1.0f);
-	}
-	// １００％以下で緑色表示
-	else if (per > 0.6f && per <= 1.0f)
-	{
-		color = XMFLOAT4(0, 1.0f, 0, 1.0f);
-	}
+	// HP表示
+	color = XMFLOAT4(1.0f, 1.0f, 0, 1.0f);
+	Draw_Bar(color, per);
 
-	if (per == 1.0f) {
-		Draw_Bar(color, 1.0f);
-	}
-	else {
-		Draw_Bar(color, per);
-	}
 }
 
-void HpBar::Draw_Bar(XMFLOAT4 color, float perHP)
+void HpPlayer::Draw_Bar(XMFLOAT4 color, float perHP)
 {
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
@@ -114,22 +96,22 @@ void HpBar::Draw_Bar(XMFLOAT4 color, float perHP)
 	{
 		VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
-		vertex[0].Position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
+		vertex[0].Position = XMFLOAT3(m_position.x -1.0f, m_position.y + 1.0f, 0.0f);
 		vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[0].Diffuse = color;
 		vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-		vertex[1].Position = XMFLOAT3(1.0f - (1.0f - 1.0f * perHP) * 2, 1.0f, 0.0f);
+		vertex[1].Position = XMFLOAT3(m_position.x + 1.0f - (1.0f - 1.0f * perHP) * 2 * m_scale.x, m_position.y + 1.0f, 0.0f);
 		vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[1].Diffuse = color;
 		vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-		vertex[2].Position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
+		vertex[2].Position = XMFLOAT3(m_position.x -1.0f, m_position.y -1.0f, 0.0f);
 		vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[2].Diffuse = color;
 		vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-		vertex[3].Position = XMFLOAT3(1.0f - (1.0f - 1.0f * perHP) * 2, -1.0f, 0.0f);
+		vertex[3].Position = XMFLOAT3(m_position.x + 1.0f - (1.0f - 1.0f * perHP) * 2 * m_scale.x, m_position.y -1.0f, 0.0f);
 		vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[3].Diffuse = color;
 		vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
@@ -144,25 +126,7 @@ void HpBar::Draw_Bar(XMFLOAT4 color, float perHP)
 
 	// マトリクス設定
 
-	Scene* scene = ManagerT::GetScene();
-	XMMATRIX mtxInvView;
-	XMMATRIX view =XMLoadFloat4x4(scene->GetGameObject<Camera>(GOT_CAMERA)->GetView());
-	XMFLOAT4X4 temp;
-	XMStoreFloat4x4(&temp, view);
-	temp._41 = 0.0f;
-	temp._42 = 0.0f;
-	temp._43 = 0.0f;
-	view =	XMLoadFloat4x4(&temp);
-
-	mtxInvView = XMMatrixTranspose(view);
-	//	mtxInvView = XMMatrixInverse(nullptr, view);
-
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
-	XMMATRIX worldX = scaleX * mtxInvView * transX;
-	XMFLOAT4X4 world4x4;
-	XMStoreFloat4x4(&world4x4, worldX);
-	Renderer::SetWorldMatrixX(&world4x4);
+	Renderer::SetWorldViewProjection2D();
 
 
 
@@ -182,7 +146,6 @@ void HpBar::Draw_Bar(XMFLOAT4 color, float perHP)
 
 	// テクスチャ設定
 	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
-	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
