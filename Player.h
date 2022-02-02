@@ -11,10 +11,11 @@ private:
 	class PlayerState  m_playerState;
 	class HpPlayer* m_hpBar = nullptr;
 //	class Model* m_Model;
-	class Audio* m_shotSE;
-	class OBB* m_obb;
-	class OBB* m_obbAttack;
-	class AnimationModel*  m_Model;
+	class Audio* m_shotSE= nullptr;
+	class OBB* m_obb= nullptr;
+	class OBB* m_obbAttack= nullptr;
+	class AnimationModel*  m_Model= nullptr;
+	class LockOnCircle* m_lockOnCircle = nullptr;
 
 	bool m_isActive = true;
 	bool m_movable = true;

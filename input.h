@@ -2,8 +2,8 @@
 #include <dinput.h>
 #pragma comment(lib, "dinput8.lib")
 
-//#define MOUSE_ACTIVE (false)
-#define MOUSE_ACTIVE (true)
+#define MOUSE_ACTIVE (false)
+//#define MOUSE_ACTIVE (true)
 
 class Input
 {

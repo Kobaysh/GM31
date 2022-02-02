@@ -111,7 +111,9 @@ void TitleParticle::Draw()
 	mtxS = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	mtxT = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	mtxW = mtxS * mtxT;
-	Renderer::SetWorldViewProjection2D(&mtxW);
+	XMFLOAT4X4 world;
+	XMStoreFloat4x4(&world, mtxW);
+	Renderer::SetWorldViewProjection2D(&world);
 
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);

@@ -12,7 +12,7 @@
 float Camera::m_routationalSpeed;
 
 const  float Camera::m_cameraSpeedFirst = 0.2f;
-const  float Camera::m_atLength = 1.0f;
+const  float Camera::m_atLength = 3.0f;
 
 
 

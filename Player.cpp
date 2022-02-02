@@ -13,6 +13,7 @@
 #include "camera.h"
 #include "audio.h"
 #include "meshField.h"
+#include "lockOnCircle.h"
 #include "trunk.h"
 #include "playerState.h"
 #include "player_hp.h"
@@ -442,6 +443,11 @@ void Player::LockOn()
 		if (camera->GetIsLock())
 		{
 			camera->SetIsLock(false);
+			if (m_lockOnCircle)
+			{
+				m_lockOnCircle->SetDead();
+				m_lockOnCircle = nullptr;
+			}
 			return;
 		}
 		std::vector<Enemy*>  enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
@@ -467,6 +473,8 @@ void Player::LockOn()
 			{
 				camera->SetIsLock(true);
 				camera->SetLockTarget(enemy->GetpPosition());
+				m_lockOnCircle = new LockOnCircle(enemy);
+				scene->AddGameObject(m_lockOnCircle, GOT_OBJECT2D);
 				break;
 			}
 		}
