@@ -18,6 +18,7 @@ EnemyStateIdleDiscover::EnemyStateIdleDiscover(Enemy * pEnemy)
 void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	if (!player) return;
 	XMVECTOR vPlayerPos, vEnemyPos, vToPlayer, vLength;
 	float length;
 	vPlayerPos = XMLoadFloat3(&player->GetPosition());

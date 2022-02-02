@@ -130,7 +130,7 @@ void Camera::Update()
 		Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 		/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
 		vForward = pFront;*/
-
+		if (!player) return;
 		XMVECTOR vDiffCtoP, vLengthCtoP, vPlayerPositon;
 		vPlayerPositon = XMLoadFloat3(&player->GetPosition());
 		vDiffCtoP = vPlayerPositon - vPosition;
@@ -253,8 +253,9 @@ void Camera::Update()
 	// ˆÚ“®
 //	vPosition += vDirection * m_moveSpeed;
 	// ’Ž‹“_ŒvŽZ
-
-	vAt = XMLoadFloat3(&ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D)->GetPosition());
+	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	if (!player) return;
+	vAt = XMLoadFloat3(&player->GetPosition());
 #endif
 	// •Ï”•Û‘¶
 	XMStoreFloat3(&m_target, vAt);
@@ -390,6 +391,7 @@ float Camera::GetSpeed()
 void Camera::ChangeMovableWithPlayer()
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	if (!player)return;
 	if (!m_movable)
 	{
 		m_movable = true;
@@ -405,6 +407,7 @@ void Camera::ChangeMovableWithPlayer()
 void Camera::ChangeMovableWithPlayer(bool movable)
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	if (!player)return;
 	m_movable = movable;
 	player->SetMovable(!movable);
 }

@@ -59,8 +59,13 @@ void Sky::Update()
 		cameraFront.m128_f32[1] = 0.0f;
 		vPos += cameraFront * pCamera->GetSpeed();
 	}
-	else {
-		vPos += XMLoadFloat3(&ManagerT::GetScene()->GetGameObject<Player>(GOT_OBJECT3D)->GetMove());
+	else
+	{
+		Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GOT_OBJECT3D);
+		if (pPlayer)
+		{
+			vPos += XMLoadFloat3(&pPlayer->GetMove());
+		}
 	}
 	XMStoreFloat3(&m_position, vPos);
 }

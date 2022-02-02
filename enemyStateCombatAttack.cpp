@@ -36,6 +36,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
 		m_timer = 0.0f;
 	}
+	if (!pPlayer) return;
 
 	if (m_isAttacking)
 	{

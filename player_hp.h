@@ -13,5 +13,6 @@ public:
 	void Update()override{}
 	void Draw()override;
 	void Draw_Bar(XMFLOAT4 color, float perHP);
+	void Draw_OutLine(XMFLOAT4 color);
 	void SetHP(int nowHp, int maxHP) { m_nowHP = nowHp, m_maxHP = maxHP; }
 };

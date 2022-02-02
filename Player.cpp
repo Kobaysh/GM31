@@ -50,8 +50,8 @@ void Player::Init()
 
 	m_trunk = new Trunk(100);
 
-//	m_hpBar = new HpPlayer();
-//	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(XMFLOAT3(0.0f, 0.0f, -1.0f), XMFLOAT3(10.0f, 10.0f, 1.0f), m_nowHp, m_maxHp);
+	m_hpBar = new HpPlayer();
+	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(XMFLOAT3(20.0f, SCREEN_HEIGHT * 0.97f, 1.0f), XMFLOAT3(50.0f, 10.0f, 1.0f), m_nowHp, m_maxHp);
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
@@ -66,7 +66,10 @@ void Player::Uninit()
 {
 	delete m_trunk;
 	m_obb->SetDead();
-//	m_hpBar->SetDead();
+	if (m_hpBar)
+	{
+		m_hpBar->SetDead();
+	}
 	if (m_Model)
 	{
 		m_Model->Unload();
@@ -313,33 +316,25 @@ void Player::Slash()
 			std::vector<Enemy*> enemyList = ManagerT::GetScene()->GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
 			for (Enemy* enemy : enemyList)
 			{
-				if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb()))
-				{
-					if (enemy->GetIsUsingState())
-					{
+				if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb())){
+					if (enemy->GetIsUsingState()){
 						// UŒ‚‚ª“–‚½‚Á‚½
 						enemy->GetEnemyState()->SetIsCollided(true);
-						if (enemy->GetTrunk()->GetIsCollapsed())
-						{
+						if (enemy->GetTrunk()->GetIsCollapsed()){
 							// ‘ÌŠ²‚ª•ö‚ê‚Ä‚¢‚é‚È‚ç‘¦Ž€
 							enemy->Damage(99999999);
 						}
-						else
-						{
+						else{
 							// ƒK[ƒhó‘Ô‚È‚ç
-							if (enemy->GetEnemyState()->GetIsGuarding())
-							{
+							if (enemy->GetEnemyState()->GetIsGuarding()){
 								// ‘ÌŠ²‚Éƒ_ƒ[ƒW
 								enemy->GetTrunk()->ChangeNowTrunk(10);
 							}
-							else
-							{
-								if (enemy->Damage(1))
-								{
+							else{
+								if (enemy->Damage(1)){
 									// Ž~‚ß‚ðŽh‚·
 								}
-								else
-								{
+								else{
 									// ‘ÌŠ²‚Éƒ_ƒ[ƒW
 									enemy->GetTrunk()->ChangeNowTrunk(10);
 								}

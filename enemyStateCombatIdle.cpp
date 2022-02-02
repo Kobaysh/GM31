@@ -17,6 +17,7 @@ const float EnemyStateCombatIdle::m_attackInterval = 10.0f;
 void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 {
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
+	if (!pPlayer) return;
 	EnemyState* pState = pEnemy->GetEnemyState();
 	m_timer += 0.1f;
 	XMVECTOR vPlayerPos, vEnemyPos, vToPlayer, vLength;
