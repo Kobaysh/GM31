@@ -59,6 +59,7 @@ public:
 	void SetRotationSpeed(XMFLOAT3 rotationSpeed) { m_rotationSpeed = rotationSpeed; }
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
+	XMFLOAT3* GetpPosition() { return &m_position; }
 	
 	//	ダメージを与え、HPが0になったらtrueを返す
 	bool Damage(int damage);

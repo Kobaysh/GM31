@@ -26,9 +26,10 @@ typedef enum KeyloggerKey_tag {
 	KL_TURN_UP,					// 上回転
 	KL_TURN_DOWN,				// 下回転
 	KL_WIRE,					// ワイヤフレーム切り替え
-	KL_JUMP,						// サブ
+	KL_JUMP,						// ジャンプ
 	KL_CAMERA,					// カメラ切り替え
-	KL_DASH,					// ターボ
+	KL_DASH,					// ダッシュ
+	KL_LOCKON,					// ロックオン
 	KL_MAX,						// 最大数
 }KeyloggerKey;
 

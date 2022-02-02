@@ -43,6 +43,8 @@ private:
 	int m_frame;
 	std::string m_animationName;
 
+	float m_lockOnRad;				// ロックオン距離
+
 	// 所持品
 	// 装備中のアイテム
 	// 技
@@ -55,12 +57,7 @@ public:
 	void Update();
 	void Draw();
 
-	void Move();
-	void Jump();
-	void Slash();
-	void Shoot();
-	void Guard();
-	void CollisionOther();
+
 	//void VoidDimension();
 	void ChangeCameraDir();
 	XMFLOAT3 GetMove()const { return m_moveVector; }
@@ -83,5 +80,12 @@ private:
 	void UpdateObb();
 	void MoveFromMoveVector();
 	void ChangeAnimation(const char* animationName);
+	void Move();
+	void Jump();
+	void Slash();
+	void Shoot();
+	void Guard();
+	void LockOn();
+	void CollisionOther();
 };
 
