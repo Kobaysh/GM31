@@ -13,6 +13,7 @@ LPDIRECTINPUTDEVICE8 Input::m_mouseDevice;
 DIMOUSESTATE Input::m_currentMouseState;	
 DIMOUSESTATE Input::m_prevMouseState;		
 XMFLOAT2 Input::m_MousePos;					
+bool Input::MOUSE_ACTIVE = false;
 
 void Input::Init()
 {

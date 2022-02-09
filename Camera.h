@@ -6,8 +6,8 @@ class Camera : public GameObject
 protected:
 	XMFLOAT3 m_target;
 	//XMFLOAT3 m_front;
-	//XMFLOAT3 m_right;
-	//XMFLOAT3 m_up;
+	//XMFLOAT3 Right;
+	//XMFLOAT3 Up;
 	bool m_isActive;
 	bool m_movable;
 	bool m_isLock;
@@ -35,8 +35,8 @@ public:
 	virtual void SetMovable(bool movable) { m_movable = movable; }
 	virtual void SetActiveMovable(bool set) { SetIsActive(set); SetMovable(set); }
 	//virtual XMFLOAT3* GetFront() { return &m_front; }
-	//virtual XMFLOAT3* GetRight() { return &m_right; }
-	//virtual XMFLOAT3* GetUp() { return &m_up; }
+	//virtual XMFLOAT3* GetRight() { return &Right; }
+	//virtual XMFLOAT3* GetUp() { return &Up; }
 	virtual XMFLOAT4X4* GetView() { return &m_viewMatrix; }
 	virtual bool CheckView(XMFLOAT3 pos, XMFLOAT3 scale = XMFLOAT3(1.0f,1.0f,1.0f));
 	virtual XMFLOAT3* GetMove() { return &m_move; }

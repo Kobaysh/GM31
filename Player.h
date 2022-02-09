@@ -10,11 +10,11 @@ private:
 
 	class PlayerState  m_playerState;
 	class HpPlayer* m_hpBar = nullptr;
-//	class Model* m_Model;
+//	class Model* m_model;
 	class Audio* m_slashSE= nullptr;
 	class OBB* m_obb= nullptr;
 	class OBB* m_obbAttack= nullptr;
-	class AnimationModel*  m_Model= nullptr;
+	class AnimationModel*  m_model= nullptr;
 	class LockOnCircle* m_lockOnCircle = nullptr;
 
 	bool m_isActive = true;
@@ -45,12 +45,6 @@ private:
 	std::string m_animationName;
 
 	float m_lockOnRad;				// ロックオン距離
-
-	// 所持品
-	// 装備中のアイテム
-	// 技
-	// 装備中の技
-	// 技能
 
 public:
 	void Init();
@@ -87,6 +81,7 @@ private:
 	void Shoot();
 	void Guard();
 	void LockOn();
+	void MouseActive();
 	void CollisionOther();
 };
 

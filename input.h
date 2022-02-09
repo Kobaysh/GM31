@@ -2,7 +2,7 @@
 #include <dinput.h>
 #pragma comment(lib, "dinput8.lib")
 
-#define MOUSE_ACTIVE (false)
+
 //#define MOUSE_ACTIVE (true)
 
 class Input
@@ -16,7 +16,7 @@ private:
 	static DIMOUSESTATE m_prevMouseState;		// マウスの前回の入力情報
 	static XMFLOAT2 m_MousePos;					// マウス座標
 
-	
+	static bool  MOUSE_ACTIVE;
 public:
 	static void Init();
 	static void Init(HINSTANCE hInstance);
@@ -29,7 +29,8 @@ public:
 		Right,		
 		Center,		
 	};
-
+	static bool GetMouseActive() { return MOUSE_ACTIVE; }
+	static void SetMouseActive(bool active) { MOUSE_ACTIVE = active; }
 
 	static bool GetKeyPress( BYTE KeyCode );
 	static bool GetKeyTrigger( BYTE KeyCode );

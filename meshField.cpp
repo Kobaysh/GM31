@@ -259,9 +259,9 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
 
 }
 
@@ -276,9 +276,9 @@ void MeshField::Uninit()
 	m_indexBuffer->Release();
 	m_texture->Release();
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void MeshField::Update()
@@ -293,11 +293,11 @@ void MeshField::Update()
 void MeshField::Draw()
 {
 	// 入力レイアウト
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス
 

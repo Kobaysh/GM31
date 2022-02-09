@@ -5,9 +5,9 @@
 class OBB : public GameObject
 {
 private:
-	static ID3D11VertexShader*		m_VertexShader;
-	static ID3D11PixelShader*		m_PixelShader;
-	static ID3D11InputLayout*		m_VertexLayout;
+	static ID3D11VertexShader*		m_vertexShader;
+	static ID3D11PixelShader*		m_pixelShader;
+	static ID3D11InputLayout*		m_vertexLayout;
 
 	static const char* FILENAME_BLUE;
 	static const char* FILENAME_RED;

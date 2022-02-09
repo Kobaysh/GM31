@@ -41,12 +41,12 @@ void Enemy::Init()
 	m_rotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// 各方向初期化
-	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, -1.0f);
-	m_direction.m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_direction.m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_direction.Forward	= XMFLOAT3(0.0f, 0.0f, -1.0f);
+	m_direction.Right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_direction.Up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 
 	m_moveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	
+
 	// 状態変化に必要な変数初期化
 	m_stateData.m_eyesight_rad = 7.0f;
 	m_stateData.m_combat_rad = 3.0f;
@@ -84,10 +84,10 @@ void Enemy::Init()
 	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, VS_FILE_NAME);
 	ShaderManager::Load(ShaderManager::Shader_Type::ST_PS, PS_FILE_NAME);
 
-	/*Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
+	/*Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");*/
-	
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");*/
+
 	// やられた時の爆発音
 	m_explosionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	m_explosionSE->Load("asset\\audio\\se\\small_explosion1.wav");
@@ -114,14 +114,14 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 	m_rotation = rotation;
 	XMMATRIX rot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
 	XMVECTOR vF, vR, vU;
-	vF = XMLoadFloat3(&m_direction.m_forward);
-	vR = XMLoadFloat3(&m_direction.m_right);
+	vF = XMLoadFloat3(&m_direction.Forward);
+	vR = XMLoadFloat3(&m_direction.Right);
 	vF = XMVector3TransformNormal(vF, rot);
 	vR = XMVector3TransformNormal(vR, rot);
 	vU = XMVector3Cross(vF, vR);
-	XMStoreFloat3(&m_direction.m_forward, vF);
-	XMStoreFloat3(&m_direction.m_right, vR);
-	XMStoreFloat3(&m_direction.m_up, vU);
+	XMStoreFloat3(&m_direction.Forward, vF);
+	XMStoreFloat3(&m_direction.Right, vR);
+	XMStoreFloat3(&m_direction.Up, vU);
 	m_obb->SetRotation(rotation, XMFLOAT3(0.0f,0.0f,0.0f));
 	m_scale = scale;
 	XMFLOAT3 fixScale = scale;
@@ -138,9 +138,9 @@ void Enemy::Uninit()
 	m_obb->SetDead();
 	m_hpBar->SetDead();
 	m_explosionSE->Play(0.1f);
-	//m_VertexLayout->Release();
-	//m_VertexShader->Release();
-	//m_PixelShader->Release();
+	//m_vertexLayout->Release();
+	//m_vertexShader->Release();
+	//m_pixelShader->Release();
 }
 
 void Enemy::Update()
@@ -150,7 +150,7 @@ void Enemy::Update()
 	float frame = static_cast<float>(m_frame) * 1.0f;
 	m_model->Update(m_animationName.data(), m_frame);
 	m_state->Update(this);
-//	m_state->Update();
+	//	m_state->Update();
 	this->UpdateOBB();
 	this->CollisionOther();
 	this->MoveFromMoveVector();
@@ -158,8 +158,8 @@ void Enemy::Update()
 	{
 		m_position.y = mf->GetHeight(m_position) + m_scale.y;
 	}
-//	m_obb->SetPosition(m_position);
-	
+	//	m_obb->SetPosition(m_position);
+
 }
 
 void Enemy::Draw()
@@ -179,11 +179,11 @@ void Enemy::Draw()
 	Renderer::GetpDeviceContext()->VSSetShader(vertexInfo->m_vertexShader, NULL, 0);
 	Renderer::GetpDeviceContext()->PSSetShader(ShaderManager::GetPixelShader(PS_FILE_NAME), NULL, 0);
 
-	//Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	//Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	//// シェーダー設定
-	//Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	//Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	//Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	//Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
@@ -197,10 +197,10 @@ void Enemy::Draw()
 
 
 	m_model->Draw();
-//	Model::Draw(m_modelId);
-//	m_obb->SetisDraw(true);
-//	m_obb->Draw();
-//	m_obb->SetisDraw(false);
+	//	Model::Draw(m_modelId);
+	//	m_obb->SetisDraw(true);
+	//	m_obb->Draw();
+	//	m_obb->SetisDraw(false);
 }
 
 bool Enemy::Damage(int damage)
@@ -209,7 +209,7 @@ bool Enemy::Damage(int damage)
 	m_hp -= damage;
 	m_hpBar->SetHP(m_hp, m_maxHp);
 	EnemyStatePattern* pStatePattern =
-	m_state->ChangeState(new EnemyStateCombatDamaged(this));
+		m_state->ChangeState(new EnemyStateCombatDamaged(this));
 	m_state->SetStateName("EnemyStateCombatDamaged");
 	delete pStatePattern;
 
@@ -217,7 +217,7 @@ bool Enemy::Damage(int damage)
 	{
 		m_hp = 0;
 		m_hpBar->SetHP(m_hp, m_maxHp);
-	//	SetDead();
+		//	SetDead();
 		return true;
 	}
 	return false;
@@ -236,18 +236,18 @@ void Enemy::UpdateRotation()
 	//}
 	// vRot += XMLoadFloat3(&m_rotationSpeed);
 	//XMStoreFloat3(&m_rotation, vRot);
-	//XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward),vRight = XMLoadFloat3(&m_direction.m_right),vUp;
+	//XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward),vRight = XMLoadFloat3(&m_direction.Right),vUp;
 	////	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
 	//XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
 	//vForward =  XMVector3TransformNormal(vForward, mtxRot);
 	//vRight =  XMVector3TransformNormal(vRight, mtxRot);
 	//vUp = XMVector3Cross(vForward, vRight);
-	//XMStoreFloat3(&m_direction.m_forward, vForward);
-	//XMStoreFloat3(&m_direction.m_right, vRight);
-	//XMStoreFloat3(&m_direction.m_up, vUp);
+	//XMStoreFloat3(&m_direction.Forward, vForward);
+	//XMStoreFloat3(&m_direction.Right, vRight);
+	//XMStoreFloat3(&m_direction.Up, vUp);
 	m_obb->SetRotation(m_rotation, m_rotationSpeed);
-//	m_rotation.y += m_rotationSpeed.y;
-	//m_obb->SetRotationFromForwardRightVector(m_direction.m_forward,m_direction.m_right, m_rotation);
+	//	m_rotation.y += m_rotationSpeed.y;
+	//m_obb->SetRotationFromForwardRightVector(m_direction.Forward,m_direction.Right, m_rotation);
 }
 
 void Enemy::UpdateOBB()
@@ -256,7 +256,7 @@ void Enemy::UpdateOBB()
 	XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_moveVector) * m_moveSpeed;
 	XMFLOAT3 obbPos;
 	XMStoreFloat3(&obbPos, vObbPos);
-//	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
+	//	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
 
 	m_obb->SetPosition(obbPos);
 	this->UpdateRotation();
@@ -299,7 +299,7 @@ void Enemy::ModelInit()
 
 	m_animationName = "idle_idle";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Ninja_Idle.fbx", m_animationName.data());
-	
+
 	m_animationName = "run";
 	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Run.fbx", m_animationName.data());
 

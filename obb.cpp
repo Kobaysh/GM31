@@ -10,9 +10,9 @@ float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* 
 
 
 // staticメンバ
-ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
-ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
-ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
+ID3D11VertexShader*		OBB::m_vertexShader = nullptr;
+ID3D11PixelShader*		OBB::m_pixelShader = nullptr;
+ID3D11InputLayout*		OBB::m_vertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
 //ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 
 const char* OBB::FILENAME_BLUE = ("asset\\texture\\tinyblue.png");
@@ -415,9 +415,9 @@ void OBB::Init()
 	rdc.FrontCounterClockwise = true;
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
 	// テクスチャ読み込み
 	Texture::Load(FILENAME_BLUE);
 	Texture::Load(FILENAME_RED);
@@ -452,11 +452,11 @@ void OBB::Draw()
 	return;
 #endif
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 

@@ -53,9 +53,6 @@
     <ClInclude Include="gameObject.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="bullet.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
@@ -126,9 +123,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="resultLogo.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="katana.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="wood.h">
@@ -271,9 +265,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bullet.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="field.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -344,9 +335,6 @@
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="resultLogo.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="katana.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="wood.cpp">

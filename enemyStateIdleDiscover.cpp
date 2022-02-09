@@ -28,7 +28,7 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 	vLength = XMVector3Length(vToPlayer);
 	XMStoreFloat(&length, vLength);
 
-	XMVECTOR vForward = XMLoadFloat3(&pEnemy->GetDirection()->m_forward);
+	XMVECTOR vForward = XMLoadFloat3(&pEnemy->GetDirection()->Forward);
 	XMVECTOR vEToPlayer = XMVector3Normalize(vToPlayer);
 	XMVECTOR vCross = XMVector3Cross(vForward, vToPlayer);
 	int sign;
@@ -65,11 +65,11 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 	mtxRot = XMMatrixRotationY(rot90);
 	mtxRot = XMMatrixRotationY(rot);
 //	vForward = XMVector3TransformNormal(vForward, mtxRot);
-	XMVECTOR vRight = XMLoadFloat3(&pEnemy->GetDirection()->m_right);
+	XMVECTOR vRight = XMLoadFloat3(&pEnemy->GetDirection()->Right);
 	vRight = XMVector3TransformNormal(vForward, mtxRot);
 //	vRight = XMVector3TransformNormal(vRight, mtxRot);
-	XMStoreFloat3(&pEnemy->GetDirection()->m_forward, vForward);
-	XMStoreFloat3(&pEnemy->GetDirection()->m_right, vRight);
+	XMStoreFloat3(&pEnemy->GetDirection()->Forward, vForward);
+	XMStoreFloat3(&pEnemy->GetDirection()->Right, vRight);
 
 
 	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f), vForward);

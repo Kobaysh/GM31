@@ -65,9 +65,9 @@ void Wall::Init()
 	m_modelId = Model::SetModelLoadfile(FILENAME);
 	Model::Load(m_modelId);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/pixelLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/pixelLightingPS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/pixelLightingPS.cso");
 
 	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -84,9 +84,9 @@ void Wall::Uninit()
 //	Model::Release(m_modelId);
 	m_obb->SetDead();
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void Wall::Update()
@@ -96,11 +96,11 @@ void Wall::Update()
 
 void Wall::Draw()
 {
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
