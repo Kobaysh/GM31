@@ -51,7 +51,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 	{
 		m_isAttacking = true;
 		XMFLOAT3 obbPos;
-		XMVECTOR vObbPos = XMLoadFloat3(&pEnemy->GetPosition()) + XMLoadFloat3(&pEnemy->GetDirection()->m_forward) * 2;
+		XMVECTOR vObbPos = XMLoadFloat3(&pEnemy->GetPosition()) + XMLoadFloat3(&pEnemy->GetDirection()->Forward) * 2;
 		XMStoreFloat3(&obbPos, vObbPos);
 		//obbPos.y += 1.0f;
 		m_obbAttack = nullptr;

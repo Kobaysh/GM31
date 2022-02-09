@@ -52,18 +52,18 @@ void LockOnCircle::Init()
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
 
 }
 
 void LockOnCircle::Uninit()
 {
 	m_vertexBuffer->Release();
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void LockOnCircle::Update()
@@ -123,11 +123,11 @@ void LockOnCircle::Draw()
 	//	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 	//}
 	//Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);

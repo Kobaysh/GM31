@@ -12,18 +12,18 @@
 #include "obb.h"
 #include "rock.h"
 
-ID3D11VertexShader* Rock::m_VertexShader = nullptr;
-ID3D11PixelShader* Rock::m_PixelShader = nullptr;
-ID3D11InputLayout* Rock::m_VertexLayout = nullptr;
+ID3D11VertexShader* Rock::m_vertexShader = nullptr;
+ID3D11PixelShader* Rock::m_pixelShader = nullptr;
+ID3D11InputLayout* Rock::m_vertexLayout = nullptr;
 
 
 void Rock::Init()
 {
 
-//	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
-//	m_Model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
-//	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
-//	m_Model->Load("asset\\model\\rock\\rock.obj");	 // \\か//しか使えない
+//	m_model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
+//	m_model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
+//	m_model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
+//	m_model->Load("asset\\model\\rock\\rock.obj");	 // \\か//しか使えない
 	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
 	Model::Load(m_modelId);
 //	Model::AllLoad();
@@ -37,11 +37,11 @@ void Rock::Init()
 		m_obb = new OBB(m_position, XMFLOAT3(3.0f, 3.0f, 3.0f));
 	//	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 	}
-	if (!m_VertexShader) {
-		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
+	if (!m_vertexShader) {
+		Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
 	}
-	if (!m_PixelShader) {
-		Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
+	if (!m_pixelShader) {
+		Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
 	}
 }
 
@@ -70,35 +70,35 @@ void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
 		m_obb->SetRotation(m_rotation);
 		m_obb->SetScale(fixedScale);
 	}
-	if (!m_VertexShader) {
-		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
+	if (!m_vertexShader) {
+		Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
 	}
-	if (!m_PixelShader) {
-		Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
+	if (!m_pixelShader) {
+		Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
 	}
 }
 
 void Rock::Uninit()
 {
-	//m_Model->Unload();
-	//delete m_Model;
+	//m_model->Unload();
+	//delete m_model;
 	if (m_obb)
 	{
 	//	m_obb->SetDead();
 		delete m_obb;
 		m_obb = nullptr;
 	}
-	if (m_VertexLayout) {
-		m_VertexLayout->Release();
-		m_VertexLayout = nullptr;
+	if (m_vertexLayout) {
+		m_vertexLayout->Release();
+		m_vertexLayout = nullptr;
 	}
-	if (m_VertexShader) {
-		m_VertexShader->Release();
-		m_VertexShader = nullptr;
+	if (m_vertexShader) {
+		m_vertexShader->Release();
+		m_vertexShader = nullptr;
 	}
-	if (m_PixelShader) {
-			m_PixelShader->Release();
-			m_PixelShader = nullptr;
+	if (m_pixelShader) {
+			m_pixelShader->Release();
+			m_pixelShader = nullptr;
 	}
 	//if (m_obb) {
 	//	m_obb->SetDead();
@@ -131,11 +131,11 @@ void Rock::Draw()
 		return;
 	}
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
@@ -149,6 +149,6 @@ void Rock::Draw()
 
 
 	Model::Draw(m_modelId);
-	//m_Model->Draw();
+	//m_model->Draw();
 //	m_obb->Draw();
 }

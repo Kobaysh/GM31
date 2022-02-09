@@ -83,7 +83,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//Manager::Init();
 	ShowWindow(g_Window, nCmdShow);
 	UpdateWindow(g_Window);
-//	ManagerT::singleton();
+	//	ManagerT::singleton();
 	Keyboard_Initialize();
 	ManagerT::Init();
 	Input::Init(hInstance);
@@ -105,7 +105,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	MSG msg;
 	while(1)
 	{
-        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if(msg.message == WM_QUIT)
 			{
@@ -116,7 +116,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-        }
+		}
 		else
 		{
 			dwCurrentTime = timeGetTime();
@@ -125,8 +125,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			{
 				dwExecLastTime = dwCurrentTime;
 
-			//	Manager::Update();
-			//	Manager::Draw();
+				//	Manager::Update();
+				//	Manager::Draw();
 				Input::Update();
 				ManagerT::Update();
 
@@ -142,7 +142,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 
 	Input::Uninit();
-//	Manager::Uninit();
+	//	Manager::Uninit();
 	ManagerT::Uninit();
 	return (int)msg.wParam;
 }
@@ -178,6 +178,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		break;
 	case WM_CLOSE:	//	ウィンドウを閉じるメッセージ
+		ShowCursor(true);
 		if (MessageBox(hWnd, "本当に終了してよろしいですか？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
 			DestroyWindow(hWnd);	//	指定のウィンドウにWM_DESTROYメッセージを送る
 
@@ -189,4 +190,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
-

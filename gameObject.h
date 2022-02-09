@@ -7,13 +7,15 @@
 class GameObject
 {
 public:
-	enum GameObject_State {
+	enum GameObject_State 
+	{
 		GOS_NONE = -1,
 		GOS_ACTIVE,
 		GOS_PAUSE,
 		GOS_DEAD,
 	};
-	enum GameObject_Type {
+	enum GameObject_Type 
+	{
 		GOT_NONE = -1,
 		GOT_CAMERA,
 		GOT_OBJECT3D,
@@ -22,26 +24,23 @@ public:
 	};
 	struct GameObject_Direction
 	{
-		XMFLOAT3 m_forward;
-		XMFLOAT3 m_right;
-		XMFLOAT3 m_up;
+		XMFLOAT3 Forward;
+		XMFLOAT3 Right;
+		XMFLOAT3 Up;
 	};
 protected:
-//	bool m_Destroy = false;
+
 	XMFLOAT3 m_position;
 	XMFLOAT3 m_rotation;
 	XMFLOAT3 m_scale;
 	GameObject_Direction m_direction;
-	//XMFLOAT3 m_front;
-	//XMFLOAT3 m_right;
-	//XMFLOAT3 m_up;
+
 	GameObject_State m_state = GOS_ACTIVE;
 
-	ID3D11VertexShader*		m_VertexShader = NULL;
-	ID3D11PixelShader*		m_PixelShader = NULL;
-	ID3D11InputLayout*		m_VertexLayout = NULL;
+	ID3D11VertexShader*		m_vertexShader = NULL;
+	ID3D11PixelShader*		m_pixelShader = NULL;
+	ID3D11InputLayout*		m_vertexLayout = NULL;
 
-	static bool ms_IsVoidPS;
 public:
 	
 	virtual void Init() = 0;
@@ -55,7 +54,6 @@ public:
 	XMFLOAT3 GetPosition() { return m_position; }
 	XMFLOAT3 GetRotation() { return m_rotation; }
 	GameObject_Direction* GetDirection() { return &m_direction; }
-//	void SetDestroy() { m_Destroy = true; }
 
 	void SetDead() { m_state = GOS_DEAD; }
 	bool Destroy() {
@@ -67,20 +65,12 @@ public:
 		else {
 			return false;
 		}
-		/*if (m_Destroy) {
-			Uninit();
-			delete this;
-			return true;
-		}
-		else{
-			return false;
-		}*/
 	}
 	void SetPShader(const char* pFileName){
-		Renderer::CreatePixelShader(&m_PixelShader, pFileName);
+		Renderer::CreatePixelShader(&m_pixelShader, pFileName);
 	}
 	void SetVShader(const char* pFileName) {
-		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, pFileName);
+		Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, pFileName);
 	}
 };
 

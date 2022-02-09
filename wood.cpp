@@ -60,9 +60,9 @@ void Wood::Init()
 	);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
 
 	m_position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -75,9 +75,9 @@ void Wood::Uninit()
 	m_vertexBuffer->Release();
 	m_texture->Release();
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void Wood::Update()
@@ -100,11 +100,11 @@ void Wood::Draw()
 
 	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 

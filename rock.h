@@ -5,15 +5,15 @@ class Rock : public GameObject
 {
 private:
 
-//	Model* m_Model;
+//	Model* m_model;
 	int m_modelId;
 	class OBB* m_obb = nullptr;
 
 	XMFLOAT3 m_front;
 
-	static ID3D11VertexShader* m_VertexShader;
-	static ID3D11PixelShader* m_PixelShader;
-	static ID3D11InputLayout* m_VertexLayout;
+	static ID3D11VertexShader* m_vertexShader;
+	static ID3D11PixelShader* m_pixelShader;
+	static ID3D11InputLayout* m_vertexLayout;
 
 
 public:

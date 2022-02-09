@@ -165,7 +165,6 @@
     <ClInclude Include="behaviorData.h" />
     <ClInclude Include="behaviorTree.h" />
     <ClInclude Include="billboard.h" />
-    <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="debugCamera.h" />
     <ClInclude Include="debugLog.h" />
@@ -197,7 +196,6 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="katana.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="keylogger.h" />
     <ClInclude Include="lockOnCircle.h" />
@@ -241,7 +239,6 @@
     <ClCompile Include="behaviorData.cpp" />
     <ClCompile Include="behaviorTree.cpp" />
     <ClCompile Include="billboard.cpp" />
-    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="debugCamera.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -269,7 +266,6 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="input.cpp" />
-    <ClCompile Include="katana.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="keylogger.cpp" />
     <ClCompile Include="lockOnCircle.cpp" />

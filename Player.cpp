@@ -27,9 +27,6 @@
 #define PS_NAME ("asset/shader/pixelLightingPS.cso")
 
 
-bool GameObject::ms_IsVoidPS = false;
-
-
 void Player::Init()
 {
 	ModelInit();
@@ -37,9 +34,9 @@ void Player::Init()
 	m_position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
-	m_direction.m_forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
-	m_direction.m_right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_direction.m_up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_direction.Forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_direction.Right	= XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_direction.Up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 	m_timerAttack = 0.0f;
 	m_timerGuard = 0.0f;
@@ -56,9 +53,9 @@ void Player::Init()
 
 	m_lockOnRad = 10.0f;
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/pixelLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
+	Renderer::CreatePixelShader(&m_pixelShader, PS_NAME);
 
 	m_slashSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	m_slashSE->Load("asset\\audio\\se\\slash.wav");
@@ -72,15 +69,15 @@ void Player::Uninit()
 	{
 		m_hpBar->SetDead();
 	}
-	if (m_Model)
+	if (m_model)
 	{
-		m_Model->Unload();
-		delete m_Model;
-		m_Model = nullptr;
+		m_model->Unload();
+		delete m_model;
+		m_model = nullptr;
 	}
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void Player::Update()
@@ -88,34 +85,35 @@ void Player::Update()
 	m_playerState.Update();
 	m_frame++;
 	float frame = static_cast<float>(m_frame) * 0.7f;
-	m_Model->Update(m_animationName.data(), static_cast<int>(frame));
-	//m_Model->Update(m_animationName.data(),++m_frame);
-//	m_Model->Update(++m_frame);
-//	Jump();
+	m_model->Update(m_animationName.data(), static_cast<int>(frame));
+	//m_model->Update(m_animationName.data(),++m_frame);
+	//	m_model->Update(++m_frame);
+	//	Jump();
 	this->Move();
 	this->UpdateObb();
-//	this->ChangeCameraDir();
+	//	this->ChangeCameraDir();
 	this->Slash();
 	this->Guard();
 	this->LockOn();
-//	this->Shoot();
+	//	this->Shoot();
 	this->CollisionOther();
 	// 衝突判定の後移動
 	this->MoveFromMoveVector();
+	this->MouseActive();
 }
 
 void Player::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_direction.m_forward.z, m_direction.m_forward.x));
+	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_direction.Forward.z, m_direction.Forward.x));
 	rotX *= XMMatrixRotationY(XMConvertToRadians(-90));
 	//rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
@@ -125,10 +123,10 @@ void Player::Draw()
 	Renderer::SetWorldMatrixX(&world4x4);
 
 
-	m_Model->Draw();
+	m_model->Draw();
 	// デバッグ用OBB表示
-//	m_obb->SetisDraw(true);
-//	m_obb->Draw();
+	//	m_obb->SetisDraw(true);
+	//	m_obb->Draw();
 }
 
 void Player::Move()
@@ -137,29 +135,29 @@ void Player::Move()
 	if (!m_movable) return;
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_position);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.m_forward);
+	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
 	XMVECTOR direction = vForward;
 
-	
+
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
 		if (KeyLogger_Press(KL_UP)) {
-			XMFLOAT3 temp = pCamera->GetDirection()->m_forward;
+			XMFLOAT3 temp = pCamera->GetDirection()->Forward;
 			temp.y = 0.0f;
 			direction += XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_DOWN)) {
-			XMFLOAT3 temp = pCamera->GetDirection()->m_forward;
+			XMFLOAT3 temp = pCamera->GetDirection()->Forward;
 			temp.y = 0.0f;
 			direction -= XMLoadFloat3(&temp);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_RIGHT)) {
-			direction += XMLoadFloat3(&pCamera->GetDirection()->m_right);
+			direction += XMLoadFloat3(&pCamera->GetDirection()->Right);
 			m_speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_LEFT)) {
-			direction -= XMLoadFloat3(&pCamera->GetDirection()->m_right);
+			direction -= XMLoadFloat3(&pCamera->GetDirection()->Right);
 			m_speed = MOVE_SPEED;
 		}
 		if (m_animationName != "jump")
@@ -206,16 +204,16 @@ void Player::Move()
 	XMMATRIX mtxRot;
 	mtxRot = XMMatrixRotationY(rot);
 	vForward = XMVector3TransformNormal(vForward, mtxRot);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.m_right);
+	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
 	vRight = XMVector3TransformNormal(vRight, mtxRot);
-	XMStoreFloat3(&m_direction.m_forward, vForward);
-	XMStoreFloat3(&m_direction.m_right, vRight);
+	XMStoreFloat3(&m_direction.Forward, vForward);
+	XMStoreFloat3(&m_direction.Right, vRight);
 
 	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vForward);
 	XMStoreFloat(&fDot, vDot);
 	m_rotation.y  = acosf(fDot);	
 
-//	vPositon += direction * m_speed;
+	//	vPositon += direction * m_speed;
 
 	// ジャンプとフィールド上処理
 	MeshField* mf = ManagerT::GetScene()->GetGameObject<MeshField>(GOT_OBJECT3D);
@@ -227,19 +225,19 @@ void Player::Move()
 	if (m_isjump) {
 		XMVECTOR temp = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
-	
-		temp= XMVector3Normalize(XMLoadFloat3(&m_direction.m_up));
+
+		temp= XMVector3Normalize(XMLoadFloat3(&m_direction.Up));
 		jumpVector = temp * m_jumpForce;
-	//	m_jumpForce -= GRAVITY;
+		//	m_jumpForce -= GRAVITY;
 		temp = vPositon + jumpVector;
 		if (temp.m128_f32[1] - 0.1f<= mf->GetHeight(tempHeight)) {
 			if(m_animationName != "idle"){
-			this->ChangeAnimation("idle");
-			//	m_animationName = "idle";
+				this->ChangeAnimation("idle");
+				//	m_animationName = "idle";
 			}
 			m_isjump = false;
 			vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.1f;	// 接地面+サイズ
-		//	jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+																		//	jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		}
 	}
 	XMVECTOR temp = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
@@ -272,7 +270,7 @@ void Player::Slash()
 	// 攻撃
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
-	if (MOUSE_ACTIVE)
+	if (Input::GetMouseActive())
 	{
 
 		if (!m_isAttack &&Input::GetMouseTrigger(Input::MouseButton::Left))
@@ -281,7 +279,7 @@ void Player::Slash()
 			m_isAttack = true;
 			m_timerAttack = 0.0f;
 			XMFLOAT3 obbPos;
-			XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.m_forward) * 1;
+			XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.Forward) * 1;
 			XMStoreFloat3(&obbPos, vObbPos);
 			obbPos.y += 0.5f;
 			m_obbAttack = nullptr;
@@ -296,7 +294,7 @@ void Player::Slash()
 		m_timerAttack = 0.0f;
 
 		XMFLOAT3 obbPos;
-		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.m_forward) * 1;
+		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.Forward) * 1;
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 0.5f;
 		m_obbAttack = nullptr;
@@ -311,7 +309,7 @@ void Player::Slash()
 		m_timerAttack += 0.1f;
 		// 座標更新
 		XMFLOAT3 obbPos;
-		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.m_forward) * 1;
+		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.Forward) * 1;
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 0.5f;
 		m_obbAttack->SetPosition(obbPos);
@@ -374,7 +372,7 @@ void Player::Shoot()
 
 	//if (KeyLogger_Trigger(KL_GUARD)) {
 	//	
-	//	Bullet::Create(m_position, m_direction.m_forward, 0.3f);
+	//	Bullet::Create(m_position, m_direction.Forward, 0.3f);
 	//	m_slashSE->Play(0.1f);
 	//	
 	//}
@@ -385,7 +383,7 @@ void Player::Guard()
 	// 防御
 	if (ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA)->GetMovable()) return;
 
-	if (MOUSE_ACTIVE)
+	if (Input::GetMouseActive())
 	{
 		if (!m_isAttack && !m_isGuard && Input::GetMouseTrigger(Input::MouseButton::Right))
 		{
@@ -393,7 +391,7 @@ void Player::Guard()
 			m_timerGuard = 0.0f;
 			this->ChangeAnimation("guard_start");
 		}
-		else if (m_isGuard && Input::GetKeyPress(Input::MouseButton::Right))
+		else if (m_isGuard && Input::GetMouseDown(Input::MouseButton::Right))
 		{
 			if (m_timerGuard >= 1.0f)
 			{
@@ -420,7 +418,7 @@ void Player::Guard()
 			if (m_timerGuard >= 1.0f)
 			{
 				if(m_animationName != "guard_idle")
-				this->ChangeAnimation("guard_idle");
+					this->ChangeAnimation("guard_idle");
 			}
 			m_timerGuard += 0.1f;		}
 		else if (m_isGuard && KeyLogger_Release(KL_GUARD))
@@ -433,7 +431,7 @@ void Player::Guard()
 void Player::LockOn()
 {	
 	bool on = false;
-	if (MOUSE_ACTIVE)
+	if (Input::GetMouseActive())
 	{
 		on = Input::GetMouseTrigger(Input::MouseButton::Center);
 	}
@@ -479,7 +477,15 @@ void Player::LockOn()
 				break;
 			}
 		}
-		
+
+	}
+}
+
+void Player::MouseActive()
+{
+	if (Input::GetKeyTrigger(VK_F1))
+	{
+		Input::SetMouseActive(!Input::GetMouseActive());
 	}
 }
 
@@ -491,7 +497,7 @@ void Player::CollisionOther()
 	std::vector<Enemy*>  enemies = scene->GetGameObjects<Enemy>(GOT_OBJECT3D);
 	for (Enemy* enemy : enemies) {
 		if (OBB::ColOBBs(enemy->GetObb(), GetObb())) {
-		//	enemy->SetDead();
+			//	enemy->SetDead();
 			isCollided++;
 		}
 	}
@@ -518,12 +524,12 @@ void Player::ChangeCameraDir()
 {
 	Camera* camera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
 	if(!camera->GetMovable()){
-	if (KeyLogger_Press(KL_TURN_LEFT)) {
-		camera->ChangeDir(-0.02f, false);
-	}
-	if (KeyLogger_Press(KL_TURN_RIGHT)) {
-		camera->ChangeDir(0.02f, true);
-	}
+		if (KeyLogger_Press(KL_TURN_LEFT)) {
+			camera->ChangeDir(-0.02f, false);
+		}
+		if (KeyLogger_Press(KL_TURN_RIGHT)) {
+			camera->ChangeDir(0.02f, true);
+		}
 	}
 }
 
@@ -544,27 +550,27 @@ bool Player::Damage(int damage)
 
 void Player::ModelInit()
 {
-	m_Model = new AnimationModel();
+	m_model = new AnimationModel();
 
-	//m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
-	//m_Model->Load("asset\\model\\player\\Idle (6).fbx");	// 忍者
-	m_Model->Load("asset\\model\\player\\paladin\\paladin_prop_j_nordstrom.fbx");	// 鎧
+	//m_model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
+	//m_model->Load("asset\\model\\player\\Idle (6).fbx");	// 忍者
+	m_model->Load("asset\\model\\player\\paladin\\paladin_prop_j_nordstrom.fbx");	// 鎧
 	m_animationName = "idle";
-	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\idle.fbx", m_animationName.data());
-	//m_Model->LoadAnimaiton("asset\\model\\player\\Idle.fbx", m_animationName.data());
+	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\idle.fbx", m_animationName.data());
+	//m_model->LoadAnimaiton("asset\\model\\player\\Idle.fbx", m_animationName.data());
 	m_animationName = "attack";
-	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\slash.fbx", m_animationName.data());
-	//	m_Model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
+	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\slash.fbx", m_animationName.data());
+	//	m_model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
 	m_animationName = "run";
-	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\run.fbx", m_animationName.data());
-	//m_Model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_animationName.data());
+	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\run.fbx", m_animationName.data());
+	//m_model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_animationName.data());
 	m_animationName = "jump";
-	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\jump.fbx", m_animationName.data());
-	//m_Model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_animationName.data());
+	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\jump.fbx", m_animationName.data());
+	//m_model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_animationName.data());
 	m_animationName = "guard_start";
-	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_start.fbx", m_animationName.data());
+	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_start.fbx", m_animationName.data());
 	m_animationName = "guard_idle";
-	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_idle.fbx", m_animationName.data());
+	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_idle.fbx", m_animationName.data());
 
 	m_animationName = "idle";
 
@@ -577,9 +583,9 @@ void Player::UpdateObb()
 	XMFLOAT3 obbPos;
 	XMStoreFloat3(&obbPos, vObbPos);
 	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
-	
+
 	m_obb->SetPosition(obbPos);
-	m_obb->SetRotationFromForwardRightVector(m_direction.m_forward, m_direction.m_right, m_rotation);
+	m_obb->SetRotationFromForwardRightVector(m_direction.Forward, m_direction.Right, m_rotation);
 }
 
 void Player::MoveFromMoveVector()
@@ -594,18 +600,3 @@ void Player::ChangeAnimation(const char * animationName)
 	m_animationName = animationName;
 	m_frame = 0;
 }
-
-//void Player::VoidDimension()
-//{
-//	if (KeyLogger_Trigger(KL_WIRE)) {
-//		if (ms_IsVoidPS) {
-//			ManagerT::GetScene()->AllPSChange("vertexLightingPS.cso");
-//			ms_IsVoidPS = false;
-//		}
-//		else
-//		{
-//			ManagerT::GetScene()->AllPSChange("LightingVoidPS.cso");
-//			ms_IsVoidPS = true;
-//		}
-//	}
-//}
