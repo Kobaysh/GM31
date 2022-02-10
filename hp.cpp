@@ -72,6 +72,13 @@ void HpBar::Uninit()
 
 void HpBar::Draw()
 {
+	// ‹‘äƒJƒŠƒ“ƒO
+	Scene* scene = ManagerT::GetScene();
+	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
+	if (!camera->CheckView(m_position))
+	{
+		return;
+	}
 	// Å‘åHP‚ÆŒ»İ‚ÌHP‚©‚çŠ„‡‚ğæ“¾
 	float per = (float)m_nowHP / m_maxHP;
 //	if (m_nowHP == m_maxHP) return;
