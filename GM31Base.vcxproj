@@ -169,6 +169,7 @@
     <ClInclude Include="debugCamera.h" />
     <ClInclude Include="debugLog.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemyBehaviorIdle.h" />
     <ClInclude Include="enemyGui.h" />
     <ClInclude Include="enemyState.h" />
     <ClInclude Include="enemyStateCombatAttack.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="debugCamera.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="enemyBehaviorIdle.cpp" />
     <ClCompile Include="enemyGui.cpp" />
     <ClCompile Include="enemyState.cpp" />
     <ClCompile Include="enemyStateCombatAttack.cpp" />

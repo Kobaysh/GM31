@@ -42,6 +42,12 @@
     <Filter Include="ソース ファイル\game_object\title">
       <UniqueIdentifier>{54d37afd-8b02-4b97-8d8d-a9121b5809de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\behavior\behavior_base">
+      <UniqueIdentifier>{161bdf12-d94c-4825-9fb2-a9a8d5f7129b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\behavior\behavior_action">
+      <UniqueIdentifier>{2c10f21d-924d-462f-9457-7c5081a5225f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -209,21 +215,6 @@
     <ClInclude Include="obb.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="nodeBase.h">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="behaviorTree.h">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="actionBase.h">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="execJudgmentBase.h">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="behaviorData.h">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClInclude>
     <ClInclude Include="titleParticle.h">
       <Filter>ソース ファイル\game_object\title</Filter>
     </ClInclude>
@@ -262,6 +253,24 @@
     </ClInclude>
     <ClInclude Include="lockOnCircle.h">
       <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="actionBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="behaviorData.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="behaviorTree.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="execJudgmentBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="nodeBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBehaviorIdle.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -415,15 +424,6 @@
     <ClCompile Include="obb.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="behaviorTree.cpp">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClCompile>
-    <ClCompile Include="behaviorData.cpp">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClCompile>
-    <ClCompile Include="nodeBase.cpp">
-      <Filter>ソース ファイル\game_object\enemy\behavior</Filter>
-    </ClCompile>
     <ClCompile Include="titleBG.cpp">
       <Filter>ソース ファイル\game_object\title</Filter>
     </ClCompile>
@@ -456,6 +456,18 @@
     </ClCompile>
     <ClCompile Include="lockOnCircle.cpp">
       <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="behaviorData.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="behaviorTree.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="nodeBase.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehaviorIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
