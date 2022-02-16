@@ -272,6 +272,15 @@
     <ClInclude Include="enemyBehaviorIdle.h">
       <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
     </ClInclude>
+    <ClInclude Include="enemyBehaviorLookingFor.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBehaviorRun.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBehavior.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="field.cpp">
@@ -468,6 +477,15 @@
     </ClCompile>
     <ClCompile Include="enemyBehaviorIdle.cpp">
       <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehaviorLookingFor.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehaviorRun.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehavior.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

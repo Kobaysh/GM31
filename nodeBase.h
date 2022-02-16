@@ -13,7 +13,7 @@ class NodeBase
 private:
 	NodeBase() = delete;
 public:
-	NodeBase(std::string name, NodeBase* parent, NodeBase* sibling, unsigned int priority, BehabiorTree::SELECT_RULE selectRule, ExecJudgmentBase* execJudgment, ActionBase* action, int hierarchyNum):
+	NodeBase(std::string name, NodeBase* parent, NodeBase* sibling, unsigned int priority, BehaviorTree::SELECT_RULE selectRule, ExecJudgmentBase* execJudgment, ActionBase* action, int hierarchyNum):
 		m_name(name),
 		m_parent(parent),
 		m_sibling(sibling),
@@ -110,7 +110,7 @@ public:
 	ActionBase::EXE_STATE Run(Enemy *pEnemy);
 protected:
 	std::string m_name;						//	名前
-	BehabiorTree::SELECT_RULE m_selectRule;	//	選択ルール
+	BehaviorTree::SELECT_RULE m_selectRule;	//	選択ルール
 	ExecJudgmentBase *m_execJudgment;		//	判定クラス
 	ActionBase* m_action;					//	実行クラス
 	unsigned int m_priority;				//	優先順位
