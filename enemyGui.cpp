@@ -55,12 +55,21 @@ void EnemyGui::Update()
 					{
 						ImGui::Text("%d/%d",enemyList[i]->GetTrunk()->GetNowTrunk(), enemyList[i]->GetTrunk()->GetMaxTrunk());
 						ImGui::TreePop();
+					}			
+					if (!enemyList[i]->GetIsUsingState())
+					{
+						if (ImGui::TreeNode("Enemy Behavior"))
+						{
+							ImGui::Text(enemyList[i]->GetEnemyBehaviorName().data());
+							ImGui::TreePop();
+						}
 					}
 					ImGui::TreePop();
 				}
 			}
 			//if (ImGui::TreeNode("Enemy State"))
 			//{
+			//if(enemyList[i]->GetIsUsingState())
 			//	ImGui::Text(m_enemy->GetEnemyState()->GetStateName().c_str());
 
 			//	ImGui::TreePop();

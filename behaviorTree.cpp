@@ -40,10 +40,10 @@ void BehaviorTree::AddNode(std::string searchName, std::string entryName, int pr
 	}
 }
 
-NodeBase* BehaviorTree::Run(Enemy * pEnemy, NodeBase * actionNode, BehaviorData * data)
+NodeBase* BehaviorTree::Run(Enemy * pEnemy, NodeBase * actionNode, BehaviorData * data, class EnemyBehavior* pBehavior)
 {
 	// ノード実行
-	ActionBase::EXE_STATE state = actionNode->Run(pEnemy);
+	ActionBase::EXE_STATE state = actionNode->Run(pEnemy, pBehavior);
 	// 正常終了なら
 	if (state == ActionBase::EXE_STATE::COMPLETE)
 	{

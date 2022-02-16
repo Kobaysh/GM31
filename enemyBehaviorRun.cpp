@@ -4,6 +4,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "actionBase.h"
+#include "enemyBehavior.h"
 #include "enemyBehaviorRun.h"
 
 const float EnemyBehaviorRun::RUN_COMPLETE = 15.0f;
@@ -13,13 +14,16 @@ const float EnemyBehaviorRun::RUN_COMPLETE = 15.0f;
 #define ROTATION_VALUE (0.012f)
 
 // ‘Ò‹@
-ActionBase::EXE_STATE EnemyBehaviorRun::Run(Enemy * pEnemy)
+ActionBase::EXE_STATE EnemyBehaviorRun::Run(Enemy * pEnemy,  EnemyBehavior* pBehavior)
 {
 
-	m_timer += UPDATE_TIMER_AMOUNT;
 
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
-	if (!player) return;
+	if (!player)
+	{
+		pBehavior->ResetTimer();
+		return EXE_STATE::FAILED;
+	}
 	XMVECTOR vPlayerPos, vEnemyPos, vToPlayer, vLength;
 	float length;
 	vPlayerPos = XMLoadFloat3(&player->GetPosition());
@@ -88,7 +92,7 @@ ActionBase::EXE_STATE EnemyBehaviorRun::Run(Enemy * pEnemy)
 	if (pEnemy->GetEnemyStateData()->m_combat_rad >= length)
 	{
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
-		m_timer = 0.0f;
+		pBehavior->ResetTimer();
 		return EXE_STATE::COMPLETE;
 	}
 
@@ -97,9 +101,9 @@ ActionBase::EXE_STATE EnemyBehaviorRun::Run(Enemy * pEnemy)
 	XMStoreFloat3(&moveVector, vToPlayer);
 	pEnemy->SetMoveVector(moveVector);
 
-	if (m_timer >= RUN_COMPLETE)
+	if (pBehavior->GetTimer() >= RUN_COMPLETE)
 	{
-		m_timer = 0.0f;
+		pBehavior->ResetTimer();
 		return EXE_STATE::FAILED;
 	}
 

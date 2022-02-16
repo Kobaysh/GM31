@@ -4,22 +4,23 @@
 #include "enemy.h"
 #include "player.h"
 #include "actionBase.h"
+#include "enemyBehavior.h"
 #include "enemyBehaviorLookingFor.h"
 
 const float EnemyBehaviorLookingFor::LOOKINGFOR_COMPLETE = 5.0f;
 
 
 // ‘Ò‹@
-ActionBase::EXE_STATE EnemyBehaviorLookingFor::Run(Enemy * pEnemy)
+ActionBase::EXE_STATE EnemyBehaviorLookingFor::Run(Enemy * pEnemy, EnemyBehavior* pBehavior)
 {
 
-	m_timer += UPDATE_TIMER_AMOUNT;
+
 
 	Enemy::EnemyStateData* stateData =  pEnemy->GetEnemyStateData();
 	if (stateData->m_eyesight_rad <= 0.0f)
 	{
 		// Ž‹ŠE‚ª0ˆÈ‰º‚È‚çŽ¸”s
-		m_timer = 0.0f;
+		pBehavior->ResetTimer();
 		return EXE_STATE::FAILED;
 	}
 
@@ -38,7 +39,7 @@ ActionBase::EXE_STATE EnemyBehaviorLookingFor::Run(Enemy * pEnemy)
 		// ƒvƒŒƒCƒ„[”­Œ©
 		pEnemy->GetEnemyStateData()->m_isDiscover = true;
 		pEnemy->SetRotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f));
-		m_timer = 0.0f;
+		pBehavior->ResetTimer();
 		return EXE_STATE::COMPLETE;
 	}
 	XMFLOAT3 rot = pEnemy->GetRotation();
@@ -47,9 +48,9 @@ ActionBase::EXE_STATE EnemyBehaviorLookingFor::Run(Enemy * pEnemy)
 	//pEnemy->SetRotation(rot);
 	//pEnemy->SetRotationSpeed(rotSpeed);
 
-	if (m_timer >= LOOKINGFOR_COMPLETE)
+	if (pBehavior->GetTimer() >= LOOKINGFOR_COMPLETE)
 	{
-		m_timer = 0.0f;
+		pBehavior->ResetTimer();
 		return EXE_STATE::FAILED;
 	}
 

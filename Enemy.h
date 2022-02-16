@@ -27,6 +27,7 @@ protected:
 	class Audio* m_explosionSE;
 	class OBB* m_obb;
 	class EnemyState* m_state;
+	class EnemyBehavior* m_behavior;
 	static class EnemyGui* m_enemyGui;
 	class HpBar* m_hpBar;
 	class Trunk* m_trunk;	// 体幹
@@ -37,7 +38,7 @@ protected:
 	float m_moveSpeed;
 	int m_hp;
 	int m_maxHp;
-	bool m_isUsingState;	// ステートマシーンでAIを操作しているか
+	bool m_isUsingState = false;	// ステートマシーンでAIを操作しているか
 
 	int m_frame;
 	std::string m_animationName;
@@ -59,6 +60,7 @@ public:
 	void SetRotationSpeed(XMFLOAT3 rotationSpeed) { m_rotationSpeed = rotationSpeed; }
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
+	std::string GetEnemyBehaviorName();
 	XMFLOAT3* GetpPosition() { return &m_position; }
 	
 	//	ダメージを与え、HPが0になったらtrueを返す

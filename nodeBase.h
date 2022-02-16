@@ -103,11 +103,8 @@ public:
 	// ノード推論
 	NodeBase *Inference(Enemy* pEnemy, BehaviorData *data);
 
-	// ノード名表示
-//	void PrintName();
-
 	// 実行
-	ActionBase::EXE_STATE Run(Enemy *pEnemy);
+	ActionBase::EXE_STATE Run(Enemy *pEnemy, class EnemyBehavior* pBehavior);
 protected:
 	std::string m_name;						//	名前
 	BehaviorTree::SELECT_RULE m_selectRule;	//	選択ルール

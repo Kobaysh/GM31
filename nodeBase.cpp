@@ -186,12 +186,12 @@ NodeBase * NodeBase::Inference(Enemy * pEnemy, BehaviorData * data)
 	return result;
 }
 
-ActionBase::EXE_STATE NodeBase::Run(Enemy * pEnemy)
+ActionBase::EXE_STATE NodeBase::Run(Enemy * pEnemy, class EnemyBehavior* pBehavior)
 {
 	// アクションノードが存在してるなら結果を、なければ失敗を返す
 	if (m_action)
 	{
-		return m_action->Run(pEnemy);
+		return m_action->Run(pEnemy, pBehavior);
 	}
 
 	return ActionBase::FAILED;

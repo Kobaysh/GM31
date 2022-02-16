@@ -4,11 +4,15 @@
 
 class Enemy;
 
-class EnemyBehaviorRun : ActionBase
+class EnemyBehaviorRun : public ActionBase
 {
 private:
-	float m_timer = 0.0f;
 	static const float RUN_COMPLETE;
 public:
-	virtual EXE_STATE Run(Enemy* pEnemy)override;
+	static EnemyBehaviorRun* GetInstance()
+	{
+		static EnemyBehaviorRun instance;
+		return &instance;
+	}
+	virtual EXE_STATE Run(Enemy* pEnemy, class EnemyBehavior* pBehavior)override;
 };

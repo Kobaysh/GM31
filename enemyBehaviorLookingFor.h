@@ -4,11 +4,15 @@
 
 class Enemy;
 
-class EnemyBehaviorLookingFor : ActionBase
+class EnemyBehaviorLookingFor : public ActionBase
 {
 private:
-	float m_timer = 0.0f;
 	static const float LOOKINGFOR_COMPLETE;
 public:
-	virtual EXE_STATE Run(Enemy* pEnemy)override;
+	static EnemyBehaviorLookingFor* GetInstance()
+	{
+		static EnemyBehaviorLookingFor instance;
+		return &instance;
+	}
+	virtual EXE_STATE Run(Enemy* pEnemy, class EnemyBehavior* pBehavior)override;
 };
