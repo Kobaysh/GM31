@@ -9,6 +9,7 @@
 #include "enemyBehavior.h"
 
 const float EnemyBehavior::UPDATE_TIMER_AMOUNT = 0.01f;	// updateで増やすタイマーの量
+const std::string EnemyBehavior::DATA_FILE_NAME;
 
 void EnemyBehavior::Init()
 {
@@ -16,7 +17,7 @@ void EnemyBehavior::Init()
 	behavior->AddNode("", "Root", 0, BehaviorTree::SELECT_RULE::PRIORITY, nullptr, nullptr);
 	behavior->AddNode("Root", "LookingForPlayer", 0, BehaviorTree::SELECT_RULE::SEQENTIAL_LOOP, nullptr, nullptr);
 	behavior->AddNode("LookingForPlayer", "Idle", 0, BehaviorTree::SELECT_RULE::NON, nullptr, EnemyBehaviorIdle::GetInstance());
-	behavior->AddNode("LookingForPlayer", "Lokkingfor", 0, BehaviorTree::SELECT_RULE::NON, nullptr, EnemyBehaviorLookingFor::GetInstance());
+	behavior->AddNode("LookingForPlayer", "Lookingfor", 0, BehaviorTree::SELECT_RULE::NON, nullptr, EnemyBehaviorLookingFor::GetInstance());
 	behavior->AddNode("LookingForPlayer", "Run", 0, BehaviorTree::SELECT_RULE::NON, nullptr, EnemyBehaviorRun::GetInstance());
 	
 	m_behaviorData = new BehaviorData();
@@ -54,4 +55,9 @@ std::string EnemyBehavior::GetActiveNodeName()
 	{
 		return "Root";
 	}
+}
+
+void EnemyBehavior::LoadDataFromCSV()
+{
+
 }

@@ -10,6 +10,7 @@ private:
 
 	float m_timer = 0.0f;
 	static const float UPDATE_TIMER_AMOUNT;	// updateで増やすタイマーの量
+	static const std::string DATA_FILE_NAME;	// csvファイル
 public:
 	EnemyBehavior() { Init(); }
 	void Init();
@@ -19,4 +20,6 @@ public:
 	float GetTimer() { return m_timer; }
 	void ResetTimer() { m_timer = 0.0f; }
 	std::string GetActiveNodeName();
+private:
+	void LoadDataFromCSV();
 };
