@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 class Enemy;
+class BehaviorTree;
+
+// 敵AIBehaviorTree管理クラス
 class EnemyBehavior
 {
 private:
@@ -13,7 +16,9 @@ private:
 	static const std::string DATA_FILE_NAME;	// csvファイル
 public:
 	EnemyBehavior() { Init(); }
+	EnemyBehavior(std::string fileName) { Init(fileName); }
 	void Init();
+	void Init(std::string fileName);
 	void Uninit();
 	void Upadate(Enemy* pEnemy);
 
@@ -21,5 +26,5 @@ public:
 	void ResetTimer() { m_timer = 0.0f; }
 	std::string GetActiveNodeName();
 private:
-	void LoadDataFromCSV();
+	BehaviorTree* LoadDataFromCSV(BehaviorTree* pBehavior, std::string fileName);
 };
