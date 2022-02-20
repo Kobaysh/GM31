@@ -38,7 +38,7 @@ protected:
 	float m_moveSpeed;
 	int m_hp;
 	int m_maxHp;
-	bool m_isUsingState = false;	// ステートマシーンでAIを操作しているか
+	bool m_isUsingState = true;	// ステートマシーンでAIを操作しているか
 
 	int m_frame;
 	std::string m_animationName;
