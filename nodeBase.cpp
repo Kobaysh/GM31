@@ -75,7 +75,7 @@ NodeBase * NodeBase::SelectSequence(std::vector<NodeBase*>* list, BehaviorData *
 	// シーケンスが終わってたら終了
 	if (step >= m_child.size())
 	{
-		if (m_selectRule != BehabiorTree::SELECT_RULE::SEQENTIAL_LOOP)
+		if (m_selectRule != BehaviorTree::SELECT_RULE::SEQENTIAL_LOOP)
 		{
 			return nullptr;
 		}
@@ -147,21 +147,21 @@ NodeBase * NodeBase::Inference(Enemy * pEnemy, BehaviorData * data)
 	// 選択ルールでノード決め
 	switch (m_selectRule)
 	{
-	case BehabiorTree::NON:
+	case BehaviorTree::NON:
 		break;
 	
 	// 優先順位
-	case BehabiorTree::PRIORITY:
+	case BehaviorTree::PRIORITY:
 		result = SelectPriority(&list);
 		break;
-	case BehabiorTree::SEQUENCE:
-	case BehabiorTree::SEQENTIAL_LOOP:
+	case BehaviorTree::SEQUENCE:
+	case BehaviorTree::SEQENTIAL_LOOP:
 		result = SelectSequence(&list, data);
 		break;
-	case BehabiorTree::RANDOM:
+	case BehaviorTree::RANDOM:
 		result = SelectRandom(&list);
 		break;
-	case BehabiorTree::ON_OFF:
+	case BehaviorTree::ON_OFF:
 		result = SelectOnOff(&list, data);
 		break;
 	default:
@@ -186,12 +186,12 @@ NodeBase * NodeBase::Inference(Enemy * pEnemy, BehaviorData * data)
 	return result;
 }
 
-ActionBase::EXE_STATE NodeBase::Run(Enemy * pEnemy)
+ActionBase::EXE_STATE NodeBase::Run(Enemy * pEnemy, class EnemyBehavior* pBehavior)
 {
 	// アクションノードが存在してるなら結果を、なければ失敗を返す
 	if (m_action)
 	{
-		return m_action->Run(pEnemy);
+		return m_action->Run(pEnemy, pBehavior);
 	}
 
 	return ActionBase::FAILED;

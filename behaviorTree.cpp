@@ -5,19 +5,19 @@
 #include "enemy.h"
 #include "behaviorData.h"
 
-NodeBase* BehabiorTree::Inference(Enemy * pEnemy, BehaviorData * data)
+NodeBase* BehaviorTree::Inference(Enemy * pEnemy, BehaviorData * data)
 {
 	// データをリセットして開始
 	data->Init();
 	return m_root->Inference(pEnemy, data);
 }
 
-NodeBase* BehabiorTree::SequenceBack(NodeBase * sequenceNode, Enemy * pEnemy, BehaviorData * data)
+NodeBase* BehaviorTree::SequenceBack(NodeBase * sequenceNode, Enemy * pEnemy, BehaviorData * data)
 {
 	return sequenceNode->Inference(pEnemy, data);
 }
 
-void BehabiorTree::AddNode(std::string searchName, std::string entryName, int priority, SELECT_RULE selectRule, ExecJudgmentBase * judgment, ActionBase * action)
+void BehaviorTree::AddNode(std::string searchName, std::string entryName, int priority, SELECT_RULE selectRule, ExecJudgmentBase * judgment, ActionBase * action)
 {
 	if (searchName != "")
 	{
@@ -40,10 +40,10 @@ void BehabiorTree::AddNode(std::string searchName, std::string entryName, int pr
 	}
 }
 
-NodeBase* BehabiorTree::Run(Enemy * pEnemy, NodeBase * actionNode, BehaviorData * data)
+NodeBase* BehaviorTree::Run(Enemy * pEnemy, NodeBase * actionNode, BehaviorData * data, class EnemyBehavior* pBehavior)
 {
 	// ノード実行
-	ActionBase::EXE_STATE state = actionNode->Run(pEnemy);
+	ActionBase::EXE_STATE state = actionNode->Run(pEnemy, pBehavior);
 	// 正常終了なら
 	if (state == ActionBase::EXE_STATE::COMPLETE)
 	{

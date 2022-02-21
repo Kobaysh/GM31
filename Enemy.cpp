@@ -12,6 +12,7 @@
 #include "shaderManager.h"
 #include "enemyState.h"
 #include "enemyStateCombatDamaged.h"
+#include "enemyBehavior.h"
 #include "enemyGui.h"
 #include "hp.h"
 #include "trunk.h"
@@ -51,9 +52,14 @@ void Enemy::Init()
 	m_stateData.m_eyesight_rad = 7.0f;
 	m_stateData.m_combat_rad = 3.0f;
 
-	m_state = new EnemyState();
-	m_isUsingState = true;
-
+	if (m_isUsingState)
+	{
+		m_state = new EnemyState();
+	}
+	else
+	{
+		m_behavior = new EnemyBehavior();
+	}
 	m_moveSpeed = 0.05f;
 
 	// ƒ‚ƒfƒ‹“Ç‚Ýž‚Ý
@@ -134,7 +140,15 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 void Enemy::Uninit()
 {
 	delete m_trunk;
-	delete m_state;
+	if (m_isUsingState)
+	{
+		delete m_state;
+	}
+	else
+	{
+		m_behavior->Uninit();
+		delete m_behavior;
+	}
 	m_obb->SetDead();
 	m_hpBar->SetDead();
 	m_explosionSE->Play(0.1f);
@@ -148,8 +162,15 @@ void Enemy::Update()
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
 	m_frame++;
 	float frame = static_cast<float>(m_frame) * 1.0f;
-	m_model->Update(m_animationName.data(), m_frame);
-	m_state->Update(this);
+	m_model->Update(m_animationName.data(), frame);
+	if (m_isUsingState)
+	{
+		m_state->Update(this);
+	}
+	else
+	{
+		m_behavior->Upadate(this);
+	}
 	//	m_state->Update();
 	this->UpdateOBB();
 	this->CollisionOther();
@@ -203,16 +224,23 @@ void Enemy::Draw()
 	//	m_obb->SetisDraw(false);
 }
 
+std::string Enemy::GetEnemyBehaviorName()
+{
+	return m_behavior->GetActiveNodeName();
+}
+
 bool Enemy::Damage(int damage)
 {
 	if (damage < 0)return false;
 	m_hp -= damage;
 	m_hpBar->SetHP(m_hp, m_maxHp);
-	EnemyStatePattern* pStatePattern =
-		m_state->ChangeState(new EnemyStateCombatDamaged(this));
-	m_state->SetStateName("EnemyStateCombatDamaged");
-	delete pStatePattern;
-
+	if (m_isUsingState)
+	{
+		EnemyStatePattern* pStatePattern =
+			m_state->ChangeState(new EnemyStateCombatDamaged(this));
+		m_state->SetStateName("EnemyStateCombatDamaged");
+		delete pStatePattern;
+	}
 	if (m_hp <= 0)
 	{
 		m_hp = 0;

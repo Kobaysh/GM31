@@ -98,6 +98,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,6 +114,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +132,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +152,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -169,6 +173,10 @@
     <ClInclude Include="debugCamera.h" />
     <ClInclude Include="debugLog.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemyBehavior.h" />
+    <ClInclude Include="enemyBehaviorIdle.h" />
+    <ClInclude Include="enemyBehaviorLookingFor.h" />
+    <ClInclude Include="enemyBehaviorRun.h" />
     <ClInclude Include="enemyGui.h" />
     <ClInclude Include="enemyState.h" />
     <ClInclude Include="enemyStateCombatAttack.h" />
@@ -242,6 +250,10 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="debugCamera.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="enemyBehavior.cpp" />
+    <ClCompile Include="enemyBehaviorIdle.cpp" />
+    <ClCompile Include="enemyBehaviorLookingFor.cpp" />
+    <ClCompile Include="enemyBehaviorRun.cpp" />
     <ClCompile Include="enemyGui.cpp" />
     <ClCompile Include="enemyState.cpp" />
     <ClCompile Include="enemyStateCombatAttack.cpp" />

@@ -1,0 +1,6 @@
+5,
+,Root,0,1,-1,-1,
+Root,LookingForPlayer,0,3,-1,-1,
+LookingForPlayer,Idle,0,0,-1,0,
+LookingForPlayer,LookingFor,0,0,-1,1,
+LookingForPlayer,Run,0,0,-1,2,

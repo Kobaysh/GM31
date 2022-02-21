@@ -7,7 +7,7 @@ class NodeBase;
 class Enemy;
 class BehaviorData;
 
-class BehabiorTree
+class BehaviorTree
 {
 public:
 	//	選択ルール
@@ -21,7 +21,7 @@ public:
 		ON_OFF,			//	オン・オフ
 	};
 public:
-	BehabiorTree() :
+	BehaviorTree() :
 		m_root(nullptr)
 	{
 	}
@@ -38,7 +38,7 @@ public:
 //	void PrintTree();
 
 	// 実行
-	NodeBase *Run(Enemy* pEnemy, NodeBase *actionNode, BehaviorData* data);
+	NodeBase *Run(Enemy* pEnemy, NodeBase *actionNode, BehaviorData* data, class EnemyBehavior* pBehavior);
 
 private:
 	//	ルートノード
