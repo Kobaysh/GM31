@@ -1,35 +1,29 @@
 #include "main.h"
 #include "renderer.h"
-#include "resultLogo.h"
+#include "resultBG.h"
 
 
-#define FILENAME ("asset/texture/gameClear.png")
+#define FILENAME ("asset/texture/result.jpg")
 
-void ResultLogo::Init()
+void ResultBG::Init()
 {
 	VERTEX_3DX vertexx[4];
-	float x, y, sx, sy;
-	x = SCREEN_WIDTH / 2;
-	y = SCREEN_HEIGHT / 2;
-	sx = TEXTURE_SIZE_X;
-	sy = TEXTURE_SIZE_Y;
-	x -= sx / 2;
-	vertexx[0].Position	= XMFLOAT3(x, y, 0.0f);
+	vertexx[0].Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertexx[0].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertexx[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 		  
-	vertexx[1].Position = XMFLOAT3(x + sx, y, 0.0f);
+	vertexx[1].Position = XMFLOAT3(SCREEN_WIDTH, 0.0f, 0.0f);
 	vertexx[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertexx[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 		  
-	vertexx[2].Position = XMFLOAT3(x, y + sy, 0.0f);
+	vertexx[2].Position = XMFLOAT3(0.0f, SCREEN_HEIGHT, 0.0f);
 	vertexx[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertexx[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 		  
-	vertexx[3].Position = XMFLOAT3(x + sx, y + sy, 0.0f);
+	vertexx[3].Position = XMFLOAT3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 	vertexx[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertexx[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertexx[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
@@ -39,16 +33,13 @@ void ResultLogo::Init()
 	D3D11_BUFFER_DESC bd{};
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
-//	bd.ByteWidth = sizeof(VERTEX_3D) * 4;	// バイト幅
 	bd.ByteWidth = sizeof(VERTEX_3DX) * 4;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
 	bd.CPUAccessFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA sd{};
-	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	// テクスチャ読み込み
@@ -70,7 +61,7 @@ void ResultLogo::Init()
 
 }
 
-void ResultLogo::Uninit()
+void ResultBG::Uninit()
 {
 	m_VertexBuffer->Release();
 	m_texture->Release();
@@ -80,13 +71,13 @@ void ResultLogo::Uninit()
 	m_pixelShader->Release();
 }
 
-void ResultLogo::Update()
+void ResultBG::Update()
 {
 }
 
-void ResultLogo::Draw()
+void ResultBG::Draw()
 {
-	// 入力レイアウト設定
+
 	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
@@ -99,6 +90,7 @@ void ResultLogo::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
+
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定

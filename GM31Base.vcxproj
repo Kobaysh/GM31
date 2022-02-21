@@ -223,6 +223,7 @@
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="resultBG.h" />
     <ClInclude Include="resultLogo.h" />
     <ClInclude Include="rock.h" />
     <ClInclude Include="scene.h" />
@@ -296,6 +297,7 @@
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resource.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="resultBG.cpp" />
     <ClCompile Include="resultLogo.cpp" />
     <ClCompile Include="rock.cpp" />
     <ClCompile Include="shaderManager.cpp" />
