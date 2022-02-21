@@ -6,6 +6,7 @@
 #include "gameObject.h"
 #include "polygon2D.h"
 #include "resultLogo.h"
+#include "resultBG.h"
 #include "fade.h"
 #include "pressSpaceKey.h"
 
@@ -14,6 +15,7 @@
 
 void Result::Init()
 {
+	AppendGameObject<ResultBG>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<ResultLogo>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);

@@ -18,9 +18,9 @@ void ManagerT::Init()
 	Audio::InitMaster();
 
 
-	SetScene<Title>();
+//	SetScene<Title>();
 //	SetScene<Game>();
-//	SetScene<Result>();
+	SetScene<Result>();
 
 	
 }

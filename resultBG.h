@@ -1,7 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
-class ResultLogo : public GameObject
+class ResultBG : public GameObject
 {
 public:
 
@@ -14,8 +14,7 @@ public:
 
 
 private:
-	const float TEXTURE_SIZE_X = 320.0f;
-	const float TEXTURE_SIZE_Y = 86.0f;
+
 
 	ID3D11Buffer*				m_VertexBuffer = NULL;
 	ID3D11ShaderResourceView*	m_texture = NULL;

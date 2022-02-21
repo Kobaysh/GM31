@@ -48,6 +48,9 @@
     <Filter Include="ソース ファイル\game_object\enemy\behavior\behavior_action">
       <UniqueIdentifier>{2c10f21d-924d-462f-9457-7c5081a5225f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game_object\result">
+      <UniqueIdentifier>{25505725-7582-4b16-96b4-659b068b7b54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -126,9 +129,6 @@
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
     <ClInclude Include="trunk.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="resultLogo.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="wood.h">
@@ -281,6 +281,12 @@
     <ClInclude Include="enemyBehavior.h">
       <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
     </ClInclude>
+    <ClInclude Include="resultBG.h">
+      <Filter>ソース ファイル\game_object\result</Filter>
+    </ClInclude>
+    <ClInclude Include="resultLogo.h">
+      <Filter>ソース ファイル\game_object\result</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="field.cpp">
@@ -351,9 +357,6 @@
     </ClCompile>
     <ClCompile Include="audio.cpp">
       <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="resultLogo.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="wood.cpp">
       <Filter>ソース ファイル\game_object</Filter>
@@ -486,6 +489,12 @@
     </ClCompile>
     <ClCompile Include="enemyBehavior.cpp">
       <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="resultBG.cpp">
+      <Filter>ソース ファイル\game_object\result</Filter>
+    </ClCompile>
+    <ClCompile Include="resultLogo.cpp">
+      <Filter>ソース ファイル\game_object\result</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
