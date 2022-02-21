@@ -27,6 +27,30 @@
     <Filter Include="ソース ファイル\Scene\scene_inheritance">
       <UniqueIdentifier>{2258f1d7-3e09-4808-99ea-74586eb284c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="imGui">
+      <UniqueIdentifier>{851da4df-d380-4248-94e5-c2bd8d17769c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy">
+      <UniqueIdentifier>{94cd01af-ef07-4c5f-ad8f-b1d3c533fb0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\state">
+      <UniqueIdentifier>{ccf96b3b-aea5-40cd-905d-06b0cbd63568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\behavior">
+      <UniqueIdentifier>{d485d12f-ce79-45e4-ad7b-ea957d88afeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\title">
+      <UniqueIdentifier>{54d37afd-8b02-4b97-8d8d-a9121b5809de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\behavior\behavior_base">
+      <UniqueIdentifier>{161bdf12-d94c-4825-9fb2-a9a8d5f7129b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\enemy\behavior\behavior_action">
+      <UniqueIdentifier>{2c10f21d-924d-462f-9457-7c5081a5225f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\result">
+      <UniqueIdentifier>{25505725-7582-4b16-96b4-659b068b7b54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -38,16 +62,7 @@
     <ClInclude Include="gameObject.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="bullet.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="field.h">
@@ -67,12 +82,6 @@
     </ClInclude>
     <ClInclude Include="singleton.h">
       <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="sprite.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="keyboard.h">
       <Filter>ソース ファイル\system</Filter>
@@ -113,13 +122,7 @@
     <ClInclude Include="title.h">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
     </ClInclude>
-    <ClInclude Include="titleLogo.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="primitive.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="obb.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
     <ClInclude Include="audio.h">
@@ -127,21 +130,6 @@
     </ClInclude>
     <ClInclude Include="trunk.h">
       <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="resultLogo.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="katana.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="state.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="enemyState.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="wood.h">
       <Filter>ソース ファイル\game_object</Filter>
@@ -152,12 +140,6 @@
     <ClInclude Include="pressSpaceKey.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
-    <ClInclude Include="animationModel.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="fbxMesh.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="meshField.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
@@ -167,17 +149,146 @@
     <ClInclude Include="debugLog.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_dx11.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="myImGui.h">
+      <Filter>imGui</Filter>
+    </ClInclude>
+    <ClInclude Include="debugCamera.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyGui.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyState.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatIdle.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleBeware.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleDiscover.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateIdleIdle.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatAttack.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatGuard.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatDamaged.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyStateCombatDead.h">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClInclude>
+    <ClInclude Include="obb.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="titleParticle.h">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClInclude>
+    <ClInclude Include="titleBG.h">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClInclude>
+    <ClInclude Include="titleLogo.h">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClInclude>
+    <ClInclude Include="player_hp.h">
+      <Filter>ソース ファイル\game_object\player</Filter>
+    </ClInclude>
+    <ClInclude Include="hp.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="animationModel.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="fbxMesh.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="state.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>ソース ファイル\system</Filter>
+    </ClInclude>
+    <ClInclude Include="lockOnCircle.h">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClInclude>
+    <ClInclude Include="actionBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="behaviorData.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="behaviorTree.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="execJudgmentBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="nodeBase.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBehaviorIdle.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBehaviorLookingFor.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBehaviorRun.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBehavior.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClInclude>
+    <ClInclude Include="resultBG.h">
+      <Filter>ソース ファイル\game_object\result</Filter>
+    </ClInclude>
+    <ClInclude Include="resultLogo.h">
+      <Filter>ソース ファイル\game_object\result</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="model.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="bullet.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="enemy.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="field.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -198,9 +309,6 @@
     </ClCompile>
     <ClCompile Include="singleton.cpp">
       <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\game_object</Filter>
@@ -247,26 +355,8 @@
     <ClCompile Include="title.cpp">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
     </ClCompile>
-    <ClCompile Include="titleLogo.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="obb.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
     <ClCompile Include="audio.cpp">
       <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="resultLogo.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="katana.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyState.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="weapon.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="wood.cpp">
       <Filter>ソース ファイル\game_object</Filter>
@@ -277,17 +367,134 @@
     <ClCompile Include="pressSpaceKey.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
-    <ClCompile Include="animationModel.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="fbxMesh.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="meshField.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
       <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="debugCamera.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="myImGui.cpp">
+      <Filter>imGui</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyGui.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleDiscover.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyState.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleBeware.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateIdleIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatAttack.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatDamaged.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatDead.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyStateCombatGuard.cpp">
+      <Filter>ソース ファイル\game_object\enemy\state</Filter>
+    </ClCompile>
+    <ClCompile Include="obb.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="titleBG.cpp">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClCompile>
+    <ClCompile Include="titleLogo.cpp">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClCompile>
+    <ClCompile Include="titleParticle.cpp">
+      <Filter>ソース ファイル\game_object\title</Filter>
+    </ClCompile>
+    <ClCompile Include="player_hp.cpp">
+      <Filter>ソース ファイル\game_object\player</Filter>
+    </ClCompile>
+    <ClCompile Include="hp.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="weapon.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="animationModel.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="fbxMesh.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル\system</Filter>
+    </ClCompile>
+    <ClCompile Include="lockOnCircle.cpp">
+      <Filter>ソース ファイル\game_object</Filter>
+    </ClCompile>
+    <ClCompile Include="behaviorData.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="behaviorTree.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="nodeBase.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehaviorIdle.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehaviorLookingFor.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehaviorRun.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehavior.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_base</Filter>
+    </ClCompile>
+    <ClCompile Include="resultBG.cpp">
+      <Filter>ソース ファイル\game_object\result</Filter>
+    </ClCompile>
+    <ClCompile Include="resultLogo.cpp">
+      <Filter>ソース ファイル\game_object\result</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +520,15 @@
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
     <FxCompile Include="pixelLightingVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="pixelLightingPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="toonVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="toonPS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
   </ItemGroup>

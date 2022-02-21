@@ -1,10 +1,52 @@
 #pragma once
+#include <string>
 #include "state.h"
+//#include "enemy.h"
+
+class Enemy;
+
+class EnemyStatePattern
+{
+public:
+	virtual ~EnemyStatePattern(){}
+	virtual void Update(class Enemy* pEnemy) = 0;
+};
+
+
+class EnemyState
+{
+public:
+	EnemyState();
+	~EnemyState();
+	void Update(Enemy* pEnemy);
+	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
+	void SetIsGuarding(bool isGuarding) { m_isGuarding = isGuarding; }
+	bool GetIsGuarding() const { return m_isGuarding; }
+	void SetIsDamaged(bool isDamaged) { m_isDamaged = isDamaged; }
+	bool GetIsDamaged() const { return m_isDamaged; }
+	void SetIsCollided(bool isCollided) { m_isCollided = isCollided; }
+	bool GetIsCollided() const { return m_isCollided; }
+	void SetStateName(std::string name) { m_stateName = name; }
+	std::string& GetStateName() { return m_stateName; }
+private:
+	EnemyStatePattern* m_pStatePattern;
+	bool m_isGuarding = false;
+	bool m_isDamaged = false;
+	bool m_isCollided = false;
+	std::string m_stateName;
+};
+
+/*
 
 class  EnemyState : public State
 {
 public:
-	EnemyState():m_nowState(IDLE_IDLE), m_nextState(IDLE_IDLE),m_isAiStaterunning(false){}
+	EnemyState() = delete;
+	EnemyState(Enemy* enemy):m_nowState(IDLE_IDLE), m_nextState(IDLE_IDLE),m_isAiStaterunning(false),m_enemy(enemy)
+	{
+	//	m_radiusDiscoverPlayer = 0.0f;
+		m_timer = 0.0f;
+	}
 	~EnemyState(){}
 	enum En_Enemy_State {
 		NONE = -1,
@@ -25,11 +67,39 @@ public:
 		COMBAT_DEAD,			// éÄñS
 		MAX,
 	};
+	static const char* enumChar_Enemy_State[En_Enemy_State::MAX]; 
+	//{
+	//	"IDLE_IDLE",
+	//	"IDLE_WALK",				// éUçÙ
+	//	"IDLE_NINJAEXECUTION",	// îEéE
+	//	"IDLE_SURPRISE",			// ã¡Ç≠
+	//	"IDLE_BEWARE",			// åxâ˙Ç∑ÇÈ
+	//	"IDLE_DISCOVER",			// î≠å©Ç∑ÇÈ
+	//	"IDLE_MOVE_TO_PLAYER",	// ÉvÉåÉCÉÑÅ[ÇÃÇ‡Ç∆Ç…à⁄ìÆ
+	//							// êÌì¨
+	//	"COMBAT_IDLE",			// ë“ã@
+	//	"COMBAT_ATTACK",			// çUåÇ
+	//	"COMBAT_GUARD",			// ÉKÅ[Éh
+	//	"COMBAT_DAMAGED",			// É_ÉÅÅ[ÉWÇéÛÇØÇÈ
+	//	"COMBAT_NINJAEXECUTION",	// îEéE
+	//	"COMBAT_DEAD",			// éÄñS
+	//};
 private:
+
+	class Enemy* m_enemy;
 	En_Enemy_State m_nowState;
 	En_Enemy_State m_nextState;
 
+//	void* m_pStateData;
+	//Enemy::EnemyStateData* m_pStateData;
+//	float m_radiusDiscoverPlayer;
+	float m_timer;
+
 	bool m_isAiStaterunning;
+
+	void UpdateAI();
+	void SetAI();
+	void AIMainRoutine();
 
 	void Idle_Idle();
 	void Idle_Walk();				// éUçÙ
@@ -46,9 +116,13 @@ private:
 	void Combat_Ninjaexecution();	// îEéE
 	void Combat_Dead();			// éÄñS
 public:
+	//void Init(float radDiscPlayer);
+	//void Init(Enemy::EnemyStateData stateData);
+	//void Init(void* stateData);
+	//void Init(void* stateData);
+	//void Init(Enemy::EnemyStateData* stateData);
 	void Update()override;
 	void ChangeState(En_Enemy_State newState);
-	void UpdateAI();
-	void SetAI();
-	void AIMainRoutine();
+	En_Enemy_State GetNowState() { return m_nowState; }
 };
+*/

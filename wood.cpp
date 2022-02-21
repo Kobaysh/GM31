@@ -4,7 +4,7 @@
 #include "camera.h"
 #include "manager.h"
 #include "scene.h"
-
+#include "meshField.h"
 #define FILENAME ("asset/texture/wood.png")
 
 
@@ -60,14 +60,14 @@ void Wood::Init()
 	);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
 
 	m_position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
-
+	m_offsetY = 4.5f * m_scale.y;
 }
 
 void Wood::Uninit()
@@ -75,30 +75,40 @@ void Wood::Uninit()
 	m_vertexBuffer->Release();
 	m_texture->Release();
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void Wood::Update()
 {
-
+	Scene* scene = ManagerT::GetScene();
+	MeshField* meshField = scene->GetGameObject<MeshField>(GOT_OBJECT3D);
+	m_position.y = meshField->GetHeight(m_position);
+	m_position.y += m_offsetY;
 }
 
 void Wood::Draw()
 {
+	// 視錘台カリング
+	Scene* scene = ManagerT::GetScene();
+	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
+	if (!camera->CheckView(m_position))
+	{
+		return;
+	}
 
 	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 
-	Scene* scene = ManagerT::GetScene();
+
 	XMMATRIX mtxInvView;
 	XMMATRIX view =XMLoadFloat4x4(scene->GetGameObject<Camera>(GOT_CAMERA)->GetView());
 	XMFLOAT4X4 temp;
@@ -114,7 +124,9 @@ void Wood::Draw()
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * mtxInvView * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 	
 

@@ -25,9 +25,11 @@ void main(in PS_IN In, out float4 outDiffuse : SV_Target)
     outDiffuse.rgb += specular;
     
     float rim = dot(eyev, normal.xyz) + 1.0f;
-    rim = pow(rim, 5) * 1.0f;
+    rim = pow(rim, 2) * 1.0f;
     
-    outDiffuse.rb += rim;
-    outDiffuse.g += rim * 0.5f; 
+    //outDiffuse.rb += rim;
+    //outDiffuse.g += rim * 0.1f; 
+    outDiffuse.b += rim;
+    outDiffuse.rg += rim * 0.1f;
     
 }

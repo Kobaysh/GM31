@@ -27,6 +27,6 @@ private:
 	static float m_fadeAlpha;
 
 	ID3D11Buffer*				m_VertexBuffer = NULL;
-	ID3D11ShaderResourceView*	m_texture = NULL;
+//	ID3D11ShaderResourceView*	m_texture = NULL;
 };
 

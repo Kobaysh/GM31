@@ -1,15 +1,17 @@
 #include "main.h"
 #include "renderer.h"
+#include "texture.h"
 #include "explosion.h"
 #include "camera.h"
 #include "manager.h"
 #include "scene.h"
 #include "keylogger.h"
 
-#define FILENAME ("asset/texture/explosion.png")
+#define FILENAME ("asset\\texture\\explosion.dds")
 #define ANIMATION_MAG (6)
 
 int Explosion::m_animationMag = 3;
+ID3D11ShaderResourceView* Explosion::m_texture = nullptr;
 
 void Explosion::Init()
 {
@@ -52,20 +54,21 @@ void Explosion::Init()
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
 
 	// テクスチャ読み込み
-	D3DX11CreateShaderResourceViewFromFile(
-		//Renderer::GetDevice(),
-		Renderer::GetpDevice().Get(),
-		FILENAME,
-		NULL,
-		NULL,
-		&m_texture,
-		NULL
-	);
-	assert(m_texture);
+	Texture::Load(FILENAME);
+	//D3DX11CreateShaderResourceViewFromFile(
+	//	//Renderer::GetDevice(),
+	//	Renderer::GetpDevice().Get(),
+	//	FILENAME,
+	//	NULL,
+	//	NULL,
+	//	&m_texture,
+	//	NULL
+	//);
+	//assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
 
 	m_position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -79,11 +82,11 @@ void Explosion::Init()
 void Explosion::Uninit()
 {
 	m_vertexBuffer->Release();
-	m_texture->Release();
+//	m_texture->Release();
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void Explosion::Update()
@@ -139,11 +142,11 @@ void Explosion::Draw()
 	}
 	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 
@@ -163,7 +166,9 @@ void Explosion::Draw()
 	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = mtxInvView * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 	
 
@@ -182,11 +187,18 @@ void Explosion::Draw()
 
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
+	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	// ポリゴン描画
 	Renderer::GetpDeviceContext()->Draw(4, 0);
+}
+
+void Explosion::ReleaseTexture()
+{
+	m_texture->Release();
+	m_texture = nullptr;
 }

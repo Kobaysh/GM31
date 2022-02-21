@@ -26,10 +26,33 @@ const static float testField[21][21] = {
 	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+1.0f,+2.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
 	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.5f,+1.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
 };
+//const static float testField[21][21] = {
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,-0.0f,-0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,-0.0f,-0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,-0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,-0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,-0.0f,-0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,-0.0f,-0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//	+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,+0.0f,
+//};
 
 
 
-void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizonSize, float verticalSize)
+void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonSize, int verticalSize)
 {
 	m_horizonCnt = horizonCnt;
 	m_verticalCnt = verticalCnt;
@@ -83,7 +106,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizo
 		for (int x = 0; x < colVertex; x++, i++) {
 		//	m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize,x * 0.05f + z * 0.05f, startZ - z * verticalSize);
 		//	m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, cosf(x) * sinf(z) * 2.0f, startZ - z * verticalSize);
-			m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, testField[z][x], startZ - z * verticalSize);
+			m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, testField[z][x] * 2.0f, startZ - z * verticalSize);
 			m_pVertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			m_pVertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			m_pVertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
@@ -236,9 +259,9 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizo
 	);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
 
 }
 
@@ -253,26 +276,28 @@ void MeshField::Uninit()
 	m_indexBuffer->Release();
 	m_texture->Release();
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void MeshField::Update()
 {
+#if defined(DEBUG) || defined (_DEBUG)
 	if (KeyLogger_Trigger(KL_WIRE)) {
 		m_isWireFrame = m_isWireFrame == true ? false : true;
 	}
+#endif
 }
 
 void MeshField::Draw()
 {
 	// 入力レイアウト
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス
 
@@ -280,7 +305,9 @@ void MeshField::Draw()
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 
 
@@ -307,40 +334,33 @@ void MeshField::Draw()
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	if (m_isWireFrame) {
-		//ID3D11RasterizerState* rs;
-		//D3D11_RASTERIZER_DESC rd;
-		//rd.FillMode = D3D11_FILL_WIREFRAME;
-		//rd.CullMode = D3D11_CULL_BACK;
-		//rd.FrontCounterClockwise = true;
-		//rd.MultisampleEnable = false;
-
-		//Renderer:: GetpDevice()->CreateRasterizerState(&rd, &rs);
-		//Renderer::GetpDeviceContext()->RSSetState(rs);
-		Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
+		D3D11_RASTERIZER_DESC rdc{};
+		rdc.FillMode = D3D11_FILL_WIREFRAME;
+		rdc.CullMode = D3D11_CULL_NONE;
+		rdc.FrontCounterClockwise = true;
+		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+		Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+		//Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
 	}
 
 	// ポリゴン描画
 	Renderer::GetpDeviceContext()->DrawIndexed(m_indexCount, 0, 0);
 	if (m_isWireFrame) {
-		//ID3D11RasterizerState* rs;
-		//D3D11_RASTERIZER_DESC rd;
-		//rd.FillMode = D3D11_FILL_SOLID;
-		//rd.CullMode = D3D11_CULL_BACK;
-		//rd.FrontCounterClockwise = true;
-		//rd.MultisampleEnable = false;
-
-		//Renderer::GetpDevice()->CreateRasterizerState(&rd, &rs);
-		//Renderer::GetpDeviceContext()->RSSetState(rs);
-
-		Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
+		D3D11_RASTERIZER_DESC rdc{};
+		rdc.FillMode = D3D11_FILL_SOLID;
+		rdc.CullMode = D3D11_CULL_FRONT;
+		rdc.FrontCounterClockwise = true;
+		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+		Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+		//Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
 	}
 }
 
 float MeshField::GetHeight(XMFLOAT3 position)
 {
 	int x, z;
-	x = position.x / (float)m_horizonSize * 1.0f + m_horizonCnt* 0.5f;
-	z = m_verticalCnt - (position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f);
+	x = (int)(position.x / (float)m_horizonSize * 1.0f + m_horizonCnt* 0.5f);
+	z = m_verticalCnt - (int)(position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f);
 
 	if (x > m_horizonCnt + 1 || z > m_verticalCnt + 1) {
 		return position.y - 0.5f;

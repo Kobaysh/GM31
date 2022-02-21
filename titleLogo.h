@@ -16,7 +16,11 @@ public:
 private:
 
 
-	ID3D11Buffer*				m_VertexBuffer = NULL;
-	ID3D11ShaderResourceView*	m_texture = NULL;
+	ID3D11Buffer*				m_VertexBuffer = nullptr;
+	ID3D11ShaderResourceView*	m_texture = nullptr;
+
+
+	ID3D11Buffer*				m_VertexBuffer2 = nullptr;
+	ID3D11ShaderResourceView*	m_texture2 = nullptr;
 };
 

@@ -13,6 +13,7 @@ void main(in VS_IN In, out PS_IN Out)
 	normal = float4(In.Normal.xyz, 0.0);
 	worldNormal = mul(normal, World);
 	worldNormal = normalize(worldNormal);
+    Out.Normal = worldNormal;
 
 	float light = -dot(Light.Direction.xyz, worldNormal.xyz);
 	light = saturate(light);
@@ -23,6 +24,7 @@ void main(in VS_IN In, out PS_IN Out)
 	Out.Diffuse.a = In.Diffuse.a * Material.Diffuse.a;
 
 	Out.Position = mul( In.Position, wvp );
+    Out.WorldPosition = mul(In.Position, World);
 	Out.TexCoord = In.TexCoord;
 
 }

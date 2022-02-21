@@ -107,5 +107,10 @@ struct PS_IN
 
 cbuffer CameraBuffer : register(b5)
 {
-    float4 CameraPosition;
+    float3 CameraPosition;
+}
+
+cbuffer ParameterBuffer : register(b6)
+{
+    float3 Paramater;
 }

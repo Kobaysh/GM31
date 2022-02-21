@@ -76,9 +76,9 @@ void Polygon2D::Init()
 		);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_pVertexShader, &m_pVertexLayout, "unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_pVertexShader, &m_pVertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pPixelShader, "unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pPixelShader, "asset/shader/unlitTexturePS.cso");
 
 
 }

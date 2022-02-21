@@ -1,49 +1,32 @@
 #pragma once
 #include "main.h"
-#include <list>
+#include <unordered_map>
 
-class C_VertexShader :public ID3D11VertexShader
+struct VertexShaderLayout
 {
-private:
-	ID3D11VertexShader* m_VertexShader;
-	std::string m_FileName;
-};
-
-
-class C_PixelShader :public ID3D11PixelShader
-{
-private:
-	ID3D11PixelShader* m_PixelShader;
-	std::string m_FileName;
+	ID3D11VertexShader* m_vertexShader;
+	ID3D11InputLayout* m_vertexLayout;
 };
 
 class ShaderManager
 {
 public:
 	enum Shader_Type {
-		ST_NONE = -1,
 		ST_VS,
 		ST_PS,
-		ST_MAX
 	};
 	ShaderManager();
 	~ShaderManager();
 
-	static int SetShaderLoadfile(Shader_Type type, std::string pFileName);
-	static bool Load(Shader_Type type, int shaderId);
-	static int AllLoad();
-	static void Release(Shader_Type type, int shaderId);
+	static void Load(Shader_Type type,  std::string pFileName);
+	static void Release(Shader_Type type,  std::string pFileName);
 	static void AllRelease();
 
-private:
-	static std::list<ShaderManager*> ms_ShaderList;
-//	static std::list<C_VertexShader>	ms_VSList;
-//	static std::list<C_PixelShader>		ms_PSList;
+	static VertexShaderLayout* GetVertexShader(std::string pFileName) { return m_vertexInfo[pFileName]; }
+	static ID3D11PixelShader* GetPixelShader(std::string pFileName) { return m_pixelShaders[pFileName]; }
 
-	std::string m_VSFileName = NULL;
-	std::string m_PSFileName = NULL;
-	ID3D11VertexShader*		m_VertexShader = NULL;
-	ID3D11PixelShader*		m_PixelShader = NULL;
-	ID3D11InputLayout*		m_VertexLayout = NULL;
+private:
+	static std::unordered_map<std::string, VertexShaderLayout*> m_vertexInfo;
+	static std::unordered_map<std::string, ID3D11PixelShader*> m_pixelShaders;
 };
 

@@ -8,7 +8,7 @@ private:
 	ID3D11Buffer*				m_vertexBuffer = nullptr;
 	ID3D11Buffer*				m_indexBuffer = nullptr;
 	ID3D11ShaderResourceView*	m_texture = nullptr;
-
+	ID3D11RasterizerState* m_pRasterrizerState = nullptr;
 
 	VERTEX_3DX* m_pVertex;
 //	VERTEX_3DX** m_ppVertex;
@@ -26,7 +26,7 @@ private:
 public:
 	MeshField():m_pVertex(nullptr){}
 	void Init(){}
-	void Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, float horizonSize, float verticalSize);
+	void Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonSize, int verticalSize);
 	void Uninit();
 	void Update();
 	void Draw();

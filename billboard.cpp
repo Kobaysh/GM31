@@ -17,11 +17,11 @@ void Billboard::Update()
 
 void Billboard::Draw()
 {
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 	
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 	Scene* scene = ManagerT::GetScene();
@@ -41,7 +41,9 @@ void Billboard::Draw()
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * invView * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 
 

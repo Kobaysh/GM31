@@ -1,10 +1,20 @@
+/*==============================================================================
 
+就職作品 
+title: ???
+Author : Kobayashi Ryota
+Created Date : 2021/09/01
+--------------------------------------------------------------------------------
+github repos: https://github.com/Kobaysh/GM31
+
+==============================================================================*/
 #define NOMINMAX
 #include "main.h"
 //#include <dinput.h>
 #include "keyboard.h"
 #include "manager.h"
 #include "input.h"
+#include <imgui.h>
 
 
 
@@ -31,7 +41,9 @@ bool JudgeActiveWindow()
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	
+
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
 	WNDCLASSEX wcex =
 	{
 		sizeof(WNDCLASSEX),
@@ -69,15 +81,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//Manager::create();
 
 	//Manager::Init();
-
-//	ManagerT::singleton();
+	ShowWindow(g_Window, nCmdShow);
+	UpdateWindow(g_Window);
+	//	ManagerT::singleton();
 	Keyboard_Initialize();
 	ManagerT::Init();
 	Input::Init(hInstance);
 
 
-	ShowWindow(g_Window, nCmdShow);
-	UpdateWindow(g_Window);
+
 
 
 
@@ -93,7 +105,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	MSG msg;
 	while(1)
 	{
-        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if(msg.message == WM_QUIT)
 			{
@@ -104,7 +116,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-        }
+		}
 		else
 		{
 			dwCurrentTime = timeGetTime();
@@ -113,12 +125,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			{
 				dwExecLastTime = dwCurrentTime;
 
-			//	Manager::Update();
-			//	Manager::Draw();
+				//	Manager::Update();
+				//	Manager::Draw();
 				Input::Update();
 				ManagerT::Update();
-				
+
 				ManagerT::Draw();
+
 			}
 		}
 	}
@@ -127,18 +140,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
+
 	Input::Uninit();
-//	Manager::Uninit();
+	//	Manager::Uninit();
 	ManagerT::Uninit();
 	return (int)msg.wParam;
 }
 
 
+// Forward declare message handler from imgui_impl_win32.cpp
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		return true;
 	switch(uMsg)
 	{
 	case WM_DESTROY:
@@ -149,7 +166,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch(wParam)
 		{
 		case VK_ESCAPE:
-			DestroyWindow(hWnd);
+			SendMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		}
 		//break;
@@ -160,10 +177,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Keyboard_ProcessMessage(uMsg, wParam, lParam);
 
 		break;
+	case WM_CLOSE:	//	ウィンドウを閉じるメッセージ
+		ShowCursor(true);
+		if (MessageBox(hWnd, "本当に終了してよろしいですか？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
+			DestroyWindow(hWnd);	//	指定のウィンドウにWM_DESTROYメッセージを送る
+
+		}
+		return 0;
 	default:
 		break;
 	}
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
-

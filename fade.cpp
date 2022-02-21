@@ -1,8 +1,9 @@
 #include "main.h"
 #include "renderer.h"
 #include "fade.h"
+#include "texture.h"
 
-#define FILENAME ("asset/texture/fade.png")
+#define FILENAME ("asset\\texture\\fade.png")
 
 // 静的変数
 float Fade::m_fadeAlpha;
@@ -50,19 +51,20 @@ void Fade::Init()
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	// テクスチャ読み込み
-	D3DX11CreateShaderResourceViewFromFile(
-		Renderer::GetpDevice().Get(),
-		FILENAME,
-		NULL,
-		NULL,
-		&m_texture,
-		NULL
-		);
-	assert(m_texture);
+	Texture::Load(FILENAME);
+	//D3DX11CreateShaderResourceViewFromFile(
+	//	Renderer::GetpDevice().Get(),
+	//	FILENAME,
+	//	NULL,
+	//	NULL,
+	//	&m_texture,
+	//	NULL
+	//	);
+	//assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
 
 	m_fadeAlpha = 0.0f;
 	m_fadeType = FadeType::FADE_NONE;
@@ -72,11 +74,12 @@ void Fade::Init()
 void Fade::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_texture->Release();
+	//m_texture->Release();
+	//Texture::Release(FILENAME);
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void Fade::Update()
@@ -148,11 +151,11 @@ void Fade::Update()
 void Fade::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 	Renderer::SetWorldViewProjection2D();
@@ -164,7 +167,7 @@ void Fade::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

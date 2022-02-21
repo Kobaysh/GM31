@@ -51,6 +51,15 @@ struct LIGHT
 	D3DXCOLOR	Ambient;
 };
 
+struct LIGHTX
+{
+	BOOL		Enable;
+	BOOL		Dummy[3];
+	XMFLOAT4	Direction;
+	XMFLOAT4	Diffuse;
+	XMFLOAT4	Ambient;
+};
+
 
 
 class Renderer : public SingletonT<Renderer>
@@ -81,6 +90,8 @@ private:
 	static ComPtr<ID3D11Buffer>		m_pProjectionBuffer;
 	static ComPtr<ID3D11Buffer>		m_pMaterialBuffer;
 	static ComPtr<ID3D11Buffer>		m_pLightBuffer;
+	static ComPtr<ID3D11Buffer>		m_pCameraBuffer;
+	static ComPtr<ID3D11Buffer>		m_pParameterBuffer;
 
 	static ID3D11DepthStencilState* m_DepthStateEnable;
 	static ID3D11DepthStencilState* m_DepthStateDisable;
@@ -99,15 +110,19 @@ public:
 
 	static void SetDepthEnable(bool Enable);
 	static void SetWorldViewProjection2D();
+	static void SetWorldViewProjection2D(XMFLOAT4X4* worldMatrix);
 	static void SetWorldMatrix(D3DXMATRIX* WorldMatrix);
 	static void SetViewMatrix(D3DXMATRIX* ViewMatrix);
 	static void SetProjectionMatrix(D3DXMATRIX* ProjectionMatrix);
-	static void SetWorldMatrixX(XMMATRIX* WorldMatrix);
-	static void SetViewMatrixX(XMMATRIX* ViewMatrix);
-	static void SetProjectionMatrixX(XMMATRIX* ProjectionMatrix);
+	static void SetWorldMatrixX(XMFLOAT4X4* WorldMatrix);
+	static void SetViewMatrixX(XMFLOAT4X4* ViewMatrix);
+	static void SetProjectionMatrixX(XMFLOAT4X4* ProjectionMatrix);
 	static void SetMaterial(MATERIAL Material);
 	static void SetMaterialX(MATERIALX Material);
 	static void SetLight(LIGHT Light);
+	static void SetLightX(LIGHTX Light);
+	static void SetCameraPosition(XMFLOAT3 cameraPos);
+	static void SetParameter(XMFLOAT4 parameter);
 
 	static ID3D11Device* GetDevice( void ){ return m_Device; }
 	static ComPtr<ID3D11Device> GetpDevice( void ){ return m_pDevice; }

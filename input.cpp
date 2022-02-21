@@ -13,6 +13,7 @@ LPDIRECTINPUTDEVICE8 Input::m_mouseDevice;
 DIMOUSESTATE Input::m_currentMouseState;	
 DIMOUSESTATE Input::m_prevMouseState;		
 XMFLOAT2 Input::m_MousePos;					
+bool Input::MOUSE_ACTIVE = false;
 
 void Input::Init()
 {
@@ -132,9 +133,21 @@ bool Input::GetKeyTrigger(BYTE KeyCode)
 	return ((m_KeyState[KeyCode] & 0x80) && !(m_OldKeyState[KeyCode] & 0x80));
 }
 
-bool Input::GetMouseDown(MouseButton button_type)
+bool Input::GetMouseTrigger(MouseButton button_type)
 {
 	if (!(m_prevMouseState.rgbButtons[button_type] & MOUSE_ON_VALUE) &&
+		m_currentMouseState.rgbButtons[button_type] & MOUSE_ON_VALUE)
+	{
+		return true;
+	}
+
+
+	return false;
+}
+
+bool Input::GetMouseDown(MouseButton button_type)
+{
+	if ((m_prevMouseState.rgbButtons[button_type] & MOUSE_ON_VALUE) &&
 		m_currentMouseState.rgbButtons[button_type] & MOUSE_ON_VALUE)
 	{
 		return true;

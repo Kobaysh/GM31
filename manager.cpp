@@ -19,8 +19,8 @@ void ManagerT::Init()
 
 
 //	SetScene<Title>();
-	SetScene<Game>();
-//	SetScene<Result>();
+//	SetScene<Game>();
+	SetScene<Result>();
 
 	
 }
@@ -46,7 +46,9 @@ void ManagerT::Update()
 
 void ManagerT::Draw()
 {
+
 	Renderer::Begin();
+//	MyImGui::StartRender();
 	if (m_Scene) {
 		m_Scene->Draw();
 	}

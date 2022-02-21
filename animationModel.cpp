@@ -165,7 +165,7 @@ void AnimationModel::Unload()
 
 	aiReleaseImport(m_aiScene);
 
-	for (std::pair<const std::string, const aiScene*>pair : m_animation) {
+	for (auto pair : m_animation) {
 		aiReleaseImport(pair.second);
 	}
 }
@@ -356,15 +356,14 @@ void AnimationModel::Update(const char * animationName, int frame)
 #if defined(_DEBUG) || defined(DEBUG)
 	return;
 #endif // ! (DEBUG | _DEBUG)
+	if (m_animation.count(animationName) <= 0) return;
 	if (!m_animation[animationName]->HasAnimations()) return;
 
 	// アニメーションデータからボーンマトリクス算出
 	aiAnimation* animation = m_animation[animationName]->mAnimations[0];
-
 	for (unsigned int c = 0; c < animation->mNumChannels; c++) {
 		aiNodeAnim* nodeAnim = animation->mChannels[c];
 		BONE* bone = &m_bone[nodeAnim->mNodeName.C_Str()];
-
 		int f;
 		f = frame % nodeAnim->mNumRotationKeys;	// 簡易実装
 		aiQuaternion rot = nodeAnim->mRotationKeys[f].mValue;
@@ -609,11 +608,11 @@ void AnimationModel::Draw()
 	for (unsigned int m = 0; m < m_aiScene->mNumMeshes; m++) {
 		aiMesh* mesh = m_aiScene->mMeshes[m];
 
-		aiMaterial* material = m_aiScene->mMaterials[mesh->mMaterialIndex];
+		aiMaterial* aiMaterial = m_aiScene->mMaterials[mesh->mMaterialIndex];
 		
 		// テクスチャ設定
 		aiString path;
-		material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+		aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture[path.data]);
 
 

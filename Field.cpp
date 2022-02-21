@@ -54,9 +54,9 @@ void Field::Init()
 	);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_PixelShader, "vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
 //	Renderer::GetpDeviceContext()->GenerateMips(m_texture);
 	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -68,9 +68,9 @@ void Field::Uninit()
 	m_vertexBuffer->Release();
 	m_texture->Release();
 
-	m_VertexLayout->Release();
-	m_VertexShader->Release();
-	m_PixelShader->Release();
+	m_vertexLayout->Release();
+	m_vertexShader->Release();
+	m_pixelShader->Release();
 }
 
 void Field::Update()
@@ -81,17 +81,17 @@ void Field::Update()
 void Field::Draw()
 {
 	// 入力レイアウト設定
-	//Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
+	//Renderer::GetDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	//// シェーダー設定
-	//Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	//Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	//Renderer::GetDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	//Renderer::GetDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
 
 	// マトリクス設定
 	/*D3DXMATRIX world, scale, rot, trans;
@@ -105,7 +105,9 @@ void Field::Draw()
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
-	Renderer::SetWorldMatrixX(&worldX);
+	XMFLOAT4X4 world4x4;
+	XMStoreFloat4x4(&world4x4, worldX);
+	Renderer::SetWorldMatrixX(&world4x4);
 
 
 
