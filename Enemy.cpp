@@ -16,6 +16,7 @@
 #include "enemyGui.h"
 #include "hp.h"
 #include "trunk.h"
+#include "enemyTrunkBar.h"
 #include "enemy.h"
 
 const std::string Enemy::VS_FILE_NAME = "asset/shader/toonVS.cso";
@@ -80,11 +81,12 @@ void Enemy::Init()
 
 	// HPバー
 	m_hpBar = new HpBar();
-	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT3D)->Init(m_position, XMFLOAT3(1.0f, 0.3f, 1.0f), m_maxHp, m_maxHp);
+	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT3D)->Init(m_position, XMFLOAT3(1.0f, 0.2f, 1.0f), m_maxHp, m_maxHp);
 
 	// 体幹セット
 	m_trunk = new Trunk(30);
-
+	m_trunkBar = new TrunkBar();
+	ManagerT::GetScene()->AddGameObject(m_trunkBar, GOT_OBJECT3D)->Init(this);
 
 
 	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, VS_FILE_NAME);
@@ -151,6 +153,7 @@ void Enemy::Uninit()
 	}
 	m_obb->SetDead();
 	m_hpBar->SetDead();
+	m_trunkBar->SetDead();
 	m_explosionSE->Play(0.1f);
 	//m_vertexLayout->Release();
 	//m_vertexShader->Release();
@@ -298,6 +301,8 @@ void Enemy::MoveFromMoveVector()
 	XMFLOAT3 hpBarPos = m_position;
 	hpBarPos.y += 2.0f* m_scale.y;
 	m_hpBar->SetPosition(hpBarPos);
+	hpBarPos.y -= 0.4f* m_scale.y;
+	m_trunkBar->SetPosition(hpBarPos);
 }
 
 void Enemy::CollisionOther()
