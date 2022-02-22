@@ -242,7 +242,6 @@
     <ClInclude Include="trunk.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="wall.h" />
-    <ClInclude Include="weapon.h" />
     <ClInclude Include="wood.h" />
   </ItemGroup>
   <ItemGroup>
@@ -315,7 +314,6 @@
     <ClCompile Include="titleLogo.cpp" />
     <ClCompile Include="titleParticle.cpp" />
     <ClCompile Include="wall.cpp" />
-    <ClCompile Include="weapon.cpp" />
     <ClCompile Include="wood.cpp" />
   </ItemGroup>
   <ItemGroup>

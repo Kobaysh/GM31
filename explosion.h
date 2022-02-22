@@ -9,9 +9,9 @@ private:
 	static ID3D11ShaderResourceView*	m_Texture;
 
 
-	XMFLOAT2 m_textureOffset;	
+	XMFLOAT2 m_TextureOffset;	
 	int m_Frame;
-	static int m_animationMag;
+	static int m_AnimationMag;
 public:
 	void Init();
 	void Uninit();

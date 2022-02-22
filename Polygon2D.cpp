@@ -76,9 +76,9 @@ void Polygon2D::Init()
 		);
 	assert(m_Texture);
 
-	Renderer::CreateVertexShader(&m_pVertexShader, &m_pVertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pPixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 
 
 }
@@ -88,9 +88,9 @@ void Polygon2D::Uninit()
 	m_VertexBuffer->Release();
 	m_Texture->Release();
 
-	m_pVertexLayout->Release();
-	m_pVertexShader->Release();
-	m_pPixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void Polygon2D::Update()
@@ -100,17 +100,17 @@ void Polygon2D::Update()
 void Polygon2D::Draw()
 {
 	// 入力レイアウト設定
-	//Renderer::GetDeviceContext()->IASetInputLayout(m_pVertexLayout);
+	//Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	//// シェーダー設定
-	//Renderer::GetDeviceContext()->VSSetShader(m_pVertexShader, NULL, 0);
-	//Renderer::GetDeviceContext()->PSSetShader(m_pPixelShader, NULL, 0);
+	//Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	//Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_pVertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_pVertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pPixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 	Renderer::SetWorldViewProjection2D();

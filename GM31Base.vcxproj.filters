@@ -212,9 +212,6 @@
     <ClInclude Include="player_hp.h">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="animationModel.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
@@ -438,9 +435,6 @@
     </ClCompile>
     <ClCompile Include="player_hp.cpp">
       <Filter>ソース ファイル\game_object\player</Filter>
-    </ClCompile>
-    <ClCompile Include="weapon.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="animationModel.cpp">
       <Filter>ソース ファイル\system</Filter>

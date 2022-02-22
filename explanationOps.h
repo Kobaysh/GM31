@@ -4,11 +4,11 @@
 class ExplanationGame : public GameObject
 {
 private:
-	class ExplaMove* m_explaMove;
-	class ExplaAtk* m_explaAtk;
-	class ExplaDef* m_explaDef;
-	class ExplaLock* m_explaLock;
-	class ExplaChange* m_explaChange;
+	class ExplaMove* m_ExplaMove;
+	class ExplaAtk* m_ExplaAtk;
+	class ExplaDef* m_ExplaDef;
+	class ExplaLock* m_ExplaLock;
+	class ExplaChange* m_ExplaChange;
 
 public:
 	void Init()override;

@@ -53,10 +53,10 @@ void ExplaDef::Init()
 		"asset\\texture\\o_def.png",
 		NULL,
 		NULL,
-		&m_textureKey,
+		&m_TextureKey,
 		NULL
 	);
-	assert(m_textureKey);
+	assert(m_TextureKey);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -64,10 +64,10 @@ void ExplaDef::Init()
 		"asset\\texture\\mouse_def.png",
 		NULL,
 		NULL,
-		&m_textureMouse,
+		&m_TextureMouse,
 		NULL
 	);
-	assert(m_textureMouse);
+	assert(m_TextureMouse);
 
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
@@ -77,8 +77,8 @@ void ExplaDef::Init()
 
 void ExplaDef::Uninit()
 {
-	m_textureKey->Release();
-	m_textureMouse->Release();
+	m_TextureKey->Release();
+	m_TextureMouse->Release();
 	m_VertexBuffer->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
@@ -109,11 +109,11 @@ void ExplaDef::Draw()
 	// テクスチャ設定
 	if (Input::GetMouseActive())
 	{
-		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureMouse);
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_TextureMouse);
 	}
 	else
 	{
-		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_textureKey);
+		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_TextureKey);
 
 	}
 	// プリミティブトポロジ設定

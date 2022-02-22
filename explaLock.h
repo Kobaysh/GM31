@@ -4,8 +4,8 @@
 class ExplaLock :public GameObject
 {
 private:
-	ID3D11ShaderResourceView* m_textureKey;
-	ID3D11ShaderResourceView* m_textureMouse;
+	ID3D11ShaderResourceView* m_TextureKey;
+	ID3D11ShaderResourceView* m_TextureMouse;
 	ID3D11Buffer*	m_VertexBuffer = nullptr;
 
 	const float TEXTURE_SIZE_X = 144.0f;

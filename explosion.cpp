@@ -10,7 +10,7 @@
 #define FILENAME ("asset\\texture\\explosion.dds")
 #define ANIMATION_MAG (6)
 
-int Explosion::m_animationMag = 3;
+int Explosion::m_AnimationMag = 3;
 ID3D11ShaderResourceView* Explosion::m_Texture = nullptr;
 
 void Explosion::Init()
@@ -74,9 +74,9 @@ void Explosion::Init()
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
-	m_textureOffset = XMFLOAT2(4.0f, 4.0f);
+	m_TextureOffset = XMFLOAT2(4.0f, 4.0f);
 	m_Frame = -1;	// ++0から始める
-//	m_animationMag = 3;
+//	m_AnimationMag = 3;
 }
 
 void Explosion::Uninit()
@@ -92,15 +92,15 @@ void Explosion::Uninit()
 void Explosion::Update()
 {
 	if (KeyLogger_Trigger(KL_TURN_RIGHT)) {
-		m_animationMag++;
+		m_AnimationMag++;
 	}
 	else if (KeyLogger_Trigger(KL_TURN_LEFT)) {
-		if (--m_animationMag < 1) {
-			m_animationMag = 1;
+		if (--m_AnimationMag < 1) {
+			m_AnimationMag = 1;
 		}
 	}
 
-	if (++m_Frame > m_textureOffset.x * m_textureOffset.y * m_animationMag) {
+	if (++m_Frame > m_TextureOffset.x * m_TextureOffset.y * m_AnimationMag) {
 		m_Frame = 0;
 		SetDead();
 		return;
@@ -109,10 +109,10 @@ void Explosion::Update()
 
 void Explosion::Draw()
 {
-	float fx = 1.0f / m_textureOffset.x;
-	float fy = 1.0f / m_textureOffset.y;
-	float x = m_Frame / m_animationMag % (int)m_textureOffset.x * fx;
-	float y = m_Frame / m_animationMag / (int)m_textureOffset.x * fy;
+	float fx = 1.0f / m_TextureOffset.x;
+	float fy = 1.0f / m_TextureOffset.y;
+	float x = m_Frame / m_AnimationMag % (int)m_TextureOffset.x * fx;
+	float y = m_Frame / m_AnimationMag / (int)m_TextureOffset.x * fy;
 
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
