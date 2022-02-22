@@ -365,6 +365,8 @@ float MeshField::GetHeight(XMFLOAT3 position)
 	if (x > m_HorizonCnt + 1 || z > m_VerticalCnt + 1) {
 		return position.y - 0.5f;
 	}
+	if (x < 0)x = 0;
+	if (z < 0) z = 0;
 
 	XMFLOAT3 pos0, pos1, pos2, pos3,vecc;
 	pos0 = m_Vertex[(x + 0) + (z + 0) * (m_HorizonCnt + 1)].Position;

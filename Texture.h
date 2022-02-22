@@ -3,25 +3,23 @@
 #include <unordered_map>
 #define INVALID_TEXURE_ID (-1)	// 無効なテクスチャ管理番号
 #define TEXTURE_FILE_MAX (64)	// 最大テクスチャファイル名
+
+// テクスチャ管理クラス
 class Texture
 {
 private:
-//	static std::list<Texture*> m_TextureList;
-	static std::unordered_map<std::string,ID3D11ShaderResourceView*> m_TextureList;
-
-//	std::string m_fileName;
-//	ID3D11ShaderResourceView*	m_Texture = nullptr;
-//	bool m_IsLoaded = false;
+	static std::unordered_map<std::string,ID3D11ShaderResourceView*> m_TextureList;	// テクスチャ管理リスト
 public:
-	//static ID3D11ShaderResourceView*  GetTexture(int textureId);
-	//static int SetTextureLoadFile(std::string pFileName);
-	//static void Load(int textureId);
-	//static void AllLoad();
-	//static void Release(int textureId);
-	//static void AllRelease();
+	// テクスチャゲッター
 	static ID3D11ShaderResourceView**  GetTexture(std::string fileName);
+
+	//　テクスチャ読み込み
 	static bool Load(std::string fileName);
+
+	// 解放
 	static void Release(std::string fileName);
+
+	// 全解放
 	static void AllRelease();
 };
 
