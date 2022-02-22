@@ -53,7 +53,6 @@ void ResultLogo::Init()
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
-	//	Renderer::GetDevice(),
 		Renderer::GetpDevice().Get(),
 		FILENAME,
 		NULL,

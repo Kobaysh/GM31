@@ -188,6 +188,12 @@
     <ClInclude Include="enemyStateIdleDiscover.h" />
     <ClInclude Include="enemyStateIdleIdle.h" />
     <ClInclude Include="execJudgmentBase.h" />
+    <ClInclude Include="explaAtk.h" />
+    <ClInclude Include="explaChange.h" />
+    <ClInclude Include="explaDef.h" />
+    <ClInclude Include="explaLock.h" />
+    <ClInclude Include="explaMove.h" />
+    <ClInclude Include="explanationOps.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="fbxMesh.h" />
@@ -265,6 +271,12 @@
     <ClCompile Include="enemyStateIdleBeware.cpp" />
     <ClCompile Include="enemyStateIdleDiscover.cpp" />
     <ClCompile Include="enemyStateIdleIdle.cpp" />
+    <ClCompile Include="explaAtk.cpp" />
+    <ClCompile Include="explaChange.cpp" />
+    <ClCompile Include="explaDef.cpp" />
+    <ClCompile Include="explaLock.cpp" />
+    <ClCompile Include="explaMove.cpp" />
+    <ClCompile Include="explanationOps.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fbxMesh.cpp" />

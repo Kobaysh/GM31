@@ -41,9 +41,9 @@ static const Keyboard_Keys g_KKs[KL_MAX] = {
 	KK_S,	    //KL_DOWN,						// 下移動
 	KK_A,	    //KL_LEFT,						// 左移動
 	KK_D,	    //KL_RIGHT,						// 右移動
-	KK_O,		//KL_ATTACK,				 	// 攻撃キー
+	KK_U,		//KL_ATTACK,				 	// 攻撃キー
 	KK_L,		//KL_DICISION 					// 決定キー
-	KK_U,		//KL_GUARD,						// ガードキー
+	KK_O,		//KL_GUARD,						// ガードキー
 	KK_K,		//KL_CHANGENINGU,				// 忍具切り替えキー
 	KK_E,		//KL_RISE,						// 上昇
 	KK_Q,		//KL_fALL,						// 下降
