@@ -3,7 +3,7 @@
 #include "enemyBehavior.h"
 #include "enemyBehaviorIdle.h"
 
-const float EnemyBehaviorIdle::IDLE_COMPLETE = 5.0f;
+const float EnemyBehaviorIdle::IDLE_COMPLETE = 5.0f;	// Š®—¹ŽžŠÔ
 
 // ‘Ò‹@
 ActionBase::EXE_STATE EnemyBehaviorIdle::Run(Enemy * pEnemy, EnemyBehavior* pBehavior)

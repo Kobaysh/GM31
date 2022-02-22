@@ -18,9 +18,9 @@ void EnemyStateCombatDamaged::Update(Enemy * pEnemy)
 		return;
 	}
 
-	m_timer += 0.1f;
+	m_Timer += 0.1f;
 
-	if (m_timer >= 5.0f)
+	if (m_Timer >= 5.0f)
 	{
 		EnemyStatePattern* pStatePattern =
 		pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle(pEnemy));

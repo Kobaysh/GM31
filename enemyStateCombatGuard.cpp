@@ -13,8 +13,8 @@ EnemyStateCombatGuard::EnemyStateCombatGuard(Enemy * pEnemy)
 void EnemyStateCombatGuard::Update(Enemy * pEnemy)
 {
 	EnemyState* pState = pEnemy->GetEnemyState();
-	m_timer += 0.1f;
-	if (m_timer >= 10.0f)
+	m_Timer += 0.1f;
+	if (m_Timer >= 10.0f)
 	{
 		// ƒK[ƒh‰ðœ
 		pState->SetIsGuarding(false);

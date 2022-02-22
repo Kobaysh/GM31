@@ -54,15 +54,15 @@ const static float testField[21][21] = {
 
 void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonSize, int verticalSize)
 {
-	m_horizonCnt = horizonCnt;
-	m_verticalCnt = verticalCnt;
-	m_horizonSize = horizonSize;
-	m_verticalSize = verticalSize;
-	m_position = pos;
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_HorizonCnt = horizonCnt;
+	m_VerticalCnt = verticalCnt;
+	m_HorizonSize = horizonSize;
+	m_VerticalSize = verticalSize;
+	m_Position = pos;
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
-	m_isWireFrame = false;
+	m_IsWireFrame = false;
 
 	// 縦横の比率で並べ方を変える場合
 	int high, low;
@@ -79,16 +79,16 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	// 頂点数の計算
 	int rowVertex = verticalCnt + 1;		// 行の頂点数
 	int colVertex = horizonCnt + 1;			// 列の頂点数
-	m_vertexCount = rowVertex * colVertex;	// 全体の頂点数
+	m_VertexCount = rowVertex * colVertex;	// 全体の頂点数
 	// インデックス数とプリミティブ数の計算
-	m_indexCount = (high + 1) * 2 * low + (low - 1) * 2;
-	m_primitiveCount = high * low * 2 + (low - 1) * 4;
+	m_IndexCount = (high + 1) * 2 * low + (low - 1) * 2;
+	m_PrimitiveCount = high * low * 2 + (low - 1) * 4;
 
 	// 開始座標
-	float startX = m_position.x - horizonCnt * horizonSize * 0.5f;
-	float startZ = m_position.z + verticalCnt * verticalSize * 0.5f;
+	float startX = m_Position.x - horizonCnt * horizonSize * 0.5f;
+	float startZ = m_Position.z + verticalCnt * verticalSize * 0.5f;
 
-	m_pVertex = new VERTEX_3DX[m_vertexCount];
+	m_Vertex = new VERTEX_3DX[m_VertexCount];
 
 	//VERTEX_3DX** m_ppVertex = new VERTEX_3DX*[colVertex];
 	//for (int i = 0; i < colVertex; i++) {
@@ -104,12 +104,12 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	//}
 	for (int z = 0, i = 0; z < rowVertex; z++) {
 		for (int x = 0; x < colVertex; x++, i++) {
-		//	m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize,x * 0.05f + z * 0.05f, startZ - z * verticalSize);
-		//	m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, cosf(x) * sinf(z) * 2.0f, startZ - z * verticalSize);
-			m_pVertex[i].Position = XMFLOAT3(startX + x * horizonSize, testField[z][x] * 2.0f, startZ - z * verticalSize);
-			m_pVertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-			m_pVertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-			m_pVertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
+		//	m_Vertex[i].Position = XMFLOAT3(startX + x * horizonSize,x * 0.05f + z * 0.05f, startZ - z * verticalSize);
+		//	m_Vertex[i].Position = XMFLOAT3(startX + x * horizonSize, cosf(x) * sinf(z) * 2.0f, startZ - z * verticalSize);
+			m_Vertex[i].Position = XMFLOAT3(startX + x * horizonSize, testField[z][x] * 2.0f, startZ - z * verticalSize);
+			m_Vertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+			m_Vertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			m_Vertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
 		}
 	}
 
@@ -117,11 +117,11 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	for (int x = 1; x < horizonCnt; x++) {
 		for (int z = 1; z < verticalCnt; z++) {
 			XMVECTOR vx, vz, vn;
-			vx = XMLoadFloat3(&m_pVertex[(x + 1) + z * (horizonCnt + 1)].Position) - XMLoadFloat3(&m_pVertex[(x - 1) + z * (horizonCnt + 1)].Position);
-			vz = XMLoadFloat3(&m_pVertex[x + (z - 1) *(horizonCnt + 1)].Position) - XMLoadFloat3(&m_pVertex[x + (z+ 1) * (horizonCnt + 1)].Position);
+			vx = XMLoadFloat3(&m_Vertex[(x + 1) + z * (horizonCnt + 1)].Position) - XMLoadFloat3(&m_Vertex[(x - 1) + z * (horizonCnt + 1)].Position);
+			vz = XMLoadFloat3(&m_Vertex[x + (z - 1) *(horizonCnt + 1)].Position) - XMLoadFloat3(&m_Vertex[x + (z+ 1) * (horizonCnt + 1)].Position);
 			vn = XMVector3Cross(vz, vx);
 		 	vn = XMVector3Normalize(vn);
-			XMStoreFloat3(&m_pVertex[x + z * (horizonCnt + 1)].Normal, vn);
+			XMStoreFloat3(&m_Vertex[x + z * (horizonCnt + 1)].Normal, vn);
 		}
 	}
 	//for (int x = 1; x <= horizonCnt - 1; x++) {
@@ -140,20 +140,20 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 		D3D11_BUFFER_DESC bd{};
 		ZeroMemory(&bd, sizeof(bd));
 		bd.Usage = D3D11_USAGE_DEFAULT;	
-		bd.ByteWidth = sizeof(VERTEX_3DX) * m_vertexCount;
+		bd.ByteWidth = sizeof(VERTEX_3DX) * m_VertexCount;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
 		bd.CPUAccessFlags = 0;
 
 		D3D11_SUBRESOURCE_DATA sd{};
 		ZeroMemory(&sd, sizeof(sd));
-		sd.pSysMem = m_pVertex;
+		sd.pSysMem = m_Vertex;
 //		sd.pSysMem = m_ppVertex;
-		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
 
 	{
 		// インデックスバッファ生成
-		unsigned int* pI = new unsigned int[m_indexCount];
+		unsigned int* pI = new unsigned int[m_IndexCount];
 	/*	int i = 0;
 		for (int x = 0; x < colVertex; x++) {
 			for (int z = 0; z < rowVertex; z++, i++) {
@@ -191,7 +191,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 				}
 
 				//改行時に縮退ポリゴン用のインデックスを追加する
-				if (i < m_indexCount) {
+				if (i < m_IndexCount) {
 					//始点
 					pI[i] = pI[i - 1];
 					i++;
@@ -219,7 +219,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 				}
 
 				//改行時に縮退ポリゴン用のインデックスを追加する
-				if (i < m_indexCount) {
+				if (i < m_IndexCount) {
 					//始点
 					pI[i] = pI[i - 1];
 					i++;
@@ -234,7 +234,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(bd));
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(unsigned int)* m_indexCount;
+		bd.ByteWidth = sizeof(unsigned int)* m_IndexCount;
 		bd.BindFlags = D3D10_BIND_INDEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 
@@ -242,7 +242,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 		ZeroMemory(&sd, sizeof(sd));
 		sd.pSysMem = pI;
 
-		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_indexBuffer);
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_IndexBuffer);
 
 		delete[] pI;
 	}
@@ -254,38 +254,38 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
-		&m_texture,
+		&m_Texture,
 		NULL
 	);
-	assert(m_texture);
+	assert(m_Texture);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
 
 }
 
 void MeshField::Uninit()
 {
-	if (m_pVertex) {
-		delete[] m_pVertex;
+	if (m_Vertex) {
+		delete[] m_Vertex;
 	}
 //	delete[] m_ppVertex;
 
-	m_vertexBuffer->Release();
-	m_indexBuffer->Release();
-	m_texture->Release();
+	m_VertexBuffer->Release();
+	m_IndexBuffer->Release();
+	m_Texture->Release();
 
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void MeshField::Update()
 {
 #if defined(DEBUG) || defined (_DEBUG)
 	if (KeyLogger_Trigger(KL_WIRE)) {
-		m_isWireFrame = m_isWireFrame == true ? false : true;
+		m_IsWireFrame = m_IsWireFrame == true ? false : true;
 	}
 #endif
 }
@@ -293,17 +293,17 @@ void MeshField::Update()
 void MeshField::Draw()
 {
 	// 入力レイアウト
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス
 
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x,m_Rotation.y,m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -314,10 +314,10 @@ void MeshField::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// インデックスバッファ設定
-	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	
 	// マテリアル設定
 	MATERIAL material;
@@ -328,30 +328,30 @@ void MeshField::Draw()
 	
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	if (m_isWireFrame) {
+	if (m_IsWireFrame) {
 		D3D11_RASTERIZER_DESC rdc{};
 		rdc.FillMode = D3D11_FILL_WIREFRAME;
 		rdc.CullMode = D3D11_CULL_NONE;
 		rdc.FrontCounterClockwise = true;
-		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
-		Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
+		Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 		//Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
 	}
 
 	// ポリゴン描画
-	Renderer::GetpDeviceContext()->DrawIndexed(m_indexCount, 0, 0);
-	if (m_isWireFrame) {
+	Renderer::GetpDeviceContext()->DrawIndexed(m_IndexCount, 0, 0);
+	if (m_IsWireFrame) {
 		D3D11_RASTERIZER_DESC rdc{};
 		rdc.FillMode = D3D11_FILL_SOLID;
 		rdc.CullMode = D3D11_CULL_FRONT;
 		rdc.FrontCounterClockwise = true;
-		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
-		Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+		Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
+		Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 		//Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillSolid().Get());
 	}
 }
@@ -359,18 +359,20 @@ void MeshField::Draw()
 float MeshField::GetHeight(XMFLOAT3 position)
 {
 	int x, z;
-	x = (int)(position.x / (float)m_horizonSize * 1.0f + m_horizonCnt* 0.5f);
-	z = m_verticalCnt - (int)(position.z / (float)m_verticalSize * 1.0f + m_verticalCnt * 0.5f);
+	x = (int)(position.x / (float)m_HorizonSize * 1.0f + m_HorizonCnt* 0.5f);
+	z = m_VerticalCnt - (int)(position.z / (float)m_VerticalSize * 1.0f + m_VerticalCnt * 0.5f);
 
-	if (x > m_horizonCnt + 1 || z > m_verticalCnt + 1) {
+	if (x > m_HorizonCnt + 1 || z > m_VerticalCnt + 1) {
 		return position.y - 0.5f;
 	}
+	if (x < 0)x = 0;
+	if (z < 0) z = 0;
 
 	XMFLOAT3 pos0, pos1, pos2, pos3,vecc;
-	pos0 = m_pVertex[(x + 0) + (z + 0) * (m_horizonCnt + 1)].Position;
-	pos1 = m_pVertex[(x + 1) + (z + 0) * (m_horizonCnt + 1)].Position;
-	pos2 = m_pVertex[(x + 0) + (z + 1) * (m_horizonCnt + 1)].Position;
-	pos3 = m_pVertex[(x + 1) + (z + 1) * (m_horizonCnt + 1)].Position;
+	pos0 = m_Vertex[(x + 0) + (z + 0) * (m_HorizonCnt + 1)].Position;
+	pos1 = m_Vertex[(x + 1) + (z + 0) * (m_HorizonCnt + 1)].Position;
+	pos2 = m_Vertex[(x + 0) + (z + 1) * (m_HorizonCnt + 1)].Position;
+	pos3 = m_Vertex[(x + 1) + (z + 1) * (m_HorizonCnt + 1)].Position;
 	//pos0 = m_vertex[x + 0][z + 0].Position;
 	//pos1 = m_vertex[x + 1][z + 0].Position;
 	//pos2 = m_vertex[x + 0][z + 1].Position;

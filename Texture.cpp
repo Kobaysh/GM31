@@ -4,31 +4,31 @@
 
 #include "texture.h"
 
-//std::list<Texture*> Texture::m_textureList;
-std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_textureList;
+//std::list<Texture*> Texture::m_TextureList;
+std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_TextureList;
 
 
 //ID3D11ShaderResourceView * Texture::GetTexture(int textureId)
 //{
 //	if (textureId <= INVALID_TEXURE_ID) return nullptr;
-//	auto it = m_textureList.begin();
+//	auto it = m_TextureList.begin();
 //	for (int i = 0; i < textureId; i++) {
 //		it++;
 //	}
 //	Texture* texture = *it;
-//	return texture->m_texture;
+//	return texture->m_Texture;
 //}
 //
 //int Texture::SetTextureLoadFile(std::string pFileName)
 //{
 //	int i = 0;
-//	if (m_textureList.empty()) {
+//	if (m_TextureList.empty()) {
 //		Texture* newTexture = new Texture();
 //		newTexture->m_fileName = pFileName;
-//		m_textureList.push_back(newTexture);
+//		m_TextureList.push_back(newTexture);
 //		return i;
 //	}
-//	for (Texture* texture : m_textureList) {
+//	for (Texture* texture : m_TextureList) {
 //		if (texture->m_fileName[0 == 0]) {
 //			i++;
 //			continue;
@@ -39,7 +39,7 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_textureList
 //		i++;
 //	}
 //	i = 0;
-//	for (Texture* texture : m_textureList) {
+//	for (Texture* texture : m_TextureList) {
 //		if (texture->m_fileName[0] != 0) {
 //			i++;
 //			continue;
@@ -47,20 +47,20 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_textureList
 //	}
 //	Texture* newTexture = new Texture();
 //	newTexture->m_fileName = pFileName;
-//	m_textureList.push_back(newTexture);
+//	m_TextureList.push_back(newTexture);
 //	return i;
 //}
 //
 //void Texture::Load(int textureId)
 //{
 //	if (textureId <= INVALID_TEXURE_ID) return;
-//	auto it = m_textureList.begin();
+//	auto it = m_TextureList.begin();
 //	for (int i = 0; i < textureId; i++) {
 //		it++;
 //	}
 //	Texture* _texture = *it;
 //	if (_texture->m_fileName[0] == 0) return;
-//	if (_texture->m_isLoaded) return;
+//	if (_texture->m_IsLoaded) return;
 //
 //
 //	D3DX11CreateShaderResourceViewFromFile(
@@ -69,18 +69,18 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_textureList
 //		"asset/texture/grass02.jpg",
 //		NULL,
 //		NULL,
-//		&_texture->m_texture,
+//		&_texture->m_Texture,
 //		NULL
 //	);
-//	assert(_texture->m_texture);
-//	_texture->m_isLoaded = true;
+//	assert(_texture->m_Texture);
+//	_texture->m_IsLoaded = true;
 //}
 //
 //void Texture::AllLoad()
 //{
-//	for (Texture* texture : m_textureList) {
+//	for (Texture* texture : m_TextureList) {
 //		if (texture->m_fileName[0] == 0) return;
-//		if (texture->m_isLoaded) return;
+//		if (texture->m_IsLoaded) return;
 //
 //
 //		D3DX11CreateShaderResourceViewFromFile(
@@ -89,48 +89,48 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_textureList
 //			"asset/texture/grass02.jpg",
 //			NULL,
 //			NULL,
-//			&texture->m_texture,
+//			&texture->m_Texture,
 //			NULL
 //		);
-//		assert(texture->m_texture);
-//		texture->m_isLoaded = true;
+//		assert(texture->m_Texture);
+//		texture->m_IsLoaded = true;
 //	}
 //}
 //
 //void Texture::Release(int textureId)
 //{
 //	if (textureId == INVALID_TEXURE_ID) return;
-//	auto it = m_textureList.begin();
+//	auto it = m_TextureList.begin();
 //	for (int i = 0; i < textureId; i++) {
 //		it++;
 //	}
 //	Texture* texture = *it;
-//	if (texture->m_texture) {
-//		delete texture->m_texture;
-//		texture->m_texture = nullptr;
+//	if (texture->m_Texture) {
+//		delete texture->m_Texture;
+//		texture->m_Texture = nullptr;
 //	}
-//	m_textureList.erase(std::next(m_textureList.begin(), textureId));
+//	m_TextureList.erase(std::next(m_TextureList.begin(), textureId));
 //}
 //
 //void Texture::AllRelease()
 //{
-//	auto it = m_textureList.begin();
-//	for (unsigned int i = 0; i < m_textureList.size(); i++) {
+//	auto it = m_TextureList.begin();
+//	for (unsigned int i = 0; i < m_TextureList.size(); i++) {
 //		Texture* texture = *it;
-//		if (texture->m_texture) {
-//			delete texture->m_texture;
-//			texture->m_texture = nullptr;
+//		if (texture->m_Texture) {
+//			delete texture->m_Texture;
+//			texture->m_Texture = nullptr;
 //		}
 //		it++;
 //	}
-//	m_textureList.clear();
+//	m_TextureList.clear();
 //}
 
 
 ID3D11ShaderResourceView** Texture::GetTexture(std::string fileName)
 {
-	auto it = m_textureList.find(fileName);
-	if (it != m_textureList.end())
+	auto it = m_TextureList.find(fileName);
+	if (it != m_TextureList.end())
 	{
 		return &(*it).second;
 	}
@@ -140,8 +140,8 @@ ID3D11ShaderResourceView** Texture::GetTexture(std::string fileName)
 
 bool Texture::Load(std::string fileName)
 {
-	auto it = m_textureList.find(fileName);
-	if (it != m_textureList.end())
+	auto it = m_TextureList.find(fileName);
+	if (it != m_TextureList.end())
 	{
 		return true;
 	}
@@ -156,28 +156,28 @@ bool Texture::Load(std::string fileName)
 			NULL
 		);
 		if (!texture) return false;
-		m_textureList[fileName] = texture;
+		m_TextureList[fileName] = texture;
 		return true;
 }
 
 
 void Texture::Release(std::string fileName)
 {
-	auto it = m_textureList.find(fileName);
-	if (it != m_textureList.end())
+	auto it = m_TextureList.find(fileName);
+	if (it != m_TextureList.end())
 	{
 		(*it).second->Release();
 		(*it).second = nullptr;
-		m_textureList.erase(fileName);
+		m_TextureList.erase(fileName);
 	}
 }
 
 void Texture::AllRelease()
 {
-	for (auto pair : m_textureList)
+	for (auto pair : m_TextureList)
 	{
 		pair.second->Release();
 	//	pair.second = nullptr;
 	}
-	m_textureList.clear();
+	m_TextureList.clear();
 }

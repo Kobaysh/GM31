@@ -10,31 +10,30 @@ float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* 
 
 
 // staticメンバ
-ID3D11VertexShader*		OBB::m_vertexShader = nullptr;
-ID3D11PixelShader*		OBB::m_pixelShader = nullptr;
-ID3D11InputLayout*		OBB::m_vertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
-//ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
+ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
+ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
+ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;
 
 const char* OBB::FILENAME_BLUE = ("asset\\texture\\tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset\\texture\\tinyred.png");
 // 描画するかどうか
 #if defined (DEBUG) || defined (_DEBUG)
-bool OBB::m_bIsDraw = true;
+bool OBB::m_IsDrawAll = true;
 #else 
-bool OBB::m_bIsDraw = false;
+bool OBB::m_IsDrawAll = false;
 #endif
-bool OBB::m_bIsDrawForwardRightUp = false;
+bool OBB::m_IsDrawForwardRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
-	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
-	m_rotation = rot;
+	if (m_Rotation.x == rot.x && m_Rotation.y == rot.y && m_Rotation.z == rot.z) return;
+	m_Rotation = rot;
 }
 
 void OBB::SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed)
 {
-	if (m_rotation.x == rotation.x && m_rotation.y == rotation.y && m_rotation.z == rotation.z) return;
-	m_rotation = rotation;
+	if (m_Rotation.x == rotation.x && m_Rotation.y == rotation.y && m_Rotation.z == rotation.z) return;
+	m_Rotation = rotation;
 	XMVECTOR nDX = XMLoadFloat3(&GetDirect(OBB_DX));
 	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DY));
 	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DZ));
@@ -46,27 +45,27 @@ void OBB::SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed)
 	nDY = XMVector3TransformNormal(nDY, mtxRot);
 	nDZ = XMVector3TransformNormal(nDZ, mtxRot);
 
-	XMStoreFloat3(&m_normaDirect[OBB_DX], nDX);
-	XMStoreFloat3(&m_normaDirect[OBB_DY], nDY);
-	XMStoreFloat3(&m_normaDirect[OBB_DZ], nDZ);
+	XMStoreFloat3(&m_NormalDirect[OBB_DX], nDX);
+	XMStoreFloat3(&m_NormalDirect[OBB_DY], nDY);
+	XMStoreFloat3(&m_NormalDirect[OBB_DZ], nDZ);
 }
 
 void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right)
 {
-	m_normaDirect[OBB_DX] = right;
-	m_normaDirect[OBB_DZ] = forward;
-	//m_normaDirect[OBB_DZ] = right;
-	//m_normaDirect[OBB_DX] = forward;
+	m_NormalDirect[OBB_DX] = right;
+	m_NormalDirect[OBB_DZ] = forward;
+	//m_NormalDirect[OBB_DZ] = right;
+	//m_NormalDirect[OBB_DX] = forward;
 	XMVECTOR vUp, vForward = XMLoadFloat3(&forward), vRight =  XMLoadFloat3(&right);
 	vUp = XMVector3Cross(vForward, vRight);
-	XMStoreFloat3(&m_normaDirect[OBB_DY], vUp);
+	XMStoreFloat3(&m_NormalDirect[OBB_DY], vUp);
 	
 }
 
 void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right, XMFLOAT3 rot)
 {
-	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
-	m_rotation = rot;
+	if (m_Rotation.x == rot.x && m_Rotation.y == rot.y && m_Rotation.z == rot.z) return;
+	m_Rotation = rot;
 	SetRotationFromForwardRightVector(forward, right);
 }
 
@@ -78,13 +77,13 @@ void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right, XM
 /// <returns>当たったどうか</returns>
 bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 {
-	bool preCol1 = obb1.m_wasCollide;
-	bool preCol2 = obb2.m_wasCollide;
+	bool preCol1 = obb1.m_WasCollide;
+	bool preCol2 = obb2.m_WasCollide;
 
-	obb1.m_isCollide = false;
-	obb2.m_isCollide = false;
-	obb1.m_wasCollide = false;
-	obb2.m_wasCollide = false;
+	obb1.m_IsCollide = false;
+	obb2.m_IsCollide = false;
+	obb1.m_WasCollide = false;
+	obb2.m_WasCollide = false;
 
 	// 各方向ベクトルの確保
 	XMVECTOR NAe1 = XMLoadFloat3(&obb1.GetDirect(OBB_DX)), Ae1 = NAe1 * obb1.GetLen_W(OBB_DX);
@@ -332,25 +331,25 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	obb1.m_wasCollide = true;
-	obb2.m_wasCollide = true;
+	obb1.m_WasCollide = true;
+	obb2.m_WasCollide = true;
 
 	if (!preCol1 && !preCol2)
 	{
 	//	return false;
 	}
-	obb1.m_isCollide = true;
-	obb2.m_isCollide = true;
+	obb1.m_IsCollide = true;
+	obb2.m_IsCollide = true;
 
 	return true;
 }
 
 void OBB::Init()
 {
-	XMVECTOR vPosition = XMLoadFloat3(&m_position);
-	XMVECTOR vSizeX = XMLoadFloat3(&XMFLOAT3(m_fLength[0] * 0.5f, 0.0f, 0.0f));
-	XMVECTOR vSizeY = XMLoadFloat3(&XMFLOAT3(0.0f, m_fLength[1] * 0.5f, 0.0f));
-	XMVECTOR vSizeZ = XMLoadFloat3(&XMFLOAT3(0.0f, 0.0f, m_fLength[2] * 0.5f));
+	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vSizeX = XMLoadFloat3(&XMFLOAT3(m_Length[0] * 0.5f, 0.0f, 0.0f));
+	XMVECTOR vSizeY = XMLoadFloat3(&XMFLOAT3(0.0f, m_Length[1] * 0.5f, 0.0f));
+	XMVECTOR vSizeZ = XMLoadFloat3(&XMFLOAT3(0.0f, 0.0f, m_Length[2] * 0.5f));
 
 	VERTEX_3DX vertex[8];
 
@@ -377,7 +376,7 @@ void OBB::Init()
 
 	D3D11_SUBRESOURCE_DATA sd{};
 	sd.pSysMem = vertex;
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	UWORD index[36] = {
 		3,1,0,
@@ -413,16 +412,16 @@ void OBB::Init()
 	rdc.FillMode = D3D11_FILL_WIREFRAME;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 	// テクスチャ読み込み
 	Texture::Load(FILENAME_BLUE);
 	Texture::Load(FILENAME_RED);
 
-	m_isDraw = false;
+	m_IsDraw = false;
 }
 
 void OBB::Uninit()
@@ -435,14 +434,14 @@ void OBB::Update()
 	D3D11_RASTERIZER_DESC rdc{};	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 	// ラスタライザ設定
-	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+	Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 }
 
 void OBB::Draw()
 {
-	if (!m_isDraw && !m_bIsDraw) {
+	if (!m_IsDraw && !m_IsDrawAll) {
 
 		return;
 	}
@@ -452,17 +451,17 @@ void OBB::Draw()
 	return;
 #endif
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -473,7 +472,7 @@ void OBB::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// インデックスバッファ設定
 	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_Indexbuffer, DXGI_FORMAT_R16_UINT, 0);
@@ -490,14 +489,14 @@ void OBB::Draw()
 	rdc.FillMode = D3D11_FILL_WIREFRAME;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 
 	// ラスタライザ設定
-	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+	Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 //	Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
 
 	// テクスチャ設定
-	if (m_isCollide) {
+	if (m_IsCollide) {
 		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_RED));
 	}
 	else {
@@ -513,17 +512,17 @@ void OBB::Draw()
 	Renderer::GetpDeviceContext()->DrawIndexed(36, 0, 0);
 
 
-	if (m_bIsDrawForwardRightUp)
+	if (m_IsDrawForwardRightUp)
 	{
 		// 法線表示
 		VERTEX_3DX vertex[2];
 		for (int i = 0; i < 3; i++)
 		{
-			vertex[0].Position = m_position;
+			vertex[0].Position = m_Position;
 			vertex[0].Position.x /= 1000.f;
 			vertex[0].Position.y /= 1000.f;
 			vertex[0].Position.z /= 1000.f;
-			XMVECTOR desPos = XMLoadFloat3(&vertex[0].Position) + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i];
+			XMVECTOR desPos = XMLoadFloat3(&vertex[0].Position) + XMLoadFloat3(&m_NormalDirect[i]) * m_Length[i];
 			XMStoreFloat3(&vertex[1].Position, desPos);
 
 			vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -544,7 +543,7 @@ void OBB::Draw()
 			Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
 
 
-			if (!m_isCollide)
+			if (!m_IsCollide)
 			{
 				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_RED));
 			}
@@ -563,9 +562,9 @@ void OBB::Draw()
 	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 	// ラスタライザ設定
-	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+	Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 	
 }
 

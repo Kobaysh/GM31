@@ -12,30 +12,30 @@
 
 void ExplanationGame::Init()
 {
-	m_explaMove = new ExplaMove();
-	m_explaMove->Init();
-	m_explaAtk = new ExplaAtk();
-	m_explaAtk->Init();
-	m_explaDef = new ExplaDef();
-	m_explaDef->Init();
-	m_explaLock = new ExplaLock();
-	m_explaLock->Init();
-	m_explaChange = new ExplaChange();
-	m_explaChange->Init();
+	m_ExplaMove = new ExplaMove();
+	m_ExplaMove->Init();
+	m_ExplaAtk = new ExplaAtk();
+	m_ExplaAtk->Init();
+	m_ExplaDef = new ExplaDef();
+	m_ExplaDef->Init();
+	m_ExplaLock = new ExplaLock();
+	m_ExplaLock->Init();
+	m_ExplaChange = new ExplaChange();
+	m_ExplaChange->Init();
 }
 
 void ExplanationGame::Uninit()
 {
-	m_explaMove->Uninit();
-	delete m_explaMove;
-	m_explaAtk->Uninit();
-	delete m_explaAtk;
-	m_explaDef->Uninit();
-	delete m_explaDef;
-	m_explaLock->Uninit();
-	delete m_explaLock;
-	m_explaChange->Uninit();
-	delete m_explaChange;
+	m_ExplaMove->Uninit();
+	delete m_ExplaMove;
+	m_ExplaAtk->Uninit();
+	delete m_ExplaAtk;
+	m_ExplaDef->Uninit();
+	delete m_ExplaDef;
+	m_ExplaLock->Uninit();
+	delete m_ExplaLock;
+	m_ExplaChange->Uninit();
+	delete m_ExplaChange;
 }
 
 void ExplanationGame::Update()
@@ -44,10 +44,10 @@ void ExplanationGame::Update()
 
 void ExplanationGame::Draw()
 {
-	m_explaMove->Draw();
-	m_explaAtk->Draw();
-	m_explaDef->Draw();
-	m_explaLock->Draw();
-	m_explaChange->Draw();
+	m_ExplaMove->Draw();
+	m_ExplaAtk->Draw();
+	m_ExplaDef->Draw();
+	m_ExplaLock->Draw();
+	m_ExplaChange->Draw();
 }
 

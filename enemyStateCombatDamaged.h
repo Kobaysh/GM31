@@ -1,11 +1,11 @@
 #pragma once
 #include "enemyState.h"
 
+// 戦闘中被ダメージクラス
 class EnemyStateCombatDamaged :public EnemyStatePattern
 {
 private:
-	float m_timer = 0.0f;
-	//static const float m_attackInterval;
+	float m_Timer = 0.0f;	// タイマー
 public :
 	EnemyStateCombatDamaged(){}
 	EnemyStateCombatDamaged(class Enemy* pEnemy);

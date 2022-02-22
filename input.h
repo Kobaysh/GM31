@@ -5,6 +5,7 @@
 
 //#define MOUSE_ACTIVE (true)
 
+// 入力処理クラス
 class Input
 {
 private:
@@ -25,19 +26,32 @@ public:
 
 	enum MouseButton
 	{
-		Left,		
-		Right,		
-		Center,		
+		Left,		// 左クリック
+		Right,		// 右クリック
+		Center,		// ホイールクリック
 	};
+
+	// マウス使用中か
 	static bool GetMouseActive() { return MOUSE_ACTIVE; }
+
+	// マウス使用状態セッター
 	static void SetMouseActive(bool active) { MOUSE_ACTIVE = active; }
 
+	// キー入力取得(押下中)
 	static bool GetKeyPress( BYTE KeyCode );
+
+	// キー入力取得(押下瞬間)
 	static bool GetKeyTrigger( BYTE KeyCode );
 
+	// マウス入力取得(押下瞬間)
 	static bool GetMouseTrigger(MouseButton button);
+
+	// マウス入力取得(押下中)
 	static bool GetMouseDown(MouseButton button);
+
+	// マウス入力取得(離す瞬間)
 	static bool GetMouseUp(MouseButton button);
 
+	// マウス移動値ゲッター
 	static XMFLOAT2 GetMouseVelocity();
 };

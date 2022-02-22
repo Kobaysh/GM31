@@ -1,14 +1,15 @@
 #pragma once
 #include "gameObject.h"
 
+// 切替説明クラス
 class ExplaChange :public GameObject
 {
 private:
-	ID3D11ShaderResourceView* m_texture;
-	ID3D11Buffer*	m_vertexBuffer = nullptr;
+	ID3D11ShaderResourceView* m_Texture;		// テクスチャ
+	ID3D11Buffer*	m_VertexBuffer = nullptr;	// 頂点バッファ
 
-	const float TEXTURE_SIZE_X = 144.0f;
-	const float TEXTURE_SIZE_Y = 52.0f;
+	const float TEXTURE_SIZE_X = 144.0f;		// テクスチャサイズ幅
+	const float TEXTURE_SIZE_Y = 52.0f;			// テクスチャサイズ高さ
 public:
 	void Init()override;
 	void Uninit()override;

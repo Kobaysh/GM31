@@ -9,35 +9,36 @@
 #include "enemyStateCombatIdle.h"
 #include "trunk.h"
 
-Audio* EnemyStateCombatAttack::m_attackSE = nullptr;
-Audio* EnemyStateCombatAttack::m_guardSE = nullptr;
-Audio* EnemyStateCombatAttack::m_repelSE = nullptr;
+Audio* EnemyStateCombatAttack::m_AttackSE = nullptr;
+Audio* EnemyStateCombatAttack::m_GuardSE = nullptr;
+Audio* EnemyStateCombatAttack::m_RepelSE = nullptr;
 
 void EnemyStateCombatAttack::Init()
 {
-	if (!m_attackSE)
+	// SE読み込み
+	if (!m_AttackSE)
 	{
-		m_attackSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-		m_attackSE->Load("asset\\audio\\se\\punch.wav");
+		m_AttackSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_AttackSE->Load("asset\\audio\\se\\punch.wav");
 	}
-	if (!m_guardSE)
+	if (!m_GuardSE)
 	{
-		m_guardSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-		m_guardSE->Load("asset\\audio\\se\\guard.wav");
+		m_GuardSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_GuardSE->Load("asset\\audio\\se\\guard.wav");
 	}
-	if (!m_repelSE)
+	if (!m_RepelSE)
 	{
-		m_repelSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-		m_repelSE->Load("asset\\audio\\se\\repel.wav");
+		m_RepelSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_RepelSE->Load("asset\\audio\\se\\repel.wav");
 	}
 }
 
 void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 {
-	m_timer += 0.1f;
+	m_Timer += 0.1f;
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 
-	if (!m_isAttacking && m_timer >= 6.0f)
+	if (!m_IsAttacking && m_Timer >= 6.0f)
 	{
 		if (pEnemy->GetAnimationName() != "kick")
 		{
@@ -47,28 +48,28 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 	}
 
 
-	if (!m_isAttacking && m_timer >= 10.0f)
+	if (!m_IsAttacking && m_Timer >= 10.0f)
 	{
-		m_isAttacking = true;
+		m_IsAttacking = true;
 		XMFLOAT3 obbPos;
 		XMVECTOR vObbPos = XMLoadFloat3(&pEnemy->GetPosition()) + XMLoadFloat3(&pEnemy->GetDirection()->Forward) * 2;
 		XMStoreFloat3(&obbPos, vObbPos);
 		//obbPos.y += 1.0f;
-		m_obbAttack = nullptr;
-		m_obbAttack = new OBB(obbPos, pEnemy->GetRotation(), XMFLOAT3(1.0f, 2.0f,1.0f));
-		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
-		m_timer = 0.0f;
+		m_ObbAttack = nullptr;
+		m_ObbAttack = new OBB(obbPos, pEnemy->GetRotation(), XMFLOAT3(1.0f, 2.0f,1.0f));
+		ManagerT::GetScene()->AddGameObject(m_ObbAttack, GameObject::GOT_OBJECT3D);
+		m_Timer = 0.0f;
 	}
 	if (!pPlayer) return;
 
-	if (m_isAttacking)
+	if (m_IsAttacking)
 	{
-		if (OBB::ColOBBs(*m_obbAttack, pPlayer->GetObb()))
+		if (OBB::ColOBBs(*m_ObbAttack, pPlayer->GetObb()))
 		{
 			// 攻撃当たった
-			m_isAttacking = false;
-			m_obbAttack->SetDead();
-			m_obbAttack = nullptr;
+			m_IsAttacking = false;
+			m_ObbAttack->SetDead();
+			m_ObbAttack = nullptr;
 			
 			if(pPlayer->GetIsGuarding())
 			{
@@ -77,18 +78,18 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 				// プレイヤーのガードが指定フレーム以下なら弾かれる
 				if (pPlayer->GetTimerGuard() <= 1.5f)
 				{
-					m_repelSE->Play();
+					m_RepelSE->Play();
 					pEnemy->GetTrunk()->ChangeNowTrunk(10);
 				}
 				else
 				{
-					m_guardSE->Play();
+					m_GuardSE->Play();
 					pPlayer->GetTrunk()->ChangeNowTrunk(10);
 				}
 			}
 			else
 			{
-				m_attackSE->Play();
+				m_AttackSE->Play();
 				pPlayer->GetTrunk()->ChangeNowTrunk(10);
 				pPlayer->Damage(1);
 			}
@@ -100,33 +101,24 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 			return;
 		}
 		// 攻撃アニメーションが終わったらfalse
-		if (m_timer >= 12.0f)
+		if (m_Timer >= 12.0f)
 		{
-			m_isAttacking = false;
-			m_obbAttack->SetDead();
-			m_obbAttack = nullptr;
+			m_IsAttacking = false;
+			m_ObbAttack->SetDead();
+			m_ObbAttack = nullptr;
 			EnemyStatePattern* pStatePattern = 
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle(pEnemy));
 			pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
 			delete pStatePattern;
 			return;
 		}
-		//if(アニメーション終了？)
-		//{
-		// m_isAttacking = false;
-		//delete m_obbAttack;
-		//m_obbAttack = nullptr;
-		//return;
-		//}
 	}
 }
 
 EnemyStateCombatAttack::~EnemyStateCombatAttack()
 {
-	if (m_obbAttack)
+	if (m_ObbAttack)
 	{
-		/*delete m_obbAttack;
-		m_obbAttack = nullptr;*/
-		m_obbAttack->SetDead();
+		m_ObbAttack->SetDead();
 	}
 }

@@ -16,28 +16,28 @@ static float value = 0.0f;
 
 void PressSpaceKey::Init()
 {
-	m_fadeAlpha = 1.0f;
+	m_FadeAlpha = 1.0f;
 	value = 0.0f;
 
 
 	vertex[0].Position	= XMFLOAT3(0.0f + OFFSET_X, 0.0f + OFFSET_Y, 0.0f);
 	vertex[0].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 		  
 	vertex[1].Position = XMFLOAT3(439.0f + OFFSET_X, 0.0f + OFFSET_Y, 0.0f);
 	vertex[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 		  
 	vertex[2].Position = XMFLOAT3(0.0f + OFFSET_X, 87.0f + OFFSET_Y, 0.0f);
 	vertex[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 		  
 	vertex[3].Position = XMFLOAT3(439.0f + OFFSET_X, 87.0f + OFFSET_Y, 0.0f);
 	vertex[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 
 
@@ -60,14 +60,14 @@ void PressSpaceKey::Init()
 		FILENAME,
 		NULL,
 		NULL,
-		&m_texture,
+		&m_Texture,
 		NULL
 		);
-	assert(m_texture);
+	assert(m_Texture);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 
 
 }
@@ -75,11 +75,11 @@ void PressSpaceKey::Init()
 void PressSpaceKey::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_texture->Release();
+	m_Texture->Release();
 
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void PressSpaceKey::Update()
@@ -87,40 +87,40 @@ void PressSpaceKey::Update()
 
 	vertex[0].Position = XMFLOAT3(0.0f + OFFSET_X, 0.0f + OFFSET_Y, 0.0f);
 	vertex[0].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
 	vertex[1].Position = XMFLOAT3(439.0f + OFFSET_X, 0.0f + OFFSET_Y, 0.0f);
 	vertex[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
 	vertex[2].Position = XMFLOAT3(0.0f + OFFSET_X, 87.0f + OFFSET_Y, 0.0f);
 	vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
 	vertex[3].Position = XMFLOAT3(439.0f + OFFSET_X, 87.0f + OFFSET_Y, 0.0f);
 	vertex[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 
 	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	value += 0.1f;
 
-	m_fadeAlpha = cosf(value) * 0.5f + 0.5f;
+	m_FadeAlpha = cosf(value) * 0.5f + 0.5f;
 
 }
 
 void PressSpaceKey::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 	Renderer::SetWorldViewProjection2D();
@@ -132,7 +132,7 @@ void PressSpaceKey::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

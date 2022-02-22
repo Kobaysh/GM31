@@ -23,15 +23,15 @@ public:
 	static void SetDebugCollisionWindow();
 	static void SetDebugPlayerWindow();
 
-	static void SetIsShowAll(bool show) { m_bIsShowAll = show; }
-	static bool GetIsShowAll() { return m_bIsShowAll; }
+	static void SetIsShowAll(bool show) { m_IsShowAll = show; }
+	static bool GetIsShowAll() { return m_IsShowAll; }
 private:
 	MyImGui() {}
 	~MyImGui() {}
-	static  bool m_bIsShowAll;
-	static std::unordered_map <std::string, class MyGuiWindow*> m_myGuiWindows;
+	static  bool m_IsShowAll;
+	static std::unordered_map <std::string, class MyGuiWindow*> m_MyGuiWindows;
 	 bool show_gui = true;
-	 static bool checkbox;
+	 static bool m_IsCheckbox;
 
 };
 
@@ -41,15 +41,15 @@ private:
 
 
 protected:
-	std::string m_name;
+	std::string m_Name;
 
 public :
 	MyGuiWindow(){}
 	~MyGuiWindow(){}
-	MyGuiWindow(const std::string& name):m_name(name){}
+	MyGuiWindow(const std::string& name):m_Name(name){}
 
-	const char* GetWindowName() { return m_name.data(); }
-	const std::string GetWindowString() { return m_name; }
+	const char* GetWindowName() { return m_Name.data(); }
+	const std::string GetWindowString() { return m_Name; }
 	virtual void Init() = 0;
 	virtual void Uninit() = 0;
 	virtual void Update() = 0;

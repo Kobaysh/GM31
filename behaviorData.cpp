@@ -6,6 +6,6 @@ void BehaviorData::ResetNodeUsed(std::vector<NodeBase*>* resetHierachy)
 {
 	for (auto node : *resetHierachy)
 	{
-		m_usedNodeMap[node->GetName()] = false;
+		m_UsedNodeMap[node->GetName()] = false;
 	}
 }

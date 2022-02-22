@@ -13,7 +13,7 @@
 void TrunkBar::Init()
 {
 	Texture::Load(FILENAME);
-	if (!m_vertexBuffer)
+	if (!m_VertexBuffer)
 	{
 		VERTEX_3DX vertexx[4];
 		vertexx[0].Position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
@@ -50,27 +50,27 @@ void TrunkBar::Init()
 		ZeroMemory(&sd, sizeof(sd));
 		sd.pSysMem = vertexx;
 
-		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 }
 
 void TrunkBar::Init(Enemy * pEnemy)
 {
-	m_pEnemy = pEnemy;
-	m_position = pEnemy->GetPosition();
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(1.0f, 0.1f, 1.0f);
+	m_Enemy = pEnemy;
+	m_Position = pEnemy->GetPosition();
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(1.0f, 0.1f, 1.0f);
 }
 
 
 void TrunkBar::Uninit()
 {
-	m_vertexBuffer->Release();
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexBuffer->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 
@@ -79,15 +79,15 @@ void TrunkBar::Draw()
 	// 視錘台カリング
 	Scene* scene = ManagerT::GetScene();
 	Camera* camera = scene->GetGameObject<Camera>(GOT_CAMERA);
-	if (!camera->CheckView(m_position))
+	if (!camera->CheckView(m_Position))
 	{
 		return;
 	}
-	Trunk* trunk = m_pEnemy->GetTrunk();
+	Trunk* trunk = m_Enemy->GetTrunk();
 	
 	// 割合を取得
 	float per = (float)trunk->GetNowTrunk() / trunk->GetMaxTrunk();
-//	if (m_nowHP == m_maxHP) return;
+//	if (m_NowHP == m_MaxHP) return;
 	if (trunk->GetNowTrunk() <= 0) return;
 
 	XMFLOAT4 color = XMFLOAT4(0, 0, 0, 1.0f);
@@ -105,7 +105,7 @@ void TrunkBar::Draw_Bar(XMFLOAT4 color, float perHP)
 {
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
-	Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 	{
 		VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
@@ -129,13 +129,13 @@ void TrunkBar::Draw_Bar(XMFLOAT4 color, float perHP)
 		vertex[3].Diffuse = color;
 		vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 	}
-	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+	Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 
@@ -152,8 +152,8 @@ void TrunkBar::Draw_Bar(XMFLOAT4 color, float perHP)
 	mtxInvView = XMMatrixTranspose(view);
 	//	mtxInvView = XMMatrixInverse(nullptr, view);
 
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * mtxInvView * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -164,7 +164,7 @@ void TrunkBar::Draw_Bar(XMFLOAT4 color, float perHP)
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 
 	// マテリアル設定
@@ -177,7 +177,7 @@ void TrunkBar::Draw_Bar(XMFLOAT4 color, float perHP)
 
 	// テクスチャ設定
 	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
-	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

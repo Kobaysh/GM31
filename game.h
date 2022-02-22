@@ -1,7 +1,7 @@
 #pragma once
-
 #include "scene.h"
 
+// ゲームシーン管理クラス
 class Game: public Scene
 {
 public:
@@ -11,6 +11,6 @@ public:
 	void Draw()override;
 
 private:
-	bool m_isGameClear;
+	bool m_IsGameClear;	// ゲームクリアしたか
 };
 

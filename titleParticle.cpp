@@ -6,11 +6,11 @@
 
 #define TEXTURE_NAME ("asset\\texture\\circle.png")
 
-ID3D11InputLayout* TitleParticle::m_sVertexLayout = nullptr; 
-ID3D11VertexShader* TitleParticle::m_sVertexShader = nullptr; 
-ID3D11PixelShader* TitleParticle::m_sPixelShader = nullptr; 
+ID3D11InputLayout* TitleParticle::m_VertexLayout = nullptr; 
+ID3D11VertexShader* TitleParticle::m_VertexShader = nullptr; 
+ID3D11PixelShader* TitleParticle::m_PixelShader = nullptr; 
 ID3D11Buffer* TitleParticle::m_VertexBuffer = nullptr; 
-ID3D11ShaderResourceView* TitleParticle::m_texture = nullptr; 
+ID3D11ShaderResourceView* TitleParticle::m_Texture = nullptr; 
 
 void TitleParticle::Init()
 {
@@ -51,7 +51,7 @@ void TitleParticle::Init()
 		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
 
-	if (!m_texture)
+	if (!m_Texture)
 	{
 		// テクスチャ読み込み
 		D3DX11CreateShaderResourceViewFromFile(
@@ -59,21 +59,21 @@ void TitleParticle::Init()
 			TEXTURE_NAME,
 			NULL,
 			NULL,
-			&m_texture,
+			&m_Texture,
 			NULL
 		);
 	}
-	if (!m_sVertexLayout && !m_sVertexShader)
+	if (!m_VertexLayout && !m_VertexShader)
 	{
-		Renderer::CreateVertexShader(&m_sVertexShader, &m_sVertexLayout, "asset/shader/unlitTextureVS.cso");
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 	}
-	if (!m_sPixelShader)
+	if (!m_PixelShader)
 	{
-		Renderer::CreatePixelShader(&m_sPixelShader, "asset/shader/unlitTexturePS.cso");
+		Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 	}
 
-	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(0.1f, 0.1f, 1.0f);
+	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(0.1f, 0.1f, 1.0f);
 }
 
 void TitleParticle::Uninit()
@@ -83,15 +83,15 @@ void TitleParticle::Uninit()
 void TitleParticle::Update()
 {
 	XMVECTOR vPostion, vMove;
-	vPostion = XMLoadFloat3(&m_position);
+	vPostion = XMLoadFloat3(&m_Position);
 	vMove = { -1.0f,0.3f,0.0f,0.0f };
 	vPostion += vMove;
-	XMStoreFloat3(&m_position, vPostion);
-	if (m_position.x + 512.0f * 0.5f * m_scale.x <= 0.0f)
+	XMStoreFloat3(&m_Position, vPostion);
+	if (m_Position.x + 512.0f * 0.5f * m_Scale.x <= 0.0f)
 	{
 		this->SetDead();
 	}
-	else if (m_position.y - 512.0f * 0.5f * m_scale.y >= SCREEN_HEIGHT)
+	else if (m_Position.y - 512.0f * 0.5f * m_Scale.y >= SCREEN_HEIGHT)
 	{
 		this->SetDead();
 	}
@@ -100,16 +100,16 @@ void TitleParticle::Update()
 void TitleParticle::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_sVertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_sVertexShader, nullptr, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_sPixelShader, nullptr, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, nullptr, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, nullptr, 0);
 
 	// マトリクス設定
 	XMMATRIX mtxW, mtxT, mtxS;
-	mtxS = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	mtxT = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	mtxS = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	mtxT = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	mtxW = mtxS * mtxT;
 	XMFLOAT4X4 world;
 	XMStoreFloat4x4(&world, mtxW);
@@ -121,7 +121,7 @@ void TitleParticle::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -139,6 +139,6 @@ void TitleParticle::Unload()
 {
 	m_VertexBuffer->Release();
 	m_VertexBuffer= nullptr;
-	m_texture->Release();
-	m_texture = nullptr;
+	m_Texture->Release();
+	m_Texture = nullptr;
 }

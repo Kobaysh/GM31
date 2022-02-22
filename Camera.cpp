@@ -8,39 +8,35 @@
 #include "player.h"
 #include "input.h"
 
+float Camera::m_RoutationalSpeed;				// 回転速度
 
-float Camera::m_routationalSpeed;
-
-const  float Camera::m_cameraSpeedFirst = 0.2f;
-const  float Camera::m_atLength = 3.0f;
-
-
-
+const  float Camera::m_CameraSpeedFirst = 0.2f;	// 初期速度
+const  float Camera::m_AtLength = 3.0f;			// ターゲット距離
 
 void Camera::Init()
 {
-	m_position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
-	m_target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
-	m_direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	m_routationalSpeed = 0.08f;
-	m_moveSpeed = m_cameraSpeedFirst;
-	m_isActive = true;
-	m_isLock = false;
+	m_Position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
+	m_Target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
+	m_Direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_Direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_RoutationalSpeed = 0.08f;
+	m_MoveSpeed = m_CameraSpeedFirst;
+	m_IsActive = true;
+	m_IsLock = false;
 }
 
 void Camera::Init(bool active, bool movable)
 {
-	m_position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
-	m_target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
-	m_direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	m_routationalSpeed = 0.08f;
-	m_moveSpeed = m_cameraSpeedFirst;
-	m_isActive = active;
-	m_movable = movable;
+	m_Position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
+	m_Target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
+	m_Direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_Direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_RoutationalSpeed = 0.08f;
+	m_MoveSpeed = m_CameraSpeedFirst;
+	m_IsActive = active;
+	m_IsMovable = movable;
 }
 
 void Camera::Uninit()
@@ -49,31 +45,23 @@ void Camera::Uninit()
 
 void Camera::Update()
 {
-
-
-	//if (KeyLogger_Trigger(KL_GUARD))
-	//{
-	//	ChangeMovableWithPlayer(!m_movable);
-	//}
-
-
 	// 変数用意
 	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	XMStoreFloat3(&m_move, vDirection);
-	XMVECTOR vPosition = XMLoadFloat3(&m_position);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
+	XMStoreFloat3(&m_Move, vDirection);
+	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
 	XMVector3Normalize(vForward);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
+	XMVECTOR vRight = XMLoadFloat3(&m_Direction.Right);
 	XMVector3Normalize(vRight);
-	XMVECTOR vUp = XMLoadFloat3(&m_direction.Up);
+	XMVECTOR vUp = XMLoadFloat3(&m_Direction.Up);
 	XMVector3Normalize(vUp);
-	XMFLOAT3 tempFront = m_direction.Forward;
+	XMFLOAT3 tempFront = m_Direction.Forward;
 	tempFront.y = 0.0f;
 	XMVECTOR yZeroFront = XMLoadFloat3(&tempFront);
 	XMVector3Normalize(yZeroFront);
-	XMVECTOR vAt = XMLoadFloat3(&m_target);
+	XMVECTOR vAt = XMLoadFloat3(&m_Target);
 
-	if (m_isActive && m_movable) {
+	if (m_IsActive && m_IsMovable) {
 
 		if (KeyLogger_Press(KL_UP)) {
 			vDirection += +yZeroFront;
@@ -95,39 +83,39 @@ void Camera::Update()
 		}
 
 		if (KeyLogger_Press(KL_TURN_LEFT)) {
-			XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationY(-m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vRight = XMVector3TransformNormal(vRight, mtxR);
 			vUp = XMVector3Cross(vForward, vRight);
 		}
 		if (KeyLogger_Press(KL_TURN_RIGHT)) {
-			XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationY(m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vRight = XMVector3TransformNormal(vRight, mtxR);
 			vUp = XMVector3Cross(vForward, vRight);
 		}
 		if (KeyLogger_Press(KL_TURN_UP)) {
-			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight, m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight, m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
 		if (KeyLogger_Press(KL_TURN_DOWN)) {
-			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
-		vPosition += vDirection * m_cameraSpeedFirst;
+		vPosition += vDirection * m_CameraSpeedFirst;
 		float len;  
 		XMStoreFloat(&len, XMVector3Length(vDirection));
 		if ( len == 0.0f) {
-			m_moveSpeed = 0.0f;
+			m_MoveSpeed = 0.0f;
 		}
 		else
 		{
-			m_moveSpeed = m_cameraSpeedFirst;
+			m_MoveSpeed = m_CameraSpeedFirst;
 		}
 	}
-	else if(m_isActive && !m_movable) {
+	else if(m_IsActive && !m_IsMovable) {
 		Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 		/*XMVECTOR pFront = XMLoadFloat3(player->GetFront());
 		vForward = pFront;*/
@@ -144,7 +132,7 @@ void Camera::Update()
 		{
 			if (JudgeActiveWindow())
 			{
-				float mouseRot = m_routationalSpeed * 0.5f;
+				float mouseRot = m_RoutationalSpeed * 0.5f;
 				ShowCursor(false);
 				if (Input::GetMouseVelocity().x >= 1.0f)
 				{
@@ -193,11 +181,11 @@ void Camera::Update()
 		else
 		{
 			ShowCursor(true);
-			if (!m_isLock)
+			if (!m_IsLock)
 			{
 				if (KeyLogger_Press(KL_TURN_RIGHT))
 				{
-					XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed / 2);
+					XMMATRIX mtxR = XMMatrixRotationY(m_RoutationalSpeed / 2);
 					vForward = XMVector3TransformNormal(vForward, mtxR);
 					vForward = XMVector3Normalize(vForward);
 					vRight = XMVector3Normalize(vRight);
@@ -207,7 +195,7 @@ void Camera::Update()
 				}
 				if (KeyLogger_Press(KL_TURN_LEFT))
 				{
-					XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed / 2);
+					XMMATRIX mtxR = XMMatrixRotationY(-m_RoutationalSpeed / 2);
 					vForward = XMVector3TransformNormal(vForward, mtxR);
 					vRight = XMVector3TransformNormal(vRight, mtxR);
 					vForward = XMVector3Normalize(vForward);
@@ -217,7 +205,7 @@ void Camera::Update()
 				}
 				if (KeyLogger_Press(KL_TURN_UP))
 				{
-					XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed / 4 / 2);
+					XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_RoutationalSpeed / 4 / 2);
 					vForward = XMVector3TransformNormal(vForward, mtxR);
 					vForward = XMVector3Normalize(vForward);
 					vUp = XMVector3TransformNormal(vUp, mtxR);
@@ -225,7 +213,7 @@ void Camera::Update()
 				}
 				if (KeyLogger_Press(KL_TURN_DOWN))
 				{
-					XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -m_routationalSpeed / 4 / 2);
+					XMMATRIX mtxR = XMMatrixRotationAxis(vRight, -m_RoutationalSpeed / 4 / 2);
 					vForward = XMVector3TransformNormal(vForward, mtxR);
 					vForward = XMVector3Normalize(vForward);
 					vUp = XMVector3TransformNormal(vUp, mtxR);
@@ -241,11 +229,11 @@ void Camera::Update()
 		float len;
 		XMStoreFloat(&len, XMVector3Length(vDirection));
 		if (len == 0.0f) {
-			m_moveSpeed = 0.0f;
+			m_MoveSpeed = 0.0f;
 		}
 		else
 		{
-			m_moveSpeed = player->GetSpeed();
+			m_MoveSpeed = player->GetSpeed();
 		}
 
 
@@ -256,14 +244,14 @@ void Camera::Update()
 
 
 	// 移動
-	//	vPosition += vDirection * m_moveSpeed;
+	//	vPosition += vDirection * m_MoveSpeed;
 	// 注視点計算
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 	if (!player) return;
-	if (m_isLock) {
-		vAt = XMLoadFloat3(m_lockTargetPos);
+	if (m_IsLock) {
+		vAt = XMLoadFloat3(m_LockTargetPos);
 		XMVECTOR vPlayerPos = XMLoadFloat3(&player->GetPosition());
-		XMVECTOR diffPos =  vPlayerPos - XMLoadFloat3(m_lockTargetPos);
+		XMVECTOR diffPos =  vPlayerPos - XMLoadFloat3(m_LockTargetPos);
 		diffPos = XMVector3Normalize(diffPos);
 		diffPos.m128_f32[1] = 0.0f;
 		vPosition = vPlayerPos + diffPos * 5.0f;
@@ -271,11 +259,11 @@ void Camera::Update()
 
 		vForward = - diffPos;
 		//	vForward.m128_f32[1] = 0.0f;
-		vUp = XMLoadFloat3(&m_direction.Up);
+		vUp = XMLoadFloat3(&m_Direction.Up);
 		vRight = XMVector3Cross(vUp, vForward);
-		XMStoreFloat3(&m_direction.Forward, vForward);
-		XMStoreFloat3(&m_direction.Right, vRight);
-		XMStoreFloat3(&m_direction.Up, vUp);
+		XMStoreFloat3(&m_Direction.Forward, vForward);
+		XMStoreFloat3(&m_Direction.Right, vRight);
+		XMStoreFloat3(&m_Direction.Up, vUp);
 
 	}
 	else
@@ -284,24 +272,24 @@ void Camera::Update()
 	}
 
 	// 変数保存
-	XMStoreFloat3(&m_target, vAt);
-	XMStoreFloat3(&m_position, vPosition);
-	XMStoreFloat3(&m_direction.Forward, vForward);
-	XMStoreFloat3(&m_direction.Right, vRight);
-	XMStoreFloat3(&m_direction.Up, vUp);
-	XMStoreFloat3(&m_move, vDirection);
+	XMStoreFloat3(&m_Target, vAt);
+	XMStoreFloat3(&m_Position, vPosition);
+	XMStoreFloat3(&m_Direction.Forward, vForward);
+	XMStoreFloat3(&m_Direction.Right, vRight);
+	XMStoreFloat3(&m_Direction.Up, vUp);
+	XMStoreFloat3(&m_Move, vDirection);
 
 }
 
 void Camera::Draw()
 {
-	if (!m_isActive) return;
+	if (!m_IsActive) return;
 	// ビューマトリクス設定
-	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_direction.Up)));
-	Renderer::SetViewMatrixX(&m_viewMatrix);
+	XMStoreFloat4x4(&m_ViewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_Position), XMLoadFloat3(&m_Target), XMLoadFloat3(&m_Direction.Up)));
+	Renderer::SetViewMatrixX(&m_ViewMatrix);
 
 	//D3DXMATRIX viewMatrix;
-	//D3DXMatrixLookAtLH(&viewMatrix, &m_position, &m_target, &D3DXVECTOR3(0.0f,1.0f,0.0f));
+	//D3DXMatrixLookAtLH(&viewMatrix, &m_Position, &m_Target, &D3DXVECTOR3(0.0f,1.0f,0.0f));
 	//Renderer::SetViewMatrix(&viewMatrix);
 
 	// プロジェクションマトリクス設定
@@ -310,10 +298,10 @@ void Camera::Draw()
 	float nearZ = 0.01f;
 	float farZ = 1000.0f;
 	XMMATRIX projMatrix = XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
-	XMStoreFloat4x4(&m_projectionMatrix, projMatrix);
-	Renderer::SetProjectionMatrixX(&m_projectionMatrix);
+	XMStoreFloat4x4(&m_ProjectionMatrix, projMatrix);
+	Renderer::SetProjectionMatrixX(&m_ProjectionMatrix);
 
-	Renderer::SetCameraPosition(m_position);
+	Renderer::SetCameraPosition(m_Position);
 
 	/*D3DXMATRIX projectionMatrix;
 	D3DXMatrixPerspectiveFovLH(&projectionMatrix, 1.0f, (float)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0f, 1000.0f);
@@ -323,10 +311,10 @@ void Camera::Draw()
 bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 {
 	// 視錘台カリング
-	XMMATRIX view = XMLoadFloat4x4(&m_viewMatrix);
+	XMMATRIX view = XMLoadFloat4x4(&m_ViewMatrix);
 
 	XMMATRIX vp, invvp;
-	vp = XMLoadFloat4x4(&m_viewMatrix) * XMLoadFloat4x4(&m_projectionMatrix);
+	vp = XMLoadFloat4x4(&m_ViewMatrix) * XMLoadFloat4x4(&m_ProjectionMatrix);
 	invvp =	XMMatrixInverse(nullptr, vp);
 	XMFLOAT3 vpos[4];
 	XMVECTOR vVpos[4];
@@ -349,7 +337,7 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 	}
 
 	XMVECTOR v, v1, v2, vn, vCameraPosition;
-	vCameraPosition = XMLoadFloat3(&m_position);
+	vCameraPosition = XMLoadFloat3(&m_Position);
 	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 
 	// 左面
@@ -411,21 +399,21 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 
 float Camera::GetSpeed()
 {
-	return m_moveSpeed;
+	return m_MoveSpeed;
 }
 
 void Camera::ChangeMovableWithPlayer()
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 	if (!player)return;
-	if (!m_movable)
+	if (!m_IsMovable)
 	{
-		m_movable = true;
+		m_IsMovable = true;
 		player->SetMovable(false);
 	}
 	else
 	{
-		m_movable = false;
+		m_IsMovable = false;
 		player->SetMovable(true);
 	}
 }
@@ -434,22 +422,22 @@ void Camera::ChangeMovableWithPlayer(bool movable)
 {
 	Player* player = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 	if (!player)return;
-	m_movable = movable;
+	m_IsMovable = movable;
 	player->SetMovable(!movable);
 }
 
 void  Camera::ChangeDir(float angle, bool isRight) {
 
-	XMVECTOR vPositon = XMLoadFloat3(&m_position);
+	XMVECTOR vPositon = XMLoadFloat3(&m_Position);
 
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
+	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
 	XMVector3Normalize(vForward);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
+	XMVECTOR vRight = XMLoadFloat3(&m_Direction.Right);
 	XMVector3Normalize(vRight);
-	XMVECTOR vUp = XMLoadFloat3(&m_direction.Up);
+	XMVECTOR vUp = XMLoadFloat3(&m_Direction.Up);
 	XMVector3Normalize(vUp);	
 
-	XMVECTOR vAt = vPositon + vForward * m_atLength;
+	XMVECTOR vAt = vPositon + vForward * m_AtLength;
 
 
 	XMMATRIX mtxR = XMMatrixRotationY(angle);
@@ -457,7 +445,7 @@ void  Camera::ChangeDir(float angle, bool isRight) {
 	vRight = XMVector3TransformNormal(vRight, mtxR);
 	vUp = XMVector3Cross(vForward, vRight);
 
-	vPositon = XMLoadFloat3(&m_target) - vForward * m_atLength;
+	vPositon = XMLoadFloat3(&m_Target) - vForward * m_AtLength;
 
 	isRight = isRight;
 	// if(isRight){
@@ -474,9 +462,9 @@ void  Camera::ChangeDir(float angle, bool isRight) {
 	// }
 
 
-	XMStoreFloat3(&m_direction.Forward, vForward);
-	XMStoreFloat3(&m_direction.Right, vRight);
-	XMStoreFloat3(&m_direction.Up, vUp);
-	XMStoreFloat3(&m_position, vPositon);
+	XMStoreFloat3(&m_Direction.Forward, vForward);
+	XMStoreFloat3(&m_Direction.Right, vRight);
+	XMStoreFloat3(&m_Direction.Up, vUp);
+	XMStoreFloat3(&m_Position, vPositon);
 }
 

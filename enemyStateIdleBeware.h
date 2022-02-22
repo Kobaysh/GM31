@@ -1,6 +1,7 @@
 #pragma once
 #include "enemyState.h"
 
+// ‘Ò‹@’†Œx‰úƒNƒ‰ƒX
 class EnemyStateIdleBeware :public EnemyStatePattern
 {
 public :

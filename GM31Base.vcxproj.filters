@@ -95,9 +95,6 @@
     <ClInclude Include="shaderManager.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
     <ClInclude Include="sky.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
@@ -105,9 +102,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
-      <Filter>ソース ファイル\game_object\player</Filter>
-    </ClInclude>
-    <ClInclude Include="playerState.h">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
@@ -118,9 +112,6 @@
     </ClInclude>
     <ClInclude Include="title.h">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
-    </ClInclude>
-    <ClInclude Include="primitive.h">
-      <Filter>ソース ファイル\system</Filter>
     </ClInclude>
     <ClInclude Include="audio.h">
       <Filter>ソース ファイル\system</Filter>
@@ -221,13 +212,7 @@
     <ClInclude Include="player_hp.h">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="animationModel.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="fbxMesh.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
@@ -331,9 +316,6 @@
     <ClCompile Include="renderer.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
-    <ClCompile Include="singleton.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -346,12 +328,6 @@
     <ClCompile Include="shaderManager.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
-    <ClCompile Include="sprite.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="resource.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
     <ClCompile Include="sky.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -359,9 +335,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル\game_object\player</Filter>
-    </ClCompile>
-    <ClCompile Include="playerState.cpp">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
@@ -463,13 +436,7 @@
     <ClCompile Include="player_hp.cpp">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClCompile>
-    <ClCompile Include="weapon.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="animationModel.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="fbxMesh.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">

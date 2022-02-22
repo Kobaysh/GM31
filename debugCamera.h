@@ -1,7 +1,7 @@
 #pragma once
+#include "camera.h"
 
-#include "Camera.h"
-
+// デバッグ用カメラクラス
 class DebugCamera : public Camera
 {
 private:
