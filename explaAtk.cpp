@@ -71,7 +71,7 @@ void ExplaAtk::Init()
 	assert(m_TextureMouse);
 
 
-
+	// シェーダー作成
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
