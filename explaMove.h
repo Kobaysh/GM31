@@ -4,7 +4,7 @@
 class ExplaMove :public GameObject
 {
 private:
-	ID3D11ShaderResourceView*	m_texture = nullptr;
+	ID3D11ShaderResourceView*	m_Texture = nullptr;
 	ID3D11Buffer*	m_VertexBuffer = nullptr;
 
 	const float TEXTURE_SIZE_X = 204.0f;

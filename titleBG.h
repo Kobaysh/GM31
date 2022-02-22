@@ -11,5 +11,5 @@ public:
 	void Draw()override;
 private:
 	ID3D11Buffer*				m_VertexBuffer = nullptr;
-	ID3D11ShaderResourceView*	m_texture = nullptr;
+	ID3D11ShaderResourceView*	m_Texture = nullptr;
 };

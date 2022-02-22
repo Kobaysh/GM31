@@ -8,36 +8,36 @@ public:
 	Trunk(int maxTrunk) { InitMaxTrunk(maxTrunk); }
 	~Trunk(){}
 
-	int GetNowTrunk() { return m_nowTrunk; }
-	int GetMaxTrunk() { return m_maxTrunk; }
+	int GetNowTrunk() { return m_NowTrunk; }
+	int GetMaxTrunk() { return m_MaxTrunk; }
 
 	// 現在の体幹をセット
-	void SetNowTrunk(int trunk) { m_nowTrunk = trunk; }
+	void SetNowTrunk(int trunk) { m_NowTrunk = trunk; }
 
 	// 体幹の最大値をセット
-	void SetMaxTrunk(int maxTrunk) { m_maxTrunk = maxTrunk; }
+	void SetMaxTrunk(int maxTrunk) { m_MaxTrunk = maxTrunk; }
 
 	// 体幹の最大値をセット、現在の体幹を0に
-	void InitMaxTrunk(int maxTrunk) { m_maxTrunk = maxTrunk; m_nowTrunk = 0; }
+	void InitMaxTrunk(int maxTrunk) { m_MaxTrunk = maxTrunk; m_NowTrunk = 0; }
 
 	void ChangeNowTrunk(int changeValue){
-		if(m_nowTrunk + changeValue > m_maxTrunk){
-			m_nowTrunk = m_maxTrunk;
+		if(m_NowTrunk + changeValue > m_MaxTrunk){
+			m_NowTrunk = m_MaxTrunk;
 		}
-		else if(m_nowTrunk + changeValue < 0)
+		else if(m_NowTrunk + changeValue < 0)
 		{
-			m_nowTrunk = 0;
+			m_NowTrunk = 0;
 		}
 		else{
-			m_nowTrunk += changeValue;
+			m_NowTrunk += changeValue;
 		}
 	}
 
 	bool GetIsCollapsed()
 	{
-		return (m_nowTrunk >= m_maxTrunk);
+		return (m_NowTrunk >= m_MaxTrunk);
 	}
 private:
-	int m_nowTrunk;					// 体幹
-	int m_maxTrunk;					// Max体幹
+	int m_NowTrunk;					// 体幹
+	int m_MaxTrunk;					// Max体幹
 };

@@ -26,7 +26,7 @@ EnemyGui* Enemy::m_enemyGui = nullptr;
 
 Enemy::Enemy():
 	m_maxHp(3),
-	m_moveSpeed (0.0f),
+	m_MoveSpeed (0.0f),
 	m_rotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f)),
 	m_stateData(0.0f, 0.0f,0.0f,0.0f,0.0f)
 {
@@ -47,7 +47,7 @@ void Enemy::Init()
 	m_Direction.Right		= XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_Direction.Up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 
-	m_moveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_MoveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// 状態変化に必要な変数初期化
 	m_stateData.m_eyesight_rad = 7.0f;
@@ -61,7 +61,7 @@ void Enemy::Init()
 	{
 		m_behavior = new EnemyBehavior();
 	}
-	m_moveSpeed = 0.05f;
+	m_MoveSpeed = 0.05f;
 
 	// モデル読み込み
 	ModelInit();
@@ -75,8 +75,8 @@ void Enemy::Init()
 		m_enemyGui->Init();
 	}
 	// 当たり判定用のOBB追加
-	m_obb = new OBB(m_Position, m_Rotation, XMFLOAT3(2.1f, 2.1f, 2.1f));
-	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+	m_Obb = new OBB(m_Position, m_Rotation, XMFLOAT3(2.1f, 2.1f, 2.1f));
+	ManagerT::GetScene()->AddGameObject(m_Obb, GOT_OBJECT3D);
 
 
 	// HPバー
@@ -104,13 +104,13 @@ void Enemy::Init()
 void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 scale)
 {
 	m_Position = pos;
-	m_obb->SetPosition(pos);
+	m_Obb->SetPosition(pos);
 	m_Scale = scale;
 	XMFLOAT3 fixScale = scale;
 	fixScale.x = fixScale.x * 2 + 0.1f;
 	fixScale.y = fixScale.y * 2 + 0.1f;
 	fixScale.z = fixScale.z * 2 + 0.1f;
-	m_obb->SetScale(fixScale);
+	m_Obb->SetScale(fixScale);
 	m_hpBar->SetPosition(pos);
 	m_hpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
 }
@@ -118,7 +118,7 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 scale)
 void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 {
 	m_Position = pos;
-	m_obb->SetPosition(pos);
+	m_Obb->SetPosition(pos);
 	m_Rotation = rotation;
 	XMMATRIX rot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&rotation));
 	XMVECTOR vF, vR, vU;
@@ -130,11 +130,11 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 	XMStoreFloat3(&m_Direction.Forward, vF);
 	XMStoreFloat3(&m_Direction.Right, vR);
 	XMStoreFloat3(&m_Direction.Up, vU);
-	m_obb->SetRotation(rotation, XMFLOAT3(0.0f,0.0f,0.0f));
+	m_Obb->SetRotation(rotation, XMFLOAT3(0.0f,0.0f,0.0f));
 	m_Scale = scale;
 	XMFLOAT3 fixScale = scale;
 	fixScale.y = fixScale.y * 1.7f + 0.1f;
-	m_obb->SetScale(fixScale);
+	m_Obb->SetScale(fixScale);
 	m_hpBar->SetPosition(pos);
 	m_hpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
 }
@@ -151,7 +151,7 @@ void Enemy::Uninit()
 		m_behavior->Uninit();
 		delete m_behavior;
 	}
-	m_obb->SetDead();
+	m_Obb->SetDead();
 	m_hpBar->SetDead();
 	m_trunkBar->SetDead();
 	m_explosionSE->Play(0.1f);
@@ -182,7 +182,7 @@ void Enemy::Update()
 	{
 		m_Position.y = mf->GetHeight(m_Position) + m_Scale.y;
 	}
-	//	m_obb->SetPosition(m_Position);
+	//	m_Obb->SetPosition(m_Position);
 
 }
 
@@ -221,10 +221,10 @@ void Enemy::Draw()
 
 
 	m_model->Draw();
-	//	Model::Draw(m_modelId);
-	//	m_obb->SetisDraw(true);
-	//	m_obb->Draw();
-	//	m_obb->SetisDraw(false);
+	//	Model::Draw(m_ModelId);
+	//	m_Obb->SetisDraw(true);
+	//	m_Obb->Draw();
+	//	m_Obb->SetisDraw(false);
 }
 
 std::string Enemy::GetEnemyBehaviorName()
@@ -276,27 +276,27 @@ void Enemy::UpdateRotation()
 	//XMStoreFloat3(&m_Direction.Forward, vForward);
 	//XMStoreFloat3(&m_Direction.Right, vRight);
 	//XMStoreFloat3(&m_Direction.Up, vUp);
-	m_obb->SetRotation(m_Rotation, m_rotationSpeed);
+	m_Obb->SetRotation(m_Rotation, m_rotationSpeed);
 	//	m_Rotation.y += m_rotationSpeed.y;
-	//m_obb->SetRotationFromForwardRightVector(m_Direction.Forward,m_Direction.Right, m_Rotation);
+	//m_Obb->SetRotationFromForwardRightVector(m_Direction.Forward,m_Direction.Right, m_Rotation);
 }
 
 void Enemy::UpdateOBB()
 {
 	// 移動後の座標で衝突判定
-	XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_moveVector) * m_moveSpeed;
+	XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_MoveVector) * m_MoveSpeed;
 	XMFLOAT3 obbPos;
 	XMStoreFloat3(&obbPos, vObbPos);
-	//	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
+	//	obbPos.y += m_Obb->GetLen_W(OBB::OBB_DY) * 1.0f;
 
-	m_obb->SetPosition(obbPos);
+	m_Obb->SetPosition(obbPos);
 	this->UpdateRotation();
 }
 
 void Enemy::MoveFromMoveVector()
 {
 	XMVECTOR vPos = XMLoadFloat3(&m_Position);
-	vPos += XMLoadFloat3(&m_moveVector) * m_moveSpeed;
+	vPos += XMLoadFloat3(&m_MoveVector) * m_MoveSpeed;
 	XMStoreFloat3(&m_Position, vPos);
 	XMFLOAT3 hpBarPos = m_Position;
 	hpBarPos.y += 2.0f* m_Scale.y;
@@ -313,7 +313,7 @@ void Enemy::CollisionOther()
 	std::vector<Rock*> rocks = scene->GetGameObjects<Rock>(GOT_OBJECT3D);
 	for (Rock* rock : rocks)
 	{
-		if (OBB::ColOBBs(rock->GetObb(), *m_obb))
+		if (OBB::ColOBBs(rock->GetObb(), *m_Obb))
 		{
 			isCollided++;
 		}

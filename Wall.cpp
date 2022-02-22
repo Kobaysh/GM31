@@ -57,13 +57,13 @@ void Wall::Init()
 	//	"asset/texture/grass02.jpg",
 	//	NULL,
 	//	NULL,
-	//	&m_texture,
+	//	&m_Texture,
 	//	NULL
 	//);
-	//assert(m_texture);
+	//assert(m_Texture);
 
-	m_modelId = Model::SetModelLoadfile(FILENAME);
-	Model::Load(m_modelId);
+	m_ModelId = Model::SetModelLoadfile(FILENAME);
+	Model::Load(m_ModelId);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
@@ -73,16 +73,16 @@ void Wall::Init()
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	XMFLOAT3 obbScale = XMFLOAT3(m_Scale.x * 2.0f, m_Scale.y * 2.0f, m_Scale.z * 2.0f);
-	m_obb = new OBB(m_Position, obbScale);
-	ManagerT::GetScene()->AddGameObject<OBB>(m_obb, GameObject::GOT_OBJECT3D);
+	m_Obb = new OBB(m_Position, obbScale);
+	ManagerT::GetScene()->AddGameObject<OBB>(m_Obb, GameObject::GOT_OBJECT3D);
 }
 
 void Wall::Uninit()
 {
 //	m_VertexBuffer->Release();
-//	m_texture->Release();
-//	Model::Release(m_modelId);
-	m_obb->SetDead();
+//	m_Texture->Release();
+//	Model::Release(m_ModelId);
+	m_Obb->SetDead();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -91,7 +91,7 @@ void Wall::Uninit()
 
 void Wall::Update()
 {
-	m_obb->SetPosition(m_Position);
+	m_Obb->SetPosition(m_Position);
 }
 
 void Wall::Draw()
@@ -129,7 +129,7 @@ void Wall::Draw()
 
 
 	//// テクスチャ設定
-	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	//// プリミティブトポロジ設定
 	//Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -137,5 +137,5 @@ void Wall::Draw()
 	//// ポリゴン描画
 	//Renderer::GetpDeviceContext()->Draw(4, 0);
 	//m_model->Draw();
-	Model::Draw(m_modelId);
+	Model::Draw(m_ModelId);
 }

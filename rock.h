@@ -6,10 +6,10 @@ class Rock : public GameObject
 private:
 
 //	Model* m_model;
-	int m_modelId;
-	class OBB* m_obb = nullptr;
+	int m_ModelId;
+	class OBB* m_Obb = nullptr;
 
-	XMFLOAT3 m_front;
+	XMFLOAT3 m_Front;
 
 	static ID3D11VertexShader* m_VertexShader;
 	static ID3D11PixelShader* m_PixelShader;
@@ -22,6 +22,6 @@ public:
 	void Uninit();
 	void Update();
 	void Draw();
-	XMFLOAT3* GetFront() { return &m_front; }
-	OBB& GetObb() { return *m_obb; }
+	XMFLOAT3* GetFront() { return &m_Front; }
+	OBB& GetObb() { return *m_Obb; }
 };

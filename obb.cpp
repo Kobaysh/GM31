@@ -19,11 +19,11 @@ const char* OBB::FILENAME_BLUE = ("asset\\texture\\tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset\\texture\\tinyred.png");
 // 描画するかどうか
 #if defined (DEBUG) || defined (_DEBUG)
-bool OBB::m_bIsDraw = true;
+bool OBB::m_SIsDraw = true;
 #else 
-bool OBB::m_bIsDraw = false;
+bool OBB::m_SIsDraw = false;
 #endif
-bool OBB::m_bIsDrawForwardRightUp = false;
+bool OBB::m_SIsDrawForwardRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
@@ -46,20 +46,20 @@ void OBB::SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed)
 	nDY = XMVector3TransformNormal(nDY, mtxRot);
 	nDZ = XMVector3TransformNormal(nDZ, mtxRot);
 
-	XMStoreFloat3(&m_normaDirect[OBB_DX], nDX);
-	XMStoreFloat3(&m_normaDirect[OBB_DY], nDY);
-	XMStoreFloat3(&m_normaDirect[OBB_DZ], nDZ);
+	XMStoreFloat3(&m_NormalDirect[OBB_DX], nDX);
+	XMStoreFloat3(&m_NormalDirect[OBB_DY], nDY);
+	XMStoreFloat3(&m_NormalDirect[OBB_DZ], nDZ);
 }
 
 void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right)
 {
-	m_normaDirect[OBB_DX] = right;
-	m_normaDirect[OBB_DZ] = forward;
-	//m_normaDirect[OBB_DZ] = right;
-	//m_normaDirect[OBB_DX] = forward;
+	m_NormalDirect[OBB_DX] = right;
+	m_NormalDirect[OBB_DZ] = forward;
+	//m_NormalDirect[OBB_DZ] = right;
+	//m_NormalDirect[OBB_DX] = forward;
 	XMVECTOR vUp, vForward = XMLoadFloat3(&forward), vRight =  XMLoadFloat3(&right);
 	vUp = XMVector3Cross(vForward, vRight);
-	XMStoreFloat3(&m_normaDirect[OBB_DY], vUp);
+	XMStoreFloat3(&m_NormalDirect[OBB_DY], vUp);
 	
 }
 
@@ -78,13 +78,13 @@ void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right, XM
 /// <returns>当たったどうか</returns>
 bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 {
-	bool preCol1 = obb1.m_wasCollide;
-	bool preCol2 = obb2.m_wasCollide;
+	bool preCol1 = obb1.m_WasCollide;
+	bool preCol2 = obb2.m_WasCollide;
 
-	obb1.m_isCollide = false;
-	obb2.m_isCollide = false;
-	obb1.m_wasCollide = false;
-	obb2.m_wasCollide = false;
+	obb1.m_IsCollide = false;
+	obb2.m_IsCollide = false;
+	obb1.m_WasCollide = false;
+	obb2.m_WasCollide = false;
 
 	// 各方向ベクトルの確保
 	XMVECTOR NAe1 = XMLoadFloat3(&obb1.GetDirect(OBB_DX)), Ae1 = NAe1 * obb1.GetLen_W(OBB_DX);
@@ -332,15 +332,15 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 	if (L > rA + rB)
 		return false;
 
-	obb1.m_wasCollide = true;
-	obb2.m_wasCollide = true;
+	obb1.m_WasCollide = true;
+	obb2.m_WasCollide = true;
 
 	if (!preCol1 && !preCol2)
 	{
 	//	return false;
 	}
-	obb1.m_isCollide = true;
-	obb2.m_isCollide = true;
+	obb1.m_IsCollide = true;
+	obb2.m_IsCollide = true;
 
 	return true;
 }
@@ -348,9 +348,9 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 void OBB::Init()
 {
 	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
-	XMVECTOR vSizeX = XMLoadFloat3(&XMFLOAT3(m_fLength[0] * 0.5f, 0.0f, 0.0f));
-	XMVECTOR vSizeY = XMLoadFloat3(&XMFLOAT3(0.0f, m_fLength[1] * 0.5f, 0.0f));
-	XMVECTOR vSizeZ = XMLoadFloat3(&XMFLOAT3(0.0f, 0.0f, m_fLength[2] * 0.5f));
+	XMVECTOR vSizeX = XMLoadFloat3(&XMFLOAT3(m_Length[0] * 0.5f, 0.0f, 0.0f));
+	XMVECTOR vSizeY = XMLoadFloat3(&XMFLOAT3(0.0f, m_Length[1] * 0.5f, 0.0f));
+	XMVECTOR vSizeZ = XMLoadFloat3(&XMFLOAT3(0.0f, 0.0f, m_Length[2] * 0.5f));
 
 	VERTEX_3DX vertex[8];
 
@@ -413,7 +413,7 @@ void OBB::Init()
 	rdc.FillMode = D3D11_FILL_WIREFRAME;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
@@ -422,7 +422,7 @@ void OBB::Init()
 	Texture::Load(FILENAME_BLUE);
 	Texture::Load(FILENAME_RED);
 
-	m_isDraw = false;
+	m_IsDraw = false;
 }
 
 void OBB::Uninit()
@@ -435,14 +435,14 @@ void OBB::Update()
 	D3D11_RASTERIZER_DESC rdc{};	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 	// ラスタライザ設定
-	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+	Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 }
 
 void OBB::Draw()
 {
-	if (!m_isDraw && !m_bIsDraw) {
+	if (!m_IsDraw && !m_SIsDraw) {
 
 		return;
 	}
@@ -490,14 +490,14 @@ void OBB::Draw()
 	rdc.FillMode = D3D11_FILL_WIREFRAME;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 
 	// ラスタライザ設定
-	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+	Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 //	Renderer::GetpDeviceContext()->RSSetState(Renderer::GetpRS_FillWireFrame().Get());
 
 	// テクスチャ設定
-	if (m_isCollide) {
+	if (m_IsCollide) {
 		Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_RED));
 	}
 	else {
@@ -513,7 +513,7 @@ void OBB::Draw()
 	Renderer::GetpDeviceContext()->DrawIndexed(36, 0, 0);
 
 
-	if (m_bIsDrawForwardRightUp)
+	if (m_SIsDrawForwardRightUp)
 	{
 		// 法線表示
 		VERTEX_3DX vertex[2];
@@ -523,7 +523,7 @@ void OBB::Draw()
 			vertex[0].Position.x /= 1000.f;
 			vertex[0].Position.y /= 1000.f;
 			vertex[0].Position.z /= 1000.f;
-			XMVECTOR desPos = XMLoadFloat3(&vertex[0].Position) + XMLoadFloat3(&m_normaDirect[i]) * m_fLength[i];
+			XMVECTOR desPos = XMLoadFloat3(&vertex[0].Position) + XMLoadFloat3(&m_NormalDirect[i]) * m_Length[i];
 			XMStoreFloat3(&vertex[1].Position, desPos);
 
 			vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -544,7 +544,7 @@ void OBB::Draw()
 			Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &vertexbuffer, &stride, &offset);
 
 
-			if (!m_isCollide)
+			if (!m_IsCollide)
 			{
 				Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME_RED));
 			}
@@ -563,9 +563,9 @@ void OBB::Draw()
 	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FrontCounterClockwise = true;
-	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
+	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_RasterrizerState);
 	// ラスタライザ設定
-	Renderer::GetpDeviceContext()->RSSetState(m_pRasterrizerState);
+	Renderer::GetpDeviceContext()->RSSetState(m_RasterrizerState);
 	
 }
 

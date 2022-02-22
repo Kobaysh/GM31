@@ -18,6 +18,6 @@ private:
 	const float TEXTURE_SIZE_Y = 86.0f;
 
 	ID3D11Buffer*				m_VertexBuffer = NULL;
-	ID3D11ShaderResourceView*	m_texture = NULL;
+	ID3D11ShaderResourceView*	m_Texture = NULL;
 };
 

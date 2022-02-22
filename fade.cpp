@@ -6,8 +6,8 @@
 #define FILENAME ("asset\\texture\\fade.png")
 
 // Ã“I•Ï”
-float Fade::m_fadeAlpha;
-Fade::FadeType Fade::m_fadeType;
+float Fade::m_FadeAlpha;
+Fade::FadeType Fade::m_FadeType;
 
 static 	VERTEX_3DX vertex[4];
 static D3D11_BUFFER_DESC bd{};
@@ -18,22 +18,22 @@ void Fade::Init()
 
 	vertex[0].Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	vertex[0].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 		  
 	vertex[1].Position = XMFLOAT3(SCREEN_WIDTH, 0.0f, 0.0f);
 	vertex[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 		  
 	vertex[2].Position = XMFLOAT3(0.0f, SCREEN_HEIGHT, 0.0f);
 	vertex[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 		  
 	vertex[3].Position = XMFLOAT3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 	vertex[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 
 
@@ -57,24 +57,24 @@ void Fade::Init()
 	//	FILENAME,
 	//	NULL,
 	//	NULL,
-	//	&m_texture,
+	//	&m_Texture,
 	//	NULL
 	//	);
-	//assert(m_texture);
+	//assert(m_Texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 
-	m_fadeAlpha = 0.0f;
-	m_fadeType = FadeType::FADE_NONE;
+	m_FadeAlpha = 0.0f;
+	m_FadeType = FadeType::FADE_NONE;
 
 }
 
 void Fade::Uninit()
 {
 	m_VertexBuffer->Release();
-	//m_texture->Release();
+	//m_Texture->Release();
 	//Texture::Release(FILENAME);
 
 	m_VertexLayout->Release();
@@ -84,55 +84,55 @@ void Fade::Uninit()
 
 void Fade::Update()
 {
-	switch (m_fadeType)
+	switch (m_FadeType)
 	{
 	case Fade::FADE_NONE:
 		break;
 	case Fade::FADE_IN:
-		m_fadeAlpha -= 0.01f;
+		m_FadeAlpha -= 0.01f;
 
 		vertex[0].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 		vertex[0].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
 		vertex[1].Position = XMFLOAT3(SCREEN_WIDTH, 0.0f, 0.0f);
 		vertex[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
 		vertex[2].Position = XMFLOAT3(0.0f, SCREEN_HEIGHT, 0.0f);
 		vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
 		vertex[3].Position = XMFLOAT3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		vertex[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 		break;
 	case Fade::FADE_OUT:
-		m_fadeAlpha += 0.01f;
+		m_FadeAlpha += 0.01f;
 
 		vertex[0].Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 		vertex[0].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
 		vertex[1].Position = XMFLOAT3(SCREEN_WIDTH, 0.0f, 0.0f);
 		vertex[1].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
 		vertex[2].Position = XMFLOAT3(0.0f, SCREEN_HEIGHT, 0.0f);
 		vertex[2].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
 		vertex[3].Position = XMFLOAT3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f);
 		vertex[3].Normal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-		vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_fadeAlpha);
+		vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, m_FadeAlpha);
 		vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 		break;
@@ -142,8 +142,8 @@ void Fade::Update()
 		break;
 	}
 
-	if (m_fadeAlpha >= 1.05f || m_fadeAlpha <= -0.05f) {
-		m_fadeType = FadeType::FADE_NONE;
+	if (m_FadeAlpha >= 1.05f || m_FadeAlpha <= -0.05f) {
+		m_FadeType = FadeType::FADE_NONE;
 	}
 
 }
@@ -180,17 +180,17 @@ void Fade::Draw()
 
 void Fade::SetFade(FadeType type)
 {
-	m_fadeType = type;
+	m_FadeType = type;
 
-	switch (m_fadeType)
+	switch (m_FadeType)
 	{
 	case Fade::FADE_NONE:
 		break;
 	case Fade::FADE_IN:
-		m_fadeAlpha = 1.0f;
+		m_FadeAlpha = 1.0f;
 		break;
 	case Fade::FADE_OUT:
-		m_fadeAlpha = 0.0f;
+		m_FadeAlpha = 0.0f;
 		break;
 	case Fade::FADE_MAX:
 		break;
@@ -201,5 +201,5 @@ void Fade::SetFade(FadeType type)
 
 Fade::FadeType Fade::GetFadeType()
 {
-	return m_fadeType;
+	return m_FadeType;
 }

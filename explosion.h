@@ -6,7 +6,7 @@ class Explosion : public GameObject
 private:
 
 	ID3D11Buffer*				m_VertexBuffer = NULL;
-	static ID3D11ShaderResourceView*	m_texture;
+	static ID3D11ShaderResourceView*	m_Texture;
 
 
 	XMFLOAT2 m_textureOffset;	

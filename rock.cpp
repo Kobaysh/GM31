@@ -23,18 +23,18 @@ void Rock::Init()
 //	m_model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
 //	m_model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
 //	m_model->Load("asset\\model\\rock\\rock.obj");	 // \\か//しか使えない
-	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
-	Model::Load(m_modelId);
+	m_ModelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
+	Model::Load(m_ModelId);
 //	Model::AllLoad();
 	m_Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale		= XMFLOAT3(3.0f, 3.0f, 3.0f);
-	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_Front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	
-	if (!m_obb)
+	if (!m_Obb)
 	{
-		m_obb = new OBB(m_Position, XMFLOAT3(3.0f, 3.0f, 3.0f));
-	//	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+		m_Obb = new OBB(m_Position, XMFLOAT3(3.0f, 3.0f, 3.0f));
+	//	ManagerT::GetScene()->AddGameObject(m_Obb, GOT_OBJECT3D);
 	}
 	if (!m_VertexShader) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
@@ -46,28 +46,28 @@ void Rock::Init()
 
 void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
 {
-	m_modelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
-		Model::Load(m_modelId);
+	m_ModelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
+		Model::Load(m_ModelId);
 	//Model::AllLoad();
 	m_Position = pos;
 	m_Rotation = rot;
 	m_Scale = scale;
-	m_front = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_Front = XMFLOAT3(0.0f, 0.0f, 1.0f);
 
 	XMFLOAT3 fixedScale = m_Scale;
 	fixedScale.x *= 2;
 	fixedScale.y *= 2;
 	fixedScale.z *= 2;
-	if (!m_obb)
+	if (!m_Obb)
 	{
-		m_obb = new OBB(m_Position, m_Rotation, fixedScale);
-	//	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+		m_Obb = new OBB(m_Position, m_Rotation, fixedScale);
+	//	ManagerT::GetScene()->AddGameObject(m_Obb, GOT_OBJECT3D);
 	}
 	else
 	{
-		m_obb->SetPosition(m_Position);
-		m_obb->SetRotation(m_Rotation);
-		m_obb->SetScale(fixedScale);
+		m_Obb->SetPosition(m_Position);
+		m_Obb->SetRotation(m_Rotation);
+		m_Obb->SetScale(fixedScale);
 	}
 	if (!m_VertexShader) {
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
@@ -81,11 +81,11 @@ void Rock::Uninit()
 {
 	//m_model->Unload();
 	//delete m_model;
-	if (m_obb)
+	if (m_Obb)
 	{
-	//	m_obb->SetDead();
-		delete m_obb;
-		m_obb = nullptr;
+	//	m_Obb->SetDead();
+		delete m_Obb;
+		m_Obb = nullptr;
 	}
 	if (m_VertexLayout) {
 		m_VertexLayout->Release();
@@ -99,8 +99,8 @@ void Rock::Uninit()
 			m_PixelShader->Release();
 			m_PixelShader = nullptr;
 	}
-	//if (m_obb) {
-	//	m_obb->SetDead();
+	//if (m_Obb) {
+	//	m_Obb->SetDead();
 	//}
 }
 
@@ -138,7 +138,7 @@ void Rock::Draw()
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
-//	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
+//	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_Front.z, m_Front.x));
 	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX* rotX *transX;
@@ -147,7 +147,7 @@ void Rock::Draw()
 	Renderer::SetWorldMatrixX(&world4x4);
 
 
-	Model::Draw(m_modelId);
+	Model::Draw(m_ModelId);
 	//m_model->Draw();
-//	m_obb->Draw();
+//	m_Obb->Draw();
 }

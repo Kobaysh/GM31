@@ -42,8 +42,8 @@ void Player::Init()
 	m_timerGuard = 0.0f;
 	m_maxHp = m_nowHp = 10;
 
-	m_obb = new OBB(m_Position, m_Rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
-	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
+	m_Obb = new OBB(m_Position, m_Rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
+	ManagerT::GetScene()->AddGameObject(m_Obb, GOT_OBJECT3D);
 	m_obbAttack = nullptr;
 
 	m_trunk = new Trunk(100);
@@ -64,7 +64,7 @@ void Player::Init()
 void Player::Uninit()
 {
 	delete m_trunk;
-	m_obb->SetDead();
+	m_Obb->SetDead();
 	if (m_hpBar)
 	{
 		m_hpBar->SetDead();
@@ -125,14 +125,14 @@ void Player::Draw()
 
 	m_model->Draw();
 	// デバッグ用OBB表示
-	//	m_obb->SetisDraw(true);
-	//	m_obb->Draw();
+	//	m_Obb->SetisDraw(true);
+	//	m_Obb->Draw();
 }
 
 void Player::Move()
 {
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
-	if (!m_movable) return;
+	if (!m_IsMovable) return;
 	XMVECTOR vPositon;
 	vPositon = XMLoadFloat3(&m_Position);
 	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
@@ -251,7 +251,7 @@ void Player::Move()
 	//	vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.5f;	// 接地面+サイズ
 	//}
 
-	XMStoreFloat3(&m_moveVector, (direction * m_speed) + jumpVector + vGravity);
+	XMStoreFloat3(&m_MoveVector, (direction * m_speed) + jumpVector + vGravity);
 	XMStoreFloat3(&m_Position, vPositon);
 }
 
@@ -507,7 +507,7 @@ void Player::CollisionOther()
 	std::vector<Rock*> rocks = scene->GetGameObjects<Rock>(GOT_OBJECT3D);
 	for (Rock* rock : rocks)
 	{
-		if (OBB::ColOBBs(rock->GetObb(), *m_obb))
+		if (OBB::ColOBBs(rock->GetObb(), *m_Obb))
 		{
 			isCollided++;
 		}
@@ -517,7 +517,7 @@ void Player::CollisionOther()
 	// 何かに衝突していたら移動ベクトルを0に戻す
 	if (isCollided > 0)
 	{
-		m_moveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		m_MoveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -580,19 +580,19 @@ void Player::ModelInit()
 void Player::UpdateObb()
 {
 	// 移動後の座標で衝突判定
-	XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_moveVector);
+	XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_MoveVector);
 	XMFLOAT3 obbPos;
 	XMStoreFloat3(&obbPos, vObbPos);
-	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
+	obbPos.y += m_Obb->GetLen_W(OBB::OBB_DY) * 1.0f;
 
-	m_obb->SetPosition(obbPos);
-	m_obb->SetRotationFromForwardRightVector(m_Direction.Forward, m_Direction.Right, m_Rotation);
+	m_Obb->SetPosition(obbPos);
+	m_Obb->SetRotationFromForwardRightVector(m_Direction.Forward, m_Direction.Right, m_Rotation);
 }
 
 void Player::MoveFromMoveVector()
 {
 	XMVECTOR vPos = XMLoadFloat3(&m_Position);
-	vPos += XMLoadFloat3(&m_moveVector);
+	vPos += XMLoadFloat3(&m_MoveVector);
 	XMStoreFloat3(&m_Position, vPos);
 }
 

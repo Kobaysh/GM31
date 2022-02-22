@@ -54,10 +54,10 @@ void TitleLogo::Init()
 		"asset\\texture\\yamiookami.png",
 		NULL,
 		NULL,
-		&m_texture,
+		&m_Texture,
 		NULL
 		);
-	assert(m_texture);
+	assert(m_Texture);
 	
 
 	// 英語部分
@@ -122,7 +122,7 @@ void TitleLogo::Init()
 void TitleLogo::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_texture->Release();
+	m_Texture->Release();
 	m_VertexBuffer2->Release();
 	m_texture2->Release();
 	m_VertexLayout->Release();
@@ -152,7 +152,7 @@ void TitleLogo::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

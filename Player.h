@@ -12,16 +12,16 @@ private:
 	class HpPlayer* m_hpBar = nullptr;
 //	class Model* m_model;
 	class Audio* m_slashSE= nullptr;
-	class OBB* m_obb= nullptr;
+	class OBB* m_Obb= nullptr;
 	class OBB* m_obbAttack= nullptr;
 	class AnimationModel*  m_model= nullptr;
 	class LockOnCircle* m_lockOnCircle = nullptr;
 
-	bool m_isActive = true;
-	bool m_movable = true;
+	bool m_IsActive = true;
+	bool m_IsMovable = true;
 	float m_speed;
 
-	XMFLOAT3 m_moveVector;
+	XMFLOAT3 m_MoveVector;
 	int m_sign;
 
 	bool m_isAttack = false;
@@ -55,14 +55,14 @@ public:
 
 	//void VoidDimension();
 	void ChangeCameraDir();
-	XMFLOAT3 GetMove()const { return m_moveVector; }
+	XMFLOAT3 GetMove()const { return m_MoveVector; }
 	float GetSpeed() { return m_speed; }
-	OBB& GetObb() { return *m_obb; }
+	OBB& GetObb() { return *m_Obb; }
 
-	bool GetIsActive() const { return m_isActive; }
-	bool GetMovable() const { return m_movable; }
-	void SetIsActive(bool active) { m_isActive = active; }
-	void SetMovable(bool movable) { m_movable = movable; }
+	bool GetIsActive() const { return m_IsActive; }
+	bool GetMovable() const { return m_IsMovable; }
+	void SetIsActive(bool active) { m_IsActive = active; }
+	void SetMovable(bool movable) { m_IsMovable = movable; }
 	bool GetIsGuarding() { return m_isGuard; }
 	float GetTimerGuard() { return m_timerGuard; }
 	Trunk* GetTrunk() { return m_trunk; }

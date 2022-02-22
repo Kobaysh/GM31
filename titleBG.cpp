@@ -49,10 +49,10 @@ void TitleBG::Init()
 		FILE_NAME,
 		NULL,
 		NULL,
-		&m_texture,
+		&m_Texture,
 		NULL
 	);
-	assert(m_texture);
+	assert(m_Texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
@@ -62,7 +62,7 @@ void TitleBG::Init()
 void TitleBG::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_texture->Release();
+	m_Texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -95,7 +95,7 @@ void TitleBG::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

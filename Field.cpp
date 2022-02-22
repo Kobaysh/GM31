@@ -49,15 +49,15 @@ void Field::Init()
 		"asset/texture/grass02.jpg",
 		NULL,
 		NULL,
-		&m_texture,
+		&m_Texture,
 		NULL
 	);
-	assert(m_texture);
+	assert(m_Texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
-//	Renderer::GetpDeviceContext()->GenerateMips(m_texture);
+//	Renderer::GetpDeviceContext()->GenerateMips(m_Texture);
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
@@ -66,7 +66,7 @@ void Field::Init()
 void Field::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_texture->Release();
+	m_Texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -127,8 +127,8 @@ void Field::Draw()
 	
 
 	// テクスチャ設定
-	//Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	//Renderer::GetDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	//Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

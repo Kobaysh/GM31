@@ -4,7 +4,7 @@
 class ExplaChange :public GameObject
 {
 private:
-	ID3D11ShaderResourceView* m_texture;
+	ID3D11ShaderResourceView* m_Texture;
 	ID3D11Buffer*	m_VertexBuffer = nullptr;
 
 	const float TEXTURE_SIZE_X = 144.0f;

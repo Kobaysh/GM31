@@ -22,21 +22,21 @@ public:
 	};
 protected:
 //	Model* m_model;
-//	int m_modelId;
+//	int m_ModelId;
 	class AnimationModel* m_model;
 	class Audio* m_explosionSE;
-	class OBB* m_obb;
+	class OBB* m_Obb;
 	class EnemyState* m_state;
 	class EnemyBehavior* m_behavior;
 	static class EnemyGui* m_enemyGui;
 	class HpBar* m_hpBar;
 	class Trunk* m_trunk;	// 体幹
 	class TrunkBar* m_trunkBar;
-	XMFLOAT3 m_moveVector;
+	XMFLOAT3 m_MoveVector;
 
 	EnemyStateData m_stateData;
 	XMFLOAT3 m_rotationSpeed;
-	float m_moveSpeed;
+	float m_MoveSpeed;
 	int m_hp;
 	int m_maxHp;
 	bool m_isUsingState = true;	// ステートマシーンでAIを操作しているか
@@ -55,9 +55,9 @@ public:
 	void Uninit();
 	void Update();
 	void Draw();
-	OBB& GetObb() { return *m_obb; }
-	float GetMoveSpeed() { return m_moveSpeed; }
-	void SetMoveVector(XMFLOAT3 moveVector) { m_moveVector = moveVector; }
+	OBB& GetObb() { return *m_Obb; }
+	float GetMoveSpeed() { return m_MoveSpeed; }
+	void SetMoveVector(XMFLOAT3 moveVector) { m_MoveVector = moveVector; }
 	void SetRotationSpeed(XMFLOAT3 rotationSpeed) { m_rotationSpeed = rotationSpeed; }
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }

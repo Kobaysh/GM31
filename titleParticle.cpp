@@ -10,7 +10,7 @@ ID3D11InputLayout* TitleParticle::m_sVertexLayout = nullptr;
 ID3D11VertexShader* TitleParticle::m_sVertexShader = nullptr; 
 ID3D11PixelShader* TitleParticle::m_sPixelShader = nullptr; 
 ID3D11Buffer* TitleParticle::m_VertexBuffer = nullptr; 
-ID3D11ShaderResourceView* TitleParticle::m_texture = nullptr; 
+ID3D11ShaderResourceView* TitleParticle::m_Texture = nullptr; 
 
 void TitleParticle::Init()
 {
@@ -51,7 +51,7 @@ void TitleParticle::Init()
 		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
 
-	if (!m_texture)
+	if (!m_Texture)
 	{
 		// テクスチャ読み込み
 		D3DX11CreateShaderResourceViewFromFile(
@@ -59,7 +59,7 @@ void TitleParticle::Init()
 			TEXTURE_NAME,
 			NULL,
 			NULL,
-			&m_texture,
+			&m_Texture,
 			NULL
 		);
 	}
@@ -121,7 +121,7 @@ void TitleParticle::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -139,6 +139,6 @@ void TitleParticle::Unload()
 {
 	m_VertexBuffer->Release();
 	m_VertexBuffer= nullptr;
-	m_texture->Release();
-	m_texture = nullptr;
+	m_Texture->Release();
+	m_Texture = nullptr;
 }

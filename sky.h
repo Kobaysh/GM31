@@ -5,13 +5,13 @@ class Sky : public GameObject
 {
 private:
 
-	class Model* m_model;
+	class Model* m_Model;
 
-	float m_speed;
+	float m_Speed;
 
-	XMFLOAT3 m_front;
-	XMFLOAT3 m_moveVector;
-	int m_sign;
+	XMFLOAT3 m_Front;
+	XMFLOAT3 m_MoveVector;
+	int m_Sign;
 
 public:
 	void Init();
@@ -20,7 +20,7 @@ public:
 	void Draw();
 
 	void Move();
-	XMFLOAT3 GetMove()const { return m_moveVector; }
-	XMFLOAT3* GetFront() { return &m_front; }
+	XMFLOAT3 GetMove()const { return m_MoveVector; }
+	XMFLOAT3* GetFront() { return &m_Front; }
 };
 

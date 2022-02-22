@@ -10,7 +10,7 @@ private:
 	static std::unordered_map<std::string,ID3D11ShaderResourceView*> m_TextureList;
 
 //	std::string m_fileName;
-//	ID3D11ShaderResourceView*	m_texture = nullptr;
+//	ID3D11ShaderResourceView*	m_Texture = nullptr;
 //	bool m_IsLoaded = false;
 public:
 	//static ID3D11ShaderResourceView*  GetTexture(int textureId);

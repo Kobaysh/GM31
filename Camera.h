@@ -4,50 +4,50 @@ class Camera : public GameObject
 {
 
 protected:
-	XMFLOAT3 m_target;
-	//XMFLOAT3 m_front;
+	XMFLOAT3 m_Target;
+	//XMFLOAT3 m_Front;
 	//XMFLOAT3 Right;
 	//XMFLOAT3 Up;
-	bool m_isActive;
-	bool m_movable;
-	bool m_isLock;
-	XMFLOAT4X4 m_viewMatrix;
-	XMFLOAT4X4 m_projectionMatrix;
-	XMFLOAT3 m_move;
-	XMFLOAT3* m_lockTargetPos;
+	bool m_IsActive;
+	bool m_IsMovable;
+	bool m_IsLock;
+	XMFLOAT4X4 m_ViewMatrix;
+	XMFLOAT4X4 m_ProjectionMatrix;
+	XMFLOAT3 m_Move;
+	XMFLOAT3* m_LockTargetPos;
 
-	static float m_routationalSpeed;
-	float m_moveSpeed;
-	const static float m_cameraSpeedFirst;
-	const static float m_atLength;
+	static float m_RoutationalSpeed;
+	float m_MoveSpeed;
+	const static float m_CameraSpeedFirst;
+	const static float m_AtLength;
 public:
-	Camera():m_movable(false),m_isActive(false){}
-	Camera(bool movable):m_movable(movable),m_isActive(false){}
-	Camera(bool active, bool movable):m_isActive(active),m_movable(movable){}
+	Camera():m_IsMovable(false),m_IsActive(false){}
+	Camera(bool movable):m_IsMovable(movable),m_IsActive(false){}
+	Camera(bool active, bool movable):m_IsActive(active),m_IsMovable(movable){}
 	virtual void Init();
 	virtual void Init(bool active, bool movable = false);
 	virtual void Uninit();
 	virtual void Update();
 	virtual void Draw();
-	virtual bool GetIsActive() { return m_isActive; }
-	virtual bool GetMovable() { return m_movable; }
-	virtual void SetIsActive(bool active) { m_isActive = active; }
-	virtual void SetMovable(bool movable) { m_movable = movable; }
+	virtual bool GetIsActive() { return m_IsActive; }
+	virtual bool GetMovable() { return m_IsMovable; }
+	virtual void SetIsActive(bool active) { m_IsActive = active; }
+	virtual void SetMovable(bool movable) { m_IsMovable = movable; }
 	virtual void SetActiveMovable(bool set) { SetIsActive(set); SetMovable(set); }
-	//virtual XMFLOAT3* GetFront() { return &m_front; }
+	//virtual XMFLOAT3* GetFront() { return &m_Front; }
 	//virtual XMFLOAT3* GetRight() { return &Right; }
 	//virtual XMFLOAT3* GetUp() { return &Up; }
-	virtual XMFLOAT4X4* GetView() { return &m_viewMatrix; }
+	virtual XMFLOAT4X4* GetView() { return &m_ViewMatrix; }
 	virtual bool CheckView(XMFLOAT3 pos, XMFLOAT3 scale = XMFLOAT3(1.0f,1.0f,1.0f));
-	virtual XMFLOAT3* GetMove() { return &m_move; }
+	virtual XMFLOAT3* GetMove() { return &m_Move; }
 	virtual float GetSpeed();
 	virtual void ChangeMovableWithPlayer();
 	virtual void ChangeMovableWithPlayer(bool movable);
 
 	virtual void ChangeDir(float angle, bool isRight);
 
-	void SetLockTarget(XMFLOAT3* pos) { m_lockTargetPos = pos; }
-	void SetIsLock(bool lock) { m_isLock = lock; }
-	bool GetIsLock(){return m_isLock;}
+	void SetLockTarget(XMFLOAT3* pos) { m_LockTargetPos = pos; }
+	void SetIsLock(bool lock) { m_IsLock = lock; }
+	bool GetIsLock(){return m_IsLock;}
 };
 

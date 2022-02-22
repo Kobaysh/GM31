@@ -13,8 +13,8 @@ public:
 
 private:
 	ID3D11Buffer*				m_VertexBuffer = NULL;
-	ID3D11ShaderResourceView*	m_texture = NULL;
+	ID3D11ShaderResourceView*	m_Texture = NULL;
 
-	float m_fadeAlpha;
+	float m_FadeAlpha;
 };
 

@@ -23,10 +23,10 @@ public:
 
 private:
 
-	static FadeType m_fadeType;
-	static float m_fadeAlpha;
+	static FadeType m_FadeType;
+	static float m_FadeAlpha;
 
 	ID3D11Buffer*				m_VertexBuffer = NULL;
-//	ID3D11ShaderResourceView*	m_texture = NULL;
+//	ID3D11ShaderResourceView*	m_Texture = NULL;
 };
 

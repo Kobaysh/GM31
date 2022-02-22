@@ -11,7 +11,7 @@ void LockOnCircle::Init()
 {
 	Texture::Load(TEXTURE_FILE_NAME);
 
-	m_Position = m_object->GetPosition();
+	m_Position = m_Object->GetPosition();
 	m_Scale = XMFLOAT3(1.5f, 1.5f, 1.0f);
 
 	VERTEX_3DX vertex[4];
@@ -68,7 +68,7 @@ void LockOnCircle::Uninit()
 
 void LockOnCircle::Update()
 {
-	m_Position = m_object->GetPosition();
+	m_Position = m_Object->GetPosition();
 }
 
 void LockOnCircle::Draw()

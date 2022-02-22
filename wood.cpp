@@ -55,10 +55,10 @@ void Wood::Init()
 		FILENAME,
 		NULL,
 		NULL,
-		&m_texture,
+		&m_Texture,
 		NULL
 	);
-	assert(m_texture);
+	assert(m_Texture);
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
@@ -67,13 +67,13 @@ void Wood::Init()
 	m_Position = XMFLOAT3(0.0f, 3.0f, 10.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
-	m_offsetY = 4.5f * m_Scale.y;
+	m_OffsetY = 4.5f * m_Scale.y;
 }
 
 void Wood::Uninit()
 {
 	m_VertexBuffer->Release();
-	m_texture->Release();
+	m_Texture->Release();
 
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -85,7 +85,7 @@ void Wood::Update()
 	Scene* scene = ManagerT::GetScene();
 	MeshField* meshField = scene->GetGameObject<MeshField>(GOT_OBJECT3D);
 	m_Position.y = meshField->GetHeight(m_Position);
-	m_Position.y += m_offsetY;
+	m_Position.y += m_OffsetY;
 }
 
 void Wood::Draw()
@@ -145,7 +145,7 @@ void Wood::Draw()
 
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);

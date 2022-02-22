@@ -16,7 +16,7 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_TextureList
 //		it++;
 //	}
 //	Texture* texture = *it;
-//	return texture->m_texture;
+//	return texture->m_Texture;
 //}
 //
 //int Texture::SetTextureLoadFile(std::string pFileName)
@@ -69,10 +69,10 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_TextureList
 //		"asset/texture/grass02.jpg",
 //		NULL,
 //		NULL,
-//		&_texture->m_texture,
+//		&_texture->m_Texture,
 //		NULL
 //	);
-//	assert(_texture->m_texture);
+//	assert(_texture->m_Texture);
 //	_texture->m_IsLoaded = true;
 //}
 //
@@ -89,10 +89,10 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_TextureList
 //			"asset/texture/grass02.jpg",
 //			NULL,
 //			NULL,
-//			&texture->m_texture,
+//			&texture->m_Texture,
 //			NULL
 //		);
-//		assert(texture->m_texture);
+//		assert(texture->m_Texture);
 //		texture->m_IsLoaded = true;
 //	}
 //}
@@ -105,9 +105,9 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_TextureList
 //		it++;
 //	}
 //	Texture* texture = *it;
-//	if (texture->m_texture) {
-//		delete texture->m_texture;
-//		texture->m_texture = nullptr;
+//	if (texture->m_Texture) {
+//		delete texture->m_Texture;
+//		texture->m_Texture = nullptr;
 //	}
 //	m_TextureList.erase(std::next(m_TextureList.begin(), textureId));
 //}
@@ -117,9 +117,9 @@ std::unordered_map<std::string,ID3D11ShaderResourceView*> Texture::m_TextureList
 //	auto it = m_TextureList.begin();
 //	for (unsigned int i = 0; i < m_TextureList.size(); i++) {
 //		Texture* texture = *it;
-//		if (texture->m_texture) {
-//			delete texture->m_texture;
-//			texture->m_texture = nullptr;
+//		if (texture->m_Texture) {
+//			delete texture->m_Texture;
+//			texture->m_Texture = nullptr;
 //		}
 //		it++;
 //	}
