@@ -15,6 +15,7 @@ Audio* EnemyStateCombatAttack::m_RepelSE = nullptr;
 
 void EnemyStateCombatAttack::Init()
 {
+	// SE読み込み
 	if (!m_AttackSE)
 	{
 		m_AttackSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
@@ -111,13 +112,6 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 			delete pStatePattern;
 			return;
 		}
-		//if(アニメーション終了？)
-		//{
-		// m_IsAttacking = false;
-		//delete m_ObbAttack;
-		//m_ObbAttack = nullptr;
-		//return;
-		//}
 	}
 }
 
@@ -125,8 +119,6 @@ EnemyStateCombatAttack::~EnemyStateCombatAttack()
 {
 	if (m_ObbAttack)
 	{
-		/*delete m_ObbAttack;
-		m_ObbAttack = nullptr;*/
 		m_ObbAttack->SetDead();
 	}
 }

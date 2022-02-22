@@ -12,7 +12,7 @@
 #include "keylogger.h"
 #include "utility.h"
 
-const float EnemyStateCombatIdle::m_AttackInterval = 10.0f;
+const float EnemyStateCombatIdle::m_AttackInterval = 10.0f;		// UŒ‚ŠÔŠu
 
 void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 {

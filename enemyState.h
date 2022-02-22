@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 #include "state.h"
-//#include "enemy.h"
 
 class Enemy;
 
+// ステートパターンインターフェース
 class EnemyStatePattern
 {
 public:
@@ -12,117 +12,44 @@ public:
 	virtual void Update(class Enemy* pEnemy) = 0;
 };
 
-
+// 敵AIステートマシーンクラス
 class EnemyState
 {
 public:
 	EnemyState();
 	~EnemyState();
 	void Update(Enemy* pEnemy);
+
+	// ステート切替
 	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
+
+	// ガード中セッター
 	void SetIsGuarding(bool isGuarding) { m_IsGuarding = isGuarding; }
+
+	// ガード中ゲッター
 	bool GetIsGuarding() const { return m_IsGuarding; }
+
+	// ダメージ中セッター
 	void SetIsDamaged(bool isDamaged) { m_IsDamaged = isDamaged; }
+
+	// ダメージ中ゲッター
 	bool GetIsDamaged() const { return m_IsDamaged; }
+
+	// ヒットセッター
 	void SetIsCollided(bool isCollided) { m_IsCollided = isCollided; }
+
+	// ヒットゲッター
 	bool GetIsCollided() const { return m_IsCollided; }
+
+	// ステート名セッター
 	void SetStateName(std::string name) { m_StateName = name; }
+
+	// ステート名ゲッター
 	std::string& GetStateName() { return m_StateName; }
 private:
-	EnemyStatePattern* m_StatePattern;
-	bool m_IsGuarding = false;
-	bool m_IsDamaged = false;
-	bool m_IsCollided = false;
-	std::string m_StateName;
+	EnemyStatePattern* m_StatePattern;	// 状態
+	bool m_IsGuarding = false;			// ガード中か
+	bool m_IsDamaged = false;			// 被ダメージ中か
+	bool m_IsCollided = false;			// 当たっているか
+	std::string m_StateName;			// ステート名
 };
-
-/*
-
-class  EnemyState : public State
-{
-public:
-	EnemyState() = delete;
-	EnemyState(Enemy* enemy):m_nowState(IDLE_IDLE), m_nextState(IDLE_IDLE),m_isAiStaterunning(false),m_enemy(enemy)
-	{
-	//	m_radiusDiscoverPlayer = 0.0f;
-		m_Timer = 0.0f;
-	}
-	~EnemyState(){}
-	enum En_Enemy_State {
-		NONE = -1,
-// 待機
-		IDLE_IDLE,
-		IDLE_WALK,				// 散策
-		IDLE_NINJAEXECUTION,	// 忍殺
-		IDLE_SURPRISE,			// 驚く
-		IDLE_BEWARE,			// 警戒する
-		IDLE_DISCOVER,			// 発見する
-		IDLE_MOVE_TO_PLAYER,	// プレイヤーのもとに移動
-// 戦闘
-		COMBAT_IDLE,			// 待機
-		COMBAT_ATTACK,			// 攻撃
-		COMBAT_GUARD,			// ガード
-		COMBAT_DAMAGED,			// ダメージを受ける
-		COMBAT_NINJAEXECUTION,	// 忍殺
-		COMBAT_DEAD,			// 死亡
-		MAX,
-	};
-	static const char* enumChar_Enemy_State[En_Enemy_State::MAX]; 
-	//{
-	//	"IDLE_IDLE",
-	//	"IDLE_WALK",				// 散策
-	//	"IDLE_NINJAEXECUTION",	// 忍殺
-	//	"IDLE_SURPRISE",			// 驚く
-	//	"IDLE_BEWARE",			// 警戒する
-	//	"IDLE_DISCOVER",			// 発見する
-	//	"IDLE_MOVE_TO_PLAYER",	// プレイヤーのもとに移動
-	//							// 戦闘
-	//	"COMBAT_IDLE",			// 待機
-	//	"COMBAT_ATTACK",			// 攻撃
-	//	"COMBAT_GUARD",			// ガード
-	//	"COMBAT_DAMAGED",			// ダメージを受ける
-	//	"COMBAT_NINJAEXECUTION",	// 忍殺
-	//	"COMBAT_DEAD",			// 死亡
-	//};
-private:
-
-	class Enemy* m_enemy;
-	En_Enemy_State m_nowState;
-	En_Enemy_State m_nextState;
-
-//	void* m_pStateData;
-	//Enemy::EnemyStateData* m_pStateData;
-//	float m_radiusDiscoverPlayer;
-	float m_Timer;
-
-	bool m_isAiStaterunning;
-
-	void UpdateAI();
-	void SetAI();
-	void AIMainRoutine();
-
-	void Idle_Idle();
-	void Idle_Walk();				// 散策
-	void Idle_NinjaExcution();	// 忍殺
-	void Idle_Surprize();			// 驚く
-	void Idle_Beware();			// 警戒する
-	void Idle_Discover();			// 発見する
-	void Idle_MoveToPlayer();	// プレイヤーのもとに移動
-
-	void Combat_Idle();			// 待機
-	void Combat_Attack();			// 攻撃
-	void Combat_Guard();		// ガード
-	void Combat_Damaged();			// ダメージを受ける
-	void Combat_Ninjaexecution();	// 忍殺
-	void Combat_Dead();			// 死亡
-public:
-	//void Init(float radDiscPlayer);
-	//void Init(Enemy::EnemyStateData stateData);
-	//void Init(void* stateData);
-	//void Init(void* stateData);
-	//void Init(Enemy::EnemyStateData* stateData);
-	void Update()override;
-	void ChangeState(En_Enemy_State newState);
-	En_Enemy_State GetNowState() { return m_nowState; }
-};
-*/
