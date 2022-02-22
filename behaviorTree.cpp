@@ -9,7 +9,7 @@ NodeBase* BehaviorTree::Inference(Enemy * pEnemy, BehaviorData * data)
 {
 	// データをリセットして開始
 	data->Init();
-	return m_root->Inference(pEnemy, data);
+	return m_Root->Inference(pEnemy, data);
 }
 
 NodeBase* BehaviorTree::SequenceBack(NodeBase * sequenceNode, Enemy * pEnemy, BehaviorData * data)
@@ -21,7 +21,7 @@ void BehaviorTree::AddNode(std::string searchName, std::string entryName, int pr
 {
 	if (searchName != "")
 	{
-		NodeBase* searchNode = m_root->SearchNode(searchName);
+		NodeBase* searchNode = m_Root->SearchNode(searchName);
 		if (searchNode)
 		{
 			NodeBase* sibling = searchNode->GetLastChiled();
@@ -33,9 +33,9 @@ void BehaviorTree::AddNode(std::string searchName, std::string entryName, int pr
 	}
 	else
 	{
-		if (!m_root)
+		if (!m_Root)
 		{
-			m_root = new NodeBase(entryName, nullptr, nullptr, priority, selectRule, judgment, action, 1);
+			m_Root = new NodeBase(entryName, nullptr, nullptr, priority, selectRule, judgment, action, 1);
 		}
 	}
 }

@@ -15,14 +15,14 @@ private:
 public:
 	NodeBase(std::string name, NodeBase* parent, NodeBase* sibling, unsigned int priority, BehaviorTree::SELECT_RULE selectRule, ExecJudgmentBase* execJudgment, ActionBase* action, int hierarchyNum):
 		m_Name(name),
-		m_parent(parent),
-		m_sibling(sibling),
-		m_priority(priority),
-		m_selectRule(selectRule),
-		m_execJudgment(execJudgment),
-		m_action(action),
-		m_hierarchyNum(hierarchyNum),
-		m_child(NULL)
+		m_Parent(parent),
+		m_Sibling(sibling),
+		m_Priority(priority),
+		m_SelectRule(selectRule),
+		m_ExecJudgment(execJudgment),
+		m_Action(action),
+		m_HierarchyNum(hierarchyNum),
+		m_Child(NULL)
 	{
 	}
 
@@ -30,60 +30,60 @@ public:
 	std::string GetName() { return m_Name; }
 
 	//	親ノードゲッター
-	NodeBase* GetParent() { return m_parent; }
+	NodeBase* GetParent() { return m_Parent; }
 
 	//	子ノードゲッター(選択)
 	NodeBase* GetChiled(unsigned int index)
 	{
-		if (m_child.size() >= index)
+		if (m_Child.size() >= index)
 		{
 			return nullptr;
 		}
-		return m_child[index];
+		return m_Child[index];
 	}
 
 	//	子ノードゲッター(末尾)
 	NodeBase* GetLastChiled()
 	{
-		if (m_child.size() == 0)
+		if (m_Child.size() == 0)
 		{
 			return nullptr;
 		}
-	//	return *m_child.end();
-		return m_child[m_child.size()-1];
+	//	return *m_Child.end();
+		return m_Child[m_Child.size()-1];
 	}
 
 	//	子ノードゲッター(先頭)
 	NodeBase* GetToptChiled()
 	{
-		if (m_child.size() == 0)
+		if (m_Child.size() == 0)
 		{
 			return nullptr;
 		}
-		//	return *m_child.begin();
-		return m_child[0];
+		//	return *m_Child.begin();
+		return m_Child[0];
 	}
 
 	//	兄弟ノードゲッター
-	NodeBase* GetSibling() { return m_sibling; }
+	NodeBase* GetSibling() { return m_Sibling; }
 
 	//	階層番号ゲッター
-	int GetHierarchNum() { return m_hierarchyNum; }
+	int GetHierarchNum() { return m_HierarchyNum; }
 
 	//	優先順位ゲッター
-	int GetPriority() { return m_priority; }
+	int GetPriority() { return m_Priority; }
 
 	//	親ノードセッター
-	void Setparent(NodeBase* parent) { m_parent = parent; }
+	void Setparent(NodeBase* parent) { m_Parent = parent; }
 
 	//	子ノード追加
-	void AddChiled(NodeBase* child) { m_child.push_back(child); }
+	void AddChiled(NodeBase* child) { m_Child.push_back(child); }
 	
 	//	兄弟ノードセッター
-	void SetSibling(NodeBase* sibling) { m_sibling = sibling; }
+	void SetSibling(NodeBase* sibling) { m_Sibling = sibling; }
 	
 	//	行動データの所持
-	bool HaveAction() { return (m_action != nullptr); }
+	bool HaveAction() { return (m_Action != nullptr); }
 	
 	//	実行可否判定
 	bool Judgment(Enemy* pEnemy);
@@ -107,12 +107,12 @@ public:
 	ActionBase::EXE_STATE Run(Enemy *pEnemy, class EnemyBehavior* pBehavior);
 protected:
 	std::string m_Name;						//	名前
-	BehaviorTree::SELECT_RULE m_selectRule;	//	選択ルール
-	ExecJudgmentBase *m_execJudgment;		//	判定クラス
-	ActionBase* m_action;					//	実行クラス
-	unsigned int m_priority;				//	優先順位
-	NodeBase* m_parent;						//	親ノード
-	std::vector<NodeBase*> m_child;			//	子ノード
-	NodeBase* m_sibling;					//	兄弟ノード
-	int m_hierarchyNum;						//	階層番号
+	BehaviorTree::SELECT_RULE m_SelectRule;	//	選択ルール
+	ExecJudgmentBase *m_ExecJudgment;		//	判定クラス
+	ActionBase* m_Action;					//	実行クラス
+	unsigned int m_Priority;				//	優先順位
+	NodeBase* m_Parent;						//	親ノード
+	std::vector<NodeBase*> m_Child;			//	子ノード
+	NodeBase* m_Sibling;					//	兄弟ノード
+	int m_HierarchyNum;						//	階層番号
 };

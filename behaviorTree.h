@@ -22,7 +22,7 @@ public:
 	};
 public:
 	BehaviorTree() :
-		m_root(nullptr)
+		m_Root(nullptr)
 	{
 	}
 	//	実行ノードを推論
@@ -42,5 +42,5 @@ public:
 
 private:
 	//	ルートノード
-	NodeBase* m_root;
+	NodeBase* m_Root;
 };

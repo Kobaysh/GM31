@@ -7,9 +7,9 @@ class BehaviorTree;
 class EnemyBehavior
 {
 private:
-	class BehaviorTree* m_aiTree = nullptr;			// ビヘイビアツリー
-	class BehaviorData* m_behaviorData = nullptr;	// ビヘイビアデータ
-	class NodeBase* m_activeNode = nullptr;			// 実行中ノード
+	class BehaviorTree* m_AiTree = nullptr;			// ビヘイビアツリー
+	class BehaviorData* m_BehaviorData = nullptr;	// ビヘイビアデータ
+	class NodeBase* m_ActiveNode = nullptr;			// 実行中ノード
 
 	float m_Timer = 0.0f;
 	static const float UPDATE_TIMER_AMOUNT;	// updateで増やすタイマーの量
