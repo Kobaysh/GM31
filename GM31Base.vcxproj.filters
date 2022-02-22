@@ -51,6 +51,12 @@
     <Filter Include="ソース ファイル\game_object\result">
       <UniqueIdentifier>{25505725-7582-4b16-96b4-659b068b7b54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game_object\2DObject">
+      <UniqueIdentifier>{8e23b7a0-9999-4460-b9d0-2aa70e5639fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game_object\2DObject\explanation">
+      <UniqueIdentifier>{108b5e73-00e4-4406-9d6c-129b90329c07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="manager.h">
@@ -66,9 +72,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="field.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="polygon2D.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="wall.h">
@@ -94,12 +97,6 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="billboard.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="explosion.h">
-      <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="sky.h">
       <Filter>ソース ファイル\game_object</Filter>
@@ -135,9 +132,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
-    <ClInclude Include="pressSpaceKey.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="meshField.h">
@@ -287,12 +281,39 @@
     <ClInclude Include="resultLogo.h">
       <Filter>ソース ファイル\game_object\result</Filter>
     </ClInclude>
+    <ClInclude Include="polygon2D.h">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="pressSpaceKey.h">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="explosion.h">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="billboard.h">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClInclude>
+    <ClInclude Include="explaMove.h">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClInclude>
+    <ClInclude Include="explaAtk.h">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClInclude>
+    <ClInclude Include="explaDef.h">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClInclude>
+    <ClInclude Include="explaLock.h">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClInclude>
+    <ClInclude Include="explaChange.h">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClInclude>
+    <ClInclude Include="explanationOps.h">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="field.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="polygon2D.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="wall.cpp">
@@ -328,12 +349,6 @@
     <ClCompile Include="resource.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
-    <ClCompile Include="billboard.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="explosion.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="sky.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -362,9 +377,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
-    <ClCompile Include="pressSpaceKey.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="meshField.cpp">
@@ -495,6 +507,36 @@
     </ClCompile>
     <ClCompile Include="resultLogo.cpp">
       <Filter>ソース ファイル\game_object\result</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon2D.cpp">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="pressSpaceKey.cpp">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="explosion.cpp">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="billboard.cpp">
+      <Filter>ソース ファイル\game_object\2DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="explaMove.cpp">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClCompile>
+    <ClCompile Include="explaAtk.cpp">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClCompile>
+    <ClCompile Include="explaDef.cpp">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClCompile>
+    <ClCompile Include="explaLock.cpp">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClCompile>
+    <ClCompile Include="explaChange.cpp">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClCompile>
+    <ClCompile Include="explanationOps.cpp">
+      <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

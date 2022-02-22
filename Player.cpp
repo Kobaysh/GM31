@@ -486,6 +486,7 @@ void Player::MouseActive()
 	if (Input::GetKeyTrigger(VK_F1))
 	{
 		Input::SetMouseActive(!Input::GetMouseActive());
+		ShowCursor(!Input::GetMouseActive());
 	}
 }
 

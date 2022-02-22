@@ -26,7 +26,7 @@
 #include "fade.h"
 #include "pressSpaceKey.h"
 #include "titleLogo.h"
-
+#include "explanationOps.h"
 #include "game.h"
 
 
@@ -94,6 +94,8 @@ void Game::Init()
 	
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
 	Fade::SetFade(Fade::FADE_IN);
+
+	AppendGameObject<ExplanationGame>(GameObject::GOT_OBJECT2D);
 
 	MyImGui::Init(GetWindow());
 
