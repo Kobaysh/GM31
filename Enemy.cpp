@@ -19,10 +19,10 @@
 #include "enemyTrunkBar.h"
 #include "enemy.h"
 
-const std::string Enemy::VS_FILE_NAME = "asset/shader/toonVS.cso";
-const std::string Enemy::PS_FILE_NAME = "asset/shader/toonPS.cso";
+const std::string Enemy::VS_FILE_NAME = "asset/shader/toonVS.cso";	// 頂点シェーダー名
+const std::string Enemy::PS_FILE_NAME = "asset/shader/toonPS.cso";	// ピクセルシェーダー名
 
-EnemyGui* Enemy::m_EnemyGui = nullptr;
+EnemyGui* Enemy::m_EnemyGui = nullptr;								// GUIオブジェクト
 
 Enemy::Enemy():
 	m_MaxHp(3),
@@ -203,11 +203,6 @@ void Enemy::Draw()
 	Renderer::GetpDeviceContext()->VSSetShader(vertexInfo->m_VertexShader, NULL, 0);
 	Renderer::GetpDeviceContext()->PSSetShader(ShaderManager::GetPixelShader(PS_FILE_NAME), NULL, 0);
 
-	//Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
-
-	//// シェーダー設定
-	//Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	//Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
@@ -256,29 +251,7 @@ bool Enemy::Damage(int damage)
 
 void Enemy::UpdateRotation()
 {
-	//XMVECTOR vRot = XMLoadFloat3(&m_Rotation);
-	//if (Input::GetKeyPress(VK_RIGHT))
-	//{
-	//	m_RotationSpeed.y= 0.01f;
-	//}
-	//if (Input::GetKeyPress(VK_LEFT))
-	//{
-	//	m_RotationSpeed.y = -0.01f;
-	//}
-	// vRot += XMLoadFloat3(&m_RotationSpeed);
-	//XMStoreFloat3(&m_Rotation, vRot);
-	//XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward),vRight = XMLoadFloat3(&m_Direction.Right),vUp;
-	////	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_Rotation.y);
-	//XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_RotationSpeed));
-	//vForward =  XMVector3TransformNormal(vForward, mtxRot);
-	//vRight =  XMVector3TransformNormal(vRight, mtxRot);
-	//vUp = XMVector3Cross(vForward, vRight);
-	//XMStoreFloat3(&m_Direction.Forward, vForward);
-	//XMStoreFloat3(&m_Direction.Right, vRight);
-	//XMStoreFloat3(&m_Direction.Up, vUp);
 	m_Obb->SetRotation(m_Rotation, m_RotationSpeed);
-	//	m_Rotation.y += m_RotationSpeed.y;
-	//m_Obb->SetRotationFromForwardRightVector(m_Direction.Forward,m_Direction.Right, m_Rotation);
 }
 
 void Enemy::UpdateOBB()

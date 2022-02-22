@@ -7,6 +7,7 @@ class NodeBase;
 class Enemy;
 class BehaviorData;
 
+// ビヘイビアツリー管理クラス
 class BehaviorTree
 {
 public:

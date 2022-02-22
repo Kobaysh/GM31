@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
+// à–¾ƒNƒ‰ƒX
 class ExplanationGame : public GameObject
 {
 private:

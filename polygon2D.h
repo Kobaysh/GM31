@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
+// 2Dƒ|ƒŠƒSƒ“ƒNƒ‰ƒX
 class Polygon2D : public GameObject
 {
 public:

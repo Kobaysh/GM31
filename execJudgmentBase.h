@@ -2,6 +2,7 @@
 
 class Enemy;
 
+// 判定インターフェース
 class ExecJudgmentBase
 {
 public:

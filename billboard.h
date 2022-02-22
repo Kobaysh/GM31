@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
+// ビルボードクラス
 class Billboard : public GameObject
 {
 private:

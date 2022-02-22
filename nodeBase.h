@@ -8,6 +8,7 @@
 class ExecJudgmentBase;
 class BehaviorData;
 
+// ノードインターフェース
 class NodeBase
 {
 private:

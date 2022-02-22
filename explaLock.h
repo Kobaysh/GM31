@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
+// ŒÅ’èà–¾ƒNƒ‰ƒX
 class ExplaLock :public GameObject
 {
 private:

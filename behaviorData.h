@@ -7,6 +7,7 @@
 class NodeBase;
 class Enemy;
 
+// ビヘイビアデータクラス
 class BehaviorData
 {
 public:

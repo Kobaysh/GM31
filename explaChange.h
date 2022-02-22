@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
+// Ø‘Öà–¾ƒNƒ‰ƒX
 class ExplaChange :public GameObject
 {
 private:

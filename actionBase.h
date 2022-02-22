@@ -2,6 +2,7 @@
 
 class Enemy;
 
+// 行動インターフェース
 class ActionBase
 {
 public:

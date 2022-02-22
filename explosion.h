@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
+// 爆発エフェクトクラス
 class Explosion : public GameObject
 {
 private:

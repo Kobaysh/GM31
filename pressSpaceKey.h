@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 
+// スペースキー待機クラス
 class PressSpaceKey : public GameObject
 {
 public:

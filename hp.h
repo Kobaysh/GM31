@@ -1,11 +1,13 @@
 #pragma once
 #include "gameObject.h"
+
+// 敵HPバークラス
 class HpBar : public GameObject
 {
-private:
-	int m_NowHP;
-	int m_MaxHP;
-	ID3D11Buffer* m_VertexBuffer;
+private:	
+	int m_NowHP;					// 現在HP
+	int m_MaxHP;					// 最大HP
+	ID3D11Buffer* m_VertexBuffer;	// 頂点バッファ
 public:
 	void Init()override;
 	void Init(XMFLOAT3 pos, XMFLOAT3 scale, int nowHP, int maxHP);

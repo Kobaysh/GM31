@@ -3,7 +3,7 @@
 class Enemy;
 class BehaviorTree;
 
-// 敵AIBehaviorTree管理クラス
+// 敵AIビヘイビアツリー管理クラス
 class EnemyBehavior
 {
 private:
