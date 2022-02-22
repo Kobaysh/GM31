@@ -91,11 +91,11 @@ void Game::Init()
 	//enemy->GetObb().SetScale(XMFLOAT3(2.1f, 2.1f, 2.1f));
 
 //	AppendGameObject<Wall>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 5.0f));
-	
+	AppendGameObject<ExplanationGame>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
 	Fade::SetFade(Fade::FADE_IN);
 
-	AppendGameObject<ExplanationGame>(GameObject::GOT_OBJECT2D);
+
 
 	MyImGui::Init(GetWindow());
 
