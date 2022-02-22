@@ -72,8 +72,8 @@ void TitleParticle::Init()
 		Renderer::CreatePixelShader(&m_sPixelShader, "asset/shader/unlitTexturePS.cso");
 	}
 
-	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(0.1f, 0.1f, 1.0f);
+	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(0.1f, 0.1f, 1.0f);
 }
 
 void TitleParticle::Uninit()
@@ -83,15 +83,15 @@ void TitleParticle::Uninit()
 void TitleParticle::Update()
 {
 	XMVECTOR vPostion, vMove;
-	vPostion = XMLoadFloat3(&m_position);
+	vPostion = XMLoadFloat3(&m_Position);
 	vMove = { -1.0f,0.3f,0.0f,0.0f };
 	vPostion += vMove;
-	XMStoreFloat3(&m_position, vPostion);
-	if (m_position.x + 512.0f * 0.5f * m_scale.x <= 0.0f)
+	XMStoreFloat3(&m_Position, vPostion);
+	if (m_Position.x + 512.0f * 0.5f * m_Scale.x <= 0.0f)
 	{
 		this->SetDead();
 	}
-	else if (m_position.y - 512.0f * 0.5f * m_scale.y >= SCREEN_HEIGHT)
+	else if (m_Position.y - 512.0f * 0.5f * m_Scale.y >= SCREEN_HEIGHT)
 	{
 		this->SetDead();
 	}
@@ -108,8 +108,8 @@ void TitleParticle::Draw()
 
 	// マトリクス設定
 	XMMATRIX mtxW, mtxT, mtxS;
-	mtxS = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	mtxT = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	mtxS = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	mtxT = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	mtxW = mtxS * mtxT;
 	XMFLOAT4X4 world;
 	XMStoreFloat4x4(&world, mtxW);

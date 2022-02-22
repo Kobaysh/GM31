@@ -14,7 +14,7 @@ private:
 	NodeBase() = delete;
 public:
 	NodeBase(std::string name, NodeBase* parent, NodeBase* sibling, unsigned int priority, BehaviorTree::SELECT_RULE selectRule, ExecJudgmentBase* execJudgment, ActionBase* action, int hierarchyNum):
-		m_name(name),
+		m_Name(name),
 		m_parent(parent),
 		m_sibling(sibling),
 		m_priority(priority),
@@ -27,7 +27,7 @@ public:
 	}
 
 	//	名前ゲッター
-	std::string GetName() { return m_name; }
+	std::string GetName() { return m_Name; }
 
 	//	親ノードゲッター
 	NodeBase* GetParent() { return m_parent; }
@@ -106,7 +106,7 @@ public:
 	// 実行
 	ActionBase::EXE_STATE Run(Enemy *pEnemy, class EnemyBehavior* pBehavior);
 protected:
-	std::string m_name;						//	名前
+	std::string m_Name;						//	名前
 	BehaviorTree::SELECT_RULE m_selectRule;	//	選択ルール
 	ExecJudgmentBase *m_execJudgment;		//	判定クラス
 	ActionBase* m_action;					//	実行クラス

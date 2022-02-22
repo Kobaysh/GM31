@@ -95,9 +95,6 @@
     <ClInclude Include="shaderManager.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
     <ClInclude Include="sky.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
@@ -331,9 +328,6 @@
     <ClCompile Include="renderer.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
-    <ClCompile Include="singleton.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -344,12 +338,6 @@
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="shaderManager.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="resource.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="sky.cpp">

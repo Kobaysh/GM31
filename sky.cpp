@@ -23,15 +23,15 @@ void Sky::Init()
 	m_model->Load("asset\\model\\sky\\skydome.obj");	 // \\か//しか使えない
 	
 
-	m_position	= XMFLOAT3(0.0f, -20.0f, 0.0f);
-	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale		= XMFLOAT3(100.0f, 100.0f, 100.0f);
+	m_Position	= XMFLOAT3(0.0f, -20.0f, 0.0f);
+	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale		= XMFLOAT3(100.0f, 100.0f, 100.0f);
 	m_front		= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_speed = MOVE_SPEED;
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 
 }
 
@@ -40,15 +40,15 @@ void Sky::Uninit()
 	m_model->Unload();
 	delete m_model;
 
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void Sky::Update()
 {
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
-	XMVECTOR vPos = XMLoadFloat3(&m_position);
+	XMVECTOR vPos = XMLoadFloat3(&m_Position);
 	// カメラ移動に併せて移動
 	if (pCamera->GetMovable()) {
 		XMVECTOR cameraFront = XMLoadFloat3(pCamera->GetMove());
@@ -63,24 +63,24 @@ void Sky::Update()
 			vPos += XMLoadFloat3(&pPlayer->GetMove());
 		}
 	}
-	XMStoreFloat3(&m_position, vPos);
+	XMStoreFloat3(&m_Position, vPos);
 }
 
 void Sky::Draw()
 {
 	
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 //	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_front.z, m_front.x));
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX* rotX /**mCamera*/ *transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -108,7 +108,7 @@ void Sky::Move()
 	if (pCamera->GetMovable()) return;
 	//XMVECTOR direction = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR vPositon;
-	vPositon = XMLoadFloat3(&m_position);
+	vPositon = XMLoadFloat3(&m_Position);
 	XMVECTOR vFront = XMLoadFloat3(&m_front);
 	XMVECTOR direction = vFront;
 	if (KeyLogger_Press(KL_UP) || KeyLogger_Press(KL_DOWN) || KeyLogger_Press(KL_RIGHT) || KeyLogger_Press(KL_LEFT)) {
@@ -170,5 +170,5 @@ void Sky::Move()
 
 	vPositon += direction * m_speed;
 	XMStoreFloat3(&m_moveVector, (direction * m_speed));
-	XMStoreFloat3(&m_position, vPositon);
+	XMStoreFloat3(&m_Position, vPositon);
 }

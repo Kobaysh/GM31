@@ -5,7 +5,7 @@ class HpBar : public GameObject
 private:
 	int m_nowHP;
 	int m_maxHP;
-	ID3D11Buffer* m_vertexBuffer;
+	ID3D11Buffer* m_VertexBuffer;
 public:
 	void Init()override;
 	void Init(XMFLOAT3 pos, XMFLOAT3 scale, int nowHP, int maxHP);

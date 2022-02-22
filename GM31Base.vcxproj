@@ -197,7 +197,6 @@
     <ClInclude Include="explanationOps.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
-    <ClInclude Include="fbxMesh.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameObject.h" />
@@ -226,9 +225,7 @@
     <ClInclude Include="player_hp.h" />
     <ClInclude Include="polygon2D.h" />
     <ClInclude Include="pressSpaceKey.h" />
-    <ClInclude Include="primitive.h" />
     <ClInclude Include="renderer.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="resultBG.h" />
     <ClInclude Include="resultLogo.h" />
@@ -281,7 +278,6 @@
     <ClCompile Include="explanationOps.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
-    <ClCompile Include="fbxMesh.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="hp.cpp" />
@@ -309,15 +305,12 @@
     <ClCompile Include="polygon2D.cpp" />
     <ClCompile Include="pressSpaceKey.cpp" />
     <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="resource.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="resultBG.cpp" />
     <ClCompile Include="resultLogo.cpp" />
     <ClCompile Include="rock.cpp" />
     <ClCompile Include="shaderManager.cpp" />
-    <ClCompile Include="singleton.cpp" />
     <ClCompile Include="sky.cpp" />
-    <ClCompile Include="sprite.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="titleBG.cpp" />

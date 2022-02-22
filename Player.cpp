@@ -31,18 +31,18 @@ void Player::Init()
 {
 	ModelInit();
 
-	m_position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
-	m_direction.Forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
-	m_direction.Right	= XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_direction.Up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_Position	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Rotation	= XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale		= XMFLOAT3(0.01f, 0.01f, 0.01f);
+	m_Direction.Forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
+	m_Direction.Right	= XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_Direction.Up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_speed = MOVE_SPEED;
 	m_timerAttack = 0.0f;
 	m_timerGuard = 0.0f;
 	m_maxHp = m_nowHp = 10;
 
-	m_obb = new OBB(m_position, m_rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
+	m_obb = new OBB(m_Position, m_Rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_obb, GOT_OBJECT3D);
 	m_obbAttack = nullptr;
 
@@ -53,9 +53,9 @@ void Player::Init()
 
 	m_lockOnRad = 10.0f;
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/pixelLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, PS_NAME);
+	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
 
 	m_slashSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
 	m_slashSE->Load("asset\\audio\\se\\slash.wav");
@@ -75,9 +75,9 @@ void Player::Uninit()
 		delete m_model;
 		m_model = nullptr;
 	}
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void Player::Update()
@@ -105,18 +105,18 @@ void Player::Update()
 void Player::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_direction.Forward.z, m_direction.Forward.x));
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_Direction.Forward.z, m_Direction.Forward.x));
 	rotX *= XMMatrixRotationY(XMConvertToRadians(-90));
-	//rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	//rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -134,8 +134,8 @@ void Player::Move()
 	Camera* pCamera = ManagerT::GetScene()->GetGameObject<Camera>(GOT_CAMERA);
 	if (!m_movable) return;
 	XMVECTOR vPositon;
-	vPositon = XMLoadFloat3(&m_position);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
+	vPositon = XMLoadFloat3(&m_Position);
+	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
 	XMVECTOR direction = vForward;
 
 
@@ -204,14 +204,14 @@ void Player::Move()
 	XMMATRIX mtxRot;
 	mtxRot = XMMatrixRotationY(rot);
 	vForward = XMVector3TransformNormal(vForward, mtxRot);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
+	XMVECTOR vRight = XMLoadFloat3(&m_Direction.Right);
 	vRight = XMVector3TransformNormal(vRight, mtxRot);
-	XMStoreFloat3(&m_direction.Forward, vForward);
-	XMStoreFloat3(&m_direction.Right, vRight);
+	XMStoreFloat3(&m_Direction.Forward, vForward);
+	XMStoreFloat3(&m_Direction.Right, vRight);
 
 	vDot = XMVector3Dot(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), vForward);
 	XMStoreFloat(&fDot, vDot);
-	m_rotation.y  = acosf(fDot);	
+	m_Rotation.y  = acosf(fDot);	
 
 	//	vPositon += direction * m_speed;
 
@@ -226,7 +226,7 @@ void Player::Move()
 		XMVECTOR temp = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 
-		temp= XMVector3Normalize(XMLoadFloat3(&m_direction.Up));
+		temp= XMVector3Normalize(XMLoadFloat3(&m_Direction.Up));
 		jumpVector = temp * m_jumpForce;
 		//	m_jumpForce -= GRAVITY;
 		temp = vPositon + jumpVector;
@@ -252,7 +252,7 @@ void Player::Move()
 	//}
 
 	XMStoreFloat3(&m_moveVector, (direction * m_speed) + jumpVector + vGravity);
-	XMStoreFloat3(&m_position, vPositon);
+	XMStoreFloat3(&m_Position, vPositon);
 }
 
 void Player::Jump()
@@ -279,11 +279,11 @@ void Player::Slash()
 			m_isAttack = true;
 			m_timerAttack = 0.0f;
 			XMFLOAT3 obbPos;
-			XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.Forward) * 1;
+			XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_Direction.Forward) * 1;
 			XMStoreFloat3(&obbPos, vObbPos);
 			obbPos.y += 0.5f;
 			m_obbAttack = nullptr;
-			m_obbAttack = new OBB(obbPos, m_rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
+			m_obbAttack = new OBB(obbPos, m_Rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
 			ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
 		}
 	}
@@ -294,11 +294,11 @@ void Player::Slash()
 		m_timerAttack = 0.0f;
 
 		XMFLOAT3 obbPos;
-		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.Forward) * 1;
+		XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_Direction.Forward) * 1;
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 0.5f;
 		m_obbAttack = nullptr;
-		m_obbAttack = new OBB(obbPos, m_rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
+		m_obbAttack = new OBB(obbPos, m_Rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
 		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
 	}
 	//	if (Input::GetMouseDown(Input::MouseButton::Left))
@@ -309,7 +309,7 @@ void Player::Slash()
 		m_timerAttack += 0.1f;
 		// 座標更新
 		XMFLOAT3 obbPos;
-		XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_direction.Forward) * 1;
+		XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_Direction.Forward) * 1;
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 0.5f;
 		m_obbAttack->SetPosition(obbPos);
@@ -372,7 +372,7 @@ void Player::Shoot()
 
 	//if (KeyLogger_Trigger(KL_GUARD)) {
 	//	
-	//	Bullet::Create(m_position, m_direction.Forward, 0.3f);
+	//	Bullet::Create(m_Position, m_Direction.Forward, 0.3f);
 	//	m_slashSE->Play(0.1f);
 	//	
 	//}
@@ -580,20 +580,20 @@ void Player::ModelInit()
 void Player::UpdateObb()
 {
 	// 移動後の座標で衝突判定
-	XMVECTOR vObbPos = XMLoadFloat3(&m_position) + XMLoadFloat3(&m_moveVector);
+	XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_moveVector);
 	XMFLOAT3 obbPos;
 	XMStoreFloat3(&obbPos, vObbPos);
 	obbPos.y += m_obb->GetLen_W(OBB::OBB_DY) * 1.0f;
 
 	m_obb->SetPosition(obbPos);
-	m_obb->SetRotationFromForwardRightVector(m_direction.Forward, m_direction.Right, m_rotation);
+	m_obb->SetRotationFromForwardRightVector(m_Direction.Forward, m_Direction.Right, m_Rotation);
 }
 
 void Player::MoveFromMoveVector()
 {
-	XMVECTOR vPos = XMLoadFloat3(&m_position);
+	XMVECTOR vPos = XMLoadFloat3(&m_Position);
 	vPos += XMLoadFloat3(&m_moveVector);
-	XMStoreFloat3(&m_position, vPos);
+	XMStoreFloat3(&m_Position, vPos);
 }
 
 void Player::ChangeAnimation(const char * animationName)

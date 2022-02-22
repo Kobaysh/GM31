@@ -30,16 +30,16 @@ public:
 	};
 protected:
 
-	XMFLOAT3 m_position;
-	XMFLOAT3 m_rotation;
-	XMFLOAT3 m_scale;
-	GameObject_Direction m_direction;
+	XMFLOAT3 m_Position;
+	XMFLOAT3 m_Rotation;
+	XMFLOAT3 m_Scale;
+	GameObject_Direction m_Direction;
 
-	GameObject_State m_state = GOS_ACTIVE;
+	GameObject_State m_GOState = GOS_ACTIVE;
 
-	ID3D11VertexShader*		m_vertexShader = NULL;
-	ID3D11PixelShader*		m_pixelShader = NULL;
-	ID3D11InputLayout*		m_vertexLayout = NULL;
+	ID3D11VertexShader*		m_VertexShader = nullptr;
+	ID3D11PixelShader*		m_PixelShader = nullptr;
+	ID3D11InputLayout*		m_VertexLayout = nullptr;
 
 public:
 	
@@ -48,16 +48,16 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 
-	void SetPosition(XMFLOAT3 pos) { m_position = pos; }
-	virtual void SetRotation(XMFLOAT3 rot) { m_rotation = rot; }
-	virtual void SetScale(XMFLOAT3 scale) { m_scale = scale; }
-	XMFLOAT3 GetPosition() { return m_position; }
-	XMFLOAT3 GetRotation() { return m_rotation; }
-	GameObject_Direction* GetDirection() { return &m_direction; }
+	void SetPosition(XMFLOAT3 pos) { m_Position = pos; }
+	virtual void SetRotation(XMFLOAT3 rot) { m_Rotation = rot; }
+	virtual void SetScale(XMFLOAT3 scale) { m_Scale = scale; }
+	XMFLOAT3 GetPosition() { return m_Position; }
+	XMFLOAT3 GetRotation() { return m_Rotation; }
+	GameObject_Direction* GetDirection() { return &m_Direction; }
 
-	void SetDead() { m_state = GOS_DEAD; }
+	void SetDead() { m_GOState = GOS_DEAD; }
 	bool Destroy() {
-		if (m_state == GOS_DEAD) {
+		if (m_GOState == GOS_DEAD) {
 			Uninit();
 			delete this;
 			return true;
@@ -67,10 +67,10 @@ public:
 		}
 	}
 	void SetPShader(const char* pFileName){
-		Renderer::CreatePixelShader(&m_pixelShader, pFileName);
+		Renderer::CreatePixelShader(&m_PixelShader, pFileName);
 	}
 	void SetVShader(const char* pFileName) {
-		Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, pFileName);
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, pFileName);
 	}
 };
 

@@ -6,12 +6,12 @@
 class Texture
 {
 private:
-//	static std::list<Texture*> m_textureList;
-	static std::unordered_map<std::string,ID3D11ShaderResourceView*> m_textureList;
+//	static std::list<Texture*> m_TextureList;
+	static std::unordered_map<std::string,ID3D11ShaderResourceView*> m_TextureList;
 
 //	std::string m_fileName;
 //	ID3D11ShaderResourceView*	m_texture = nullptr;
-//	bool m_isLoaded = false;
+//	bool m_IsLoaded = false;
 public:
 	//static ID3D11ShaderResourceView*  GetTexture(int textureId);
 	//static int SetTextureLoadFile(std::string pFileName);

@@ -58,9 +58,9 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	m_verticalCnt = verticalCnt;
 	m_horizonSize = horizonSize;
 	m_verticalSize = verticalSize;
-	m_position = pos;
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_Position = pos;
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 	m_isWireFrame = false;
 
@@ -85,8 +85,8 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	m_primitiveCount = high * low * 2 + (low - 1) * 4;
 
 	// 開始座標
-	float startX = m_position.x - horizonCnt * horizonSize * 0.5f;
-	float startZ = m_position.z + verticalCnt * verticalSize * 0.5f;
+	float startX = m_Position.x - horizonCnt * horizonSize * 0.5f;
+	float startZ = m_Position.z + verticalCnt * verticalSize * 0.5f;
 
 	m_pVertex = new VERTEX_3DX[m_vertexCount];
 
@@ -148,7 +148,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 		ZeroMemory(&sd, sizeof(sd));
 		sd.pSysMem = m_pVertex;
 //		sd.pSysMem = m_ppVertex;
-		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
 
 	{
@@ -242,7 +242,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 		ZeroMemory(&sd, sizeof(sd));
 		sd.pSysMem = pI;
 
-		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_indexBuffer);
+		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_IndexBuffer);
 
 		delete[] pI;
 	}
@@ -259,9 +259,9 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
 
 }
 
@@ -272,13 +272,13 @@ void MeshField::Uninit()
 	}
 //	delete[] m_ppVertex;
 
-	m_vertexBuffer->Release();
-	m_indexBuffer->Release();
+	m_VertexBuffer->Release();
+	m_IndexBuffer->Release();
 	m_texture->Release();
 
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void MeshField::Update()
@@ -293,17 +293,17 @@ void MeshField::Update()
 void MeshField::Draw()
 {
 	// 入力レイアウト
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス
 
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x,m_Rotation.y,m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -314,10 +314,10 @@ void MeshField::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// インデックスバッファ設定
-	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	
 	// マテリアル設定
 	MATERIAL material;

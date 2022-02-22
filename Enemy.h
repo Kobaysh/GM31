@@ -62,7 +62,7 @@ public:
 	EnemyStateData* GetEnemyStateData() { return &m_stateData; }
 	class EnemyState* GetEnemyState() { return m_state; }
 	std::string GetEnemyBehaviorName();
-	XMFLOAT3* GetpPosition() { return &m_position; }
+	XMFLOAT3* GetpPosition() { return &m_Position; }
 	
 	//	ダメージを与え、HPが0になったらtrueを返す
 	bool Damage(int damage);

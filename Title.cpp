@@ -18,9 +18,9 @@
 
 void Title::Init()
 {
-	m_isFading = false;
-	m_timer = 0.0f;
-	m_particleTimer = 0.0f;
+	m_IsFading = false;
+	m_Timer = 0.0f;
+	m_ParticleTimer = 0.0f;
 	AppendGameObject<TitleBG>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<TitleLogo>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
@@ -31,8 +31,8 @@ void Title::Init()
 
 	bgm->Play(0.3f , true);
 
-	m_decisionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-	m_decisionSE->Load("asset\\audio\\se\\decision.wav");
+	m_DecisionSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	m_DecisionSE->Load("asset\\audio\\se\\decision.wav");
 	Fade::SetFade(Fade::FADE_IN);
 }
 
@@ -49,25 +49,25 @@ void Title::Update()
 	if (KeyLogger_Trigger(KL_DICISION) || KeyLogger_Trigger(KL_JUMP))
 	{
 		// ƒV[ƒ“‘JˆÚ
-		if (!m_isFading)
+		if (!m_IsFading)
 		{
 			Fade::SetFade(Fade::FADE_OUT);
-			m_isFading = true;
-			m_decisionSE->Play();
+			m_IsFading = true;
+			m_DecisionSE->Play();
 		}
 	}
-	if (m_isFading) {
+	if (m_IsFading) {
 		if (Fade::GetFadeType() == Fade::FADE_NONE) {
 			ManagerT::SetScene<Game>();
-			m_isFading = false;
+			m_IsFading = false;
 		}
 	}
-	m_timer += 0.01f;
-	m_particleTimer += 0.01f;
-	if (m_particleTimer > 2.0f)
+	m_Timer += 0.01f;
+	m_ParticleTimer += 0.01f;
+	if (m_ParticleTimer > 2.0f)
 	{
-		float offsetY = cosf(m_timer) * 0.5f * SCREEN_HEIGHT;
+		float offsetY = cosf(m_Timer) * 0.5f * SCREEN_HEIGHT;
 		TitleParticle::Create(offsetY);
-		m_particleTimer = 0.0f;
+		m_ParticleTimer = 0.0f;
 	}
 }

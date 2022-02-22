@@ -10,8 +10,8 @@
 
 void EnemyGui::Init()
 {
-	m_name  = "Enemy Window";
-	MyImGui::SetGuiWindow(m_name, this);
+	m_Name  = "Enemy Window";
+	MyImGui::SetGuiWindow(m_Name, this);
 }
 void EnemyGui::Uninit()
 {
@@ -27,7 +27,7 @@ void EnemyGui::Update()
 	ImGuiWindowFlags window_flags = 0;
 	std::vector<Enemy*> enemyList = ManagerT::GetScene()->GetGameObjects<Enemy>(GameObject::GameObject_Type::GOT_OBJECT3D);
 	{
-		if (!ImGui::Begin(m_name.data() , p_open, window_flags))
+		if (!ImGui::Begin(m_Name.data() , p_open, window_flags))
 		{
 			ImGui::End();
 			return;
@@ -81,5 +81,5 @@ void EnemyGui::Update()
 
 void EnemyGui::Delete()
 {
-	MyImGui::DeleteGuiWindow(m_name);
+	MyImGui::DeleteGuiWindow(m_Name);
 }

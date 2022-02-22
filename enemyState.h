@@ -45,7 +45,7 @@ public:
 	EnemyState(Enemy* enemy):m_nowState(IDLE_IDLE), m_nextState(IDLE_IDLE),m_isAiStaterunning(false),m_enemy(enemy)
 	{
 	//	m_radiusDiscoverPlayer = 0.0f;
-		m_timer = 0.0f;
+		m_Timer = 0.0f;
 	}
 	~EnemyState(){}
 	enum En_Enemy_State {
@@ -93,7 +93,7 @@ private:
 //	void* m_pStateData;
 	//Enemy::EnemyStateData* m_pStateData;
 //	float m_radiusDiscoverPlayer;
-	float m_timer;
+	float m_Timer;
 
 	bool m_isAiStaterunning;
 

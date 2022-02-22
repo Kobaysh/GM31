@@ -12,6 +12,6 @@ public:
 	void Draw()override;
 private:
 	GameObject* m_object;
-	ID3D11Buffer* m_vertexBuffer;
+	ID3D11Buffer* m_VertexBuffer;
 	static const std::string TEXTURE_FILE_NAME;
 };

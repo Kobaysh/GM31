@@ -35,8 +35,8 @@
 
 void Game::Init()
 {
-	m_isFading = false;
-	m_isGameClear = false;
+	m_IsFading = false;
+	m_IsGameClear = false;
 
 	//Camera* camera = new Camera();
 	//camera->Init(true, false);
@@ -119,22 +119,22 @@ void Game::Update()
 	Scene::Update();
 	std::vector<Enemy*>  enemy = Scene::GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
 	if (enemy.empty()) {
-		if (!m_isGameClear) {
+		if (!m_IsGameClear) {
 			AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
 			AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
-			m_isGameClear = true;
+			m_IsGameClear = true;
 		}
-		if (!m_isFading && KeyLogger_Trigger(KL_DICISION) || KeyLogger_Trigger(KL_JUMP)) {	// 決定キーかスペースキー
+		if (!m_IsFading && KeyLogger_Trigger(KL_DICISION) || KeyLogger_Trigger(KL_JUMP)) {	// 決定キーかスペースキー
 
 			// シーン遷移
 			Fade::SetFade(Fade::FADE_OUT);
-			m_isFading = true;
+			m_IsFading = true;
 
 		}
-		if (m_isFading) {
+		if (m_IsFading) {
 			if (Fade::GetFadeType() == Fade::FADE_NONE) {
 				ManagerT::SetScene<Result>();
-				m_isFading = false;
+				m_IsFading = false;
 				return;
 			}
 		}

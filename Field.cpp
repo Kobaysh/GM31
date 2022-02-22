@@ -39,8 +39,8 @@ void Field::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	//Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	// テクスチャ読み込み
 	D3DX11CreateShaderResourceViewFromFile(
@@ -54,23 +54,23 @@ void Field::Init()
 	);
 	assert(m_texture);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/vertexLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/vertexLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/vertexLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/vertexLightingPS.cso");
 //	Renderer::GetpDeviceContext()->GenerateMips(m_texture);
-	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 }
 
 void Field::Uninit()
 {
-	m_vertexBuffer->Release();
+	m_VertexBuffer->Release();
 	m_texture->Release();
 
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void Field::Update()
@@ -81,29 +81,29 @@ void Field::Update()
 void Field::Draw()
 {
 	// 入力レイアウト設定
-	//Renderer::GetDeviceContext()->IASetInputLayout(m_vertexLayout);
+	//Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	//// シェーダー設定
-	//Renderer::GetDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	//Renderer::GetDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	//Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	//Renderer::GetDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 	/*D3DXMATRIX world, scale, rot, trans;
-	D3DXMatrixScaling(&scale, m_scale.x, m_scale.y, m_scale.z);
-	D3DXMatrixRotationYawPitchRoll(&rot, m_rotation.y, m_rotation.x, m_rotation.z);
-	D3DXMatrixTranslation(&trans, m_position.x, m_position.y, m_position.z);
+	D3DXMatrixScaling(&scale, m_Scale.x, m_Scale.y, m_Scale.z);
+	D3DXMatrixRotationYawPitchRoll(&rot, m_Rotation.y, m_Rotation.x, m_Rotation.z);
+	D3DXMatrixTranslation(&trans, m_Position.x, m_Position.y, m_Position.z);
 	world = scale * rot*trans;
 	Renderer::SetWorldMatrix(&world);*/
 
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x,m_rotation.y,m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x,m_Rotation.y,m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -114,8 +114,8 @@ void Field::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	//Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	//Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	
 	// マテリアル設定

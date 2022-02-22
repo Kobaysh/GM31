@@ -13,14 +13,14 @@ void DebugCamera::Update()
 	// ïœêîópà”
 	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMStoreFloat3(&m_move, vDirection);
-	XMVECTOR vPosition = XMLoadFloat3(&m_position);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
+	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
 	XMVector3Normalize(vForward);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
+	XMVECTOR vRight = XMLoadFloat3(&m_Direction.Right);
 	XMVector3Normalize(vRight);
-	XMVECTOR vUp = XMLoadFloat3(&m_direction.Up);
+	XMVECTOR vUp = XMLoadFloat3(&m_Direction.Up);
 	XMVector3Normalize(vUp);
-	XMFLOAT3 tempFront = m_direction.Forward;
+	XMFLOAT3 tempFront = m_Direction.Forward;
 	tempFront.y = 0.0f;
 	XMVECTOR yZeroFront = XMLoadFloat3(&tempFront);
 	XMVector3Normalize(yZeroFront);
@@ -92,10 +92,10 @@ void DebugCamera::Update()
 	vAt = vPosition + vForward * m_atLength;
 	// ïœêîï€ë∂
 	XMStoreFloat3(&m_target, vAt);
-	XMStoreFloat3(&m_position, vPosition);
-	XMStoreFloat3(&m_direction.Forward, vForward);
-	XMStoreFloat3(&m_direction.Right, vRight);
-	XMStoreFloat3(&m_direction.Up, vUp);
+	XMStoreFloat3(&m_Position, vPosition);
+	XMStoreFloat3(&m_Direction.Forward, vForward);
+	XMStoreFloat3(&m_Direction.Right, vRight);
+	XMStoreFloat3(&m_Direction.Up, vUp);
 	XMStoreFloat3(&m_move, vDirection);
 
 

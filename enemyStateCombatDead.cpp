@@ -9,8 +9,8 @@ EnemyStateCombatDead::EnemyStateCombatDead(Enemy * pEnemy)
 void EnemyStateCombatDead::Update(Enemy * pEnemy)
 {
 	// アニメーションが終わったら消す
-	m_timer += 0.1f;
-	if (m_timer >= 20.0f)
+	m_Timer += 0.1f;
+	if (m_Timer >= 20.0f)
 	{
 		pEnemy->SetDead();
 	}

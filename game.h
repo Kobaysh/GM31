@@ -11,6 +11,6 @@ public:
 	void Draw()override;
 
 private:
-	bool m_isGameClear;
+	bool m_IsGameClear;
 };
 

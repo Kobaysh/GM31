@@ -19,7 +19,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 	if (!pPlayer) return;
 	EnemyState* pState = pEnemy->GetEnemyState();
-	m_timer += 0.1f;
+	m_Timer += 0.1f;
 	XMVECTOR vPlayerPos, vEnemyPos, vToPlayer, vLength;
 	float length;
 	vPlayerPos = XMLoadFloat3(&pPlayer->GetPosition());
@@ -54,7 +54,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 		}
 	}
 
-	if (m_timer > m_attackInterval)
+	if (m_Timer > m_attackInterval)
 	{
 		// UŒ‚ŠJn
 		EnemyStatePattern* pStatePattern =

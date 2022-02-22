@@ -40,14 +40,14 @@ public:
 	
 
 private:
-	const aiScene* m_aiScene = nullptr;
-	std::unordered_map<std::string, const aiScene*>m_animation;
-	ID3D11Buffer** m_vertexBuffer;
-	ID3D11Buffer** m_indexBuffer;
-	std::vector<DEFORM_VERTEX>* m_deformVertex;
-	std::unordered_map<std::string, BONE> m_bone;
+	const aiScene* m_AiScene = nullptr;
+	std::unordered_map<std::string, const aiScene*>m_Animation;
+	ID3D11Buffer** m_VertexBuffer;
+	ID3D11Buffer** m_IndexBuffer;
+	std::vector<DEFORM_VERTEX>* m_DeformVertex;
+	std::unordered_map<std::string, BONE> m_Bone;
 
-	std::unordered_map<std::string, ID3D11ShaderResourceView*> m_texture;
+	std::unordered_map<std::string, ID3D11ShaderResourceView*> m_Texture;
 
 	void CreateBone(aiNode* node);
 	void UpdateBoneMatrix(aiNode* node, aiMatrix4x4 matrix);

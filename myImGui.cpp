@@ -16,12 +16,12 @@
 
 static float color_picker[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 static int dragint = 0;
-std::unordered_map <std::string, class MyGuiWindow*> MyImGui::m_myGuiWindows;
-bool MyImGui::checkbox = false;
+std::unordered_map <std::string, class MyGuiWindow*> MyImGui::m_MyGuiWindows;
+bool MyImGui::m_IsCheckbox = false;
 #if defined (DEBUG) || defined (_DEBUG)
-bool MyImGui::m_bIsShowAll = true;
+bool MyImGui::m_IsShowAll = true;
 #else
-bool MyImGui::m_bIsShowAll = false;
+bool MyImGui::m_IsShowAll = false;
 #endif
 
 void MyImGui::Init(HWND hwnd)
@@ -51,12 +51,12 @@ void MyImGui::Init(HWND hwnd)
 void MyImGui::Uninit()
 {
 #if defined (DEBUG) || defined (_DEBUG) || (RELEASE_ON_PLAY)
-	for (auto pair : m_myGuiWindows)
+	for (auto pair : m_MyGuiWindows)
 	{
 		pair.second->Uninit();
 		delete pair.second;
 	}
-	m_myGuiWindows.clear();
+	m_MyGuiWindows.clear();
 
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
@@ -72,14 +72,14 @@ void MyImGui::Update()
 	
 	if (Input::GetKeyTrigger(VK_F3))
 	{
-		m_bIsShowAll = m_bIsShowAll ? false : true;
+		m_IsShowAll = m_IsShowAll ? false : true;
 	}
-	if (!m_bIsShowAll) return;
+	if (!m_IsShowAll) return;
 
 	// ここからウィンドウのセット
 
 	SetDebugWindow();
-	for (auto pair : m_myGuiWindows)
+	for (auto pair : m_MyGuiWindows)
 	{
 		pair.second->Update();
 	}
@@ -105,21 +105,21 @@ void MyImGui::StartRender()
 
 void MyImGui::SetGuiWindow(const std::string & name, MyGuiWindow* window)
 {
-	auto it = m_myGuiWindows.find(name);
-	if (it != m_myGuiWindows.end())
+	auto it = m_MyGuiWindows.find(name);
+	if (it != m_MyGuiWindows.end())
 	{
 		return;
 	}
-	m_myGuiWindows[name] = window;
+	m_MyGuiWindows[name] = window;
 }
 
 void MyImGui::DeleteGuiWindow(const std::string & name)
 {
-	auto it = m_myGuiWindows.find(name);
-	if (it != m_myGuiWindows.end())
+	auto it = m_MyGuiWindows.find(name);
+	if (it != m_MyGuiWindows.end())
 	{
-		delete m_myGuiWindows[name];
-		m_myGuiWindows.erase(name);
+		delete m_MyGuiWindows[name];
+		m_MyGuiWindows.erase(name);
 	}
 }
 
@@ -146,7 +146,7 @@ void MyImGui::SetSampleWindow()
 
 	//		ImGui::Separator();
 
-	//		ImGui::Checkbox(u8"チェックボックス", &checkbox);
+	//		ImGui::Checkbox(u8"チェックボックス", &m_IsCheckbox);
 
 	//		ImGui::Separator();
 

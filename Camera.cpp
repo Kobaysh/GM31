@@ -19,11 +19,11 @@ const  float Camera::m_atLength = 3.0f;
 
 void Camera::Init()
 {
-	m_position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
+	m_Position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
 	m_target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
-	m_direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_Direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
+	m_Direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_Direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_routationalSpeed = 0.08f;
 	m_moveSpeed = m_cameraSpeedFirst;
 	m_isActive = true;
@@ -32,11 +32,11 @@ void Camera::Init()
 
 void Camera::Init(bool active, bool movable)
 {
-	m_position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
+	m_Position	 = XMFLOAT3(0.0f, 4.0f, -10.0f);
 	m_target	 = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
-	m_direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_Direction.Forward	 = XMFLOAT3(0.0f, -0.3f, 1.0f);
+	m_Direction.Right		 = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_Direction.Up		 = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_routationalSpeed = 0.08f;
 	m_moveSpeed = m_cameraSpeedFirst;
 	m_isActive = active;
@@ -60,14 +60,14 @@ void Camera::Update()
 	// 変数用意
 	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMStoreFloat3(&m_move, vDirection);
-	XMVECTOR vPosition = XMLoadFloat3(&m_position);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
+	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
 	XMVector3Normalize(vForward);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
+	XMVECTOR vRight = XMLoadFloat3(&m_Direction.Right);
 	XMVector3Normalize(vRight);
-	XMVECTOR vUp = XMLoadFloat3(&m_direction.Up);
+	XMVECTOR vUp = XMLoadFloat3(&m_Direction.Up);
 	XMVector3Normalize(vUp);
-	XMFLOAT3 tempFront = m_direction.Forward;
+	XMFLOAT3 tempFront = m_Direction.Forward;
 	tempFront.y = 0.0f;
 	XMVECTOR yZeroFront = XMLoadFloat3(&tempFront);
 	XMVector3Normalize(yZeroFront);
@@ -271,11 +271,11 @@ void Camera::Update()
 
 		vForward = - diffPos;
 		//	vForward.m128_f32[1] = 0.0f;
-		vUp = XMLoadFloat3(&m_direction.Up);
+		vUp = XMLoadFloat3(&m_Direction.Up);
 		vRight = XMVector3Cross(vUp, vForward);
-		XMStoreFloat3(&m_direction.Forward, vForward);
-		XMStoreFloat3(&m_direction.Right, vRight);
-		XMStoreFloat3(&m_direction.Up, vUp);
+		XMStoreFloat3(&m_Direction.Forward, vForward);
+		XMStoreFloat3(&m_Direction.Right, vRight);
+		XMStoreFloat3(&m_Direction.Up, vUp);
 
 	}
 	else
@@ -285,10 +285,10 @@ void Camera::Update()
 
 	// 変数保存
 	XMStoreFloat3(&m_target, vAt);
-	XMStoreFloat3(&m_position, vPosition);
-	XMStoreFloat3(&m_direction.Forward, vForward);
-	XMStoreFloat3(&m_direction.Right, vRight);
-	XMStoreFloat3(&m_direction.Up, vUp);
+	XMStoreFloat3(&m_Position, vPosition);
+	XMStoreFloat3(&m_Direction.Forward, vForward);
+	XMStoreFloat3(&m_Direction.Right, vRight);
+	XMStoreFloat3(&m_Direction.Up, vUp);
 	XMStoreFloat3(&m_move, vDirection);
 
 }
@@ -297,11 +297,11 @@ void Camera::Draw()
 {
 	if (!m_isActive) return;
 	// ビューマトリクス設定
-	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_direction.Up)));
+	XMStoreFloat4x4(&m_viewMatrix , XMMatrixLookAtLH(XMLoadFloat3(&m_Position), XMLoadFloat3(&m_target), XMLoadFloat3(&m_Direction.Up)));
 	Renderer::SetViewMatrixX(&m_viewMatrix);
 
 	//D3DXMATRIX viewMatrix;
-	//D3DXMatrixLookAtLH(&viewMatrix, &m_position, &m_target, &D3DXVECTOR3(0.0f,1.0f,0.0f));
+	//D3DXMatrixLookAtLH(&viewMatrix, &m_Position, &m_target, &D3DXVECTOR3(0.0f,1.0f,0.0f));
 	//Renderer::SetViewMatrix(&viewMatrix);
 
 	// プロジェクションマトリクス設定
@@ -313,7 +313,7 @@ void Camera::Draw()
 	XMStoreFloat4x4(&m_projectionMatrix, projMatrix);
 	Renderer::SetProjectionMatrixX(&m_projectionMatrix);
 
-	Renderer::SetCameraPosition(m_position);
+	Renderer::SetCameraPosition(m_Position);
 
 	/*D3DXMATRIX projectionMatrix;
 	D3DXMatrixPerspectiveFovLH(&projectionMatrix, 1.0f, (float)SCREEN_WIDTH / SCREEN_HEIGHT, 1.0f, 1000.0f);
@@ -349,7 +349,7 @@ bool Camera::CheckView(XMFLOAT3 pos, XMFLOAT3 scale)
 	}
 
 	XMVECTOR v, v1, v2, vn, vCameraPosition;
-	vCameraPosition = XMLoadFloat3(&m_position);
+	vCameraPosition = XMLoadFloat3(&m_Position);
 	v = XMLoadFloat3(&fixPos) - vCameraPosition;
 
 	// 左面
@@ -440,13 +440,13 @@ void Camera::ChangeMovableWithPlayer(bool movable)
 
 void  Camera::ChangeDir(float angle, bool isRight) {
 
-	XMVECTOR vPositon = XMLoadFloat3(&m_position);
+	XMVECTOR vPositon = XMLoadFloat3(&m_Position);
 
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
+	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
 	XMVector3Normalize(vForward);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
+	XMVECTOR vRight = XMLoadFloat3(&m_Direction.Right);
 	XMVector3Normalize(vRight);
-	XMVECTOR vUp = XMLoadFloat3(&m_direction.Up);
+	XMVECTOR vUp = XMLoadFloat3(&m_Direction.Up);
 	XMVector3Normalize(vUp);	
 
 	XMVECTOR vAt = vPositon + vForward * m_atLength;
@@ -474,9 +474,9 @@ void  Camera::ChangeDir(float angle, bool isRight) {
 	// }
 
 
-	XMStoreFloat3(&m_direction.Forward, vForward);
-	XMStoreFloat3(&m_direction.Right, vRight);
-	XMStoreFloat3(&m_direction.Up, vUp);
-	XMStoreFloat3(&m_position, vPositon);
+	XMStoreFloat3(&m_Direction.Forward, vForward);
+	XMStoreFloat3(&m_Direction.Right, vRight);
+	XMStoreFloat3(&m_Direction.Up, vUp);
+	XMStoreFloat3(&m_Position, vPositon);
 }
 

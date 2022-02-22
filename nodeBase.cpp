@@ -104,7 +104,7 @@ NodeBase * NodeBase::SelectSequence(std::vector<NodeBase*>* list, BehaviorData *
 
 NodeBase * NodeBase::SearchNode(std::string searchName)
 {
-	if (m_name == searchName)
+	if (m_Name == searchName)
 	{
 		return this;
 	}

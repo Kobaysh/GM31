@@ -70,7 +70,7 @@ void EnemyState::AIMainRoutine()
 void EnemyState::UpdateAI()
 {
 	SetAI();
-	m_timer += 0.1f;
+	m_Timer += 0.1f;
 	switch (m_nowState)
 	{
 	case EnemyState::NONE:

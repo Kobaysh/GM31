@@ -112,9 +112,9 @@ void TitleLogo::Init()
 
 
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 
 
 }
@@ -125,9 +125,9 @@ void TitleLogo::Uninit()
 	m_texture->Release();
 	m_VertexBuffer2->Release();
 	m_texture2->Release();
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void TitleLogo::Update()
@@ -137,11 +137,11 @@ void TitleLogo::Update()
 void TitleLogo::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, nullptr, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, nullptr, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, nullptr, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, nullptr, 0);
 
 	// マトリクス設定
 	Renderer::SetWorldViewProjection2D();

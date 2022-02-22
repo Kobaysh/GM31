@@ -53,7 +53,7 @@ private:
 	SUBSET*	m_SubsetArray;
 	unsigned int	m_SubsetNum;
 
-	bool m_isLoaded;
+	bool m_IsLoaded;
 	void LoadObj( const char *FileName, MODEL *Model );
 	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
 
@@ -62,7 +62,7 @@ private:
 
 	std::string m_FileName;
 	static std::list<Model*> m_ModelList;
-	int m_textureId;
+	int m_TextureId;
 //	static std::vector<Model> m_ModelList;
 
 public:

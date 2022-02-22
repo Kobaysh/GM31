@@ -10,9 +10,9 @@ float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* 
 
 
 // staticメンバ
-ID3D11VertexShader*		OBB::m_vertexShader = nullptr;
-ID3D11PixelShader*		OBB::m_pixelShader = nullptr;
-ID3D11InputLayout*		OBB::m_vertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
+ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
+ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
+ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
 //ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
 
 const char* OBB::FILENAME_BLUE = ("asset\\texture\\tinyblue.png");
@@ -27,14 +27,14 @@ bool OBB::m_bIsDrawForwardRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
-	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
-	m_rotation = rot;
+	if (m_Rotation.x == rot.x && m_Rotation.y == rot.y && m_Rotation.z == rot.z) return;
+	m_Rotation = rot;
 }
 
 void OBB::SetRotation(XMFLOAT3 rotation, XMFLOAT3 rotationSpeed)
 {
-	if (m_rotation.x == rotation.x && m_rotation.y == rotation.y && m_rotation.z == rotation.z) return;
-	m_rotation = rotation;
+	if (m_Rotation.x == rotation.x && m_Rotation.y == rotation.y && m_Rotation.z == rotation.z) return;
+	m_Rotation = rotation;
 	XMVECTOR nDX = XMLoadFloat3(&GetDirect(OBB_DX));
 	XMVECTOR nDY = XMLoadFloat3(&GetDirect(OBB_DY));
 	XMVECTOR nDZ = XMLoadFloat3(&GetDirect(OBB_DZ));
@@ -65,8 +65,8 @@ void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right)
 
 void OBB::SetRotationFromForwardRightVector(XMFLOAT3 forward, XMFLOAT3 right, XMFLOAT3 rot)
 {
-	if (m_rotation.x == rot.x && m_rotation.y == rot.y && m_rotation.z == rot.z) return;
-	m_rotation = rot;
+	if (m_Rotation.x == rot.x && m_Rotation.y == rot.y && m_Rotation.z == rot.z) return;
+	m_Rotation = rot;
 	SetRotationFromForwardRightVector(forward, right);
 }
 
@@ -347,7 +347,7 @@ bool OBB::ColOBBs(OBB & obb1, OBB & obb2)
 
 void OBB::Init()
 {
-	XMVECTOR vPosition = XMLoadFloat3(&m_position);
+	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
 	XMVECTOR vSizeX = XMLoadFloat3(&XMFLOAT3(m_fLength[0] * 0.5f, 0.0f, 0.0f));
 	XMVECTOR vSizeY = XMLoadFloat3(&XMFLOAT3(0.0f, m_fLength[1] * 0.5f, 0.0f));
 	XMVECTOR vSizeZ = XMLoadFloat3(&XMFLOAT3(0.0f, 0.0f, m_fLength[2] * 0.5f));
@@ -377,7 +377,7 @@ void OBB::Init()
 
 	D3D11_SUBRESOURCE_DATA sd{};
 	sd.pSysMem = vertex;
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	UWORD index[36] = {
 		3,1,0,
@@ -415,9 +415,9 @@ void OBB::Init()
 	rdc.FrontCounterClockwise = true;
 	Renderer::GetpDevice()->CreateRasterizerState(&rdc, &m_pRasterrizerState);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 	// テクスチャ読み込み
 	Texture::Load(FILENAME_BLUE);
 	Texture::Load(FILENAME_RED);
@@ -452,17 +452,17 @@ void OBB::Draw()
 	return;
 #endif
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -473,7 +473,7 @@ void OBB::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// インデックスバッファ設定
 	Renderer::GetpDeviceContext()->IASetIndexBuffer(m_Indexbuffer, DXGI_FORMAT_R16_UINT, 0);
@@ -519,7 +519,7 @@ void OBB::Draw()
 		VERTEX_3DX vertex[2];
 		for (int i = 0; i < 3; i++)
 		{
-			vertex[0].Position = m_position;
+			vertex[0].Position = m_Position;
 			vertex[0].Position.x /= 1000.f;
 			vertex[0].Position.y /= 1000.f;
 			vertex[0].Position.z /= 1000.f;

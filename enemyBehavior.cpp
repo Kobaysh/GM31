@@ -75,7 +75,7 @@ void EnemyBehavior::Upadate(Enemy* pEnemy)
 
 	if (m_activeNode)
 	{
-		m_timer += UPDATE_TIMER_AMOUNT;
+		m_Timer += UPDATE_TIMER_AMOUNT;
 		m_activeNode = m_aiTree->Run(pEnemy, m_activeNode, m_behaviorData, this);
 	}
 }

@@ -5,8 +5,8 @@ class MeshField : public GameObject
 {
 private:
 
-	ID3D11Buffer*				m_vertexBuffer = nullptr;
-	ID3D11Buffer*				m_indexBuffer = nullptr;
+	ID3D11Buffer*				m_VertexBuffer = nullptr;
+	ID3D11Buffer*				m_IndexBuffer = nullptr;
 	ID3D11ShaderResourceView*	m_texture = nullptr;
 	ID3D11RasterizerState* m_pRasterrizerState = nullptr;
 

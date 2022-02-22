@@ -3,7 +3,7 @@
 class TrunkBar : public GameObject
 {
 private:
-	ID3D11Buffer* m_vertexBuffer;
+	ID3D11Buffer* m_VertexBuffer;
 	class Enemy* m_pEnemy;
 public:
 	void Init()override;

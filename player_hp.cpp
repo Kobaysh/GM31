@@ -47,26 +47,26 @@ void HpPlayer::Init()
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = vertexx;
 
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 }
 
 void HpPlayer::Init(XMFLOAT3 pos, XMFLOAT3 scale, int nowHP, int maxHP)
 {
-	m_position = pos;
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = scale;
+	m_Position = pos;
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = scale;
 	SetHP(nowHP, maxHP);
 }
 
 void HpPlayer::Uninit()
 {
-	m_vertexBuffer->Release();
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexBuffer->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void HpPlayer::Draw()
@@ -94,37 +94,37 @@ void HpPlayer::Draw_Bar(XMFLOAT4 color, float perHP)
 {
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
-	Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 	{
 		VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
-		vertex[0].Position = XMFLOAT3(m_position.x, m_position.y, 0.0f);
+		vertex[0].Position = XMFLOAT3(m_Position.x, m_Position.y, 0.0f);
 		vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[0].Diffuse = color;
 		vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-		vertex[1].Position = XMFLOAT3(m_position.x + (1.0f - (1.0f - 1.0f * perHP) )* 2 * m_scale.x, m_position.y, 0.0f);
+		vertex[1].Position = XMFLOAT3(m_Position.x + (1.0f - (1.0f - 1.0f * perHP) )* 2 * m_Scale.x, m_Position.y, 0.0f);
 		vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[1].Diffuse = color;
 		vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-		vertex[2].Position = XMFLOAT3(m_position.x , m_position.y -1.0f* m_scale.y, 0.0f);
+		vertex[2].Position = XMFLOAT3(m_Position.x , m_Position.y -1.0f* m_Scale.y, 0.0f);
 		vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[2].Diffuse = color;
 		vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-		vertex[3].Position = XMFLOAT3(m_position.x + (1.0f - (1.0f - 1.0f * perHP)) * 2 * m_scale.x, m_position.y -1.0f* m_scale.y, 0.0f);
+		vertex[3].Position = XMFLOAT3(m_Position.x + (1.0f - (1.0f - 1.0f * perHP)) * 2 * m_Scale.x, m_Position.y -1.0f* m_Scale.y, 0.0f);
 		vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[3].Diffuse = color;
 		vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 	}
-	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+	Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 
@@ -135,7 +135,7 @@ void HpPlayer::Draw_Bar(XMFLOAT4 color, float perHP)
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
 	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
@@ -148,35 +148,35 @@ void HpPlayer::Draw_Bar(XMFLOAT4 color, float perHP)
 
 	if (perHP < 1.0f)
 	{
-		Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 		{
 			VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
-			float posX = m_position.x + (1.0f - (1.0f - 1.0f * perHP)) * 2 * m_scale.x;
+			float posX = m_Position.x + (1.0f - (1.0f - 1.0f * perHP)) * 2 * m_Scale.x;
 			float amountX = 0.5f;
 			float amountY = 1.5f;
 
-			vertex[0].Position = XMFLOAT3(posX - amountX , m_position.y + amountY, 0.0f);
+			vertex[0].Position = XMFLOAT3(posX - amountX , m_Position.y + amountY, 0.0f);
 			vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-			vertex[1].Position = XMFLOAT3(posX + amountX, m_position.y + amountY, 0.0f);
+			vertex[1].Position = XMFLOAT3(posX + amountX, m_Position.y + amountY, 0.0f);
 			vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-			vertex[2].Position = XMFLOAT3(posX - amountX, m_position.y -1.0f* m_scale.y - amountY, 0.0f);
+			vertex[2].Position = XMFLOAT3(posX - amountX, m_Position.y -1.0f* m_Scale.y - amountY, 0.0f);
 			vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-			vertex[3].Position = XMFLOAT3(posX + amountX, m_position.y -1.0f* m_scale.y - amountY, 0.0f);
+			vertex[3].Position = XMFLOAT3(posX + amountX, m_Position.y -1.0f* m_Scale.y - amountY, 0.0f);
 			vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 		}
-		Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+		Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
 
 		// ポリゴン描画
 		Renderer::GetpDeviceContext()->Draw(4, 0);
@@ -187,37 +187,37 @@ void HpPlayer::Draw_OutLine(XMFLOAT4 color)
 {
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
-	Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 	{
 		VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
-		vertex[0].Position = XMFLOAT3(m_position.x - 2.0f, m_position.y + 2.0f, 0.0f);
+		vertex[0].Position = XMFLOAT3(m_Position.x - 2.0f, m_Position.y + 2.0f, 0.0f);
 		vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[0].Diffuse = color;
 		vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-		vertex[1].Position = XMFLOAT3(m_position.x + (1.0f * 2)* m_scale.x + 2.0f, m_position.y + 2.0f, 0.0f);
+		vertex[1].Position = XMFLOAT3(m_Position.x + (1.0f * 2)* m_Scale.x + 2.0f, m_Position.y + 2.0f, 0.0f);
 		vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[1].Diffuse = color;
 		vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-		vertex[2].Position = XMFLOAT3(m_position.x - 2.0f, m_position.y -1.0f* m_scale.y - 2.0f, 0.0f);
+		vertex[2].Position = XMFLOAT3(m_Position.x - 2.0f, m_Position.y -1.0f* m_Scale.y - 2.0f, 0.0f);
 		vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[2].Diffuse = color;
 		vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-		vertex[3].Position = XMFLOAT3(m_position.x + (1.0f * 2) * m_scale.x + 2.0f, m_position.y -1.0f* m_scale.y - 2.0f, 0.0f);
+		vertex[3].Position = XMFLOAT3(m_Position.x + (1.0f * 2) * m_Scale.x + 2.0f, m_Position.y -1.0f* m_Scale.y - 2.0f, 0.0f);
 		vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 		vertex[3].Diffuse = color;
 		vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 	}
-	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+	Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 
@@ -226,7 +226,7 @@ void HpPlayer::Draw_OutLine(XMFLOAT4 color)
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
 	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
@@ -240,69 +240,69 @@ void HpPlayer::Draw_OutLine(XMFLOAT4 color)
 
 	// 外枠白線
 	{
-		float posX = m_position.x - 1.0f;
+		float posX = m_Position.x - 1.0f;
 		float amountX = 1.0f;
 		float amountY = 3.5f;
-		Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 		{
 			VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
 
 
-			vertex[0].Position = XMFLOAT3(posX - amountX , m_position.y + amountY, 0.0f);
+			vertex[0].Position = XMFLOAT3(posX - amountX , m_Position.y + amountY, 0.0f);
 			vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-			vertex[1].Position = XMFLOAT3(posX + amountX, m_position.y + amountY, 0.0f);
+			vertex[1].Position = XMFLOAT3(posX + amountX, m_Position.y + amountY, 0.0f);
 			vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-			vertex[2].Position = XMFLOAT3(posX - amountX, m_position.y -1.0f* m_scale.y - amountY, 0.0f);
+			vertex[2].Position = XMFLOAT3(posX - amountX, m_Position.y -1.0f* m_Scale.y - amountY, 0.0f);
 			vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-			vertex[3].Position = XMFLOAT3(posX + amountX, m_position.y -1.0f* m_scale.y - amountY, 0.0f);
+			vertex[3].Position = XMFLOAT3(posX + amountX, m_Position.y -1.0f* m_Scale.y - amountY, 0.0f);
 			vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 		}
-		Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+		Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
 
 		// ポリゴン描画
 		Renderer::GetpDeviceContext()->Draw(4, 0);
 	
 
 	
-		Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+		Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 		{
 			VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
-			posX = m_position.x + 2 * m_scale.x + 1.0f;
+			posX = m_Position.x + 2 * m_Scale.x + 1.0f;
 
-			vertex[0].Position = XMFLOAT3(posX - amountX , m_position.y + amountY, 0.0f);
+			vertex[0].Position = XMFLOAT3(posX - amountX , m_Position.y + amountY, 0.0f);
 			vertex[0].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-			vertex[1].Position = XMFLOAT3(posX + amountX, m_position.y + amountY, 0.0f);
+			vertex[1].Position = XMFLOAT3(posX + amountX, m_Position.y + amountY, 0.0f);
 			vertex[1].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[1].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-			vertex[2].Position = XMFLOAT3(posX - amountX, m_position.y -1.0f* m_scale.y - amountY, 0.0f);
+			vertex[2].Position = XMFLOAT3(posX - amountX, m_Position.y -1.0f* m_Scale.y - amountY, 0.0f);
 			vertex[2].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[2].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-			vertex[3].Position = XMFLOAT3(posX + amountX, m_position.y -1.0f* m_scale.y - amountY, 0.0f);
+			vertex[3].Position = XMFLOAT3(posX + amountX, m_Position.y -1.0f* m_Scale.y - amountY, 0.0f);
 			vertex[3].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 		}
-		Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+		Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
 
 		// ポリゴン描画
 		Renderer::GetpDeviceContext()->Draw(4, 0);
