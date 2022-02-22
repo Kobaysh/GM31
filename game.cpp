@@ -38,24 +38,15 @@ void Game::Init()
 	m_IsFading = false;
 	m_IsGameClear = false;
 
-	//Camera* camera = new Camera();
-	//camera->Init(true, false);
-	//AddGameObject(camera, GameObject::GOT_CAMERA);
 	AppendGameObject<Camera>(GameObject::GOT_CAMERA)->Init(true, false);
 	AppendGameObject<DebugCamera>(GameObject::GOT_CAMERA)->Init(false, false);
 
-
-//	AppendGameObject<Field>(GameObject::GOT_OBJECT3D);
-	
 	MeshField* meshField = new MeshField();
 	meshField->Init(XMFLOAT3(0.0f, 0.0f, 0.0f), FIELD_XZ, FIELD_XZ, FIELD__SCALE_XZ, FIELD__SCALE_XZ);
 	AddGameObject(meshField , GameObject::GOT_OBJECT3D);
-
-//	AppendGameObject<MeshField>(GameObject::GOT_OBJECT3D);
-
 	AppendGameObject<Sky>(GameObject::GOT_OBJECT3D);
 	AppendGameObject<Player>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 0.1f, -4.0f));
-//	AppendGameObject<Polygon2D>(GameObject::GOT_OBJECT2D);
+
 	for (int i = 0; i < 20; i++) {
 		XMFLOAT3 pos;
 		XMFLOAT3 scl;
@@ -65,30 +56,20 @@ void Game::Init()
 		pos.y = 0.0f + scl.y / 2;
 		AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
 
-		/*Wood* wood = AppendGameObject<Wood>(GameObject::GOT_OBJECT2D);
+		Wood* wood = AppendGameObject<Wood>(GameObject::GOT_OBJECT2D);
 		pos.x = (float)rand() / RAND_MAX * 100.f - 50.f;
 		pos.z = (float)rand() / RAND_MAX * 100.f - 50.f;
 		pos.y = 0.0f + 2.5f;
 		wood->SetPosition(pos);
-		wood->SetScale(XMFLOAT3(5.0f, 5.0f, 1.0f));*/
+		wood->SetScale(XMFLOAT3(5.0f, 5.0f, 1.0f));
 		
 	}
 	XMFLOAT3 pos = XMFLOAT3(-1.0f,0.0f,-1.0f);
 	XMFLOAT3 scl = XMFLOAT3(1.0f,1.0f,1.0f);
-//	AppendGameObject<Rock>(GameObject::GOT_OBJECT3D)->Init(pos, pos, scl);
 
-	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(15.0f, 1.0f, 10.0f));
-	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(0.0f, 1.0f, 1.0f));
-	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-15.0f, 1.0f, 7.0f));
-	//AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(-5.0f, 1.0f, 2.0f));
-//	Enemy* enemy = 
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(0.0f,1.0f,5.0f), XMFLOAT3(0.0f, XMConvertToRadians(0.0f), 0.0f), XMFLOAT3(1.0f,1.0f,1.0f));
 	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(10.0f,1.0f,15.0f), XMFLOAT3(0.0f, XMConvertToRadians(180.0f), 0.0f), XMFLOAT3(1.0f,1.0f,1.0f));
-//	AppendGameObject<Enemy>(GameObject::GOT_OBJECT3D)->Init(XMFLOAT3(-0.0f,1.0f,-20.0f), XMFLOAT3(0.0f, XMConvertToRadians(0.0f), 0.0f), XMFLOAT3(1.0f,1.0f,1.0f));
-	//enemy->SetPosition(XMFLOAT3(0.0f, 1.0f, 5.0f));
-	//enemy->GetObb().SetPosition(enemy->GetPosition());
-	//enemy->SetScale(XMFLOAT3(1.0f, 1.0f, 1.0f));
-	//enemy->GetObb().SetScale(XMFLOAT3(2.1f, 2.1f, 2.1f));
+
 
 //	AppendGameObject<Wall>(GameObject::GOT_OBJECT3D)->SetPosition(XMFLOAT3(5.0f, 1.0f, 5.0f));
 	AppendGameObject<ExplanationGame>(GameObject::GOT_OBJECT2D);

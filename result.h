@@ -1,6 +1,7 @@
 #pragma once
-
 #include "scene.h"
+
+// リザルトシーン管理クラス
 class Result : public Scene
 {
 public:
