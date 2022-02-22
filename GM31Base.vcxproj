@@ -187,10 +187,16 @@
     <ClInclude Include="enemyStateIdleBeware.h" />
     <ClInclude Include="enemyStateIdleDiscover.h" />
     <ClInclude Include="enemyStateIdleIdle.h" />
+    <ClInclude Include="enemyTrunkBar.h" />
     <ClInclude Include="execJudgmentBase.h" />
+    <ClInclude Include="explaAtk.h" />
+    <ClInclude Include="explaChange.h" />
+    <ClInclude Include="explaDef.h" />
+    <ClInclude Include="explaLock.h" />
+    <ClInclude Include="explaMove.h" />
+    <ClInclude Include="explanationOps.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
-    <ClInclude Include="fbxMesh.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameObject.h" />
@@ -215,13 +221,10 @@
     <ClInclude Include="nodeBase.h" />
     <ClInclude Include="obb.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="playerState.h" />
     <ClInclude Include="player_hp.h" />
     <ClInclude Include="polygon2D.h" />
     <ClInclude Include="pressSpaceKey.h" />
-    <ClInclude Include="primitive.h" />
     <ClInclude Include="renderer.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="resultBG.h" />
     <ClInclude Include="resultLogo.h" />
@@ -239,7 +242,6 @@
     <ClInclude Include="trunk.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="wall.h" />
-    <ClInclude Include="weapon.h" />
     <ClInclude Include="wood.h" />
   </ItemGroup>
   <ItemGroup>
@@ -265,9 +267,15 @@
     <ClCompile Include="enemyStateIdleBeware.cpp" />
     <ClCompile Include="enemyStateIdleDiscover.cpp" />
     <ClCompile Include="enemyStateIdleIdle.cpp" />
+    <ClCompile Include="enemyTrunkBar.cpp" />
+    <ClCompile Include="explaAtk.cpp" />
+    <ClCompile Include="explaChange.cpp" />
+    <ClCompile Include="explaDef.cpp" />
+    <ClCompile Include="explaLock.cpp" />
+    <ClCompile Include="explaMove.cpp" />
+    <ClCompile Include="explanationOps.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
-    <ClCompile Include="fbxMesh.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="hp.cpp" />
@@ -290,27 +298,22 @@
     <ClCompile Include="nodeBase.cpp" />
     <ClCompile Include="obb.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="playerState.cpp" />
     <ClCompile Include="player_hp.cpp" />
     <ClCompile Include="polygon2D.cpp" />
     <ClCompile Include="pressSpaceKey.cpp" />
     <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="resource.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="resultBG.cpp" />
     <ClCompile Include="resultLogo.cpp" />
     <ClCompile Include="rock.cpp" />
     <ClCompile Include="shaderManager.cpp" />
-    <ClCompile Include="singleton.cpp" />
     <ClCompile Include="sky.cpp" />
-    <ClCompile Include="sprite.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="titleBG.cpp" />
     <ClCompile Include="titleLogo.cpp" />
     <ClCompile Include="titleParticle.cpp" />
     <ClCompile Include="wall.cpp" />
-    <ClCompile Include="weapon.cpp" />
     <ClCompile Include="wood.cpp" />
   </ItemGroup>
   <ItemGroup>

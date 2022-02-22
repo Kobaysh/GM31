@@ -1,12 +1,8 @@
-
 #include "main.h"
 #include "audio.h"
 
 
-
-
-
-IXAudio2*				Audio::m_Xaudio = NULL;
+IXAudio2*				Audio::m_XAudio = NULL;
 IXAudio2MasteringVoice*	Audio::m_MasteringVoice = NULL;
 
 
@@ -16,27 +12,18 @@ void Audio::InitMaster()
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
 	// XAudio生成
-	XAudio2Create(&m_Xaudio, 0);
+	XAudio2Create(&m_XAudio, 0);
 
 	// マスタリングボイス生成
-	m_Xaudio->CreateMasteringVoice(&m_MasteringVoice);
+	m_XAudio->CreateMasteringVoice(&m_MasteringVoice);
 }
-
 
 void Audio::UninitMaster()
 {
 	m_MasteringVoice->DestroyVoice();
-	m_Xaudio->Release();
+	m_XAudio->Release();
 	CoUninitialize();
 }
-
-
-
-
-
-
-
-
 
 void Audio::Load(const char *FileName)
 {
@@ -96,10 +83,9 @@ void Audio::Load(const char *FileName)
 
 
 	// サウンドソース生成
-	m_Xaudio->CreateSourceVoice(&m_SourceVoice, &wfx);
+	m_XAudio->CreateSourceVoice(&m_SourceVoice, &wfx);
 	assert(m_SourceVoice);
 }
-
 
 void Audio::Uninit()
 {
@@ -108,9 +94,6 @@ void Audio::Uninit()
 
 	delete[] m_SoundData;
 }
-
-
-
 
 
 void Audio::Play(float volume, bool Loop)

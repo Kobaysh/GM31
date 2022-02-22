@@ -20,7 +20,7 @@ void Result::Init()
 	AppendGameObject<PressSpaceKey>(GameObject::GOT_OBJECT2D);
 	AppendGameObject<Fade>(GameObject::GOT_OBJECT2D);
 
-	m_isFading = false;
+	m_IsFading = false;
 	Fade::SetFade(Fade::FADE_IN);
 }
 
@@ -32,16 +32,16 @@ void Result::Uninit()
 void Result::Update()
 {
 	Scene::Update();
-	if (!m_isFading && KeyLogger_Trigger(KL_DICISION) || KeyLogger_Trigger(KL_JUMP)) {
+	if (!m_IsFading && KeyLogger_Trigger(KL_DICISION) || KeyLogger_Trigger(KL_JUMP)) {
 		// ÉVÅ[ÉìëJà⁄
 		Fade::SetFade(Fade::FADE_OUT);
-		m_isFading = true;
+		m_IsFading = true;
 	}
 
-	if (m_isFading) {
+	if (m_IsFading) {
 		if (Fade::GetFadeType() == Fade::FADE_NONE) {
 			ManagerT::SetScene<Title>();
-			m_isFading = false;
+			m_IsFading = false;
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 class Enemy;
 
+// 行動インターフェース
 class ActionBase
 {
 public:
@@ -13,5 +14,6 @@ public:
 		COMPLETE,	// 実行成功
 	};
 
+	// 実行関数
 	virtual EXE_STATE Run(Enemy* pEnemy, class EnemyBehavior* pBehavior) = 0;
 };

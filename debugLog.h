@@ -4,6 +4,7 @@
 #include <iostream>
 #include <direct.h>
 
+// デバッグログ記録クラス
 class DebugLog
 {
 public:

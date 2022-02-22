@@ -12,14 +12,14 @@
 #include "keylogger.h"
 #include "utility.h"
 
-const float EnemyStateCombatIdle::m_attackInterval = 10.0f;
+const float EnemyStateCombatIdle::m_AttackInterval = 10.0f;		// UŒ‚ŠÔŠu
 
 void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 {
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 	if (!pPlayer) return;
 	EnemyState* pState = pEnemy->GetEnemyState();
-	m_timer += 0.1f;
+	m_Timer += 0.1f;
 	XMVECTOR vPlayerPos, vEnemyPos, vToPlayer, vLength;
 	float length;
 	vPlayerPos = XMLoadFloat3(&pPlayer->GetPosition());
@@ -29,7 +29,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 	vLength = XMVector3Length(vToPlayer);
 	XMStoreFloat(&length, vLength);
 	// ƒvƒŒƒCƒ„[‚ª—£‚ê‚½‚ç’Ç‚¢‚©‚¯‚é
-	if (pEnemy->GetEnemyStateData()->m_combat_rad * 2 <= length)
+	if (pEnemy->GetEnemyStateData()->m_CombatRad * 2 <= length)
 	{
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		EnemyStatePattern* pStatePattern = 
@@ -54,7 +54,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 		}
 	}
 
-	if (m_timer > m_attackInterval)
+	if (m_Timer > m_AttackInterval)
 	{
 		// UŒ‚ŠJn
 		EnemyStatePattern* pStatePattern =

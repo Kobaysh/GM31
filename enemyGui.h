@@ -3,17 +3,16 @@
 
 class Enemy;
 
+// 敵GUIクラス
 class EnemyGui : public MyGuiWindow
 {
-private:
-//	const std::string m_windowName = "Enemy Window";
-//	Enemy* m_enemy;
 public:
 	EnemyGui(){}
-//	EnemyGui(Enemy* enemy) :m_enemy(enemy){}
 	~EnemyGui() = delete;
 	void Init()override;
 	void Uninit()override;
 	void Update()override;
+
+	// ウィンドウ削除
 	void Delete();
 };

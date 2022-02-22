@@ -1,6 +1,7 @@
 #pragma once
 #include "enemyState.h"
 
+// 待機中待機クラス
 class EnemyStateIdleIdle : public EnemyStatePattern
 {
 public :

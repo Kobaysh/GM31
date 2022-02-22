@@ -47,8 +47,8 @@ void Wall::Init()
 	////sd.pSysMem = vertex;
 	//sd.pSysMem = vertexx;
 
-	////Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
-	//Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	////Renderer::GetDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
+	//Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	//// テクスチャ読み込み
 	//D3DX11CreateShaderResourceViewFromFile(
@@ -57,54 +57,54 @@ void Wall::Init()
 	//	"asset/texture/grass02.jpg",
 	//	NULL,
 	//	NULL,
-	//	&m_texture,
+	//	&m_Texture,
 	//	NULL
 	//);
-	//assert(m_texture);
+	//assert(m_Texture);
 
-	m_modelId = Model::SetModelLoadfile(FILENAME);
-	Model::Load(m_modelId);
+	m_ModelId = Model::SetModelLoadfile(FILENAME);
+	Model::Load(m_ModelId);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/pixelLightingVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/pixelLightingPS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/pixelLightingPS.cso");
 
-	m_position = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
-	XMFLOAT3 obbScale = XMFLOAT3(m_scale.x * 2.0f, m_scale.y * 2.0f, m_scale.z * 2.0f);
-	m_obb = new OBB(m_position, obbScale);
-	ManagerT::GetScene()->AddGameObject<OBB>(m_obb, GameObject::GOT_OBJECT3D);
+	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	XMFLOAT3 obbScale = XMFLOAT3(m_Scale.x * 2.0f, m_Scale.y * 2.0f, m_Scale.z * 2.0f);
+	m_Obb = new OBB(m_Position, obbScale);
+	ManagerT::GetScene()->AddGameObject<OBB>(m_Obb, GameObject::GOT_OBJECT3D);
 }
 
 void Wall::Uninit()
 {
-//	m_vertexBuffer->Release();
-//	m_texture->Release();
-//	Model::Release(m_modelId);
-	m_obb->SetDead();
+//	m_VertexBuffer->Release();
+//	m_Texture->Release();
+//	Model::Release(m_ModelId);
+	m_Obb->SetDead();
 
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void Wall::Update()
 {
-	m_obb->SetPosition(m_position);
+	m_Obb->SetPosition(m_Position);
 }
 
 void Wall::Draw()
 {
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMFLOAT3 axisX = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	XMFLOAT3 axisY = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	XMMATRIX rotWall = XMMatrixRotationAxis(XMLoadFloat3(&axisX), XMConvertToRadians(90.0f));
@@ -117,7 +117,7 @@ void Wall::Draw()
 	//// 頂点バッファ設定
 	//UINT stride = sizeof(VERTEX_3DX);
 	//UINT offset = 0;
-	//Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	//Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 
 	//// マテリアル設定
@@ -129,13 +129,13 @@ void Wall::Draw()
 
 
 	//// テクスチャ設定
-	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	//// プリミティブトポロジ設定
 	//Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	//// ポリゴン描画
 	//Renderer::GetpDeviceContext()->Draw(4, 0);
-	//m_model->Draw();
-	Model::Draw(m_modelId);
+	//m_Model->Draw();
+	Model::Draw(m_ModelId);
 }

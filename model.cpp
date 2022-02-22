@@ -192,7 +192,7 @@ void Model::Load(int modelId)
 	}
 	Model* model = *it;
 	if (model->m_FileName[0] == 0) return;
-	if (model->m_isLoaded) return;
+	if (model->m_IsLoaded) return;
 	MODEL _Model;
 	SLoadObj(model->m_FileName, &_Model);
 
@@ -264,7 +264,7 @@ void Model::Load(int modelId)
 	delete[] _Model.VertexArray;
 	delete[] _Model.IndexArray;
 	delete[] _Model.SubsetArray;
-	model->m_isLoaded = true;
+	model->m_IsLoaded = true;
 //	Texture::AllLoad();
 }
 
@@ -273,7 +273,7 @@ void Model::AllLoad()
 	for (Model* model : m_ModelList) {
 
 		if (model->m_FileName[0] == 0) continue;	// ‹ó‚Ìƒe[ƒuƒ‹
-		if (model->m_isLoaded) continue;			// “Ç‚Ýž‚ÝÏ‚Ý
+		if (model->m_IsLoaded) continue;			// “Ç‚Ýž‚ÝÏ‚Ý
 
 
 		MODEL _Model;
@@ -347,7 +347,7 @@ void Model::AllLoad()
 		delete[] _Model.VertexArray;
 		delete[] _Model.IndexArray;
 		delete[] _Model.SubsetArray;
-		model->m_isLoaded = true;
+		model->m_IsLoaded = true;
 	}
 }
 

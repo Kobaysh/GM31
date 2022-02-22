@@ -4,16 +4,17 @@
 #include <typeinfo>
 #include "gameObject.h"
 
-
+// シーンインターフェース
 class Scene
 {
 protected:
 	std::list<GameObject*> m_GameObject[GameObject::GOT_MAX];	// STLのリスト構造
-	bool m_isFading;											// フェード中かどうか
+	bool m_IsFading;											// フェード中かどうか
 public:
 	Scene(){}
 	virtual ~Scene(){}
 
+	// ゲームオブジェクト管理下に追加
 	template <typename TS>
 	TS* AppendGameObject(GameObject::GameObject_Type type) {
 		TS* gameObject = new TS();
@@ -35,6 +36,7 @@ public:
 		return pObj;
 	}
 
+	// ゲームオブジェクトインスタンスゲッター
 	template<typename TS>
 	TS* GetGameObject(GameObject::GameObject_Type type) {
 
@@ -58,8 +60,10 @@ public:
 		return objects;
 	}
 
+	// 初期化
 	virtual void Init() = 0;
 
+	// 終了処理
 	virtual void Uninit() {
 		for (int i = 0; i < GameObject::GOT_MAX; i++) {
 			for (GameObject* object : m_GameObject[i]) {
@@ -69,6 +73,8 @@ public:
 			m_GameObject[i].clear();	// リストのクリア
 		}
 	}
+
+	// 更新処理
 	virtual void Update() {
 		for (int i = 0; i < GameObject::GOT_MAX; i++) {
 			for (GameObject* object : m_GameObject[i]) {
@@ -83,6 +89,7 @@ public:
 			// ラムダ式	
 		}
 	}
+	// 描画処理
 	virtual void Draw() {
 		for (int i = 0; i < GameObject::GOT_MAX; i++) {
 			for (GameObject* object : m_GameObject[i]) {
@@ -90,13 +97,5 @@ public:
 			}
 		}
 	}
-
-	/*virtual void AllPSChange(const char* pFileName) {
-		for (int i = GameObject::GOT_OBJECT3D; i < GameObject::GOT_MAX; i++) {
-			for (GameObject* object : m_GameObject[i]) {
-				object->SetPShader(pFileName);
-			}
-		}
-	}*/
 };
 

@@ -11,8 +11,8 @@ void LockOnCircle::Init()
 {
 	Texture::Load(TEXTURE_FILE_NAME);
 
-	m_position = m_object->GetPosition();
-	m_scale = XMFLOAT3(1.5f, 1.5f, 1.0f);
+	m_Position = m_Object->GetPosition();
+	m_Scale = XMFLOAT3(1.5f, 1.5f, 1.0f);
 
 	VERTEX_3DX vertex[4];
 	vertex[0].Position	= XMFLOAT3(-0.5f, 0.5f, 0.0f);
@@ -49,89 +49,89 @@ void LockOnCircle::Init()
 	ZeroMemory(&sd, sizeof(sd));
 	sd.pSysMem = vertex;
 
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 
 }
 
 void LockOnCircle::Uninit()
 {
-	m_vertexBuffer->Release();
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexBuffer->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void LockOnCircle::Update()
 {
-	m_position = m_object->GetPosition();
+	m_Position = m_Object->GetPosition();
 }
 
 void LockOnCircle::Draw()
 {
 	// 頂点データを書き換え
 	//D3D11_MAPPED_SUBRESOURCE msr;
-	//Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	//Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 	//{
 	//	VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
-	//	float offsetY = m_scale.y;
+	//	float offsetY = m_Scale.y;
 	//	float posX = SCREEN_WIDTH * 0.5f;
 	//	float posY = SCREEN_HEIGHT * 0.5f;
 
-	//	//vertex[0].Position	= XMFLOAT3(m_position.x -0.5f * m_scale.x,m_position.y + 0.5f* m_scale.y - offsetY, 0.0f);
+	//	//vertex[0].Position	= XMFLOAT3(m_Position.x -0.5f * m_Scale.x,m_Position.y + 0.5f* m_Scale.y - offsetY, 0.0f);
 	//	//vertex[0].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	//vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	//vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-	//	//vertex[1].Position = XMFLOAT3(m_position.x +0.5f* m_scale.x,m_position.y  + 0.5f* m_scale.y- offsetY, 0.0f);
+	//	//vertex[1].Position = XMFLOAT3(m_Position.x +0.5f* m_Scale.x,m_Position.y  + 0.5f* m_Scale.y- offsetY, 0.0f);
 	//	//vertex[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	//vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	//vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	//	//vertex[2].Position = XMFLOAT3(m_position.x -0.5f* m_scale.x,m_position.y  -0.5f* m_scale.y- offsetY, 0.0f);
+	//	//vertex[2].Position = XMFLOAT3(m_Position.x -0.5f* m_Scale.x,m_Position.y  -0.5f* m_Scale.y- offsetY, 0.0f);
 	//	//vertex[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	//vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	//vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-	//	//vertex[3].Position = XMFLOAT3(m_position.x + 0.5f* m_scale.x,m_position.y  -0.5f* m_scale.y- offsetY, 0.0f);
+	//	//vertex[3].Position = XMFLOAT3(m_Position.x + 0.5f* m_Scale.x,m_Position.y  -0.5f* m_Scale.y- offsetY, 0.0f);
 	//	//vertex[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	//vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	//vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 
-	//	vertex[0].Position	= XMFLOAT3(posX -0.5f * m_scale.x,posY + 0.5f* m_scale.y - offsetY, 0.0f);
+	//	vertex[0].Position	= XMFLOAT3(posX -0.5f * m_Scale.x,posY + 0.5f* m_Scale.y - offsetY, 0.0f);
 	//	vertex[0].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	vertex[0].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	vertex[0].TexCoord = XMFLOAT2(0.0f, 0.0f);
 
-	//	vertex[1].Position = XMFLOAT3(posX +0.5f* m_scale.x,posY  + 0.5f* m_scale.y- offsetY, 0.0f);
+	//	vertex[1].Position = XMFLOAT3(posX +0.5f* m_Scale.x,posY  + 0.5f* m_Scale.y- offsetY, 0.0f);
 	//	vertex[1].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	vertex[1].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	vertex[1].TexCoord = XMFLOAT2(1.0f, 0.0f);
 
-	//	vertex[2].Position = XMFLOAT3(posX -0.5f* m_scale.x,posY  -0.5f* m_scale.y- offsetY, 0.0f);
+	//	vertex[2].Position = XMFLOAT3(posX -0.5f* m_Scale.x,posY  -0.5f* m_Scale.y- offsetY, 0.0f);
 	//	vertex[2].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	vertex[2].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	vertex[2].TexCoord = XMFLOAT2(0.0f, 1.0f);
 
-	//	vertex[3].Position = XMFLOAT3(posX + 0.5f* m_scale.x,posY  -0.5f* m_scale.y- offsetY, 0.0f);
+	//	vertex[3].Position = XMFLOAT3(posX + 0.5f* m_Scale.x,posY  -0.5f* m_Scale.y- offsetY, 0.0f);
 	//	vertex[3].Normal	= XMFLOAT3(0.0f, 0.0f, 0.0f);
 	//	vertex[3].Diffuse	= XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	//	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 	//}
-	//Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	//Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -144,7 +144,7 @@ void LockOnCircle::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 	// テクスチャ設定
 	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(TEXTURE_FILE_NAME));

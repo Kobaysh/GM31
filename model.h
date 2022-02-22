@@ -40,42 +40,52 @@ struct MODEL
 };
 
 
-
-
-
+// モデル管理クラス
 class Model
 {
 private:
 
-	ID3D11Buffer*	m_VertexBuffer;
-	ID3D11Buffer*	m_IndexBuffer;
-
-	SUBSET*	m_SubsetArray;
-	unsigned int	m_SubsetNum;
-
-	bool m_isLoaded;
-	void LoadObj( const char *FileName, MODEL *Model );
-	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
-
-	static void SLoadObj(std::string FileName, MODEL *Model);
-	static void SLoadMaterial(std::string FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum);
-
-	std::string m_FileName;
-	static std::list<Model*> m_ModelList;
-	int m_textureId;
+	ID3D11Buffer*	m_VertexBuffer;			 // 頂点バッファ
+	ID3D11Buffer*	m_IndexBuffer;			 // インデックスバッファ
+	SUBSET*	m_SubsetArray;					 // サブセット配列
+	unsigned int	m_SubsetNum;			 // サブセット数
+	bool m_IsLoaded;						 // ロード済みか
+	std::string m_FileName;					 // ファイル名
+	static std::list<Model*> m_ModelList;	 // モデル管理リスト
+	int m_TextureId;						 // テクスチャID
 //	static std::vector<Model> m_ModelList;
 
 public:
-	static void Init();
+	static void Init(){}
 	static void Uninit();
 	void Draw();
 	static void Draw(int modelId);
 
+	// 読み込み
 	void Load( const char *FileName );
 	static void Load(int modelId);
+
+	// 予約済みを全部読み込み
 	static void AllLoad();
+
+	// 解放
 	void Unload();
 	static void Release(int modelId);
 	static void AllRelease();
+
+	// 読み込み予約
 	static int SetModelLoadfile(std::string pFileName);
+
+private:
+	// OBJファイルを読み込む
+	void LoadObj( const char *FileName, MODEL *Model );
+
+	// マテリアル情報を読み込む
+	void LoadMaterial( const char *FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum );
+
+	// OBJファイルを読み込む
+	static void SLoadObj(std::string FileName, MODEL *Model);
+
+	// マテリアル情報を読み込む
+	static void SLoadMaterial(std::string FileName, MODEL_MATERIAL **MaterialArray, unsigned int *MaterialNum);
 };

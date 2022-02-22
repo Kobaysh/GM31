@@ -7,26 +7,26 @@
 
 void DebugCamera::Update()
 {
-	if (!m_isActive) return;
+	if (!m_IsActive) return;
 	
 
 	// ïœêîópà”
 	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	XMStoreFloat3(&m_move, vDirection);
-	XMVECTOR vPosition = XMLoadFloat3(&m_position);
-	XMVECTOR vForward = XMLoadFloat3(&m_direction.Forward);
+	XMStoreFloat3(&m_Move, vDirection);
+	XMVECTOR vPosition = XMLoadFloat3(&m_Position);
+	XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward);
 	XMVector3Normalize(vForward);
-	XMVECTOR vRight = XMLoadFloat3(&m_direction.Right);
+	XMVECTOR vRight = XMLoadFloat3(&m_Direction.Right);
 	XMVector3Normalize(vRight);
-	XMVECTOR vUp = XMLoadFloat3(&m_direction.Up);
+	XMVECTOR vUp = XMLoadFloat3(&m_Direction.Up);
 	XMVector3Normalize(vUp);
-	XMFLOAT3 tempFront = m_direction.Forward;
+	XMFLOAT3 tempFront = m_Direction.Forward;
 	tempFront.y = 0.0f;
 	XMVECTOR yZeroFront = XMLoadFloat3(&tempFront);
 	XMVector3Normalize(yZeroFront);
-	XMVECTOR vAt = XMLoadFloat3(&m_target);
+	XMVECTOR vAt = XMLoadFloat3(&m_Target);
 
-	if (m_isActive && m_movable) {
+	if (m_IsActive && m_IsMovable) {
 
 		if (KeyLogger_Press(KL_UP)) {
 			vDirection += +yZeroFront;
@@ -48,36 +48,36 @@ void DebugCamera::Update()
 		}
 
 		if (KeyLogger_Press(KL_TURN_LEFT)) {
-			XMMATRIX mtxR = XMMatrixRotationY(-m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationY(-m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vRight = XMVector3TransformNormal(vRight, mtxR);
 			vUp = XMVector3Cross(vForward, vRight);
 		}
 		if (KeyLogger_Press(KL_TURN_RIGHT)) {
-			XMMATRIX mtxR = XMMatrixRotationY(m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationY(m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vRight = XMVector3TransformNormal(vRight, mtxR);
 			vUp = XMVector3Cross(vForward, vRight);
 		}
 		if (KeyLogger_Press(KL_TURN_UP)) {
-			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight, m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationAxis(-vRight, m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
 		if (KeyLogger_Press(KL_TURN_DOWN)) {
-			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_routationalSpeed);
+			XMMATRIX mtxR = XMMatrixRotationAxis(vRight, m_RoutationalSpeed);
 			vForward = XMVector3TransformNormal(vForward, mtxR);
 			vUp = XMVector3TransformNormal(vUp, mtxR);
 		}
-		vPosition += vDirection * m_cameraSpeedFirst;
+		vPosition += vDirection * m_CameraSpeedFirst;
 		float len;  
 		XMStoreFloat(&len, XMVector3Length(vDirection));
 		if ( len == 0.0f) {
-			m_moveSpeed = 0.0f;
+			m_MoveSpeed = 0.0f;
 		}
 		else
 		{
-			m_moveSpeed = m_cameraSpeedFirst;
+			m_MoveSpeed = m_CameraSpeedFirst;
 		}
 	}
 	
@@ -86,23 +86,23 @@ void DebugCamera::Update()
 	}
 
 	// à⁄ìÆ
-	//	vPosition += vDirection * m_moveSpeed;
+	//	vPosition += vDirection * m_MoveSpeed;
 	// íçéãì_åvéZ
 
-	vAt = vPosition + vForward * m_atLength;
+	vAt = vPosition + vForward * m_AtLength;
 	// ïœêîï€ë∂
-	XMStoreFloat3(&m_target, vAt);
-	XMStoreFloat3(&m_position, vPosition);
-	XMStoreFloat3(&m_direction.Forward, vForward);
-	XMStoreFloat3(&m_direction.Right, vRight);
-	XMStoreFloat3(&m_direction.Up, vUp);
-	XMStoreFloat3(&m_move, vDirection);
+	XMStoreFloat3(&m_Target, vAt);
+	XMStoreFloat3(&m_Position, vPosition);
+	XMStoreFloat3(&m_Direction.Forward, vForward);
+	XMStoreFloat3(&m_Direction.Right, vRight);
+	XMStoreFloat3(&m_Direction.Up, vUp);
+	XMStoreFloat3(&m_Move, vDirection);
 
 
 }
 
 void DebugCamera::Draw()
 {
-	if (!m_isActive) return;
+	if (!m_IsActive) return;
 	Camera::Draw();
 }

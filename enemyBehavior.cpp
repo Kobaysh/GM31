@@ -11,7 +11,7 @@
 
 
 const float EnemyBehavior::UPDATE_TIMER_AMOUNT = 0.01f;	// updateで増やすタイマーの量
-const std::string EnemyBehavior::DATA_FILE_NAME;
+const std::string EnemyBehavior::DATA_FILE_NAME;		// ファイル名
 
 // アクション名前
 enum ActionInstanceName
@@ -24,12 +24,12 @@ enum ActionInstanceName
 // 読み込むデータ
 struct AiData
 {
-	std::string ParentName;
-	std::string EntryName;
-	int Priority;
-	int SelectRule;
-	int JudgeNum;
-	int ActionNum;
+	std::string ParentName;	// 親ノード名
+	std::string EntryName;	// 登録ノード名
+	int Priority;			// 優先度
+	int SelectRule;			// 選択ルール
+	int JudgeNum;			// 判定数字
+	int ActionNum;			// アクション数字
 };
 
 // 初期化
@@ -43,8 +43,8 @@ void EnemyBehavior::Init()
 	behavior->AddNode("LookingForPlayer", "Run", 0, BehaviorTree::SELECT_RULE::NON, nullptr, EnemyBehaviorRun::GetInstance());
 //	behavior = this->LoadDataFromCSV(behavior, "asset\\csv\\test.csv");
 
-	m_behaviorData = new BehaviorData();
-	m_aiTree = behavior;
+	m_BehaviorData = new BehaviorData();
+	m_AiTree = behavior;
 }
 
 // CSVファイルからデータを読み込んで初期化
@@ -53,39 +53,39 @@ void EnemyBehavior::Init(std::string fileName)
 	BehaviorTree* behavior = new BehaviorTree();
 	behavior = this->LoadDataFromCSV(behavior, fileName);
 
-	m_behaviorData = new BehaviorData();
-	m_aiTree = behavior;
+	m_BehaviorData = new BehaviorData();
+	m_AiTree = behavior;
 }
 
 // データの削除
 void EnemyBehavior::Uninit()
 {
-	delete m_aiTree;
-	delete m_behaviorData;
+	delete m_AiTree;
+	delete m_BehaviorData;
 }
 
 // ノードの実行
 void EnemyBehavior::Upadate(Enemy* pEnemy)
 {
 
-	if (!m_activeNode)
+	if (!m_ActiveNode)
 	{
-		m_activeNode = m_aiTree->Inference(pEnemy, m_behaviorData);
+		m_ActiveNode = m_AiTree->Inference(pEnemy, m_BehaviorData);
 	}
 
-	if (m_activeNode)
+	if (m_ActiveNode)
 	{
-		m_timer += UPDATE_TIMER_AMOUNT;
-		m_activeNode = m_aiTree->Run(pEnemy, m_activeNode, m_behaviorData, this);
+		m_Timer += UPDATE_TIMER_AMOUNT;
+		m_ActiveNode = m_AiTree->Run(pEnemy, m_ActiveNode, m_BehaviorData, this);
 	}
 }
 
 // 現在のノードの名前を取得
 std::string EnemyBehavior::GetActiveNodeName()
 {
-	if (m_activeNode)
+	if (m_ActiveNode)
 	{
-		return	m_activeNode->GetName();
+		return	m_ActiveNode->GetName();
 	} 
 	else
 	{

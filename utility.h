@@ -1,6 +1,7 @@
 #pragma once
 #include <random>
 
+// 便利機能クラス
 class Utility
 {
 public:

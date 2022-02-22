@@ -7,9 +7,9 @@
 bool NodeBase::Judgment(Enemy * pEnemy)
 {
 	//	判定クラスを持っていれば実行、なければtrue
-	if (m_execJudgment)
+	if (m_ExecJudgment)
 	{
-		return m_execJudgment->Judgment(pEnemy);
+		return m_ExecJudgment->Judgment(pEnemy);
 	}
 	return true;
 }
@@ -56,7 +56,7 @@ NodeBase * NodeBase::SelectOnOff(std::vector<NodeBase*>* list, BehaviorData * da
 	if (offList.size() == 0)
 	{
 		// ノードをリセット
-		data->ResetNodeUsed(&m_child);
+		data->ResetNodeUsed(&m_Child);
 		offList = *list;
 	}
 
@@ -73,9 +73,9 @@ NodeBase * NodeBase::SelectSequence(std::vector<NodeBase*>* list, BehaviorData *
 	int step = data->GetSequenceStep(this->GetName());
 
 	// シーケンスが終わってたら終了
-	if (step >= m_child.size())
+	if (step >= m_Child.size())
 	{
-		if (m_selectRule != BehaviorTree::SELECT_RULE::SEQENTIAL_LOOP)
+		if (m_SelectRule != BehaviorTree::SELECT_RULE::SEQENTIAL_LOOP)
 		{
 			return nullptr;
 		}
@@ -89,13 +89,13 @@ NodeBase * NodeBase::SelectSequence(std::vector<NodeBase*>* list, BehaviorData *
 	// 順番のノードが実行できるかのチェック
 	for (NodeBase* node : *list)
 	{
-		if (m_child[step]->GetName() == node->GetName())
+		if (m_Child[step]->GetName() == node->GetName())
 		{
 			// シーケンスノードを記録
 			data->PushSequenceNode(this);
 			// シーケンスステップを更新
 			data->SetSequenceStep(this->GetName(), step + 1);
-			return m_child[step];
+			return m_Child[step];
 		}
 	}
 
@@ -104,13 +104,13 @@ NodeBase * NodeBase::SelectSequence(std::vector<NodeBase*>* list, BehaviorData *
 
 NodeBase * NodeBase::SearchNode(std::string searchName)
 {
-	if (m_name == searchName)
+	if (m_Name == searchName)
 	{
 		return this;
 	}
 	else
 	{
-		for (auto child : m_child)
+		for (auto child : m_Child)
 		{
 			NodeBase * temp = child->SearchNode(searchName);
 			if (temp != nullptr)
@@ -128,24 +128,24 @@ NodeBase * NodeBase::Inference(Enemy * pEnemy, BehaviorData * data)
 	NodeBase* result = nullptr;
 
 	//	子ノードで実行可能なノードを探す
-	for (int i = 0; i < m_child.size(); i++)
+	for (int i = 0; i < m_Child.size(); i++)
 	{
-		if (m_child[i]->m_execJudgment)
+		if (m_Child[i]->m_ExecJudgment)
 		{
 
-			if (m_child[i]->m_execJudgment->Judgment(pEnemy))
+			if (m_Child[i]->m_ExecJudgment->Judgment(pEnemy))
 			{
-				list.push_back(m_child[i]);
+				list.push_back(m_Child[i]);
 			}
 		}
 		else
 		{
 			// 判定クラスがなければ無条件に追加
-			list.push_back(m_child[i]);
+			list.push_back(m_Child[i]);
 		}
 	}
 	// 選択ルールでノード決め
-	switch (m_selectRule)
+	switch (m_SelectRule)
 	{
 	case BehaviorTree::NON:
 		break;
@@ -189,9 +189,9 @@ NodeBase * NodeBase::Inference(Enemy * pEnemy, BehaviorData * data)
 ActionBase::EXE_STATE NodeBase::Run(Enemy * pEnemy, class EnemyBehavior* pBehavior)
 {
 	// アクションノードが存在してるなら結果を、なければ失敗を返す
-	if (m_action)
+	if (m_Action)
 	{
-		return m_action->Run(pEnemy, pBehavior);
+		return m_Action->Run(pEnemy, pBehavior);
 	}
 
 	return ActionBase::FAILED;

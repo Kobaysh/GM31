@@ -10,8 +10,8 @@
 #define FILENAME ("asset\\texture\\explosion.dds")
 #define ANIMATION_MAG (6)
 
-int Explosion::m_animationMag = 3;
-ID3D11ShaderResourceView* Explosion::m_texture = nullptr;
+int Explosion::m_AnimationMag = 3;
+ID3D11ShaderResourceView* Explosion::m_Texture = nullptr;
 
 void Explosion::Init()
 {
@@ -51,7 +51,7 @@ void Explosion::Init()
 	//sd.pSysMem = vertex;
 	sd.pSysMem = vertexx;
 
-	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_vertexBuffer);
+	Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 
 	// テクスチャ読み込み
 	Texture::Load(FILENAME);
@@ -61,47 +61,47 @@ void Explosion::Init()
 	//	FILENAME,
 	//	NULL,
 	//	NULL,
-	//	&m_texture,
+	//	&m_Texture,
 	//	NULL
 	//);
-	//assert(m_texture);
+	//assert(m_Texture);
 
-	Renderer::CreateVertexShader(&m_vertexShader, &m_vertexLayout, "asset/shader/unlitTextureVS.cso");
+	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
-	Renderer::CreatePixelShader(&m_pixelShader, "asset/shader/unlitTexturePS.cso");
+	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 
-	m_position = XMFLOAT3(0.0f, 3.0f, 10.0f);
-	m_rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	m_Position = XMFLOAT3(0.0f, 3.0f, 10.0f);
+	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
-	m_textureOffset = XMFLOAT2(4.0f, 4.0f);
-	m_frame = -1;	// ++0から始める
-//	m_animationMag = 3;
+	m_TextureOffset = XMFLOAT2(4.0f, 4.0f);
+	m_Frame = -1;	// ++0から始める
+//	m_AnimationMag = 3;
 }
 
 void Explosion::Uninit()
 {
-	m_vertexBuffer->Release();
-//	m_texture->Release();
+	m_VertexBuffer->Release();
+//	m_Texture->Release();
 
-	m_vertexLayout->Release();
-	m_vertexShader->Release();
-	m_pixelShader->Release();
+	m_VertexLayout->Release();
+	m_VertexShader->Release();
+	m_PixelShader->Release();
 }
 
 void Explosion::Update()
 {
 	if (KeyLogger_Trigger(KL_TURN_RIGHT)) {
-		m_animationMag++;
+		m_AnimationMag++;
 	}
 	else if (KeyLogger_Trigger(KL_TURN_LEFT)) {
-		if (--m_animationMag < 1) {
-			m_animationMag = 1;
+		if (--m_AnimationMag < 1) {
+			m_AnimationMag = 1;
 		}
 	}
 
-	if (++m_frame > m_textureOffset.x * m_textureOffset.y * m_animationMag) {
-		m_frame = 0;
+	if (++m_Frame > m_TextureOffset.x * m_TextureOffset.y * m_AnimationMag) {
+		m_Frame = 0;
 		SetDead();
 		return;
 	}
@@ -109,14 +109,14 @@ void Explosion::Update()
 
 void Explosion::Draw()
 {
-	float fx = 1.0f / m_textureOffset.x;
-	float fy = 1.0f / m_textureOffset.y;
-	float x = m_frame / m_animationMag % (int)m_textureOffset.x * fx;
-	float y = m_frame / m_animationMag / (int)m_textureOffset.x * fy;
+	float fx = 1.0f / m_TextureOffset.x;
+	float fy = 1.0f / m_TextureOffset.y;
+	float x = m_Frame / m_AnimationMag % (int)m_TextureOffset.x * fx;
+	float y = m_Frame / m_AnimationMag / (int)m_TextureOffset.x * fy;
 
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;
-	Renderer::GetpDeviceContext()->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	Renderer::GetpDeviceContext()->Map(m_VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 	{
 		VERTEX_3DX* vertex = (VERTEX_3DX*)msr.pData;
 
@@ -140,13 +140,13 @@ void Explosion::Draw()
 		vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 		vertex[3].TexCoord = XMFLOAT2(x + fx, y + fy);
 	}
-	Renderer::GetpDeviceContext()->Unmap(m_vertexBuffer, 0);
+	Renderer::GetpDeviceContext()->Unmap(m_VertexBuffer, 0);
 
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_vertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_vertexShader, NULL, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_pixelShader, NULL, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, NULL, 0);
 
 	// マトリクス設定
 
@@ -163,8 +163,8 @@ void Explosion::Draw()
 	mtxInvView = XMMatrixTranspose(view);
 //	mtxInvView = XMMatrixInverse(nullptr, view);
 	
-	XMMATRIX scaleX = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMMATRIX transX = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
+	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = mtxInvView * transX;
 	XMFLOAT4X4 world4x4;
 	XMStoreFloat4x4(&world4x4, worldX);
@@ -175,7 +175,7 @@ void Explosion::Draw()
 	// 頂点バッファ設定
 	UINT stride = sizeof(VERTEX_3DX);
 	UINT offset = 0;
-	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
 
 
 	// マテリアル設定
@@ -188,7 +188,7 @@ void Explosion::Draw()
 
 	// テクスチャ設定
 	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, Texture::GetTexture(FILENAME));
-	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture);
+	//Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture);
 
 	// プリミティブトポロジ設定
 	Renderer::GetpDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
@@ -199,6 +199,6 @@ void Explosion::Draw()
 
 void Explosion::ReleaseTexture()
 {
-	m_texture->Release();
-	m_texture = nullptr;
+	m_Texture->Release();
+	m_Texture = nullptr;
 }
