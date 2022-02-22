@@ -7,10 +7,10 @@
 #include "enemyBehavior.h"
 #include "enemyBehaviorLookingFor.h"
 
-const float EnemyBehaviorLookingFor::LOOKINGFOR_COMPLETE = 5.0f;
+const float EnemyBehaviorLookingFor::LOOKINGFOR_COMPLETE = 5.0f;	// Š®—¹ŽžŠÔ
 
 
-// ‘Ò‹@
+// ’T‚·
 ActionBase::EXE_STATE EnemyBehaviorLookingFor::Run(Enemy * pEnemy, EnemyBehavior* pBehavior)
 {
 

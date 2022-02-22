@@ -13,7 +13,7 @@ private:
 
 	float m_Timer = 0.0f;
 	static const float UPDATE_TIMER_AMOUNT;	// updateで増やすタイマーの量
-	static const std::string DATA_FILE_NAME;	// csvファイル
+	static const std::string DATA_FILE_NAME;	// csvファイル名
 public:
 	EnemyBehavior() { Init(); }
 	EnemyBehavior(std::string fileName) { Init(fileName); }
@@ -22,9 +22,16 @@ public:
 	void Uninit();
 	void Upadate(Enemy* pEnemy);
 
+	// タイマーゲッター
 	float GetTimer() { return m_Timer; }
+	
+	// タイマーをリセット
 	void ResetTimer() { m_Timer = 0.0f; }
+
+	// 実行中のノードの名前取得
 	std::string GetActiveNodeName();
 private:
+
+	// CSVファイルからデータを読み込む
 	BehaviorTree* LoadDataFromCSV(BehaviorTree* pBehavior, std::string fileName);
 };

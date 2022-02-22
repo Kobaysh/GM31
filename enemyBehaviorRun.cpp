@@ -7,13 +7,13 @@
 #include "enemyBehavior.h"
 #include "enemyBehaviorRun.h"
 
-const float EnemyBehaviorRun::RUN_COMPLETE = 15.0f;
+const float EnemyBehaviorRun::RUN_COMPLETE = 15.0f;	// Š®—¹ŽžŠÔ
 
 #define NEARLY_ZERO_VALUE 0.001f
 #define ROTATION_SPEED (0.01f)
 #define ROTATION_VALUE (0.012f)
 
-// ‘Ò‹@
+// ‘–‚é
 ActionBase::EXE_STATE EnemyBehaviorRun::Run(Enemy * pEnemy,  EnemyBehavior* pBehavior)
 {
 

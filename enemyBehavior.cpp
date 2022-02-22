@@ -11,7 +11,7 @@
 
 
 const float EnemyBehavior::UPDATE_TIMER_AMOUNT = 0.01f;	// updateで増やすタイマーの量
-const std::string EnemyBehavior::DATA_FILE_NAME;
+const std::string EnemyBehavior::DATA_FILE_NAME;		// ファイル名
 
 // アクション名前
 enum ActionInstanceName
@@ -24,12 +24,12 @@ enum ActionInstanceName
 // 読み込むデータ
 struct AiData
 {
-	std::string ParentName;
-	std::string EntryName;
-	int Priority;
-	int SelectRule;
-	int JudgeNum;
-	int ActionNum;
+	std::string ParentName;	// 親ノード名
+	std::string EntryName;	// 登録ノード名
+	int Priority;			// 優先度
+	int SelectRule;			// 選択ルール
+	int JudgeNum;			// 判定数字
+	int ActionNum;			// アクション数字
 };
 
 // 初期化

@@ -13,5 +13,6 @@ public:
 		COMPLETE,	// Às¬Œ÷
 	};
 
+	// ÀsŠÖ”
 	virtual EXE_STATE Run(Enemy* pEnemy, class EnemyBehavior* pBehavior) = 0;
 };
