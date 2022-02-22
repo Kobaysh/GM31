@@ -27,6 +27,7 @@ void Billboard::Draw()
 	Scene* scene = ManagerT::GetScene();
 	XMMATRIX view = XMLoadFloat4x4(scene->GetGameObject<Camera>(GOT_CAMERA)->GetView());
 	
+	// •½sˆÚ“®¬•ªíœ
 	XMFLOAT4X4 temp;
 	XMStoreFloat4x4(&temp, view);
 	temp._41 = 0.0f;

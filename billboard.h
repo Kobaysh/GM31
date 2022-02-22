@@ -5,8 +5,8 @@ class Billboard : public GameObject
 {
 private:
 
-	ID3D11Buffer*				m_VertexBuffer = NULL;
-	ID3D11ShaderResourceView*	m_Texture = NULL;
+	ID3D11Buffer*				m_VertexBuffer = nullptr;	// 頂点バッファ
+	ID3D11ShaderResourceView*	m_Texture = nullptr;		// テクスチャ
 
 public:
 	void Init();
