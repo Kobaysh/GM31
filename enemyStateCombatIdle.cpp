@@ -29,7 +29,7 @@ void EnemyStateCombatIdle::Update(Enemy * pEnemy)
 	vLength = XMVector3Length(vToPlayer);
 	XMStoreFloat(&length, vLength);
 	// ƒvƒŒƒCƒ„[‚ª—£‚ê‚½‚ç’Ç‚¢‚©‚¯‚é
-	if (pEnemy->GetEnemyStateData()->m_combat_rad * 2 <= length)
+	if (pEnemy->GetEnemyStateData()->m_CombatRad * 2 <= length)
 	{
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		EnemyStatePattern* pStatePattern = 

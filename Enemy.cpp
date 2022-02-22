@@ -22,15 +22,15 @@
 const std::string Enemy::VS_FILE_NAME = "asset/shader/toonVS.cso";
 const std::string Enemy::PS_FILE_NAME = "asset/shader/toonPS.cso";
 
-EnemyGui* Enemy::m_enemyGui = nullptr;
+EnemyGui* Enemy::m_EnemyGui = nullptr;
 
 Enemy::Enemy():
-	m_maxHp(3),
+	m_MaxHp(3),
 	m_MoveSpeed (0.0f),
-	m_rotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f)),
-	m_stateData(0.0f, 0.0f,0.0f,0.0f,0.0f)
+	m_RotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f)),
+	m_StateData(0.0f, 0.0f,0.0f,0.0f,0.0f)
 {
-	m_hp = m_maxHp;
+	m_NowHp = m_MaxHp;
 	m_Position = (XMFLOAT3(0.0f, 0.0f, 0.0f));
 }
 
@@ -40,7 +40,7 @@ void Enemy::Init()
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
-	m_rotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_RotationSpeed = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// 各方向初期化
 	m_Direction.Forward	= XMFLOAT3(0.0f, 0.0f, -1.0f);
@@ -50,29 +50,29 @@ void Enemy::Init()
 	m_MoveVector = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// 状態変化に必要な変数初期化
-	m_stateData.m_eyesight_rad = 7.0f;
-	m_stateData.m_combat_rad = 3.0f;
+	m_StateData.m_EyesightRad = 7.0f;
+	m_StateData.m_CombatRad = 3.0f;
 
-	if (m_isUsingState)
+	if (m_IsUsingState)
 	{
-		m_state = new EnemyState();
+		m_State = new EnemyState();
 	}
 	else
 	{
-		m_behavior = new EnemyBehavior();
+		m_Behavior = new EnemyBehavior();
 	}
 	m_MoveSpeed = 0.05f;
 
 	// モデル読み込み
 	ModelInit();
 
-	m_frame = 0;
+	m_Frame = 0;
 
 	// 敵用のGUI追加
-	if (!m_enemyGui)
+	if (!m_EnemyGui)
 	{
-		m_enemyGui = new EnemyGui();
-		m_enemyGui->Init();
+		m_EnemyGui = new EnemyGui();
+		m_EnemyGui->Init();
 	}
 	// 当たり判定用のOBB追加
 	m_Obb = new OBB(m_Position, m_Rotation, XMFLOAT3(2.1f, 2.1f, 2.1f));
@@ -80,13 +80,13 @@ void Enemy::Init()
 
 
 	// HPバー
-	m_hpBar = new HpBar();
-	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT3D)->Init(m_Position, XMFLOAT3(1.0f, 0.2f, 1.0f), m_maxHp, m_maxHp);
+	m_HpBar = new HpBar();
+	ManagerT::GetScene()->AddGameObject(m_HpBar, GOT_OBJECT3D)->Init(m_Position, XMFLOAT3(1.0f, 0.2f, 1.0f), m_MaxHp, m_MaxHp);
 
 	// 体幹セット
-	m_trunk = new Trunk(30);
-	m_trunkBar = new TrunkBar();
-	ManagerT::GetScene()->AddGameObject(m_trunkBar, GOT_OBJECT3D)->Init(this);
+	m_Trunk = new Trunk(30);
+	m_TrunkBar = new TrunkBar();
+	ManagerT::GetScene()->AddGameObject(m_TrunkBar, GOT_OBJECT3D)->Init(this);
 
 
 	ShaderManager::Load(ShaderManager::Shader_Type::ST_VS, VS_FILE_NAME);
@@ -111,8 +111,8 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 scale)
 	fixScale.y = fixScale.y * 2 + 0.1f;
 	fixScale.z = fixScale.z * 2 + 0.1f;
 	m_Obb->SetScale(fixScale);
-	m_hpBar->SetPosition(pos);
-	m_hpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
+	m_HpBar->SetPosition(pos);
+	m_HpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
 }
 
 void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
@@ -135,25 +135,25 @@ void Enemy::Init(XMFLOAT3 pos, XMFLOAT3 rotation, XMFLOAT3 scale)
 	XMFLOAT3 fixScale = scale;
 	fixScale.y = fixScale.y * 1.7f + 0.1f;
 	m_Obb->SetScale(fixScale);
-	m_hpBar->SetPosition(pos);
-	m_hpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
+	m_HpBar->SetPosition(pos);
+	m_HpBar->SetScale(XMFLOAT3(1.0f, 0.3f, 1.0f));
 }
 
 void Enemy::Uninit()
 {
-	delete m_trunk;
-	if (m_isUsingState)
+	delete m_Trunk;
+	if (m_IsUsingState)
 	{
-		delete m_state;
+		delete m_State;
 	}
 	else
 	{
-		m_behavior->Uninit();
-		delete m_behavior;
+		m_Behavior->Uninit();
+		delete m_Behavior;
 	}
 	m_Obb->SetDead();
-	m_hpBar->SetDead();
-	m_trunkBar->SetDead();
+	m_HpBar->SetDead();
+	m_TrunkBar->SetDead();
 	m_explosionSE->Play(0.1f);
 	//m_VertexLayout->Release();
 	//m_VertexShader->Release();
@@ -163,18 +163,18 @@ void Enemy::Uninit()
 void Enemy::Update()
 {
 	MeshField* mf =  ManagerT::GetScene()->GetGameObject<MeshField>(GameObject::GOT_OBJECT3D);
-	m_frame++;
-	float frame = static_cast<float>(m_frame) * 1.0f;
-	m_model->Update(m_animationName.data(), frame);
-	if (m_isUsingState)
+	m_Frame++;
+	float frame = static_cast<float>(m_Frame) * 1.0f;
+	m_Model->Update(m_AnimationName.data(), frame);
+	if (m_IsUsingState)
 	{
-		m_state->Update(this);
+		m_State->Update(this);
 	}
 	else
 	{
-		m_behavior->Upadate(this);
+		m_Behavior->Upadate(this);
 	}
-	//	m_state->Update();
+	//	m_State->Update();
 	this->UpdateOBB();
 	this->CollisionOther();
 	this->MoveFromMoveVector();
@@ -220,7 +220,7 @@ void Enemy::Draw()
 	Renderer::SetWorldMatrixX(&world4x4);
 
 
-	m_model->Draw();
+	m_Model->Draw();
 	//	Model::Draw(m_ModelId);
 	//	m_Obb->SetisDraw(true);
 	//	m_Obb->Draw();
@@ -229,25 +229,25 @@ void Enemy::Draw()
 
 std::string Enemy::GetEnemyBehaviorName()
 {
-	return m_behavior->GetActiveNodeName();
+	return m_Behavior->GetActiveNodeName();
 }
 
 bool Enemy::Damage(int damage)
 {
 	if (damage < 0)return false;
-	m_hp -= damage;
-	m_hpBar->SetHP(m_hp, m_maxHp);
-	if (m_isUsingState)
+	m_NowHp -= damage;
+	m_HpBar->SetHP(m_NowHp, m_MaxHp);
+	if (m_IsUsingState)
 	{
 		EnemyStatePattern* pStatePattern =
-			m_state->ChangeState(new EnemyStateCombatDamaged(this));
-		m_state->SetStateName("EnemyStateCombatDamaged");
+			m_State->ChangeState(new EnemyStateCombatDamaged(this));
+		m_State->SetStateName("EnemyStateCombatDamaged");
 		delete pStatePattern;
 	}
-	if (m_hp <= 0)
+	if (m_NowHp <= 0)
 	{
-		m_hp = 0;
-		m_hpBar->SetHP(m_hp, m_maxHp);
+		m_NowHp = 0;
+		m_HpBar->SetHP(m_NowHp, m_MaxHp);
 		//	SetDead();
 		return true;
 	}
@@ -259,25 +259,25 @@ void Enemy::UpdateRotation()
 	//XMVECTOR vRot = XMLoadFloat3(&m_Rotation);
 	//if (Input::GetKeyPress(VK_RIGHT))
 	//{
-	//	m_rotationSpeed.y= 0.01f;
+	//	m_RotationSpeed.y= 0.01f;
 	//}
 	//if (Input::GetKeyPress(VK_LEFT))
 	//{
-	//	m_rotationSpeed.y = -0.01f;
+	//	m_RotationSpeed.y = -0.01f;
 	//}
-	// vRot += XMLoadFloat3(&m_rotationSpeed);
+	// vRot += XMLoadFloat3(&m_RotationSpeed);
 	//XMStoreFloat3(&m_Rotation, vRot);
 	//XMVECTOR vForward = XMLoadFloat3(&m_Direction.Forward),vRight = XMLoadFloat3(&m_Direction.Right),vUp;
 	////	XMMATRIX mtxRot = XMMatrixRotationAxis(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_Rotation.y);
-	//XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_rotationSpeed));
+	//XMMATRIX mtxRot = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_RotationSpeed));
 	//vForward =  XMVector3TransformNormal(vForward, mtxRot);
 	//vRight =  XMVector3TransformNormal(vRight, mtxRot);
 	//vUp = XMVector3Cross(vForward, vRight);
 	//XMStoreFloat3(&m_Direction.Forward, vForward);
 	//XMStoreFloat3(&m_Direction.Right, vRight);
 	//XMStoreFloat3(&m_Direction.Up, vUp);
-	m_Obb->SetRotation(m_Rotation, m_rotationSpeed);
-	//	m_Rotation.y += m_rotationSpeed.y;
+	m_Obb->SetRotation(m_Rotation, m_RotationSpeed);
+	//	m_Rotation.y += m_RotationSpeed.y;
 	//m_Obb->SetRotationFromForwardRightVector(m_Direction.Forward,m_Direction.Right, m_Rotation);
 }
 
@@ -300,9 +300,9 @@ void Enemy::MoveFromMoveVector()
 	XMStoreFloat3(&m_Position, vPos);
 	XMFLOAT3 hpBarPos = m_Position;
 	hpBarPos.y += 2.0f* m_Scale.y;
-	m_hpBar->SetPosition(hpBarPos);
+	m_HpBar->SetPosition(hpBarPos);
 	hpBarPos.y -= 0.4f* m_Scale.y;
-	m_trunkBar->SetPosition(hpBarPos);
+	m_TrunkBar->SetPosition(hpBarPos);
 }
 
 void Enemy::CollisionOther()
@@ -327,30 +327,30 @@ void Enemy::CollisionOther()
 
 void Enemy::ModelInit()
 {
-	m_model = new AnimationModel();
-	m_model->Load("asset\\model\\enemy\\ninja\\Ninja.fbx");
+	m_Model = new AnimationModel();
+	m_Model->Load("asset\\model\\enemy\\ninja\\Ninja.fbx");
 
-	m_animationName = "idle_idle";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Ninja_Idle.fbx", m_animationName.data());
+	m_AnimationName = "idle_idle";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Ninja_Idle.fbx", m_AnimationName.data());
 
-	m_animationName = "run";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Run.fbx", m_animationName.data());
+	m_AnimationName = "run";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Run.fbx", m_AnimationName.data());
 
-	m_animationName = "combat_idle";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Combat_Idle.fbx", m_animationName.data());
+	m_AnimationName = "combat_idle";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Combat_Idle.fbx", m_AnimationName.data());
 
-	m_animationName = "kick";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\quick_kick.fbx", m_animationName.data());
-	m_animationName = "back_kick";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\back_kick.fbx", m_animationName.data());
+	m_AnimationName = "kick";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\quick_kick.fbx", m_AnimationName.data());
+	m_AnimationName = "back_kick";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\back_kick.fbx", m_AnimationName.data());
 
-	m_animationName = "guard";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\guard.fbx", m_animationName.data());
+	m_AnimationName = "guard";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\guard.fbx", m_AnimationName.data());
 
-	m_animationName = "hit_reaction";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Hit_Reaction.fbx", m_animationName.data());
-	m_animationName = "dying";
-	m_model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Dying.fbx", m_animationName.data());
+	m_AnimationName = "hit_reaction";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Hit_Reaction.fbx", m_AnimationName.data());
+	m_AnimationName = "dying";
+	m_Model->LoadAnimaiton("asset\\model\\enemy\\ninja\\Dying.fbx", m_AnimationName.data());
 
-	m_animationName = "idle_idle";
+	m_AnimationName = "idle_idle";
 }

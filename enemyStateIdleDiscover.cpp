@@ -84,7 +84,7 @@ void EnemyStateIdleDiscover::Update(Enemy * pEnemy)
 	pEnemy->SetRotation(rotation);
 
 	// í“¬”¼Œa‚É‹ß‚Ã‚¢‚½‚çí“¬ó‘Ô‚ÉˆÚs
-	if (pEnemy->GetEnemyStateData()->m_combat_rad >= length)
+	if (pEnemy->GetEnemyStateData()->m_CombatRad >= length)
 	{
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		EnemyStatePattern* pStatePattern = 

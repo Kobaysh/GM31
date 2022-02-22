@@ -89,7 +89,7 @@ ActionBase::EXE_STATE EnemyBehaviorRun::Run(Enemy * pEnemy,  EnemyBehavior* pBeh
 	pEnemy->SetRotation(rotation);
 
 	// í“¬”¼Œa‚É‹ß‚Ã‚¢‚½‚ç³íI—¹
-	if (pEnemy->GetEnemyStateData()->m_combat_rad >= length)
+	if (pEnemy->GetEnemyStateData()->m_CombatRad >= length)
 	{
 		pEnemy->SetMoveVector(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		pBehavior->ResetTimer();

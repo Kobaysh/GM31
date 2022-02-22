@@ -11,7 +11,7 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 {
 	Enemy::EnemyStateData* stateData =  pEnemy->GetEnemyStateData();
 	//	if (m_radiusDiscoverPlayer <= 0.0f)
-	if (stateData->m_eyesight_rad <= 0.0f)
+	if (stateData->m_EyesightRad <= 0.0f)
 	{
 		EnemyStatePattern* pStatePattern =
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleIdle);
@@ -28,10 +28,10 @@ void EnemyStateIdleBeware::Update(Enemy * pEnemy)
 	float lengthEToP;
 	XMStoreFloat(&lengthEToP, vLength);
 	lengthEToP = fabsf(lengthEToP);
-	if (lengthEToP <= stateData->m_eyesight_rad)
+	if (lengthEToP <= stateData->m_EyesightRad)
 	{
 		// ƒvƒŒƒCƒ„[”­Œ©
-		pEnemy->GetEnemyStateData()->m_isDiscover = true;
+		pEnemy->GetEnemyStateData()->m_IsDiscover = true;
 		pEnemy->SetRotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f));
 		EnemyStatePattern* pStatePattern =
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateIdleDiscover(pEnemy));

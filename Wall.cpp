@@ -136,6 +136,6 @@ void Wall::Draw()
 
 	//// ƒ|ƒŠƒSƒ“•`‰æ
 	//Renderer::GetpDeviceContext()->Draw(4, 0);
-	//m_model->Draw();
+	//m_Model->Draw();
 	Model::Draw(m_ModelId);
 }

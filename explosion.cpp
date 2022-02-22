@@ -75,7 +75,7 @@ void Explosion::Init()
 	m_Scale = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 	m_textureOffset = XMFLOAT2(4.0f, 4.0f);
-	m_frame = -1;	// ++0から始める
+	m_Frame = -1;	// ++0から始める
 //	m_animationMag = 3;
 }
 
@@ -100,8 +100,8 @@ void Explosion::Update()
 		}
 	}
 
-	if (++m_frame > m_textureOffset.x * m_textureOffset.y * m_animationMag) {
-		m_frame = 0;
+	if (++m_Frame > m_textureOffset.x * m_textureOffset.y * m_animationMag) {
+		m_Frame = 0;
 		SetDead();
 		return;
 	}
@@ -111,8 +111,8 @@ void Explosion::Draw()
 {
 	float fx = 1.0f / m_textureOffset.x;
 	float fy = 1.0f / m_textureOffset.y;
-	float x = m_frame / m_animationMag % (int)m_textureOffset.x * fx;
-	float y = m_frame / m_animationMag / (int)m_textureOffset.x * fy;
+	float x = m_Frame / m_animationMag % (int)m_textureOffset.x * fx;
+	float y = m_Frame / m_animationMag / (int)m_textureOffset.x * fy;
 
 	// 頂点データを書き換え
 	D3D11_MAPPED_SUBRESOURCE msr;

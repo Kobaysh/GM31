@@ -5,7 +5,7 @@ class Rock : public GameObject
 {
 private:
 
-//	Model* m_model;
+//	Model* m_Model;
 	int m_ModelId;
 	class OBB* m_Obb = nullptr;
 

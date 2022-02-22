@@ -105,10 +105,10 @@ void TitleLogo::Init()
 		"asset\\texture\\darkirouls.png",
 		NULL,
 		NULL,
-		&m_texture2,
+		&m_Texture2,
 		NULL
 	);
-	assert(m_texture2);
+	assert(m_Texture2);
 
 
 
@@ -124,7 +124,7 @@ void TitleLogo::Uninit()
 	m_VertexBuffer->Release();
 	m_Texture->Release();
 	m_VertexBuffer2->Release();
-	m_texture2->Release();
+	m_Texture2->Release();
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();
@@ -163,6 +163,6 @@ void TitleLogo::Draw()
 	Renderer::GetpDeviceContext()->IASetVertexBuffers(0, 1, &m_VertexBuffer2, &stride, &offset);
 
 	// テクスチャ設定
-	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_texture2);
+	Renderer::GetpDeviceContext()->PSSetShaderResources(0, 1, &m_Texture2);
 	Renderer::GetpDeviceContext()->Draw(4, 0);
 }

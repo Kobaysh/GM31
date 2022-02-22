@@ -41,7 +41,6 @@ void HpPlayer::Init()
 	bd.Usage = D3D11_USAGE_DYNAMIC;	// 頂点バッファを動的変更可能に
 	bd.ByteWidth = sizeof(VERTEX_3DX) * 4; // バイト幅
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;// バッファの種類
-											//	bd.CPUAccessFlags = 0;
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	D3D11_SUBRESOURCE_DATA sd{};
 	ZeroMemory(&sd, sizeof(sd));
@@ -72,8 +71,8 @@ void HpPlayer::Uninit()
 void HpPlayer::Draw()
 {
 	// 最大HPと現在のHPから割合を取得
-	float per = (float)m_nowHP / m_maxHP;
-	//	if (m_nowHP == m_maxHP) return;
+	float per = (float)m_NowHP / m_MaxHP;
+	//	if (m_NowHP == m_MaxHP) return;
 
 	XMFLOAT4 color = XMFLOAT4(0, 0, 0, 0.8f);
 

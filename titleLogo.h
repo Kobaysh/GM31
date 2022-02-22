@@ -21,6 +21,6 @@ private:
 
 
 	ID3D11Buffer*				m_VertexBuffer2 = nullptr;
-	ID3D11ShaderResourceView*	m_texture2 = nullptr;
+	ID3D11ShaderResourceView*	m_Texture2 = nullptr;
 };
 

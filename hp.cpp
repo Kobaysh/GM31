@@ -80,8 +80,8 @@ void HpBar::Draw()
 		return;
 	}
 	// Å‘åHP‚ÆŒ»İ‚ÌHP‚©‚çŠ„‡‚ğæ“¾
-	float per = (float)m_nowHP / m_maxHP;
-//	if (m_nowHP == m_maxHP) return;
+	float per = (float)m_NowHP / m_MaxHP;
+//	if (m_NowHP == m_MaxHP) return;
 
 	XMFLOAT4 color = XMFLOAT4(0, 0, 0, 1.0f);
 

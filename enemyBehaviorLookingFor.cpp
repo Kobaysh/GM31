@@ -17,7 +17,7 @@ ActionBase::EXE_STATE EnemyBehaviorLookingFor::Run(Enemy * pEnemy, EnemyBehavior
 
 
 	Enemy::EnemyStateData* stateData =  pEnemy->GetEnemyStateData();
-	if (stateData->m_eyesight_rad <= 0.0f)
+	if (stateData->m_EyesightRad <= 0.0f)
 	{
 		// Ž‹ŠE‚ª0ˆÈ‰º‚È‚çŽ¸”s
 		pBehavior->ResetTimer();
@@ -34,10 +34,10 @@ ActionBase::EXE_STATE EnemyBehaviorLookingFor::Run(Enemy * pEnemy, EnemyBehavior
 	float lengthEToP;
 	XMStoreFloat(&lengthEToP, vLength);
 	lengthEToP = fabsf(lengthEToP);
-	if (lengthEToP <= stateData->m_eyesight_rad)
+	if (lengthEToP <= stateData->m_EyesightRad)
 	{
 		// ƒvƒŒƒCƒ„[”­Œ©
-		pEnemy->GetEnemyStateData()->m_isDiscover = true;
+		pEnemy->GetEnemyStateData()->m_IsDiscover = true;
 		pEnemy->SetRotationSpeed(XMFLOAT3(0.0f,0.0f,0.0f));
 		pBehavior->ResetTimer();
 		return EXE_STATE::COMPLETE;

@@ -19,10 +19,10 @@ ID3D11InputLayout* Rock::m_VertexLayout = nullptr;
 void Rock::Init()
 {
 
-//	m_model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
-//	m_model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
-//	m_model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
-//	m_model->Load("asset\\model\\rock\\rock.obj");	 // \\か//しか使えない
+//	m_Model->Load("asset\\model\\torus\\torus.obj"); // \\か//しか使えない
+//	m_Model->Load("asset\\model\\bricktorus\\bricktorus.obj");	 // \\か//しか使えない
+//	m_Model->Load("asset\\model\\test\\DX.obj");	 // \\か//しか使えない
+//	m_Model->Load("asset\\model\\rock\\rock.obj");	 // \\か//しか使えない
 	m_ModelId = Model::SetModelLoadfile("asset\\model\\rock\\rock.obj");
 	Model::Load(m_ModelId);
 //	Model::AllLoad();
@@ -79,8 +79,8 @@ void Rock::Init(XMFLOAT3 pos, XMFLOAT3 rot, XMFLOAT3 scale)
 
 void Rock::Uninit()
 {
-	//m_model->Unload();
-	//delete m_model;
+	//m_Model->Unload();
+	//delete m_Model;
 	if (m_Obb)
 	{
 	//	m_Obb->SetDead();
@@ -148,6 +148,6 @@ void Rock::Draw()
 
 
 	Model::Draw(m_ModelId);
-	//m_model->Draw();
+	//m_Model->Draw();
 //	m_Obb->Draw();
 }

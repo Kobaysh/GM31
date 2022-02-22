@@ -3,8 +3,8 @@
 class HpPlayer : public GameObject
 {
 private:
-	int m_nowHP;
-	int m_maxHP;
+	int m_NowHP;
+	int m_MaxHP;
 	ID3D11Buffer* m_VertexBuffer;
 public:
 	void Init()override;
@@ -14,5 +14,5 @@ public:
 	void Draw()override;
 	void Draw_Bar(XMFLOAT4 color, float perHP);
 	void Draw_OutLine(XMFLOAT4 color);
-	void SetHP(int nowHp, int maxHP) { m_nowHP = nowHp, m_maxHP = maxHP; }
+	void SetHP(int nowHp, int maxHP) { m_NowHP = nowHp, m_MaxHP = maxHP; }
 };

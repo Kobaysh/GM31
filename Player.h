@@ -1,6 +1,5 @@
 #pragma once
 #include "gameObject.h"
-#include "playerState.h"
 
 
 class Player : public GameObject
@@ -8,43 +7,41 @@ class Player : public GameObject
 private:
 
 
-	class PlayerState  m_playerState;
-	class HpPlayer* m_hpBar = nullptr;
-//	class Model* m_model;
-	class Audio* m_slashSE= nullptr;
+	class HpPlayer* m_HpBar = nullptr;
+//	class Model* m_Model;
+	class Audio* m_SlashSE= nullptr;
 	class OBB* m_Obb= nullptr;
-	class OBB* m_obbAttack= nullptr;
-	class AnimationModel*  m_model= nullptr;
-	class LockOnCircle* m_lockOnCircle = nullptr;
+	class OBB* m_ObbAttack= nullptr;
+	class AnimationModel*  m_Model= nullptr;
+	class LockOnCircle* m_LockOnCircle = nullptr;
 
 	bool m_IsActive = true;
 	bool m_IsMovable = true;
-	float m_speed;
+	float m_Speed;
 
 	XMFLOAT3 m_MoveVector;
-	int m_sign;
+	int m_Sign;
 
-	bool m_isAttack = false;
-	bool m_isGuard = false;
-	bool m_isjump = false;
-	float m_jumpForce;
+	bool m_IsAttack = false;
+	bool m_IsGuard = false;
+	bool m_Isjump = false;
+	float m_JumpForce;
 
-	float m_timerAttack;
-	float m_timerGuard;
+	float m_TimerAttack;
+	float m_TimerGuard;
 
-	int m_nowHp;					// ヒットポイント
-	int m_maxHp;					// Maxヒットポイント
-	int m_attackPower;				// 攻め力
+	int m_NowHp;					// ヒットポイント
+	int m_MaxHp;					// Maxヒットポイント
+	int m_AttackPower;				// 攻め力
 
-	int m_soundVolume;				// プレイヤーの出す音
-	int m_nowWepon;					// 現在装備中の忍び義手の種類(番号)
+	int m_SoundVolume;				// プレイヤーの出す音
 	
- 	class Trunk* m_trunk;
+ 	class Trunk* m_Trunk;
 
-	int m_frame;
-	std::string m_animationName;
+	int m_Frame;
+	std::string m_AnimationName;
 
-	float m_lockOnRad;				// ロックオン距離
+	float m_LockOnRad;				// ロックオン距離
 
 public:
 	void Init();
@@ -53,23 +50,22 @@ public:
 	void Draw();
 
 
-	//void VoidDimension();
 	void ChangeCameraDir();
 	XMFLOAT3 GetMove()const { return m_MoveVector; }
-	float GetSpeed() { return m_speed; }
+	float GetSpeed() { return m_Speed; }
 	OBB& GetObb() { return *m_Obb; }
 
 	bool GetIsActive() const { return m_IsActive; }
 	bool GetMovable() const { return m_IsMovable; }
 	void SetIsActive(bool active) { m_IsActive = active; }
 	void SetMovable(bool movable) { m_IsMovable = movable; }
-	bool GetIsGuarding() { return m_isGuard; }
-	float GetTimerGuard() { return m_timerGuard; }
-	Trunk* GetTrunk() { return m_trunk; }
+	bool GetIsGuarding() { return m_IsGuard; }
+	float GetTimerGuard() { return m_TimerGuard; }
+	Trunk* GetTrunk() { return m_Trunk; }
 
 	bool Damage(int damage);
-	int GetNowHp() { return m_nowHp; }
-	int GetMaxHp() { return m_maxHp; }
+	int GetNowHp() { return m_NowHp; }
+	int GetMaxHp() { return m_MaxHp; }
 private:
 	void ModelInit();
 	void UpdateObb();

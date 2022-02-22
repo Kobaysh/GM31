@@ -15,7 +15,6 @@
 #include "meshField.h"
 #include "lockOnCircle.h"
 #include "trunk.h"
-#include "playerState.h"
 #include "player_hp.h"
 #include "player.h"
 
@@ -37,43 +36,43 @@ void Player::Init()
 	m_Direction.Forward	= XMFLOAT3(0.0f, 0.0f, 1.0f);
 	m_Direction.Right	= XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_Direction.Up		= XMFLOAT3(0.0f, 1.0f, 0.0f);
-	m_speed = MOVE_SPEED;
-	m_timerAttack = 0.0f;
-	m_timerGuard = 0.0f;
-	m_maxHp = m_nowHp = 10;
+	m_Speed = MOVE_SPEED;
+	m_TimerAttack = 0.0f;
+	m_TimerGuard = 0.0f;
+	m_MaxHp = m_NowHp = 10;
 
 	m_Obb = new OBB(m_Position, m_Rotation ,XMFLOAT3(1.0f, 1.7f, 1.0f));
 	ManagerT::GetScene()->AddGameObject(m_Obb, GOT_OBJECT3D);
-	m_obbAttack = nullptr;
+	m_ObbAttack = nullptr;
 
-	m_trunk = new Trunk(100);
+	m_Trunk = new Trunk(100);
 
-	m_hpBar = new HpPlayer();
-	ManagerT::GetScene()->AddGameObject(m_hpBar, GOT_OBJECT2D)->Init(XMFLOAT3(20.0f, SCREEN_HEIGHT * 0.97f, 1.0f), XMFLOAT3(50.0f, 10.0f, 1.0f), m_nowHp, m_maxHp);
+	m_HpBar = new HpPlayer();
+	ManagerT::GetScene()->AddGameObject(m_HpBar, GOT_OBJECT2D)->Init(XMFLOAT3(20.0f, SCREEN_HEIGHT * 0.97f, 1.0f), XMFLOAT3(50.0f, 10.0f, 1.0f), m_NowHp, m_MaxHp);
 
-	m_lockOnRad = 10.0f;
+	m_LockOnRad = 10.0f;
 
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/pixelLightingVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, PS_NAME);
 
-	m_slashSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-	m_slashSE->Load("asset\\audio\\se\\slash.wav");
+	m_SlashSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+	m_SlashSE->Load("asset\\audio\\se\\slash.wav");
 }
 
 void Player::Uninit()
 {
-	delete m_trunk;
+	delete m_Trunk;
 	m_Obb->SetDead();
-	if (m_hpBar)
+	if (m_HpBar)
 	{
-		m_hpBar->SetDead();
+		m_HpBar->SetDead();
 	}
-	if (m_model)
+	if (m_Model)
 	{
-		m_model->Unload();
-		delete m_model;
-		m_model = nullptr;
+		m_Model->Unload();
+		delete m_Model;
+		m_Model = nullptr;
 	}
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
@@ -82,20 +81,17 @@ void Player::Uninit()
 
 void Player::Update()
 {
-	m_playerState.Update();
-	m_frame++;
-	float frame = static_cast<float>(m_frame) * 0.7f;
-	m_model->Update(m_animationName.data(), static_cast<int>(frame));
-	//m_model->Update(m_animationName.data(),++m_frame);
-	//	m_model->Update(++m_frame);
+	m_Frame++;
+	float frame = static_cast<float>(m_Frame) * 0.7f;
+	m_Model->Update(m_AnimationName.data(), static_cast<int>(frame));
+	//m_Model->Update(m_AnimationName.data(),++m_Frame);
+	//	m_Model->Update(++m_Frame);
 	//	Jump();
 	this->Move();
 	this->UpdateObb();
-	//	this->ChangeCameraDir();
 	this->Slash();
 	this->Guard();
 	this->LockOn();
-	//	this->Shoot();
 	this->CollisionOther();
 	// 衝突判定の後移動
 	this->MoveFromMoveVector();
@@ -115,7 +111,6 @@ void Player::Draw()
 	XMMATRIX scaleX = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z);
 	XMMATRIX rotX = XMMatrixRotationY(-atan2f(m_Direction.Forward.z, m_Direction.Forward.x));
 	rotX *= XMMatrixRotationY(XMConvertToRadians(-90));
-	//rotX = XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	XMMATRIX transX = XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
 	XMMATRIX worldX = scaleX * rotX * transX;
 	XMFLOAT4X4 world4x4;
@@ -123,7 +118,7 @@ void Player::Draw()
 	Renderer::SetWorldMatrixX(&world4x4);
 
 
-	m_model->Draw();
+	m_Model->Draw();
 	// デバッグ用OBB表示
 	//	m_Obb->SetisDraw(true);
 	//	m_Obb->Draw();
@@ -144,34 +139,34 @@ void Player::Move()
 			XMFLOAT3 temp = pCamera->GetDirection()->Forward;
 			temp.y = 0.0f;
 			direction += XMLoadFloat3(&temp);
-			m_speed = MOVE_SPEED;
+			m_Speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_DOWN)) {
 			XMFLOAT3 temp = pCamera->GetDirection()->Forward;
 			temp.y = 0.0f;
 			direction -= XMLoadFloat3(&temp);
-			m_speed = MOVE_SPEED;
+			m_Speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_RIGHT)) {
 			direction += XMLoadFloat3(&pCamera->GetDirection()->Right);
-			m_speed = MOVE_SPEED;
+			m_Speed = MOVE_SPEED;
 		}
 		if (KeyLogger_Press(KL_LEFT)) {
 			direction -= XMLoadFloat3(&pCamera->GetDirection()->Right);
-			m_speed = MOVE_SPEED;
+			m_Speed = MOVE_SPEED;
 		}
-		if (m_animationName != "jump")
+		if (m_AnimationName != "jump")
 		{
-			if (m_animationName != "run")
+			if (m_AnimationName != "run")
 			{
 				this->ChangeAnimation("run");
 			}
 		}
 	}
 	else{
-		m_speed = 0.0f;
-		if (m_animationName != "jump" && m_animationName != "attack" && !m_isGuard) {
-			if (m_animationName != "idle")
+		m_Speed = 0.0f;
+		if (m_AnimationName != "jump" && m_AnimationName != "attack" && !m_IsGuard) {
+			if (m_AnimationName != "idle")
 			{
 				this->ChangeAnimation("idle");
 			}
@@ -182,14 +177,14 @@ void Player::Move()
 
 	// 回転処理
 	XMVECTOR cross = XMVector3Cross(vForward, direction);
-	m_sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
+	m_Sign = cross.m128_f32[1] < 0.0f ? -1 : 1;
 
 	XMVECTOR vDot = XMVector3Dot(vForward, direction);
 	float fDot = 0.0f;
 	XMStoreFloat(&fDot, vDot);
 	float dir_difference = acosf(fDot);
 
-	float rot = ROTATION_VALUE * m_sign;
+	float rot = ROTATION_VALUE * m_Sign;
 	if (fabsf(dir_difference) <= NEARLY_ZERO_VALUE) {
 		dir_difference = 0.0f;
 		rot = 0.0f;
@@ -197,7 +192,7 @@ void Player::Move()
 	if (rot > dir_difference) {
 		rot = dir_difference;
 	}
-	if (m_speed <= 0.0f) {
+	if (m_Speed <= 0.0f) {
 		rot = 0.0f;
 	}
 
@@ -213,7 +208,7 @@ void Player::Move()
 	XMStoreFloat(&fDot, vDot);
 	m_Rotation.y  = acosf(fDot);	
 
-	//	vPositon += direction * m_speed;
+	//	vPositon += direction * m_Speed;
 
 	// ジャンプとフィールド上処理
 	MeshField* mf = ManagerT::GetScene()->GetGameObject<MeshField>(GOT_OBJECT3D);
@@ -222,20 +217,20 @@ void Player::Move()
 
 	XMVECTOR jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR vGravity = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f) * GRAVITY;
-	if (m_isjump) {
+	if (m_Isjump) {
 		XMVECTOR temp = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 
 		temp= XMVector3Normalize(XMLoadFloat3(&m_Direction.Up));
-		jumpVector = temp * m_jumpForce;
-		//	m_jumpForce -= GRAVITY;
+		jumpVector = temp * m_JumpForce;
+		//	m_JumpForce -= GRAVITY;
 		temp = vPositon + jumpVector;
 		if (temp.m128_f32[1] - 0.1f<= mf->GetHeight(tempHeight)) {
-			if(m_animationName != "idle"){
+			if(m_AnimationName != "idle"){
 				this->ChangeAnimation("idle");
-				//	m_animationName = "idle";
+				//	m_AnimationName = "idle";
 			}
-			m_isjump = false;
+			m_Isjump = false;
 			vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.1f;	// 接地面+サイズ
 																		//	jumpVector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		}
@@ -251,17 +246,17 @@ void Player::Move()
 	//	vPositon.m128_f32[1] = mf->GetHeight(tempHeight) + 0.5f;	// 接地面+サイズ
 	//}
 
-	XMStoreFloat3(&m_MoveVector, (direction * m_speed) + jumpVector + vGravity);
+	XMStoreFloat3(&m_MoveVector, (direction * m_Speed) + jumpVector + vGravity);
 	XMStoreFloat3(&m_Position, vPositon);
 }
 
 void Player::Jump()
 {
 	if(KeyLogger_Trigger(KL_JUMP)) {
-		if (m_isjump) return;
+		if (m_Isjump) return;
 		this->ChangeAnimation("jump");
-		m_jumpForce = 0.4f;
-		m_isjump = true;
+		m_JumpForce = 0.4f;
+		m_Isjump = true;
 	}
 }
 
@@ -273,57 +268,57 @@ void Player::Slash()
 	if (Input::GetMouseActive())
 	{
 
-		if (!m_isAttack &&Input::GetMouseTrigger(Input::MouseButton::Left))
+		if (!m_IsAttack &&Input::GetMouseTrigger(Input::MouseButton::Left))
 		{
 			this->ChangeAnimation("attack");
-			m_isAttack = true;
-			m_timerAttack = 0.0f;
+			m_IsAttack = true;
+			m_TimerAttack = 0.0f;
 			XMFLOAT3 obbPos;
 			XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_Direction.Forward) * 1;
 			XMStoreFloat3(&obbPos, vObbPos);
 			obbPos.y += 0.5f;
-			m_obbAttack = nullptr;
-			m_obbAttack = new OBB(obbPos, m_Rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
-			ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
+			m_ObbAttack = nullptr;
+			m_ObbAttack = new OBB(obbPos, m_Rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
+			ManagerT::GetScene()->AddGameObject(m_ObbAttack, GameObject::GOT_OBJECT3D);
 		}
 	}
-	else if (!m_isAttack && KeyLogger_Trigger(KL_ATTACK)) 
+	else if (!m_IsAttack && KeyLogger_Trigger(KL_ATTACK)) 
 	{
 		this->ChangeAnimation("attack");
-		m_isAttack = true;
-		m_timerAttack = 0.0f;
+		m_IsAttack = true;
+		m_TimerAttack = 0.0f;
 
 		XMFLOAT3 obbPos;
 		XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_Direction.Forward) * 1;
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 0.5f;
-		m_obbAttack = nullptr;
-		m_obbAttack = new OBB(obbPos, m_Rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
-		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
+		m_ObbAttack = nullptr;
+		m_ObbAttack = new OBB(obbPos, m_Rotation, XMFLOAT3(1.0f, 0.5f,1.5f));
+		ManagerT::GetScene()->AddGameObject(m_ObbAttack, GameObject::GOT_OBJECT3D);
 	}
 	//	if (Input::GetMouseDown(Input::MouseButton::Left))
 
 
-	if (m_isAttack)
+	if (m_IsAttack)
 	{
-		m_timerAttack += 0.1f;
+		m_TimerAttack += 0.1f;
 		// 座標更新
 		XMFLOAT3 obbPos;
 		XMVECTOR vObbPos = XMLoadFloat3(&m_Position) + XMLoadFloat3(&m_Direction.Forward) * 1;
 		XMStoreFloat3(&obbPos, vObbPos);
 		obbPos.y += 0.5f;
-		m_obbAttack->SetPosition(obbPos);
+		m_ObbAttack->SetPosition(obbPos);
 
-		if (m_timerAttack >= 4.0f)
+		if (m_TimerAttack >= 4.0f)
 		{
 			// 敵との衝突判定
 			std::vector<Enemy*> enemyList = ManagerT::GetScene()->GetGameObjects<Enemy>(GameObject::GOT_OBJECT3D);
 			for (Enemy* enemy : enemyList)
 			{
-				if (OBB::ColOBBs(*m_obbAttack, enemy->GetObb())){
+				if (OBB::ColOBBs(*m_ObbAttack, enemy->GetObb())){
 					if (enemy->GetIsUsingState()){
 						// 攻撃が当たった
-						m_slashSE->Play();
+						m_SlashSE->Play();
 						enemy->GetEnemyState()->SetIsCollided(true);
 						if (enemy->GetTrunk()->GetIsCollapsed()){
 							// 体幹が崩れているなら即死
@@ -346,22 +341,22 @@ void Player::Slash()
 							}
 						}
 
-						m_isAttack = false;
+						m_IsAttack = false;
 						this->ChangeAnimation("idle");
-						//	m_animationName = "idle";
-						m_obbAttack->SetDead();
+						//	m_AnimationName = "idle";
+						m_ObbAttack->SetDead();
 					}
 				}
 			}
 		}
 
 	}
-	if (m_isAttack && m_timerAttack >= 10.0f)
+	if (m_IsAttack && m_TimerAttack >= 10.0f)
 	{
-		m_isAttack = false;
+		m_IsAttack = false;
 		this->ChangeAnimation("idle");
-		//	m_animationName = "idle";
-		m_obbAttack->SetDead();
+		//	m_AnimationName = "idle";
+		m_ObbAttack->SetDead();
 	}
 }
 
@@ -373,7 +368,7 @@ void Player::Shoot()
 	//if (KeyLogger_Trigger(KL_GUARD)) {
 	//	
 	//	Bullet::Create(m_Position, m_Direction.Forward, 0.3f);
-	//	m_slashSE->Play(0.1f);
+	//	m_SlashSE->Play(0.1f);
 	//	
 	//}
 }
@@ -385,45 +380,45 @@ void Player::Guard()
 
 	if (Input::GetMouseActive())
 	{
-		if (!m_isAttack && !m_isGuard && Input::GetMouseTrigger(Input::MouseButton::Right))
+		if (!m_IsAttack && !m_IsGuard && Input::GetMouseTrigger(Input::MouseButton::Right))
 		{
-			m_isGuard = true;
-			m_timerGuard = 0.0f;
+			m_IsGuard = true;
+			m_TimerGuard = 0.0f;
 			this->ChangeAnimation("guard_start");
 		}
-		else if (m_isGuard && Input::GetMouseDown(Input::MouseButton::Right))
+		else if (m_IsGuard && Input::GetMouseDown(Input::MouseButton::Right))
 		{
-			if (m_timerGuard >= 1.0f)
+			if (m_TimerGuard >= 1.0f)
 			{
-				if(m_animationName != "guard_idle")
+				if(m_AnimationName != "guard_idle")
 					this->ChangeAnimation("guard_idle");
 			}
-			m_timerGuard += 0.1f;
+			m_TimerGuard += 0.1f;
 		}
-		else if (m_isGuard && Input::GetMouseUp(Input::MouseButton::Right))
+		else if (m_IsGuard && Input::GetMouseUp(Input::MouseButton::Right))
 		{
-			m_isGuard = false;
+			m_IsGuard = false;
 		}
 	}
 	else
 	{
-		if (!m_isAttack && !m_isGuard && KeyLogger_Trigger(KL_GUARD))
+		if (!m_IsAttack && !m_IsGuard && KeyLogger_Trigger(KL_GUARD))
 		{
-			m_isGuard = true;
-			m_timerGuard = 0.0f;
+			m_IsGuard = true;
+			m_TimerGuard = 0.0f;
 			this->ChangeAnimation("guard_start");
 		}
-		else if (m_isGuard && KeyLogger_Press(KL_GUARD))
+		else if (m_IsGuard && KeyLogger_Press(KL_GUARD))
 		{
-			if (m_timerGuard >= 1.0f)
+			if (m_TimerGuard >= 1.0f)
 			{
-				if(m_animationName != "guard_idle")
+				if(m_AnimationName != "guard_idle")
 					this->ChangeAnimation("guard_idle");
 			}
-			m_timerGuard += 0.1f;		}
-		else if (m_isGuard && KeyLogger_Release(KL_GUARD))
+			m_TimerGuard += 0.1f;		}
+		else if (m_IsGuard && KeyLogger_Release(KL_GUARD))
 		{
-			m_isGuard = false;
+			m_IsGuard = false;
 		}
 	}
 }
@@ -442,10 +437,10 @@ void Player::LockOn()
 		if (camera->GetIsLock())
 		{
 			camera->SetIsLock(false);
-			if (m_lockOnCircle)
+			if (m_LockOnCircle)
 			{
-				m_lockOnCircle->SetDead();
-				m_lockOnCircle = nullptr;
+				m_LockOnCircle->SetDead();
+				m_LockOnCircle = nullptr;
 			}
 			return;
 		}
@@ -468,12 +463,12 @@ void Player::LockOn()
 			vEPos = XMLoadFloat3(&enemy->GetPosition());
 			float distance;
 			XMStoreFloat(&distance, XMVector3Length(vPPos - vEPos));
-			if (distance <= m_lockOnRad)
+			if (distance <= m_LockOnRad)
 			{
 				camera->SetIsLock(true);
 				camera->SetLockTarget(enemy->GetpPosition());
-				m_lockOnCircle = new LockOnCircle(enemy);
-				scene->AddGameObject(m_lockOnCircle, GOT_OBJECT2D);
+				m_LockOnCircle = new LockOnCircle(enemy);
+				scene->AddGameObject(m_LockOnCircle, GOT_OBJECT2D);
 				break;
 			}
 		}
@@ -537,12 +532,12 @@ void Player::ChangeCameraDir()
 bool Player::Damage(int damage)
 {
 	if (damage < 0)return false;
-	m_nowHp -= damage;
-	m_hpBar->SetHP(m_nowHp, m_maxHp);
-	if (m_nowHp <= 0)
+	m_NowHp -= damage;
+	m_HpBar->SetHP(m_NowHp, m_MaxHp);
+	if (m_NowHp <= 0)
 	{
-		m_nowHp = 0;
-		m_hpBar->SetHP(m_nowHp, m_maxHp);
+		m_NowHp = 0;
+		m_HpBar->SetHP(m_NowHp, m_MaxHp);
 		SetDead();
 		return true;
 	}
@@ -551,29 +546,29 @@ bool Player::Damage(int damage)
 
 void Player::ModelInit()
 {
-	m_model = new AnimationModel();
+	m_Model = new AnimationModel();
 
-	//m_model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
-	//m_model->Load("asset\\model\\player\\Idle (6).fbx");	// 忍者
-	m_model->Load("asset\\model\\player\\paladin\\paladin_prop_j_nordstrom.fbx");	// 鎧
-	m_animationName = "idle";
-	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\idle.fbx", m_animationName.data());
-	//m_model->LoadAnimaiton("asset\\model\\player\\Idle.fbx", m_animationName.data());
-	m_animationName = "attack";
-	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\slash.fbx", m_animationName.data());
-	//	m_model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_animationName.data());
-	m_animationName = "run";
-	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\run.fbx", m_animationName.data());
-	//m_model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_animationName.data());
-	m_animationName = "jump";
-	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\jump.fbx", m_animationName.data());
-	//m_model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_animationName.data());
-	m_animationName = "guard_start";
-	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_start.fbx", m_animationName.data());
-	m_animationName = "guard_idle";
-	m_model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_idle.fbx", m_animationName.data());
+	//m_Model->Load("asset\\model\\player\\Ch24_nonPBR.fbx");
+	//m_Model->Load("asset\\model\\player\\Idle (6).fbx");	// 忍者
+	m_Model->Load("asset\\model\\player\\paladin\\paladin_prop_j_nordstrom.fbx");	// 鎧
+	m_AnimationName = "idle";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\idle.fbx", m_AnimationName.data());
+	//m_Model->LoadAnimaiton("asset\\model\\player\\Idle.fbx", m_AnimationName.data());
+	m_AnimationName = "attack";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\slash.fbx", m_AnimationName.data());
+	//	m_Model->LoadAnimaiton("asset\\model\\player\\Stable Sword Outward Slash.fbx", m_AnimationName.data());
+	m_AnimationName = "run";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\run.fbx", m_AnimationName.data());
+	//m_Model->LoadAnimaiton("asset\\model\\player\\Run.fbx", m_AnimationName.data());
+	m_AnimationName = "jump";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\jump.fbx", m_AnimationName.data());
+	//m_Model->LoadAnimaiton("asset\\model\\player\\Jump.fbx", m_AnimationName.data());
+	m_AnimationName = "guard_start";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_start.fbx", m_AnimationName.data());
+	m_AnimationName = "guard_idle";
+	m_Model->LoadAnimaiton("asset\\model\\player\\paladin\\guard_idle.fbx", m_AnimationName.data());
 
-	m_animationName = "idle";
+	m_AnimationName = "idle";
 
 }
 
@@ -598,6 +593,6 @@ void Player::MoveFromMoveVector()
 
 void Player::ChangeAnimation(const char * animationName)
 {
-	m_animationName = animationName;
-	m_frame = 0;
+	m_AnimationName = animationName;
+	m_Frame = 0;
 }

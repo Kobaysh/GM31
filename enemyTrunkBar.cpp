@@ -58,7 +58,7 @@ void TrunkBar::Init()
 
 void TrunkBar::Init(Enemy * pEnemy)
 {
-	m_pEnemy = pEnemy;
+	m_Enemy = pEnemy;
 	m_Position = pEnemy->GetPosition();
 	m_Rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Scale = XMFLOAT3(1.0f, 0.1f, 1.0f);
@@ -83,11 +83,11 @@ void TrunkBar::Draw()
 	{
 		return;
 	}
-	Trunk* trunk = m_pEnemy->GetTrunk();
+	Trunk* trunk = m_Enemy->GetTrunk();
 	
 	// Š„‡‚ðŽæ“¾
 	float per = (float)trunk->GetNowTrunk() / trunk->GetMaxTrunk();
-//	if (m_nowHP == m_maxHP) return;
+//	if (m_NowHP == m_MaxHP) return;
 	if (trunk->GetNowTrunk() <= 0) return;
 
 	XMFLOAT4 color = XMFLOAT4(0, 0, 0, 1.0f);

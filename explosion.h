@@ -10,7 +10,7 @@ private:
 
 
 	XMFLOAT2 m_textureOffset;	
-	int m_frame;
+	int m_Frame;
 	static int m_animationMag;
 public:
 	void Init();

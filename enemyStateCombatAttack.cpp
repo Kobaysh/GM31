@@ -54,21 +54,21 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		XMVECTOR vObbPos = XMLoadFloat3(&pEnemy->GetPosition()) + XMLoadFloat3(&pEnemy->GetDirection()->Forward) * 2;
 		XMStoreFloat3(&obbPos, vObbPos);
 		//obbPos.y += 1.0f;
-		m_obbAttack = nullptr;
-		m_obbAttack = new OBB(obbPos, pEnemy->GetRotation(), XMFLOAT3(1.0f, 2.0f,1.0f));
-		ManagerT::GetScene()->AddGameObject(m_obbAttack, GameObject::GOT_OBJECT3D);
+		m_ObbAttack = nullptr;
+		m_ObbAttack = new OBB(obbPos, pEnemy->GetRotation(), XMFLOAT3(1.0f, 2.0f,1.0f));
+		ManagerT::GetScene()->AddGameObject(m_ObbAttack, GameObject::GOT_OBJECT3D);
 		m_Timer = 0.0f;
 	}
 	if (!pPlayer) return;
 
 	if (m_isAttacking)
 	{
-		if (OBB::ColOBBs(*m_obbAttack, pPlayer->GetObb()))
+		if (OBB::ColOBBs(*m_ObbAttack, pPlayer->GetObb()))
 		{
 			// 攻撃当たった
 			m_isAttacking = false;
-			m_obbAttack->SetDead();
-			m_obbAttack = nullptr;
+			m_ObbAttack->SetDead();
+			m_ObbAttack = nullptr;
 			
 			if(pPlayer->GetIsGuarding())
 			{
@@ -103,8 +103,8 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		if (m_Timer >= 12.0f)
 		{
 			m_isAttacking = false;
-			m_obbAttack->SetDead();
-			m_obbAttack = nullptr;
+			m_ObbAttack->SetDead();
+			m_ObbAttack = nullptr;
 			EnemyStatePattern* pStatePattern = 
 			pEnemy->GetEnemyState()->ChangeState(new EnemyStateCombatIdle(pEnemy));
 			pEnemy->GetEnemyState()->SetStateName("EnemyStateCombatIdle");
@@ -114,8 +114,8 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		//if(アニメーション終了？)
 		//{
 		// m_isAttacking = false;
-		//delete m_obbAttack;
-		//m_obbAttack = nullptr;
+		//delete m_ObbAttack;
+		//m_ObbAttack = nullptr;
 		//return;
 		//}
 	}
@@ -123,10 +123,10 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 
 EnemyStateCombatAttack::~EnemyStateCombatAttack()
 {
-	if (m_obbAttack)
+	if (m_ObbAttack)
 	{
-		/*delete m_obbAttack;
-		m_obbAttack = nullptr;*/
-		m_obbAttack->SetDead();
+		/*delete m_ObbAttack;
+		m_ObbAttack = nullptr;*/
+		m_ObbAttack->SetDead();
 	}
 }

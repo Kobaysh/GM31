@@ -70,7 +70,7 @@ void EnemyGui::Update()
 			//if (ImGui::TreeNode("Enemy State"))
 			//{
 			//if(enemyList[i]->GetIsUsingState())
-			//	ImGui::Text(m_enemy->GetEnemyState()->GetStateName().c_str());
+			//	ImGui::Text(m_Enemy->GetEnemyState()->GetStateName().c_str());
 
 			//	ImGui::TreePop();
 			//}

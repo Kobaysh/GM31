@@ -104,9 +104,6 @@
     <ClInclude Include="player.h">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClInclude>
-    <ClInclude Include="playerState.h">
-      <Filter>ソース ファイル\game_object\player</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
     </ClInclude>
@@ -115,9 +112,6 @@
     </ClInclude>
     <ClInclude Include="title.h">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
-    </ClInclude>
-    <ClInclude Include="primitive.h">
-      <Filter>ソース ファイル\system</Filter>
     </ClInclude>
     <ClInclude Include="audio.h">
       <Filter>ソース ファイル\system</Filter>
@@ -222,9 +216,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
     <ClInclude Include="animationModel.h">
-      <Filter>ソース ファイル\system</Filter>
-    </ClInclude>
-    <ClInclude Include="fbxMesh.h">
       <Filter>ソース ファイル\system</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
@@ -349,9 +340,6 @@
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClCompile>
-    <ClCompile Include="playerState.cpp">
-      <Filter>ソース ファイル\game_object\player</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>ソース ファイル\Scene\scene_inheritance</Filter>
     </ClCompile>
@@ -455,9 +443,6 @@
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
     <ClCompile Include="animationModel.cpp">
-      <Filter>ソース ファイル\system</Filter>
-    </ClCompile>
-    <ClCompile Include="fbxMesh.cpp">
       <Filter>ソース ファイル\system</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
