@@ -12,18 +12,17 @@ float LenSegOnSeparateAxis(XMFLOAT3 *Sep, XMFLOAT3* e1, XMFLOAT3* e2, XMFLOAT3* 
 // staticメンバ
 ID3D11VertexShader*		OBB::m_VertexShader = nullptr;
 ID3D11PixelShader*		OBB::m_PixelShader = nullptr;
-ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;//ID3D11ShaderResourceView* OBB::m_textureBlue = nullptr;
-//ID3D11ShaderResourceView* OBB::m_textureRed = nullptr;
+ID3D11InputLayout*		OBB::m_VertexLayout = nullptr;
 
 const char* OBB::FILENAME_BLUE = ("asset\\texture\\tinyblue.png");
 const char* OBB::FILENAME_RED = ("asset\\texture\\tinyred.png");
 // 描画するかどうか
 #if defined (DEBUG) || defined (_DEBUG)
-bool OBB::m_SIsDraw = true;
+bool OBB::m_IsDrawAll = true;
 #else 
-bool OBB::m_SIsDraw = false;
+bool OBB::m_IsDrawAll = false;
 #endif
-bool OBB::m_SIsDrawForwardRightUp = false;
+bool OBB::m_IsDrawForwardRightUp = false;
 
 void OBB::SetRotation(XMFLOAT3 rot)
 {
@@ -442,7 +441,7 @@ void OBB::Update()
 
 void OBB::Draw()
 {
-	if (!m_IsDraw && !m_SIsDraw) {
+	if (!m_IsDraw && !m_IsDrawAll) {
 
 		return;
 	}
@@ -513,7 +512,7 @@ void OBB::Draw()
 	Renderer::GetpDeviceContext()->DrawIndexed(36, 0, 0);
 
 
-	if (m_SIsDrawForwardRightUp)
+	if (m_IsDrawForwardRightUp)
 	{
 		// 法線表示
 		VERTEX_3DX vertex[2];

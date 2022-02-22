@@ -243,7 +243,7 @@ void MyImGui::SetDebugCollisionWindow()
 //	ImGui::Checkbox("Collision Show", debugShow);
 	if (ImGui::TreeNode("Collision"))
 	{
-		ImGui::Checkbox("Collision Show", &OBB::m_SIsDraw);
+		ImGui::Checkbox("Collision Show", &OBB::m_IsDrawAll);
 		ImGui::TreePop();
 	}
 //	OBB::SetIsColShow(debugShow);

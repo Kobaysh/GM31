@@ -8,14 +8,10 @@
 #include "player.h"
 #include "input.h"
 
+float Camera::m_RoutationalSpeed;				// 回転速度
 
-float Camera::m_RoutationalSpeed;
-
-const  float Camera::m_CameraSpeedFirst = 0.2f;
-const  float Camera::m_AtLength = 3.0f;
-
-
-
+const  float Camera::m_CameraSpeedFirst = 0.2f;	// 初期速度
+const  float Camera::m_AtLength = 3.0f;			// ターゲット距離
 
 void Camera::Init()
 {
@@ -49,14 +45,6 @@ void Camera::Uninit()
 
 void Camera::Update()
 {
-
-
-	//if (KeyLogger_Trigger(KL_GUARD))
-	//{
-	//	ChangeMovableWithPlayer(!m_IsMovable);
-	//}
-
-
 	// 変数用意
 	XMVECTOR vDirection = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMStoreFloat3(&m_Move, vDirection);

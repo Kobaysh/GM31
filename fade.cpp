@@ -6,12 +6,12 @@
 #define FILENAME ("asset\\texture\\fade.png")
 
 // 静的変数
-float Fade::m_FadeAlpha;
-Fade::FadeType Fade::m_FadeType;
+float Fade::m_FadeAlpha;			// フェードα値
+Fade::FadeType Fade::m_FadeType;	// フェードタイプ
 
-static 	VERTEX_3DX vertex[4];
-static D3D11_BUFFER_DESC bd{};
-static D3D11_SUBRESOURCE_DATA sd{};
+static 	VERTEX_3DX vertex[4];		// 頂点
+static D3D11_BUFFER_DESC bd{};		// 頂点バッファデスク
+static D3D11_SUBRESOURCE_DATA sd{};	// サブリソースデータ
 void Fade::Init()
 {
 
@@ -52,16 +52,8 @@ void Fade::Init()
 
 	// テクスチャ読み込み
 	Texture::Load(FILENAME);
-	//D3DX11CreateShaderResourceViewFromFile(
-	//	Renderer::GetpDevice().Get(),
-	//	FILENAME,
-	//	NULL,
-	//	NULL,
-	//	&m_Texture,
-	//	NULL
-	//	);
-	//assert(m_Texture);
 
+	// シェーダー作成
 	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 
 	Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
@@ -74,9 +66,6 @@ void Fade::Init()
 void Fade::Uninit()
 {
 	m_VertexBuffer->Release();
-	//m_Texture->Release();
-	//Texture::Release(FILENAME);
-
 	m_VertexLayout->Release();
 	m_VertexShader->Release();
 	m_PixelShader->Release();

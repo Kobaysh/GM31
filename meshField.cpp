@@ -88,7 +88,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	float startX = m_Position.x - horizonCnt * horizonSize * 0.5f;
 	float startZ = m_Position.z + verticalCnt * verticalSize * 0.5f;
 
-	m_PVertex = new VERTEX_3DX[m_VertexCount];
+	m_Vertex = new VERTEX_3DX[m_VertexCount];
 
 	//VERTEX_3DX** m_ppVertex = new VERTEX_3DX*[colVertex];
 	//for (int i = 0; i < colVertex; i++) {
@@ -104,12 +104,12 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	//}
 	for (int z = 0, i = 0; z < rowVertex; z++) {
 		for (int x = 0; x < colVertex; x++, i++) {
-		//	m_PVertex[i].Position = XMFLOAT3(startX + x * horizonSize,x * 0.05f + z * 0.05f, startZ - z * verticalSize);
-		//	m_PVertex[i].Position = XMFLOAT3(startX + x * horizonSize, cosf(x) * sinf(z) * 2.0f, startZ - z * verticalSize);
-			m_PVertex[i].Position = XMFLOAT3(startX + x * horizonSize, testField[z][x] * 2.0f, startZ - z * verticalSize);
-			m_PVertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-			m_PVertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-			m_PVertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
+		//	m_Vertex[i].Position = XMFLOAT3(startX + x * horizonSize,x * 0.05f + z * 0.05f, startZ - z * verticalSize);
+		//	m_Vertex[i].Position = XMFLOAT3(startX + x * horizonSize, cosf(x) * sinf(z) * 2.0f, startZ - z * verticalSize);
+			m_Vertex[i].Position = XMFLOAT3(startX + x * horizonSize, testField[z][x] * 2.0f, startZ - z * verticalSize);
+			m_Vertex[i].Normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+			m_Vertex[i].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			m_Vertex[i].TexCoord = XMFLOAT2((float)x, (float)z);
 		}
 	}
 
@@ -117,11 +117,11 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 	for (int x = 1; x < horizonCnt; x++) {
 		for (int z = 1; z < verticalCnt; z++) {
 			XMVECTOR vx, vz, vn;
-			vx = XMLoadFloat3(&m_PVertex[(x + 1) + z * (horizonCnt + 1)].Position) - XMLoadFloat3(&m_PVertex[(x - 1) + z * (horizonCnt + 1)].Position);
-			vz = XMLoadFloat3(&m_PVertex[x + (z - 1) *(horizonCnt + 1)].Position) - XMLoadFloat3(&m_PVertex[x + (z+ 1) * (horizonCnt + 1)].Position);
+			vx = XMLoadFloat3(&m_Vertex[(x + 1) + z * (horizonCnt + 1)].Position) - XMLoadFloat3(&m_Vertex[(x - 1) + z * (horizonCnt + 1)].Position);
+			vz = XMLoadFloat3(&m_Vertex[x + (z - 1) *(horizonCnt + 1)].Position) - XMLoadFloat3(&m_Vertex[x + (z+ 1) * (horizonCnt + 1)].Position);
 			vn = XMVector3Cross(vz, vx);
 		 	vn = XMVector3Normalize(vn);
-			XMStoreFloat3(&m_PVertex[x + z * (horizonCnt + 1)].Normal, vn);
+			XMStoreFloat3(&m_Vertex[x + z * (horizonCnt + 1)].Normal, vn);
 		}
 	}
 	//for (int x = 1; x <= horizonCnt - 1; x++) {
@@ -146,7 +146,7 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 
 		D3D11_SUBRESOURCE_DATA sd{};
 		ZeroMemory(&sd, sizeof(sd));
-		sd.pSysMem = m_PVertex;
+		sd.pSysMem = m_Vertex;
 //		sd.pSysMem = m_ppVertex;
 		Renderer::GetpDevice()->CreateBuffer(&bd, &sd, &m_VertexBuffer);
 	}
@@ -267,8 +267,8 @@ void MeshField::Init(XMFLOAT3 pos, int horizonCnt, int verticalCnt, int horizonS
 
 void MeshField::Uninit()
 {
-	if (m_PVertex) {
-		delete[] m_PVertex;
+	if (m_Vertex) {
+		delete[] m_Vertex;
 	}
 //	delete[] m_ppVertex;
 
@@ -367,10 +367,10 @@ float MeshField::GetHeight(XMFLOAT3 position)
 	}
 
 	XMFLOAT3 pos0, pos1, pos2, pos3,vecc;
-	pos0 = m_PVertex[(x + 0) + (z + 0) * (m_HorizonCnt + 1)].Position;
-	pos1 = m_PVertex[(x + 1) + (z + 0) * (m_HorizonCnt + 1)].Position;
-	pos2 = m_PVertex[(x + 0) + (z + 1) * (m_HorizonCnt + 1)].Position;
-	pos3 = m_PVertex[(x + 1) + (z + 1) * (m_HorizonCnt + 1)].Position;
+	pos0 = m_Vertex[(x + 0) + (z + 0) * (m_HorizonCnt + 1)].Position;
+	pos1 = m_Vertex[(x + 1) + (z + 0) * (m_HorizonCnt + 1)].Position;
+	pos2 = m_Vertex[(x + 0) + (z + 1) * (m_HorizonCnt + 1)].Position;
+	pos3 = m_Vertex[(x + 1) + (z + 1) * (m_HorizonCnt + 1)].Position;
 	//pos0 = m_vertex[x + 0][z + 0].Position;
 	//pos1 = m_vertex[x + 1][z + 0].Position;
 	//pos2 = m_vertex[x + 0][z + 1].Position;
