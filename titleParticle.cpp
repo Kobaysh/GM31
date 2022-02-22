@@ -6,9 +6,9 @@
 
 #define TEXTURE_NAME ("asset\\texture\\circle.png")
 
-ID3D11InputLayout* TitleParticle::m_sVertexLayout = nullptr; 
-ID3D11VertexShader* TitleParticle::m_sVertexShader = nullptr; 
-ID3D11PixelShader* TitleParticle::m_sPixelShader = nullptr; 
+ID3D11InputLayout* TitleParticle::m_VertexLayout = nullptr; 
+ID3D11VertexShader* TitleParticle::m_VertexShader = nullptr; 
+ID3D11PixelShader* TitleParticle::m_PixelShader = nullptr; 
 ID3D11Buffer* TitleParticle::m_VertexBuffer = nullptr; 
 ID3D11ShaderResourceView* TitleParticle::m_Texture = nullptr; 
 
@@ -63,13 +63,13 @@ void TitleParticle::Init()
 			NULL
 		);
 	}
-	if (!m_sVertexLayout && !m_sVertexShader)
+	if (!m_VertexLayout && !m_VertexShader)
 	{
-		Renderer::CreateVertexShader(&m_sVertexShader, &m_sVertexLayout, "asset/shader/unlitTextureVS.cso");
+		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "asset/shader/unlitTextureVS.cso");
 	}
-	if (!m_sPixelShader)
+	if (!m_PixelShader)
 	{
-		Renderer::CreatePixelShader(&m_sPixelShader, "asset/shader/unlitTexturePS.cso");
+		Renderer::CreatePixelShader(&m_PixelShader, "asset/shader/unlitTexturePS.cso");
 	}
 
 	m_Position = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -100,11 +100,11 @@ void TitleParticle::Update()
 void TitleParticle::Draw()
 {
 	// 入力レイアウト設定
-	Renderer::GetpDeviceContext()->IASetInputLayout(m_sVertexLayout);
+	Renderer::GetpDeviceContext()->IASetInputLayout(m_VertexLayout);
 
 	// シェーダー設定
-	Renderer::GetpDeviceContext()->VSSetShader(m_sVertexShader, nullptr, 0);
-	Renderer::GetpDeviceContext()->PSSetShader(m_sPixelShader, nullptr, 0);
+	Renderer::GetpDeviceContext()->VSSetShader(m_VertexShader, nullptr, 0);
+	Renderer::GetpDeviceContext()->PSSetShader(m_PixelShader, nullptr, 0);
 
 	// マトリクス設定
 	XMMATRIX mtxW, mtxT, mtxS;
