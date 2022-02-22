@@ -187,6 +187,7 @@
     <ClInclude Include="enemyStateIdleBeware.h" />
     <ClInclude Include="enemyStateIdleDiscover.h" />
     <ClInclude Include="enemyStateIdleIdle.h" />
+    <ClInclude Include="enemyTrunkBar.h" />
     <ClInclude Include="execJudgmentBase.h" />
     <ClInclude Include="explaAtk.h" />
     <ClInclude Include="explaChange.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="enemyStateIdleBeware.cpp" />
     <ClCompile Include="enemyStateIdleDiscover.cpp" />
     <ClCompile Include="enemyStateIdleIdle.cpp" />
+    <ClCompile Include="enemyTrunkBar.cpp" />
     <ClCompile Include="explaAtk.cpp" />
     <ClCompile Include="explaChange.cpp" />
     <ClCompile Include="explaDef.cpp" />

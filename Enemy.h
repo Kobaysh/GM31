@@ -31,6 +31,7 @@ protected:
 	static class EnemyGui* m_enemyGui;
 	class HpBar* m_hpBar;
 	class Trunk* m_trunk;	// ‘ÌŠ²
+	class TrunkBar* m_trunkBar;
 	XMFLOAT3 m_moveVector;
 
 	EnemyStateData m_stateData;

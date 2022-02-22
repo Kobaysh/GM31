@@ -221,9 +221,6 @@
     <ClInclude Include="player_hp.h">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClInclude>
-    <ClInclude Include="hp.h">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClInclude>
     <ClInclude Include="weapon.h">
       <Filter>ソース ファイル\game_object</Filter>
     </ClInclude>
@@ -310,6 +307,12 @@
     </ClInclude>
     <ClInclude Include="explanationOps.h">
       <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClInclude>
+    <ClInclude Include="hp.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyTrunkBar.h">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -460,9 +463,6 @@
     <ClCompile Include="player_hp.cpp">
       <Filter>ソース ファイル\game_object\player</Filter>
     </ClCompile>
-    <ClCompile Include="hp.cpp">
-      <Filter>ソース ファイル\game_object</Filter>
-    </ClCompile>
     <ClCompile Include="weapon.cpp">
       <Filter>ソース ファイル\game_object</Filter>
     </ClCompile>
@@ -537,6 +537,12 @@
     </ClCompile>
     <ClCompile Include="explanationOps.cpp">
       <Filter>ソース ファイル\game_object\2DObject\explanation</Filter>
+    </ClCompile>
+    <ClCompile Include="hp.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyTrunkBar.cpp">
+      <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
