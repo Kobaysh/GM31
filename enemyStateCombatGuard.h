@@ -5,7 +5,7 @@ class EnemyStateCombatGuard :public EnemyStatePattern
 {
 private:
 	float m_Timer = 0.0f;
-	//static const float m_attackInterval;
+	//static const float m_AttackInterval;
 public :
 	EnemyStateCombatGuard(){}
 	EnemyStateCombatGuard(class Enemy* pEnemy);

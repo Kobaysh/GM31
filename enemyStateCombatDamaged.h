@@ -5,7 +5,7 @@ class EnemyStateCombatDamaged :public EnemyStatePattern
 {
 private:
 	float m_Timer = 0.0f;
-	//static const float m_attackInterval;
+	//static const float m_AttackInterval;
 public :
 	EnemyStateCombatDamaged(){}
 	EnemyStateCombatDamaged(class Enemy* pEnemy);

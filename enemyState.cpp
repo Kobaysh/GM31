@@ -269,28 +269,28 @@ void EnemyState::Combat_Dead()
 
 */
 
-EnemyState::EnemyState():m_pStatePattern(new EnemyStateIdleIdle)
+EnemyState::EnemyState():m_StatePattern(new EnemyStateIdleIdle)
 {
 	
 }
 
 EnemyState::~EnemyState()
 {
-	if (m_pStatePattern)
+	if (m_StatePattern)
 	{
-		delete m_pStatePattern;
-		m_pStatePattern = nullptr;
+		delete m_StatePattern;
+		m_StatePattern = nullptr;
 	}
 }
 
 void EnemyState::Update(Enemy * pEnemy)
 {
-	m_pStatePattern->Update(pEnemy);
+	m_StatePattern->Update(pEnemy);
 }
 
 EnemyStatePattern * EnemyState::ChangeState(EnemyStatePattern * pStatePattern)
 {
-	EnemyStatePattern* temp = m_pStatePattern;
-	m_pStatePattern = pStatePattern;
+	EnemyStatePattern* temp = m_StatePattern;
+	m_StatePattern = pStatePattern;
 	return temp;
 }

@@ -20,20 +20,20 @@ public:
 	~EnemyState();
 	void Update(Enemy* pEnemy);
 	EnemyStatePattern* ChangeState(EnemyStatePattern* pStatePattern);
-	void SetIsGuarding(bool isGuarding) { m_isGuarding = isGuarding; }
-	bool GetIsGuarding() const { return m_isGuarding; }
-	void SetIsDamaged(bool isDamaged) { m_isDamaged = isDamaged; }
-	bool GetIsDamaged() const { return m_isDamaged; }
-	void SetIsCollided(bool isCollided) { m_isCollided = isCollided; }
-	bool GetIsCollided() const { return m_isCollided; }
-	void SetStateName(std::string name) { m_stateName = name; }
-	std::string& GetStateName() { return m_stateName; }
+	void SetIsGuarding(bool isGuarding) { m_IsGuarding = isGuarding; }
+	bool GetIsGuarding() const { return m_IsGuarding; }
+	void SetIsDamaged(bool isDamaged) { m_IsDamaged = isDamaged; }
+	bool GetIsDamaged() const { return m_IsDamaged; }
+	void SetIsCollided(bool isCollided) { m_IsCollided = isCollided; }
+	bool GetIsCollided() const { return m_IsCollided; }
+	void SetStateName(std::string name) { m_StateName = name; }
+	std::string& GetStateName() { return m_StateName; }
 private:
-	EnemyStatePattern* m_pStatePattern;
-	bool m_isGuarding = false;
-	bool m_isDamaged = false;
-	bool m_isCollided = false;
-	std::string m_stateName;
+	EnemyStatePattern* m_StatePattern;
+	bool m_IsGuarding = false;
+	bool m_IsDamaged = false;
+	bool m_IsCollided = false;
+	std::string m_StateName;
 };
 
 /*

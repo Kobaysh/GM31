@@ -9,26 +9,26 @@
 #include "enemyStateCombatIdle.h"
 #include "trunk.h"
 
-Audio* EnemyStateCombatAttack::m_attackSE = nullptr;
-Audio* EnemyStateCombatAttack::m_guardSE = nullptr;
-Audio* EnemyStateCombatAttack::m_repelSE = nullptr;
+Audio* EnemyStateCombatAttack::m_AttackSE = nullptr;
+Audio* EnemyStateCombatAttack::m_GuardSE = nullptr;
+Audio* EnemyStateCombatAttack::m_RepelSE = nullptr;
 
 void EnemyStateCombatAttack::Init()
 {
-	if (!m_attackSE)
+	if (!m_AttackSE)
 	{
-		m_attackSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-		m_attackSE->Load("asset\\audio\\se\\punch.wav");
+		m_AttackSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_AttackSE->Load("asset\\audio\\se\\punch.wav");
 	}
-	if (!m_guardSE)
+	if (!m_GuardSE)
 	{
-		m_guardSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-		m_guardSE->Load("asset\\audio\\se\\guard.wav");
+		m_GuardSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_GuardSE->Load("asset\\audio\\se\\guard.wav");
 	}
-	if (!m_repelSE)
+	if (!m_RepelSE)
 	{
-		m_repelSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
-		m_repelSE->Load("asset\\audio\\se\\repel.wav");
+		m_RepelSE = ManagerT::GetScene()->AppendGameObject<Audio>(GameObject::GOT_OBJECT2D);
+		m_RepelSE->Load("asset\\audio\\se\\repel.wav");
 	}
 }
 
@@ -37,7 +37,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 	m_Timer += 0.1f;
 	Player* pPlayer = ManagerT::GetScene()->GetGameObject<Player>(GameObject::GOT_OBJECT3D);
 
-	if (!m_isAttacking && m_Timer >= 6.0f)
+	if (!m_IsAttacking && m_Timer >= 6.0f)
 	{
 		if (pEnemy->GetAnimationName() != "kick")
 		{
@@ -47,9 +47,9 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 	}
 
 
-	if (!m_isAttacking && m_Timer >= 10.0f)
+	if (!m_IsAttacking && m_Timer >= 10.0f)
 	{
-		m_isAttacking = true;
+		m_IsAttacking = true;
 		XMFLOAT3 obbPos;
 		XMVECTOR vObbPos = XMLoadFloat3(&pEnemy->GetPosition()) + XMLoadFloat3(&pEnemy->GetDirection()->Forward) * 2;
 		XMStoreFloat3(&obbPos, vObbPos);
@@ -61,12 +61,12 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 	}
 	if (!pPlayer) return;
 
-	if (m_isAttacking)
+	if (m_IsAttacking)
 	{
 		if (OBB::ColOBBs(*m_ObbAttack, pPlayer->GetObb()))
 		{
 			// 攻撃当たった
-			m_isAttacking = false;
+			m_IsAttacking = false;
 			m_ObbAttack->SetDead();
 			m_ObbAttack = nullptr;
 			
@@ -77,18 +77,18 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 				// プレイヤーのガードが指定フレーム以下なら弾かれる
 				if (pPlayer->GetTimerGuard() <= 1.5f)
 				{
-					m_repelSE->Play();
+					m_RepelSE->Play();
 					pEnemy->GetTrunk()->ChangeNowTrunk(10);
 				}
 				else
 				{
-					m_guardSE->Play();
+					m_GuardSE->Play();
 					pPlayer->GetTrunk()->ChangeNowTrunk(10);
 				}
 			}
 			else
 			{
-				m_attackSE->Play();
+				m_AttackSE->Play();
 				pPlayer->GetTrunk()->ChangeNowTrunk(10);
 				pPlayer->Damage(1);
 			}
@@ -102,7 +102,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		// 攻撃アニメーションが終わったらfalse
 		if (m_Timer >= 12.0f)
 		{
-			m_isAttacking = false;
+			m_IsAttacking = false;
 			m_ObbAttack->SetDead();
 			m_ObbAttack = nullptr;
 			EnemyStatePattern* pStatePattern = 
@@ -113,7 +113,7 @@ void EnemyStateCombatAttack::Update(Enemy * pEnemy)
 		}
 		//if(アニメーション終了？)
 		//{
-		// m_isAttacking = false;
+		// m_IsAttacking = false;
 		//delete m_ObbAttack;
 		//m_ObbAttack = nullptr;
 		//return;
