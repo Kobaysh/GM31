@@ -299,6 +299,9 @@
     <ClInclude Include="enemyTrunkBar.h">
       <Filter>ソース ファイル\game_object\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="enemyBehaviorGuard.h">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="field.cpp">
@@ -510,6 +513,9 @@
     </ClCompile>
     <ClCompile Include="enemyTrunkBar.cpp">
       <Filter>ソース ファイル\game_object\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBehaviorGuard.cpp">
+      <Filter>ソース ファイル\game_object\enemy\behavior\behavior_action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
